@@ -1,16 +1,16 @@
-FROM node:18.19.0 AS builder
+FROM node:22.16.0 AS builder
 
 WORKDIR /app
 
-RUN npm install -g npm@10.2.3
+RUN npm install -g npm@10.9.2
 
-RUN npm install -g @angular/cli
+# RUN npm install -g @angular/cli
 
 COPY package.json package-lock.json ./
 
 RUN npm install
 
-RUN npm install @storybook/addons @storybook/api --save-dev
+# RUN npm install @storybook/addons @storybook/api --save-dev
 
 COPY . .
 
