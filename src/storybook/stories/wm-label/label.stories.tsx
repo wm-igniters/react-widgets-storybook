@@ -2,7 +2,7 @@ import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box } from "@mui/material";
 
-import LabelDefaultExport, { WmLabel as RawWmLabel } from "./index";
+import LabelDefaultExport, { WmLabel as RawWmLabel } from "../../../components/basic/label/index";
 
 const mockListener = {
   appLocale: {

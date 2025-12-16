@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box, Stack, Typography } from "@mui/material";
 
-import AnchorDefaultExport from "./index";
+import AnchorDefaultExport from "../../../components/basic/anchor/index";
 
 const meta = {
   title: "Components/Basic/Anchor",
