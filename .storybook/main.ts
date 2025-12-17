@@ -14,6 +14,15 @@ const config: StorybookConfig = {
   "framework": "@storybook/nextjs-vite",
   "staticDirs": [
     "../public"
-  ]
+  ],
+  async viteFinal(config) {
+    // Mock @wavemaker/variables for Storybook
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@wavemaker/variables': new URL('./mocks/variables.ts', import.meta.url).pathname,
+    };
+    return config;
+  },
 };
 export default config;
