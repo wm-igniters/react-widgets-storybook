@@ -42,9 +42,9 @@ const meta = {
     iconheight: { control: "text" },
     iconmargin: { control: "text" },
     badgevalue: { control: "text" },
-    shortcutkey: { control: "text" },
-    arialabel: { control: "text" },
-    encodeurl: { control: "boolean" },
+    // shortcutkey: { control: "text" },
+    // arialabel: { control: "text" },
+    // encodeurl: { control: "boolean" },
   },
 } satisfies Meta<typeof AnchorDefaultExport>;
 
@@ -73,7 +73,7 @@ export const Basic: Story = {
     caption: "Click Me",
     hyperlink: "https://www.wavemaker.com",
     target: "_blank",
-    className:"link-muted",
+    className:"link-muted"
   },
 };
 
@@ -109,6 +109,56 @@ export const WithBadge: Story = {
     iconheight: "16px",
     iconmargin: "0 8px 0 0",
     badgevalue: "5",
+  },
+};
+
+export const Showcase: Story = {
+  render: () => {
+    return (
+      <Box style={{ padding: 16 }}>
+        <Stack spacing={2}>
+          <Typography variant="subtitle1">Navigation Links:</Typography>
+          <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap", gap: 2 }}>
+            <AnchorDefaultExport
+              name="home"
+              caption="Home"
+              hyperlink="https://www.wavemaker.com"
+              target="_blank"
+              listener={mockListener}
+              className="link-primary"
+            />
+            <AnchorDefaultExport
+              name="about"
+              caption="About"
+              hyperlink="https://www.wavemaker.com"
+              target="_blank"
+              listener={mockListener}
+              className="link-primary"
+            />
+            <AnchorDefaultExport
+              name="services"
+              caption="Services"
+              hyperlink="https://www.wavemaker.com"
+              target="_blank"
+              listener={mockListener}
+              className="link-primary"
+            />
+            <AnchorDefaultExport
+              name="contact"
+              caption="Contact"
+              hyperlink="https://www.wavemaker.com"
+              target="_blank"
+              listener={mockListener}
+              className="link-primary"
+            />
+          </Stack>
+        </Stack>
+      </Box>
+    );
+  },
+  args: {
+    name: "linkGroup",
+    listener: mockListener,
   },
 };
 
@@ -169,69 +219,3 @@ export const WithBadge: Story = {
 //     },
 //   },
 // };
-
-export const LinkGroup: Story = {
-  render: () => {
-    return (
-      <Box style={{ padding: 16 }}>
-        <Stack spacing={2}>
-          <Typography variant="subtitle1">Navigation Links:</Typography>
-          <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap", gap: 2 }}>
-            <AnchorDefaultExport
-              name="home"
-              caption="Home"
-              hyperlink="/"
-              target="_self"
-              listener={mockListener}
-              styles={{
-                color: "#0066cc",
-                textDecoration: "underline",
-                cursor: "pointer",
-              }}
-            />
-            <AnchorDefaultExport
-              name="about"
-              caption="About"
-              hyperlink="/about"
-              target="_self"
-              listener={mockListener}
-              styles={{
-                color: "#0066cc",
-                textDecoration: "underline",
-                cursor: "pointer",
-              }}
-            />
-            <AnchorDefaultExport
-              name="services"
-              caption="Services"
-              hyperlink="/services"
-              target="_self"
-              listener={mockListener}
-              styles={{
-                color: "#0066cc",
-                textDecoration: "underline",
-                cursor: "pointer",
-              }}
-            />
-            <AnchorDefaultExport
-              name="contact"
-              caption="Contact"
-              hyperlink="/contact"
-              target="_self"
-              listener={mockListener}
-              styles={{
-                color: "#0066cc",
-                textDecoration: "underline",
-                cursor: "pointer",
-              }}
-            />
-          </Stack>
-        </Stack>
-      </Box>
-    );
-  },
-  args: {
-    name: "linkGroup",
-    listener: mockListener,
-  },
-};
