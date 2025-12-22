@@ -64,9 +64,18 @@ const style = {
   },
 };
 
+// Mock listener object for the component
+const mockListener = {
+  appLocale: {
+    LABEL_ICON: "Icon",
+  },
+  Widgets: {},
+};
 
-export const Default: Story = {
+
+export const Basic: Story = {
   args: {
+    name: "basicPopover",
     title: "Popover Title",
     content: "This is the popover content.",
     popoverwidth: "240px",
@@ -75,7 +84,8 @@ export const Default: Story = {
     popoverarrow: true,
     interaction: "click",
     contentsource: "inline",
-    autoclose: "outsideClick"
+    autoclose: "outsideClick",
+    listener: mockListener,
   },
   render: (args) => (
     <WmPopover {...args}>
