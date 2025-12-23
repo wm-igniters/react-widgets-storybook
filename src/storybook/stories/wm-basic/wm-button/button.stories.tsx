@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Box, Stack, Typography } from "@mui/material";
 import ButtonDefaultExport from "../../../../components/form/button/index";
 
-import { ComponentDocumentation } from "../../../components/DocumentRenderer";
+import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";

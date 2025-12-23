@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 
 import LabelDefaultExport, { WmLabel as RawWmLabel } from "../../../../components/basic/label/index";
 
-import { ComponentDocumentation } from "../../../components/DocumentRenderer";
+import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";

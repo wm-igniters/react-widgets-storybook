@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReactMarkdown from "react-markdown";
+import { Markdown, DocsContainer } from "@storybook/addon-docs/blocks";
 
 interface DocumentationProps {
   overview?: string;
@@ -9,12 +9,45 @@ interface DocumentationProps {
   styling?: string;
 }
 
+// Wrapper component to provide Storybook docs context
+const MarkdownWrapper: React.FC<{ children: string }> = ({ children }) => {
+  // Create a minimal channel implementation
+  const channel = {
+    on: () => () => {},
+    emit: () => {},
+    once: () => () => {},
+    off: () => {},
+    removeListener: () => {},
+    addListener: () => () => {},
+  };
+
+  const context = {
+    id: 'custom-docs',
+    title: 'Documentation',
+    name: 'Documentation',
+    importPath: '',
+    storyById: () => ({}),
+    componentStoriesFromCSFFile: () => [],
+    channel,
+    store: {
+      getState: () => ({}),
+      subscribe: () => () => {},
+    },
+  };
+
+  return (
+    <DocsContainer context={context as any}>
+      <Markdown>{children}</Markdown>
+    </DocsContainer>
+  );
+};
+
 export const ComponentDocumentation: React.FC<DocumentationProps> = ({
   overview,
   properties,
   events,
   methods,
-  styling,  
+  styling,
 }) => {
   const [activeTab, setActiveTab] = useState("overview");
   const activeColor = "#296df6"; // Blue theme
@@ -208,30 +241,30 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
       <div style={{ padding: "10px 0" }}>
         {activeTab === "overview" && overview && (
           <div>
-            <ReactMarkdown>{overview}</ReactMarkdown>
+            <MarkdownWrapper>{overview}</MarkdownWrapper>
           </div>
         )}
         {activeTab === "properties" && properties && (
           <div>
-            <ReactMarkdown>{properties}</ReactMarkdown>
+            <MarkdownWrapper>{properties}</MarkdownWrapper>
           </div>
         )}
          {activeTab === "events" && events && (
           <div>
-            <ReactMarkdown>{events}</ReactMarkdown>
+            <MarkdownWrapper>{events}</MarkdownWrapper>
           </div>
         )}
          {activeTab === "methods" && methods && (
           <div>
-            <ReactMarkdown>{methods}</ReactMarkdown>
+            <MarkdownWrapper>{methods}</MarkdownWrapper>
           </div>
         )}
         {activeTab === "styling" && styling && (
           <div>
-            <ReactMarkdown>{styling}</ReactMarkdown>
+            <MarkdownWrapper>{styling}</MarkdownWrapper>
           </div>
         )}
-       
+
       </div>
     </div>
   );
