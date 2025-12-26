@@ -4,6 +4,13 @@ import { Box, Stack, Typography } from "@mui/material";
 
 import CheckboxDefaultExport from "../../../../components/input/default/checkbox/index";
 
+import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
+import overview from "./docs/overview.md?raw";
+import props from "./docs/props.md?raw";
+import events from "./docs/events.md?raw";
+import methods from "./docs/methods.md?raw";
+import styling from "./docs/styling.md?raw";
+
 const meta: Meta<typeof CheckboxDefaultExport> = {
   title: "Input/Checkbox",
   component: CheckboxDefaultExport,
@@ -25,7 +32,7 @@ const meta: Meta<typeof CheckboxDefaultExport> = {
     // },
     // className: { control: "text" },
     // displayValue: { control: "text" },
-  },
+  }
 };
 
 export default meta;
@@ -45,6 +52,21 @@ const Template = (args: any) => (
     <CheckboxDefaultExport {...args} listener={mockListener} />
   </Box>
 );
+
+export const Docs: Story = {
+  render: () => (
+    <ComponentDocumentation
+      overview={overview}
+      properties={props}
+      events={events}
+      methods={methods}
+      styling={styling}
+    />
+  ),
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
 
 export const Basic: Story = {
   render: Template,

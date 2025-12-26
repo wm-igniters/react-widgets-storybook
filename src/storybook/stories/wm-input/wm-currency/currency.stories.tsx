@@ -5,6 +5,13 @@ import { Box, Stack, Typography } from "@mui/material";
 import CurrencyDefaultExport from "../../../../components/input/currency/index";
 import { CURRENCY_INFO } from "../../../../core/constants/currency-constant";
 
+import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
+import overview from "./docs/overview.md?raw";
+import props from "./docs/props.md?raw";
+import events from "./docs/events.md?raw";
+import methods from "./docs/methods.md?raw";
+import styling from "./docs/styling.md?raw";
+
 // Get all currency codes for the select control
 const currencyCodes = Object.keys(CURRENCY_INFO);
 
@@ -63,6 +70,21 @@ const Template = (args: any) => (
     <CurrencyDefaultExport {...args} listener={mockListener} />
   </Box>
 );
+
+export const Docs: Story = {
+  render: () => (
+    <ComponentDocumentation
+      overview={overview}
+      properties={props}
+      events={events}
+      methods={methods}
+      styling={styling}
+    />
+  ),
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
 
 export const Basic: Story = {
   render: Template,

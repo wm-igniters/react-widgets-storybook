@@ -4,6 +4,13 @@ import { Box, Stack, Typography, Button, TextField } from "@mui/material";
 
 import SelectDefaultExport from "../../../../components/input/select/index";
 
+import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
+import overview from "./docs/overview.md?raw";
+import props from "./docs/props.md?raw";
+import events from "./docs/events.md?raw";
+import methods from "./docs/methods.md?raw";
+import styling from "./docs/styling.md?raw";
+
 const meta: Meta<typeof SelectDefaultExport> = {
   title: "Input/Select",
   component: SelectDefaultExport,
@@ -49,6 +56,21 @@ const Template = (args: any) => (
     <SelectDefaultExport {...args} listener={mockListener} />
   </Box>
 );
+
+export const Docs: Story = {
+  render: () => (
+    <ComponentDocumentation
+      overview={overview}
+      properties={props}
+      events={events}
+      methods={methods}
+      styling={styling}
+    />
+  ),
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
 
 // Basic Examples
 export const Basic: Story = {
