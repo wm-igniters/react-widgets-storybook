@@ -1,12 +1,45 @@
 # Styling
 
-The Design Dialog component supports customization through various layout and appearance properties. While specific CSS classes are not explicitly defined in the documentation, you can control the visual presentation through the component props.
+The Dialog component can be styled using CSS classes to customize its appearance.
 
-## Key styling options:
+## Dialog Container
+- `.app-dialog` - Targets the entire dialog container
+- `.modal-dialog` - Applied when the dialog is set to modal mode
+- `.app-dialog-heading` - Targets the dialog header section
+- `.app-dialog-body` - Targets the main content area of the dialog
+- `.app-dialog-footer` - Targets the bottom section of the dialog where action buttons are typically placed
 
-- **Dimensions**: Control the dialog size using width and height properties
-- **Header**: Toggle header visibility with the showHeader property
-- **Icon Customization**: Modify the icon appearance using iconClass, iconWidth, iconHeight, and iconMargin
-- **Animation**: Apply custom animations for dialog transitions
+## Dialog Buttons
+- `.app-button-cancel` - Styles the cancel button in the dialog
+- `.app-button-save` - Styles the save/confirm button in the dialog
 
-For more advanced styling, you can customize the dialog content by adding and styling child components within the dialog container.
+## Animation Classes
+- `.animation-{type}` - Where {type} is the animation style specified in the animation property
+
+### Custom Dialog Styling Example
+
+```css
+/* Customize dialog appearance */
+.app-dialog.MyCustomDialog {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Style dialog header */
+.app-dialog.MyCustomDialog .app-dialog-heading {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+}
+
+/* Style dialog buttons */
+.app-dialog.MyCustomDialog .app-button-save {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.app-dialog.MyCustomDialog .app-button-cancel {
+    background-color: #f44336;
+    color: white;
+}
+```

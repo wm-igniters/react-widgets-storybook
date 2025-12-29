@@ -1,45 +1,50 @@
 # Props
 
-## General
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| title | string | "" | Sets the title text displayed in the dialog header. |
-| name | string | | A unique identifier for the dialog component. |
-
-## Accessibility
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| tabindex | number | 0 | Specifies the tab order of the dialog. Values can range from 0 to 32767. Setting to -1 makes the element non-focusable. |
+## Basic Configuration
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| name | string | - | A unique identifier for the dialog component |
+| title | string | "" | Sets the title text displayed in the dialog header |
 
 ## Layout
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| width | string | | Width of the dialog in px or % (e.g., "50px", "75%"). |
-| height | string | | Height of the dialog in px or % (e.g., "50px", "75%"). |
-| showHeader | boolean | true | Controls visibility of the dialog header. |
-| modal | boolean | false | When true, adds a backdrop that prevents closing the dialog when clicking outside. |
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| width | string | - | The width of the dialog, can be specified in px or % (e.g., "500px", "75%") |
+| height | string | - | The height of the dialog, can be specified in px or % (e.g., "300px", "50%") |
+| showHeader | boolean | true | Controls the visibility of the dialog header section |
+| modal | boolean | false | When true, adds a backdrop that prevents interaction with the page behind the dialog |
 
 ## Behavior
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| enableDefaultCloseAction | boolean | true | When enabled, adds a close (X) icon to the header and allows closing with the ESC key. |
-| animation | string | | Controls the animation effect when the dialog opens or closes. |
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| enableDefaultCloseAction | boolean | true | When enabled, allows users to close the dialog via the "x" icon in the header or using the ESC key |
+| animation | string | - | Controls the animation style applied to the dialog when opening or closing |
 
 ## Graphics
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| iconClass | string | | CSS class for the icon displayed in the dialog. |
-| iconWidth | string | | Width of the icon in pixels. |
-| iconHeight | string | | Height of the icon in pixels. |
-| iconMargin | string | | Margin around the icon in pixels to adjust spacing between icon and text. |
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| iconClass | string | - | CSS class for the icon displayed in the dialog |
+| iconWidth | string | - | Width of the icon (best specified in pixels) |
+| iconHeight | string | - | Height of the icon (best specified in pixels) |
+| iconMargin | string | - | Margin around the icon to adjust spacing between the icon and dialog content |
 
-### Common Use Cases
+## Accessibility
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| tabindex | number | 0 | Specifies the tab order for the dialog component (-1 makes it non-focusable) |
 
+### Common Dialog Usage
 ```javascript
-// Open a dialog programmatically
-Page.Widgets.designdialog1.open();
+// Open dialog on button click
+Page.button1Click = function($event, widget) {
+    Page.Widgets.designDialog1.open();
+};
 
-// Configure a modal dialog that must be explicitly closed
-Page.Widgets.designdialog1.modal = true;
-Page.Widgets.designdialog1.enableDefaultCloseAction = false;
+// Close dialog programmatically
+Page.closeButtonClick = function($event, widget) {
+    Page.Widgets.designDialog1.close();
+};
+
+// Configure dialog as modal
+Page.Widgets.designDialog1.modal = true;
 ```

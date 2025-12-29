@@ -1,12 +1,22 @@
 # Styling
 
-The page-dialog component likely inherits styling options from the base dialog components. While no specific CSS classes are documented for this component, you can use standard dialog styling techniques to customize its appearance.
+The page-dialog component inherits styling from its base dialog implementation but with page-like presentation. The following CSS classes can be used to customize its appearance:
 
-Consider applying custom styles to:
+- `.app-page-dialog`: The main container class for the page-dialog component
+- `.app-page-dialog-content`: Applied to the content area of the page-dialog
 
-- Dialog container
-- Dialog header
-- Dialog content area
-- Dialog footer and buttons
+Custom styling can be applied to match your application's design requirements:
 
-Note that when using prefabs, the styling may need to be applied to the prefab template itself rather than directly to the dialog component.
+```css
+.app-page-dialog {
+    max-width: 80vw;
+    border-radius: 8px;
+}
+
+.app-page-dialog-content {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+```
+
+When using a prefab, styling would typically be defined within the prefab itself, though container styles from the page-dialog component will still apply.
