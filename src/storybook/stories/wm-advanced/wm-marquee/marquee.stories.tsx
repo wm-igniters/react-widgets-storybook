@@ -4,6 +4,13 @@ import { Box, Stack, Typography, Chip } from "@mui/material";
 
 import MarqueeDefaultExport from "../../../../components/advanced/marquee/index";
 
+import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
+import overview from "./docs/overview.md?raw";
+import props from "./docs/props.md?raw";
+import events from "./docs/events.md?raw";
+import methods from "./docs/methods.md?raw";
+import styling from "./docs/styling.md?raw";
+
 const meta: Meta<typeof MarqueeDefaultExport> = {
   title: "Advanced/Marquee",
   component: MarqueeDefaultExport,
@@ -26,6 +33,21 @@ const Template = (args: any) => (
     <MarqueeDefaultExport {...args} />
   </Box>
 );
+
+export const Docs: Story = {
+  render: () => (
+    <ComponentDocumentation
+      overview={overview}
+      properties={props}
+      events={events}
+      methods={methods}
+      styling={styling}
+    />
+  ),
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
 
 // Basic Examples
 export const Basic: Story = {
