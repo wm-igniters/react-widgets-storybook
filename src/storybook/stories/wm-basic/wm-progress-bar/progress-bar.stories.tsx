@@ -4,6 +4,13 @@ import { Box, Stack, Typography, Button } from "@mui/material";
 
 import ProgressBarDefaultExport from "../../../../components/basic/progress-bar/index";
 
+import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
+import overview from "./docs/overview.md?raw";
+import props from "./docs/props.md?raw";
+import events from "./docs/events.md?raw";
+import methods from "./docs/methods.md?raw";
+import styling from "./docs/styling.md?raw";
+
 const meta: Meta<typeof ProgressBarDefaultExport> = {
   title: "Basic/ProgressBar",
   component: ProgressBarDefaultExport,
@@ -52,6 +59,21 @@ const Template = (args: any) => (
     <ProgressBarDefaultExport {...args} listener={mockListener} />
   </Box>
 );
+
+export const Docs: Story = {
+  render: () => (
+    <ComponentDocumentation
+      overview={overview}
+      properties={props}
+      events={events}
+      methods={methods}
+      styling={styling}
+    />
+  ),
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
 
 export const Basic: Story = {
   render: Template,

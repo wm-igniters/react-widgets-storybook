@@ -4,6 +4,13 @@ import { Box, Stack, Typography } from "@mui/material";
 
 import HtmlDefaultExport from "../../../../components/basic/html/index";
 
+import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
+import overview from "./docs/overview.md?raw";
+import props from "./docs/props.md?raw";
+import events from "./docs/events.md?raw";
+import methods from "./docs/methods.md?raw";
+import styling from "./docs/styling.md?raw";
+
 const meta: Meta<typeof HtmlDefaultExport> = {
   title: "Basic/Html",
   component: HtmlDefaultExport,
@@ -38,6 +45,21 @@ const Template = (args: any) => (
     </HtmlDefaultExport>
   </Box>
 );
+
+export const Docs: Story = {
+  render: () => (
+    <ComponentDocumentation
+      overview={overview}
+      properties={props}
+      events={events}
+      methods={methods}
+      styling={styling}
+    />
+  ),
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
 
 export const Basic: Story = {
   render: Template,
