@@ -4,6 +4,13 @@ import { Box, Stack, Typography, Link, IconButton, Divider, Grid } from "@mui/ma
 
 import FooterDefaultExport from "../../../../components/layout/footer/index";
 
+import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
+import overview from "./docs/overview.md?raw";
+import props from "./docs/props.md?raw";
+import events from "./docs/events.md?raw";
+import methods from "./docs/methods.md?raw";
+import styling from "./docs/styling.md?raw";
+
 const meta: Meta<typeof FooterDefaultExport> = {
   title: "Layout/Footer",
   component: FooterDefaultExport,
@@ -31,6 +38,21 @@ const Template = (args: any) => (
     </FooterDefaultExport>
   </Box>
 );
+
+export const Docs: Story = {
+  render: () => (
+    <ComponentDocumentation
+      overview={overview}
+      properties={props}
+      events={events}
+      methods={methods}
+      styling={styling}
+    />
+  ),
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
 
 export const Basic: Story = {
   render: Template,
