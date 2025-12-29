@@ -79,21 +79,6 @@ export const Basic: Story = {
   },
 };
 
-export const WithCaption: Story = {
-  render: Template,
-  args: {
-    name: "ratingCaption",
-    caption: "Rate this product",
-    showcaptions: true,
-    datavalue: 3,
-    maxvalue: 5,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-  },
-};
-
 export const CustomDataset: Story = {
   render: Template,
   args: {
@@ -115,6 +100,21 @@ export const CustomDataset: Story = {
     required: false,
   },
 };
+
+// export const WithCaption: Story = {
+//   render: Template,
+//   args: {
+//     name: "ratingCaption",
+//     caption: "Rate this product",
+//     showcaptions: true,
+//     datavalue: 3,
+//     maxvalue: 5,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//   },
+// };
 
 // export const ThreeStars: Story = {
 //   render: Template,

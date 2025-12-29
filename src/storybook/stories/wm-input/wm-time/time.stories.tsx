@@ -97,7 +97,7 @@ export const TimeFormat: Story = {
   render: Template,
   args: {
     name: "timeFormat",
-    timepattern: "HH:mm",
+    timepattern: "h:mm:ss a",
     // datavalue: "14:30:00",
     listener: mockListener,
     disabled: false,
@@ -109,71 +109,71 @@ export const TimeFormat: Story = {
   },
 };
 
-export const WithTimeRange: Story = {
-  render: Template,
-  args: {
-    name: "timeRange",
-    placeholder: "Business hours (9 AM - 5 PM)",
-    mintime: "09:00:00",
-    maxtime: "17:00:00",
-    timepattern: "h:mm a",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const WithTimeRange: Story = {
+//   render: Template,
+//   args: {
+//     name: "timeRange",
+//     placeholder: "Business hours (9 AM - 5 PM)",
+//     mintime: "09:00:00",
+//     maxtime: "17:00:00",
+//     timepattern: "h:mm a",
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
-export const HourStep: Story = {
-  render: Template,
-  args: {
-    name: "hourStep",
-    placeholder: "2-hour intervals",
-    hourstep: 2,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    // timepattern: "h:mm a",
-    timepattern: "HH:mm",
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const HourStep: Story = {
+//   render: Template,
+//   args: {
+//     name: "hourStep",
+//     placeholder: "2-hour intervals",
+//     hourstep: 2,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     // timepattern: "h:mm a",
+//     timepattern: "HH:mm",
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
-export const MinuteStep: Story = {
-  render: Template,
-  args: {
-    name: "minuteStep",
-    placeholder: "5-minute intervals",
-    minutestep: 5,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    timepattern: "HH:mm",
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const MinuteStep: Story = {
+//   render: Template,
+//   args: {
+//     name: "minuteStep",
+//     placeholder: "5-minute intervals",
+//     minutestep: 5,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     timepattern: "HH:mm",
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
-export const SecondsStep: Story = {
-  render: Template,
-  args: {
-    name: "secondsStep",
-    timepattern: "HH:mm:ss",
-    placeholder: "5-second intervals",
-    secondsstep: 5,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const SecondsStep: Story = {
+//   render: Template,
+//   args: {
+//     name: "secondsStep",
+//     timepattern: "HH:mm:ss",
+//     placeholder: "5-second intervals",
+//     secondsstep: 5,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
 // export const WithValue: Story = {
 //   render: Template,

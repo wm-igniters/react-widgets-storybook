@@ -144,32 +144,6 @@ export const Basic: Story = {
   },
 };
 
-export const WithInitialValues: Story = {
-  render: Template,
-  args: {
-    name: "chipsInitial",
-    listener: mockListener,
-    dataset: simpleDataset,
-    datavalue: ["Apple", "Banana", "Cherry"],
-    placeholder: "Add more...",
-    type: "autocomplete",
-  },
-};
-
-export const SearchType: Story = {
-  render: Template,
-  args: {
-    name: "searchChips",
-    listener: mockListener,
-    dataset: fruitDataset,
-    datafield: "name",
-    displayfield: "name",
-    placeholder: "Search fruits...",
-    type: "search",
-    showsearchicon: true,
-  },
-};
-
 export const AllowOnlySelect: Story = {
   render: Template,
   args: {
@@ -197,113 +171,139 @@ export const EnableReorder: Story = {
   },
 };
 
+// export const WithInitialValues: Story = {
+//   render: Template,
+//   args: {
+//     name: "chipsInitial",
+//     listener: mockListener,
+//     dataset: simpleDataset,
+//     datavalue: ["Apple", "Banana", "Cherry"],
+//     placeholder: "Add more...",
+//     type: "autocomplete",
+//   },
+// };
 
-export const MinimumCharacters: Story = {
-  render: Template,
-  args: {
-    name: "minCharsChips",
-    listener: mockListener,
-    dataset: fruitDataset,
-    datafield: "name",
-    displayfield: "name",
-    minchars: 3,
-    placeholder: "Type at least 3 characters...",
-    type: "search",
-  },
-};
+// export const SearchType: Story = {
+//   render: Template,
+//   args: {
+//     name: "searchChips",
+//     listener: mockListener,
+//     dataset: fruitDataset,
+//     datafield: "name",
+//     displayfield: "name",
+//     placeholder: "Search fruits...",
+//     type: "search",
+//     showsearchicon: true,
+//   },
+// };
 
-export const WithGroupBy: Story = {
-  render: Template,
-  args: {
-    name: "groupByChips",
-    listener: mockListener,
-    dataset: skillsDataset,
-    datafield: "skill",
-    displayfield: "skill",
-    groupby: "category",
-    placeholder: "Search skills (grouped by category)...",
-    type: "autocomplete",
-  },
-};
 
-export const WithOrderBy: Story = {
-  render: Template,
-  args: {
-    name: "orderByChips",
-    listener: mockListener,
-    dataset: fruitDataset,
-    datafield: "name",
-    displayfield: "name",
-    orderby: "name:asc",
-    placeholder: "Results sorted alphabetically...",
-    type: "autocomplete",
-  },
-};
+// export const MinimumCharacters: Story = {
+//   render: Template,
+//   args: {
+//     name: "minCharsChips",
+//     listener: mockListener,
+//     dataset: fruitDataset,
+//     datafield: "name",
+//     displayfield: "name",
+//     minchars: 3,
+//     placeholder: "Type at least 3 characters...",
+//     type: "search",
+//   },
+// };
 
-export const InputPositionLast: Story = {
-  render: Template,
-  args: {
-    name: "inputLastChips",
-    listener: mockListener,
-    dataset: simpleDataset,
-    datavalue: ["Apple", "Banana"],
-    inputposition: "last",
-    placeholder: "Input on right...",
-    type: "autocomplete",
-  },
-};
+// export const WithGroupBy: Story = {
+//   render: Template,
+//   args: {
+//     name: "groupByChips",
+//     listener: mockListener,
+//     dataset: skillsDataset,
+//     datafield: "skill",
+//     displayfield: "skill",
+//     groupby: "category",
+//     placeholder: "Search skills (grouped by category)...",
+//     type: "autocomplete",
+//   },
+// };
 
-export const FullWidthInput: Story = {
-  render: Template,
-  args: {
-    name: "fullWidthChips",
-    listener: mockListener,
-    dataset: simpleDataset,
-    inputwidth: "full",
-    placeholder: "Full width input...",
-    type: "autocomplete",
-  },
-};
+// export const WithOrderBy: Story = {
+//   render: Template,
+//   args: {
+//     name: "orderByChips",
+//     listener: mockListener,
+//     dataset: fruitDataset,
+//     datafield: "name",
+//     displayfield: "name",
+//     orderby: "name:asc",
+//     placeholder: "Results sorted alphabetically...",
+//     type: "autocomplete",
+//   },
+// };
 
-export const WithSearchIcon: Story = {
-  render: Template,
-  args: {
-    name: "searchIconChips",
-    listener: mockListener,
-    dataset: fruitDataset,
-    datafield: "name",
-    displayfield: "name",
-    showsearchicon: true,
-    placeholder: "Search with icon...",
-    type: "search",
-  },
-};
+// export const InputPositionLast: Story = {
+//   render: Template,
+//   args: {
+//     name: "inputLastChips",
+//     listener: mockListener,
+//     dataset: simpleDataset,
+//     datavalue: ["Apple", "Banana"],
+//     inputposition: "last",
+//     placeholder: "Input on right...",
+//     type: "autocomplete",
+//   },
+// };
 
-export const WithLimit: Story = {
-  render: Template,
-  args: {
-    name: "limitChips",
-    listener: mockListener,
-    dataset: fruitDataset,
-    datafield: "name",
-    displayfield: "name",
-    limit: 5,
-    placeholder: "Shows max 5 suggestions...",
-    type: "autocomplete",
-  },
-};
+// export const FullWidthInput: Story = {
+//   render: Template,
+//   args: {
+//     name: "fullWidthChips",
+//     listener: mockListener,
+//     dataset: simpleDataset,
+//     inputwidth: "full",
+//     placeholder: "Full width input...",
+//     type: "autocomplete",
+//   },
+// };
 
-export const WithMaxSize: Story = {
-  render: Template,
-  args: {
-    name: "maxSizeChips",
-    listener: mockListener,
-    dataset: simpleDataset,
-    maxsize: 5,
-    placeholder: "Max 5 chips allowed",
-    type: "autocomplete",
-  },
-};
+// export const WithSearchIcon: Story = {
+//   render: Template,
+//   args: {
+//     name: "searchIconChips",
+//     listener: mockListener,
+//     dataset: fruitDataset,
+//     datafield: "name",
+//     displayfield: "name",
+//     showsearchicon: true,
+//     placeholder: "Search with icon...",
+//     type: "search",
+//   },
+// };
+
+// export const WithLimit: Story = {
+//   render: Template,
+//   args: {
+//     name: "limitChips",
+//     listener: mockListener,
+//     dataset: fruitDataset,
+//     datafield: "name",
+//     displayfield: "name",
+//     limit: 5,
+//     placeholder: "Shows max 5 suggestions...",
+//     type: "autocomplete",
+//   },
+// };
+
+// export const WithMaxSize: Story = {
+//   render: Template,
+//   args: {
+//     name: "maxSizeChips",
+//     listener: mockListener,
+//     dataset: simpleDataset,
+//     maxsize: 5,
+//     placeholder: "Max 5 chips allowed",
+//     type: "autocomplete",
+//   },
+// };
 
 // export const InputPositionFirst: Story = {
 //   render: Template,

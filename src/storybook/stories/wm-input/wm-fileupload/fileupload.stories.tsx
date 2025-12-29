@@ -86,16 +86,6 @@ export const Basic: Story = {
   },
 };
 
-export const MultipleFileUpload: Story = {
-  render: Template,
-  args: {
-    name: "multipleUpload",
-    caption: "Select Files",
-    multiple: true,
-    fileuploadmessage: "Drop files here or click to browse",
-  },
-};
-
 export const ImageFilesOnly: Story = {
   render: Template,
   args: {
@@ -118,60 +108,70 @@ export const DocumentFilesOnly: Story = {
   },
 };
 
-export const PDFOnly: Story = {
-  render: Template,
-  args: {
-    name: "pdfOnly",
-    caption: "Select PDF",
-    multiple: false,
-    extensions: "pdf",
-    contenttype: "application/pdf",
-  },
-};
+// export const PDFOnly: Story = {
+//   render: Template,
+//   args: {
+//     name: "pdfOnly",
+//     caption: "Select PDF",
+//     multiple: false,
+//     extensions: "pdf",
+//     contenttype: "application/pdf",
+//   },
+// };
 
-export const ExcelFilesOnly: Story = {
-  render: Template,
-  args: {
-    name: "excelOnly",
-    caption: "Select Excel File",
-    multiple: false,
-    extensions: "xls,xlsx",
-    contenttype: "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  },
-};
+// export const ExcelFilesOnly: Story = {
+//   render: Template,
+//   args: {
+//     name: "excelOnly",
+//     caption: "Select Excel File",
+//     multiple: false,
+//     extensions: "xls,xlsx",
+//     contenttype: "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+//   },
+// };
 
-export const VideoFilesOnly: Story = {
-  render: Template,
-  args: {
-    name: "videoOnly",
-    caption: "Select Video",
-    multiple: false,
-    extensions: "mp4,avi,mov",
-    contenttype: "video/*",
-  },
-};
+// export const VideoFilesOnly: Story = {
+//   render: Template,
+//   args: {
+//     name: "videoOnly",
+//     caption: "Select Video",
+//     multiple: false,
+//     extensions: "mp4,avi,mov",
+//     contenttype: "video/*",
+//   },
+// };
 
-export const WithMaxFileSize: Story = {
-  render: Template,
-  args: {
-    name: "maxSize",
-    caption: "Select File (Max 5MB)",
-    multiple: false,
-    maxfilesize: "5242880", // 5MB in bytes
-  },
-};
+// export const WithMaxFileSize: Story = {
+//   render: Template,
+//   args: {
+//     name: "maxSize",
+//     caption: "Select File (Max 5MB)",
+//     multiple: false,
+//     maxfilesize: "5242880", // 5MB in bytes
+//   },
+// };
 
-export const WithProgressBar: Story = {
-  render: Template,
-  args: {
-    name: "progressBar",
-    caption: "Select Files",
-    multiple: true,
-    showprogressbar: true,
-    showprogressbarpercentage: true,
-    fileuploadmessage: "Upload with progress tracking",
-  },
-};
+// export const WithProgressBar: Story = {
+//   render: Template,
+//   args: {
+//     name: "progressBar",
+//     caption: "Select Files",
+//     multiple: true,
+//     showprogressbar: true,
+//     showprogressbarpercentage: true,
+//     fileuploadmessage: "Upload with progress tracking",
+//   },
+// };
+
+// export const MultipleFileUpload: Story = {
+//   render: Template,
+//   args: {
+//     name: "multipleUpload",
+//     caption: "Select Files",
+//     multiple: true,
+//     fileuploadmessage: "Drop files here or click to browse",
+//   },
+// };
 
 // export const DisabledUpload: Story = {
 //   render: Template,

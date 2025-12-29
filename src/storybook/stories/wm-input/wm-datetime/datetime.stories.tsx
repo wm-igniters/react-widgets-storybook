@@ -131,8 +131,8 @@ export const HourFormat: Story = {
   render: Template,
   args: {
     name: "hourFormatDateTime",
-    datepattern: "dd/MM/yyyy HH:mm",
-    outputformat: "dd/MM/yyyy HH:mm",
+    datepattern: "MM/dd/yyyy h:mm a",
+    outputformat: "MM/dd/yyyy h:mm a",
     datavalue: new Date().toISOString(),
     listener: mockListener,
     disabled: false,
@@ -144,85 +144,85 @@ export const HourFormat: Story = {
   },
 };
 
-export const CustomHourStep: Story = {
-  render: Template,
-  args: {
-    name: "hourStep",
-    placeholder: "2-hour intervals",
-    hourstep: 2,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    selectfromothermonth: true,
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const CustomHourStep: Story = {
+//   render: Template,
+//   args: {
+//     name: "hourStep",
+//     placeholder: "2-hour intervals",
+//     hourstep: 2,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     selectfromothermonth: true,
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
-export const CustomMinuteStep: Story = {
-  render: Template,
-  args: {
-    name: "minuteStep",
-    placeholder: "30-minute intervals",
-    minutestep: 30,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    selectfromothermonth: true,
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const CustomMinuteStep: Story = {
+//   render: Template,
+//   args: {
+//     name: "minuteStep",
+//     placeholder: "30-minute intervals",
+//     minutestep: 30,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     selectfromothermonth: true,
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
-export const ExcludeWeekends: Story = {
-  render: Template,
-  args: {
-    name: "excludeWeekends",
-    placeholder: "Weekdays only",
-    excludedays: "0,6",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    selectfromothermonth: true,
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const ExcludeWeekends: Story = {
+//   render: Template,
+//   args: {
+//     name: "excludeWeekends",
+//     placeholder: "Weekdays only",
+//     excludedays: "0,6",
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     selectfromothermonth: true,
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
-export const ExcludeSpecificDates: Story = {
-  render: Template,
-  args: {
-    name: "excludeDates",
-    placeholder: "Holidays excluded",
-    excludedates: "2024-12-25, 2024-12-26, 2025-01-01",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    selectfromothermonth: true,
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const ExcludeSpecificDates: Story = {
+//   render: Template,
+//   args: {
+//     name: "excludeDates",
+//     placeholder: "Holidays excluded",
+//     excludedates: "2024-12-25, 2024-12-26, 2025-01-01",
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     selectfromothermonth: true,
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
-export const ShowWeekNumbers: Story = {
-  render: Template,
-  args: {
-    name: "showWeeks",
-    placeholder: "With week numbers",
-    showweeks: true,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    selectfromothermonth: true,
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const ShowWeekNumbers: Story = {
+//   render: Template,
+//   args: {
+//     name: "showWeeks",
+//     placeholder: "With week numbers",
+//     showweeks: true,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     selectfromothermonth: true,
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
 // export const WithValue: Story = {
 //   render: Template,

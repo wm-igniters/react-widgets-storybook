@@ -105,88 +105,88 @@ console.log(greet('World'));`}</code>
   },
 };
 
-export const WithBlockquote: Story = {
-  render: Template,
-  args: {
-    name: "withBlockquote",
-    listener: mockListener,
-    show: true,
-    children: (
-      <div>
-        <h3>Quotation</h3>
-        <blockquote
-          style={{
-            borderLeft: "4px solid #2196f3",
-            paddingLeft: "16px",
-            fontStyle: "italic",
-            color: "#666",
-            margin: "16px 0",
-          }}
-        >
-          "The only way to do great work is to love what you do."
-          <footer style={{ marginTop: "8px", fontStyle: "normal", fontSize: "14px" }}>
-            — Steve Jobs
-          </footer>
-        </blockquote>
-      </div>
-    ),
-  },
-};
+// export const WithBlockquote: Story = {
+//   render: Template,
+//   args: {
+//     name: "withBlockquote",
+//     listener: mockListener,
+//     show: true,
+//     children: (
+//       <div>
+//         <h3>Quotation</h3>
+//         <blockquote
+//           style={{
+//             borderLeft: "4px solid #2196f3",
+//             paddingLeft: "16px",
+//             fontStyle: "italic",
+//             color: "#666",
+//             margin: "16px 0",
+//           }}
+//         >
+//           "The only way to do great work is to love what you do."
+//           <footer style={{ marginTop: "8px", fontStyle: "normal", fontSize: "14px" }}>
+//             — Steve Jobs
+//           </footer>
+//         </blockquote>
+//       </div>
+//     ),
+//   },
+// };
 
-export const EventHandlers: Story = {
-  render: () => {
-    const [events, setEvents] = useState<string[]>([]);
+// export const EventHandlers: Story = {
+//   render: () => {
+//     const [events, setEvents] = useState<string[]>([]);
 
-    const addEvent = (eventName: string) => {
-      setEvents((prev) => [...prev, `${eventName} at ${new Date().toLocaleTimeString()}`].slice(-5));
-    };
+//     const addEvent = (eventName: string) => {
+//       setEvents((prev) => [...prev, `${eventName} at ${new Date().toLocaleTimeString()}`].slice(-5));
+//     };
 
-    return (
-      <Box style={{ padding: 16 }}>
-        <Stack spacing={3}>
-          <Typography variant="h6">HTML Component with Event Handlers</Typography>
-          <HtmlDefaultExport
-            name="eventHandlers"
-            listener={mockListener}
-            onClick={() => addEvent("Click")}
-            onDoubleClick={() => addEvent("Double Click")}
-            onMouseEnter={() => addEvent("Mouse Enter")}
-            onMouseLeave={() => addEvent("Mouse Leave")}
-            styles={{
-              padding: "24px",
-              backgroundColor: "#f5f5f5",
-              borderRadius: "8px",
-              cursor: "pointer",
-            }}
-          >
-            <h3>Interact with this content</h3>
-            <p>Click, double-click, or hover to trigger events.</p>
-          </HtmlDefaultExport>
-          <Box p={2} bgcolor="#e3f2fd" borderRadius={1}>
-            <Typography variant="subtitle2" mb={1}>
-              Event Log:
-            </Typography>
-            {events.length === 0 ? (
-              <Typography variant="body2">No events yet</Typography>
-            ) : (
-              <Stack spacing={0.5}>
-                {events.map((event, index) => (
-                  <Typography key={index} variant="body2">
-                    • {event}
-                  </Typography>
-                ))}
-              </Stack>
-            )}
-          </Box>
-        </Stack>
-      </Box>
-    );
-  },
-  args: {
-    name: "eventHandlers",
-    listener: mockListener,
-  },
-};
+//     return (
+//       <Box style={{ padding: 16 }}>
+//         <Stack spacing={3}>
+//           <Typography variant="h6">HTML Component with Event Handlers</Typography>
+//           <HtmlDefaultExport
+//             name="eventHandlers"
+//             listener={mockListener}
+//             onClick={() => addEvent("Click")}
+//             onDoubleClick={() => addEvent("Double Click")}
+//             onMouseEnter={() => addEvent("Mouse Enter")}
+//             onMouseLeave={() => addEvent("Mouse Leave")}
+//             styles={{
+//               padding: "24px",
+//               backgroundColor: "#f5f5f5",
+//               borderRadius: "8px",
+//               cursor: "pointer",
+//             }}
+//           >
+//             <h3>Interact with this content</h3>
+//             <p>Click, double-click, or hover to trigger events.</p>
+//           </HtmlDefaultExport>
+//           <Box p={2} bgcolor="#e3f2fd" borderRadius={1}>
+//             <Typography variant="subtitle2" mb={1}>
+//               Event Log:
+//             </Typography>
+//             {events.length === 0 ? (
+//               <Typography variant="body2">No events yet</Typography>
+//             ) : (
+//               <Stack spacing={0.5}>
+//                 {events.map((event, index) => (
+//                   <Typography key={index} variant="body2">
+//                     • {event}
+//                   </Typography>
+//                 ))}
+//               </Stack>
+//             )}
+//           </Box>
+//         </Stack>
+//       </Box>
+//     );
+//   },
+//   args: {
+//     name: "eventHandlers",
+//     listener: mockListener,
+//   },
+// };
 
 // export const Default: Story = {
 //   render: Template,

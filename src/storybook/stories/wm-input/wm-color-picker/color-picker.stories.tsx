@@ -76,39 +76,6 @@ export const Basic: Story = {
   },
 };
 
-export const WithHexColor: Story = {
-  render: Template,
-  args: {
-    name: "hexColorPicker",
-    listener: mockListener,
-    placeholder: "Select a color",
-    datavalue: "#FF5733",
-    autoclose: "always",
-  },
-};
-
-export const WithRGBColor: Story = {
-  render: Template,
-  args: {
-    name: "rgbColorPicker",
-    listener: mockListener,
-    placeholder: "Select a color",
-    datavalue: "rgb(255, 87, 51)",
-    autoclose: "always",
-  },
-};
-
-export const WithRGBAColor: Story = {
-  render: Template,
-  args: {
-    name: "rgbaColorPicker",
-    listener: mockListener,
-    placeholder: "Select a color",
-    datavalue: "rgba(255, 87, 51, 0.5)",
-    autoclose: "always",
-  },
-};
-
 export const AutocloseOutsideClick: Story = {
   render: Template,
   args: {
@@ -119,6 +86,39 @@ export const AutocloseOutsideClick: Story = {
     autoclose: "outsideClick",
   },
 };
+
+// export const WithHexColor: Story = {
+//   render: Template,
+//   args: {
+//     name: "hexColorPicker",
+//     listener: mockListener,
+//     placeholder: "Select a color",
+//     datavalue: "#FF5733",
+//     autoclose: "always",
+//   },
+// };
+
+// export const WithRGBColor: Story = {
+//   render: Template,
+//   args: {
+//     name: "rgbColorPicker",
+//     listener: mockListener,
+//     placeholder: "Select a color",
+//     datavalue: "rgb(255, 87, 51)",
+//     autoclose: "always",
+//   },
+// };
+
+// export const WithRGBAColor: Story = {
+//   render: Template,
+//   args: {
+//     name: "rgbaColorPicker",
+//     listener: mockListener,
+//     placeholder: "Select a color",
+//     datavalue: "rgba(255, 87, 51, 0.5)",
+//     autoclose: "always",
+//   },
+// };
 
 // export const AutocloseAlways: Story = {
 //   render: Template,

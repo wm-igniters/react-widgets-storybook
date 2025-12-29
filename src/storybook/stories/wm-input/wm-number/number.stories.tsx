@@ -89,17 +89,6 @@ export const Basic: Story = {
   },
 };
 
-export const WithDecimalPlaces: Story = {
-  render: Template,
-  args: {
-    name: "decimalPlaces",
-    placeholder: "2 decimal places",
-    decimalplaces: 2,
-    datavalue: 123.45,
-    listener: mockListener,
-  },
-};
-
 export const WithRegexp: Story = {
   render: Template,
   args: {
@@ -110,27 +99,38 @@ export const WithRegexp: Story = {
   },
 };
 
-export const WithMinMaxValue: Story = {
-  render: Template,
-  args: {
-    name: "minMaxValue",
-    placeholder: "Enter Number",
-    minvalue: 0,
-    maxvalue: 100,
-    listener: mockListener,
-    inputmode: "natural",
-  },
-};
+// export const WithMinMaxValue: Story = {
+//   render: Template,
+//   args: {
+//     name: "minMaxValue",
+//     placeholder: "Enter Number",
+//     minvalue: 0,
+//     maxvalue: 100,
+//     listener: mockListener,
+//     inputmode: "natural",
+//   },
+// };
 
-export const WithStep: Story = {
-  render: Template,
-  args: {
-    name: "withStep",
-    placeholder: "Step: 5",
-    step: 5,
-    listener: mockListener,
-  },
-};
+// export const WithDecimalPlaces: Story = {
+//   render: Template,
+//   args: {
+//     name: "decimalPlaces",
+//     placeholder: "2 decimal places",
+//     decimalplaces: 2,
+//     datavalue: 123.45,
+//     listener: mockListener,
+//   },
+// };
+
+// export const WithStep: Story = {
+//   render: Template,
+//   args: {
+//     name: "withStep",
+//     placeholder: "Step: 5",
+//     step: 5,
+//     listener: mockListener,
+//   },
+// };
 
 // export const CustomPlaceholder: Story = {
 //   render: Template,

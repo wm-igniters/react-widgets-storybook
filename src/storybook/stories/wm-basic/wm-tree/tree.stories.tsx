@@ -206,19 +206,6 @@ export const Basic: Story = {
   },
 };
 
-export const FileSystemTree: Story = {
-  render: Template,
-  args: {
-    name: "fileSystemTree",
-    listener: mockListener,
-    dataset: fileSystemData,
-    treeicons: "fa fa-folder-tree",
-    levels: 1,
-    horizontalalign: "left",
-    show: true,
-  },
-};
-
 export const OrganizationChart: Story = {
   render: Template,
   args: {
@@ -227,19 +214,6 @@ export const OrganizationChart: Story = {
     dataset: organizationData,
     treeicons: "fa fa-arrow-right",
     levels: 2,
-    horizontalalign: "left",
-    show: true,
-  },
-};
-
-export const ExpandAllLevels: Story = {
-  render: Template,
-  args: {
-    name: "allLevelsTree",
-    listener: mockListener,
-    dataset: deepNestedData,
-    treeicons: "fa fa-minus",
-    levels: 10,
     horizontalalign: "left",
     show: true,
   },
@@ -272,6 +246,32 @@ export const CustomNodeProperties: Story = {
     show: true,
   },
 };
+
+// export const FileSystemTree: Story = {
+//   render: Template,
+//   args: {
+//     name: "fileSystemTree",
+//     listener: mockListener,
+//     dataset: fileSystemData,
+//     treeicons: "fa fa-folder-tree",
+//     levels: 1,
+//     horizontalalign: "left",
+//     show: true,
+//   },
+// };
+
+// export const ExpandAllLevels: Story = {
+//   render: Template,
+//   args: {
+//     name: "allLevelsTree",
+//     listener: mockListener,
+//     dataset: deepNestedData,
+//     treeicons: "fa fa-minus",
+//     levels: 10,
+//     horizontalalign: "left",
+//     show: true,
+//   },
+// };
 
 // export const StringDataset: Story = {
 //   render: Template,

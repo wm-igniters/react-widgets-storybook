@@ -105,25 +105,25 @@ export const ObjectDataset: Story = {
   },
 };
 
-export const MultipleWithPreselection: Story = {
-  render: Template,
-  args: {
-    name: "multiplePreselected",
-    dataset: [
-      { key: "email", label: "Email Notifications", value: "email" },
-      { key: "sms", label: "SMS Alerts", value: "sms" },
-      { key: "push", label: "Push Notifications", value: "push" },
-      { key: "phone", label: "Phone Calls", value: "phone" },
-    ],
-    datafield: "key",
-    displayfield: "label",
-    datavalue: ["email", "push"],
-    multiple: true,
-    listener: mockListener,
-    disabled: false,
-    displaylabel: "Multiple Selection with Preselected Values",
-  },
-};
+// export const MultipleWithPreselection: Story = {
+//   render: Template,
+//   args: {
+//     name: "multiplePreselected",
+//     dataset: [
+//       { key: "email", label: "Email Notifications", value: "email" },
+//       { key: "sms", label: "SMS Alerts", value: "sms" },
+//       { key: "push", label: "Push Notifications", value: "push" },
+//       { key: "phone", label: "Phone Calls", value: "phone" },
+//     ],
+//     datafield: "key",
+//     displayfield: "label",
+//     datavalue: ["email", "push"],
+//     multiple: true,
+//     listener: mockListener,
+//     disabled: false,
+//     displaylabel: "Multiple Selection with Preselected Values",
+//   },
+// };
 
 // export const MultipleWithObjectDatavalue: Story = {
 //   render: Template,

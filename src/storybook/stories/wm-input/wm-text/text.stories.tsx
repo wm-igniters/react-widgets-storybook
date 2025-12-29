@@ -121,20 +121,6 @@ export const RegExp: Story = {
   },
 };
 
-export const MaxChars: Story = {
-  render: Template,
-  args: {
-    name: "maxCharsText",
-    placeholder: "Maximum 20 characters",
-    maxchars: 20,
-    listener: mockListener,
-    autocapitalize: "none",
-    autotrim: true,
-    autofocus: false,
-    required: false,
-  },
-};
-
 // Type Variations
 export const TextType: Story = {
   render: Template,
@@ -152,41 +138,55 @@ export const TextType: Story = {
   },
 };
 
-// Display Format Examples
-export const displayFormat: Story = {
-  render: Template,
-  args: {
-    name: "displayFormatText",
-    placeholder: "Enter SSN",
-    displayformat: "999-99-9999",
-    showdisplayformaton: "keypress",
-    maxchars: 9,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    type: "text",
-    autocapitalize: "none",
-    autotrim: true,
-    autofocus: false,
-    required: false,
-  },
-};
+// // Display Format Examples
+// export const displayFormat: Story = {
+//   render: Template,
+//   args: {
+//     name: "displayFormatText",
+//     placeholder: "Enter SSN",
+//     displayformat: "999-99-9999",
+//     showdisplayformaton: "keypress",
+//     maxchars: 9,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     type: "text",
+//     autocapitalize: "none",
+//     autotrim: true,
+//     autofocus: false,
+//     required: false,
+//   },
+// };
 
-export const Autocapitalize: Story = {
-  render: Template,
-  args: {
-    name: "autocapText",
-    placeholder: "First Letter Of Each Word Capitalized",
-    autocapitalize: "words",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    type: "text",
-    autotrim: true,
-    autofocus: false,
-    required: false,
-  },
-};
+// export const Autocapitalize: Story = {
+//   render: Template,
+//   args: {
+//     name: "autocapText",
+//     placeholder: "First Letter Of Each Word Capitalized",
+//     autocapitalize: "words",
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     type: "text",
+//     autotrim: true,
+//     autofocus: false,
+//     required: false,
+//   },
+// };
+
+// export const MaxChars: Story = {
+//   render: Template,
+//   args: {
+//     name: "maxCharsText",
+//     placeholder: "Maximum 20 characters",
+//     maxchars: 20,
+//     listener: mockListener,
+//     autocapitalize: "none",
+//     autotrim: true,
+//     autofocus: false,
+//     required: false,
+//   },
+// };
 
 // export const EmailType: Story = {
 //   render: Template,

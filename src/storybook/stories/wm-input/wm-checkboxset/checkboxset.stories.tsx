@@ -90,18 +90,6 @@ export const Basic: Story = {
   },
 };
 
-export const WithLabel: Story = {
-  render: Template,
-  args: {
-    name: "labeledCheckboxset",
-    label: "Select your preferences",
-    dataset: "Email, SMS, Push Notifications, Phone Call",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-  },
-};
-
 export const WithPreselectedValues: Story = {
   render: Template,
   args: {
@@ -131,6 +119,17 @@ export const ObjectDataset: Story = {
   },
 };
 
+export const ItemsPerRow: Story = {
+  render: Template,
+  args: {
+    name: "itemsPerRow",
+    label: "Items per row: 2",
+    dataset: "Item 1, Item 2, Item 3, Item 4, Item 5, Item 6",
+    itemsperrow: "2",
+    listener: mockListener,
+  },
+};
+
 // export const ObjectDatasetWithPreselection: Story = {
 //   render: Template,
 //   args: {
@@ -150,58 +149,59 @@ export const ObjectDataset: Story = {
 //   },
 // };
 
-export const GroupedData: Story = {
-  render: Template,
-  args: {
-    name: "groupedCheckboxset",
-    label: "Select Technologies (Grouped)",
-    dataset: [
-      { id: 1, name: "React", category: "Frontend" },
-      { id: 2, name: "Angular", category: "Frontend" },
-      { id: 3, name: "Vue", category: "Frontend" },
-      { id: 4, name: "Node.js", category: "Backend" },
-      { id: 5, name: "Python", category: "Backend" },
-      { id: 6, name: "Java", category: "Backend" },
-      { id: 7, name: "MySQL", category: "Database" },
-      { id: 8, name: "PostgreSQL", category: "Database" },
-      { id: 9, name: "MongoDB", category: "Database" },
-    ],
-    datafield: "id",
-    displayfield: "name",
-    groupby: "category",
-    listener: mockListener,
-  },
-};
+// export const GroupedData: Story = {
+//   render: Template,
+//   args: {
+//     name: "groupedCheckboxset",
+//     label: "Select Technologies (Grouped)",
+//     dataset: [
+//       { id: 1, name: "React", category: "Frontend" },
+//       { id: 2, name: "Angular", category: "Frontend" },
+//       { id: 3, name: "Vue", category: "Frontend" },
+//       { id: 4, name: "Node.js", category: "Backend" },
+//       { id: 5, name: "Python", category: "Backend" },
+//       { id: 6, name: "Java", category: "Backend" },
+//       { id: 7, name: "MySQL", category: "Database" },
+//       { id: 8, name: "PostgreSQL", category: "Database" },
+//       { id: 9, name: "MongoDB", category: "Database" },
+//     ],
+//     datafield: "id",
+//     displayfield: "name",
+//     groupby: "category",
+//     listener: mockListener,
+//   },
+// };
 
-export const WithOrderBy: Story = {
-  render: Template,
-  args: {
-    name: "orderedCheckboxset",
-    label: "Ordered by Name (Descending)",
-    dataset: [
-      { id: 1, name: "Zebra", category: "Animal" },
-      { id: 2, name: "Apple", category: "Fruit" },
-      { id: 3, name: "Dog", category: "Animal" },
-      { id: 4, name: "Banana", category: "Fruit" },
-      { id: 5, name: "Cat", category: "Animal" },
-    ],
-    datafield: "id",
-    displayfield: "name",
-    orderby: "name:desc",
-    listener: mockListener,
-  },
-};
+// export const WithOrderBy: Story = {
+//   render: Template,
+//   args: {
+//     name: "orderedCheckboxset",
+//     label: "Ordered by Name (Descending)",
+//     dataset: [
+//       { id: 1, name: "Zebra", category: "Animal" },
+//       { id: 2, name: "Apple", category: "Fruit" },
+//       { id: 3, name: "Dog", category: "Animal" },
+//       { id: 4, name: "Banana", category: "Fruit" },
+//       { id: 5, name: "Cat", category: "Animal" },
+//     ],
+//     datafield: "id",
+//     displayfield: "name",
+//     orderby: "name:desc",
+//     listener: mockListener,
+//   },
+// };
 
-export const ItemsPerRow: Story = {
-  render: Template,
-  args: {
-    name: "itemsPerRow",
-    label: "Items per row: 2",
-    dataset: "Item 1, Item 2, Item 3, Item 4, Item 5, Item 6",
-    itemsperrow: "2",
-    listener: mockListener,
-  },
-};
+// export const WithLabel: Story = {
+//   render: Template,
+//   args: {
+//     name: "labeledCheckboxset",
+//     label: "Select your preferences",
+//     dataset: "Email, SMS, Push Notifications, Phone Call",
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//   },
+// };
 
 // export const WithUseKeys: Story = {
 //   render: Template,

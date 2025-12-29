@@ -128,77 +128,77 @@ export const MinMaxDates: Story = {
   },
 };
 
-export const ExcludeDays: Story = {
-  render: Template,
-  args: {
-    name: "excludeDays",
-    placeholder: "No Mondays",
-    excludedays: "1",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    datepattern: "yyyy-MM-dd",
-    outputformat: "yyyy-MM-dd",
-    selectfromothermonth: true,
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const ExcludeDays: Story = {
+//   render: Template,
+//   args: {
+//     name: "excludeDays",
+//     placeholder: "No Mondays",
+//     excludedays: "1",
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     datepattern: "yyyy-MM-dd",
+//     outputformat: "yyyy-MM-dd",
+//     selectfromothermonth: true,
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
-export const ExcludeSpecificDates: Story = {
-  render: Template,
-  args: {
-    name: "excludeDates",
-    placeholder: "Specific dates excluded",
-    excludedates: "2024-12-25, 2024-12-26, 2025-01-01",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    datepattern: "yyyy-MM-dd",
-    outputformat: "yyyy-MM-dd",
-    selectfromothermonth: true,
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const ExcludeSpecificDates: Story = {
+//   render: Template,
+//   args: {
+//     name: "excludeDates",
+//     placeholder: "Specific dates excluded",
+//     excludedates: "2024-12-25, 2024-12-26, 2025-01-01",
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     datepattern: "yyyy-MM-dd",
+//     outputformat: "yyyy-MM-dd",
+//     selectfromothermonth: true,
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
-export const ShowWeekNumbers: Story = {
-  render: Template,
-  args: {
-    name: "showWeeks",
-    placeholder: "With week numbers",
-    showweeks: true,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    datepattern: "yyyy-MM-dd",
-    outputformat: "yyyy-MM-dd",
-    selectfromothermonth: true,
-    dataentrymode: "default",
-    showdropdownon: "default",
-  },
-};
+// export const ShowWeekNumbers: Story = {
+//   render: Template,
+//   args: {
+//     name: "showWeeks",
+//     placeholder: "With week numbers",
+//     showweeks: true,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     datepattern: "yyyy-MM-dd",
+//     outputformat: "yyyy-MM-dd",
+//     selectfromothermonth: true,
+//     dataentrymode: "default",
+//     showdropdownon: "default",
+//   },
+// };
 
-export const PickerOnlyMode: Story = {
-  render: Template,
-  args: {
-    name: "pickerOnly",
-    placeholder: "Picker only (no typing)",
-    dataentrymode: "picker",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    datepattern: "yyyy-MM-dd",
-    outputformat: "yyyy-MM-dd",
-    selectfromothermonth: true,
-    showcustompicker: true, 
-    showdropdownon: "default",
-  },
-};
+// export const PickerOnlyMode: Story = {
+//   render: Template,
+//   args: {
+//     name: "pickerOnly",
+//     placeholder: "Picker only (no typing)",
+//     dataentrymode: "picker",
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     required: false,
+//     datepattern: "yyyy-MM-dd",
+//     outputformat: "yyyy-MM-dd",
+//     selectfromothermonth: true,
+//     showcustompicker: true, 
+//     showdropdownon: "default",
+//   },
+// };
 
 // export const ExcludeWeekends: Story = {
 //   render: Template,

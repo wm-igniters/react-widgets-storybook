@@ -85,16 +85,6 @@ export const Basic: Story = {
   },
 };
 
-export const WithSelectedValue: Story = {
-  render: Template,
-  args: {
-    name: "selectedRadioset",
-    dataset: "Small, Medium, Large, Extra Large",
-    datavalue: "Medium",
-    listener: mockListener,
-  },
-};
-
 export const ObjectDataset: Story = {
   render: Template,
   args: {
@@ -107,6 +97,16 @@ export const ObjectDataset: Story = {
     ],
     datafield: "id",
     displayfield: "name",
+    listener: mockListener,
+  },
+};
+
+export const ItemsPerRowTwo: Story = {
+  render: Template,
+  args: {
+    name: "twoPerRow",
+    dataset: "Option 1, Option 2, Option 3, Option 4, Option 5, Option 6",
+    itemsperrow: "xs-2 sm-2 md-2 lg-2",
     listener: mockListener,
   },
 };
@@ -137,55 +137,55 @@ export const ObjectDataset: Story = {
 //   },
 // };
 
-export const GroupedData: Story = {
-  render: Template,
-  args: {
-    name: "groupedRadioset",
-    dataset: [
-      { id: 1, name: "React", category: "Frontend" },
-      { id: 2, name: "Angular", category: "Frontend" },
-      { id: 3, name: "Vue", category: "Frontend" },
-      { id: 4, name: "Node.js", category: "Backend" },
-      { id: 5, name: "Django", category: "Backend" },
-      { id: 6, name: "Spring Boot", category: "Backend" },
-      { id: 7, name: "MySQL", category: "Database" },
-      { id: 8, name: "PostgreSQL", category: "Database" },
-      { id: 9, name: "MongoDB", category: "Database" },
-    ],
-    datafield: "id",
-    displayfield: "name",
-    groupby: "category",
-    listener: mockListener,
-  },
-};
+// export const GroupedData: Story = {
+//   render: Template,
+//   args: {
+//     name: "groupedRadioset",
+//     dataset: [
+//       { id: 1, name: "React", category: "Frontend" },
+//       { id: 2, name: "Angular", category: "Frontend" },
+//       { id: 3, name: "Vue", category: "Frontend" },
+//       { id: 4, name: "Node.js", category: "Backend" },
+//       { id: 5, name: "Django", category: "Backend" },
+//       { id: 6, name: "Spring Boot", category: "Backend" },
+//       { id: 7, name: "MySQL", category: "Database" },
+//       { id: 8, name: "PostgreSQL", category: "Database" },
+//       { id: 9, name: "MongoDB", category: "Database" },
+//     ],
+//     datafield: "id",
+//     displayfield: "name",
+//     groupby: "category",
+//     listener: mockListener,
+//   },
+// };
 
-export const WithOrderBy: Story = {
-  render: Template,
-  args: {
-    name: "orderedRadioset",
-    dataset: [
-      { id: 1, name: "Zebra", priority: 3 },
-      { id: 2, name: "Apple", priority: 1 },
-      { id: 3, name: "Dog", priority: 5 },
-      { id: 4, name: "Banana", priority: 2 },
-      { id: 5, name: "Cat", priority: 4 },
-    ],
-    datafield: "id",
-    displayfield: "name",
-    orderby: "name:asc",
-    listener: mockListener,
-  },
-};
+// export const WithOrderBy: Story = {
+//   render: Template,
+//   args: {
+//     name: "orderedRadioset",
+//     dataset: [
+//       { id: 1, name: "Zebra", priority: 3 },
+//       { id: 2, name: "Apple", priority: 1 },
+//       { id: 3, name: "Dog", priority: 5 },
+//       { id: 4, name: "Banana", priority: 2 },
+//       { id: 5, name: "Cat", priority: 4 },
+//     ],
+//     datafield: "id",
+//     displayfield: "name",
+//     orderby: "name:asc",
+//     listener: mockListener,
+//   },
+// };
 
-export const ItemsPerRowTwo: Story = {
-  render: Template,
-  args: {
-    name: "twoPerRow",
-    dataset: "Option 1, Option 2, Option 3, Option 4, Option 5, Option 6",
-    itemsperrow: "xs-2 sm-2 md-2 lg-2",
-    listener: mockListener,
-  },
-};
+// export const WithSelectedValue: Story = {
+//   render: Template,
+//   args: {
+//     name: "selectedRadioset",
+//     dataset: "Small, Medium, Large, Extra Large",
+//     datavalue: "Medium",
+//     listener: mockListener,
+//   },
+// };
 
 // export const ItemsPerRowThree: Story = {
 //   render: Template,

@@ -103,22 +103,6 @@ export const RegExp: Story = {
   },
 };
 
-// Character Limit Examples
-export const WithMaxChars: Story = {
-  render: Template,
-  args: {
-    name: "maxCharsTextarea",
-    placeholder: "Maximum 100 characters allowed",
-    maxchars: 100,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    autofocus: false,
-    autocapitalize: false,
-    required: false,
-  },
-};
-
 export const WithCharacterCounter: Story = {
   render: Template,
   args: {
@@ -135,21 +119,37 @@ export const WithCharacterCounter: Story = {
   },
 };
 
-export const CharacterCounterCustomText: Story = {
-  render: Template,
-  args: {
-    name: "customCounterTextarea",
-    placeholder: "Enter description",
-    maxchars: 150,
-    limitdisplaytext: "Characters used: undefined out of 150",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    autofocus: false,
-    autocapitalize: false,
-    required: false,
-  },
-};
+// // Character Limit Examples
+// export const WithMaxChars: Story = {
+//   render: Template,
+//   args: {
+//     name: "maxCharsTextarea",
+//     placeholder: "Maximum 100 characters allowed",
+//     maxchars: 100,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     autofocus: false,
+//     autocapitalize: false,
+//     required: false,
+//   },
+// };
+
+// export const CharacterCounterCustomText: Story = {
+//   render: Template,
+//   args: {
+//     name: "customCounterTextarea",
+//     placeholder: "Enter description",
+//     maxchars: 150,
+//     limitdisplaytext: "Characters used: undefined out of 150",
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//     autofocus: false,
+//     autocapitalize: false,
+//     required: false,
+//   },
+// };
 
 // Validation Examples
 // export const Required: Story = {

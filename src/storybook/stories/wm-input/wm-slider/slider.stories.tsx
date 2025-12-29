@@ -78,33 +78,33 @@ export const Basic: Story = {
   },
 };
 
-export const WithCustomRange: Story = {
-  render: Template,
-  args: {
-    name: "customRangeSlider",
-    datavalue: 0,
-    minvalue: -10,
-    maxvalue: 10,
-    step: 1,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-  },
-};
+// export const WithCustomRange: Story = {
+//   render: Template,
+//   args: {
+//     name: "customRangeSlider",
+//     datavalue: 0,
+//     minvalue: -10,
+//     maxvalue: 10,
+//     step: 1,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//   },
+// };
 
-export const WithSteps: Story = {
-  render: Template,
-  args: {
-    name: "stepSlider",
-    datavalue: 50,
-    minvalue: 0,
-    maxvalue: 100,
-    step: 5,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-  },
-};
+// export const WithSteps: Story = {
+//   render: Template,
+//   args: {
+//     name: "stepSlider",
+//     datavalue: 50,
+//     minvalue: 0,
+//     maxvalue: 100,
+//     step: 5,
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//   },
+// };
 
 // export const NegativeRange: Story = {
 //   render: Template,

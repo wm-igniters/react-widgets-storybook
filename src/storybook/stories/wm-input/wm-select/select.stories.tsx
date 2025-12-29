@@ -85,19 +85,6 @@ export const Basic: Story = {
   },
 };
 
-export const WithValue: Story = {
-  render: Template,
-  args: {
-    name: "withValueSelect",
-    placeholder: "Select a country",
-    dataset: "USA, Canada, Mexico, Brazil, Argentina",
-    datavalue: "Canada",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-  },
-};
-
 export const ObjectDataset: Story = {
   render: Template,
   args: {
@@ -115,50 +102,6 @@ export const ObjectDataset: Story = {
   },
 };
 
-// Grouped Data
-export const GroupedData: Story = {
-  render: Template,
-  args: {
-    name: "groupedSelect",
-    placeholder: "Select a programming language",
-    dataset: [
-      { name: "JavaScript", category: "Frontend" },
-      { name: "TypeScript", category: "Frontend" },
-      { name: "React", category: "Frontend" },
-      { name: "Node.js", category: "Backend" },
-      { name: "Python", category: "Backend" },
-      { name: "Java", category: "Backend" },
-      { name: "SQL", category: "Database" },
-      { name: "MongoDB", category: "Database" },
-    ],
-    datafield: "name",
-    displayfield: "name",
-    groupby: "category",
-    listener: mockListener,
-  },
-};
-
-// Sorted Data
-export const WithOrderBy: Story = {
-  render: Template,
-  args: {
-    name: "withOrderBySelect",
-    placeholder: "Select a city (A-Z)",
-    dataset: [
-      { id: 1, city: "New York" },
-      { id: 2, city: "Los Angeles" },
-      { id: 3, city: "Chicago" },
-      { id: 4, city: "Houston" },
-      { id: 5, city: "Phoenix" },
-      { id: 6, city: "Philadelphia" },
-    ],
-    datafield: "id",
-    displayfield: "city",
-    orderby: "city:asc",
-    listener: mockListener,
-  },
-};
-
 // Multiple Selection
 export const MultipleSelection: Story = {
   render: Template,
@@ -172,6 +115,63 @@ export const MultipleSelection: Story = {
     readonly: false,
   },
 };
+
+// // Grouped Data
+// export const GroupedData: Story = {
+//   render: Template,
+//   args: {
+//     name: "groupedSelect",
+//     placeholder: "Select a programming language",
+//     dataset: [
+//       { name: "JavaScript", category: "Frontend" },
+//       { name: "TypeScript", category: "Frontend" },
+//       { name: "React", category: "Frontend" },
+//       { name: "Node.js", category: "Backend" },
+//       { name: "Python", category: "Backend" },
+//       { name: "Java", category: "Backend" },
+//       { name: "SQL", category: "Database" },
+//       { name: "MongoDB", category: "Database" },
+//     ],
+//     datafield: "name",
+//     displayfield: "name",
+//     groupby: "category",
+//     listener: mockListener,
+//   },
+// };
+
+// // Sorted Data
+// export const WithOrderBy: Story = {
+//   render: Template,
+//   args: {
+//     name: "withOrderBySelect",
+//     placeholder: "Select a city (A-Z)",
+//     dataset: [
+//       { id: 1, city: "New York" },
+//       { id: 2, city: "Los Angeles" },
+//       { id: 3, city: "Chicago" },
+//       { id: 4, city: "Houston" },
+//       { id: 5, city: "Phoenix" },
+//       { id: 6, city: "Philadelphia" },
+//     ],
+//     datafield: "id",
+//     displayfield: "city",
+//     orderby: "city:asc",
+//     listener: mockListener,
+//   },
+// };
+
+// export const WithValue: Story = {
+//   render: Template,
+//   args: {
+//     name: "withValueSelect",
+//     placeholder: "Select a country",
+//     dataset: "USA, Canada, Mexico, Brazil, Argentina",
+//     datavalue: "Canada",
+//     listener: mockListener,
+//     disabled: false,
+//     readonly: false,
+//   },
+// };
 
 
 // export const MultipleWithValue: Story = {
