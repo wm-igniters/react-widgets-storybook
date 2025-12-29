@@ -12,6 +12,14 @@ import WmDate from "../../../../components/input/epoch/date";
 import WmFormField from "../../../../components/data/form/form-field";
 import WmFormAction from "../../../../components/data/form/form-action";
 
+
+import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
+import overview from "./docs/overview.md?raw";
+import props from "./docs/props.md?raw";
+import events from "./docs/events.md?raw";
+import methods from "./docs/methods.md?raw";
+import styling from "./docs/styling.md?raw";
+
 const mockListener = {
   appLocale: {},
   Widgets: {},
@@ -49,6 +57,21 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export const Docs: Story = {
+  render: () => (
+    <ComponentDocumentation
+      overview={overview}
+      properties={props}
+      events={events}
+      methods={methods}
+      styling={styling}
+    />
+  ),
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
 
 export const Basic: Story = {
   args: {
