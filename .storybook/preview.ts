@@ -3,6 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { WidgetProvider } from "../src/context/WidgetProvider";
 import { store } from "../src/store";
+import "@wavemaker/app-runtime-wm-build/wmapp/styles/foundation/foundation.css";
 
 // Mock page context for Storybook
 const createMockPageContext = () => ({
@@ -48,13 +49,28 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-
-    a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: "todo",
+    options: {
+      storySort: {
+        order: [
+          'Basic',
+          'Input',
+          'Charts',
+          'Containers',
+          'Data',
+          'Layout',
+          'Navigation',
+          'Dialogs',
+          'Advanced'
+        ],
+      },
     },
+
+    // a11y: {
+    //   // 'todo' - show a11y violations in the test UI only
+    //   // 'error' - fail CI on a11y violations
+    //   // 'off' - skip a11y checks entirely
+    //   test: "todo",
+    // },
   },
   decorators: [withProviders],
 };
