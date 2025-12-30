@@ -69,8 +69,10 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
         outline: "none",
         opacity: activeTab === key ? 1 : 0.7,
         transition: "all 0.2s ease",
+        borderRadius: "0",
       }}
       onClick={() => setActiveTab(key)}
+      className="doc-tab"
     >
       {label}
     </button>
@@ -92,6 +94,9 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
         /* Container Styling */
         .component-documentation-container {
           color: var(--text-primary);
+          min-width: 100%;
+          padding: 0 24px;
+          scroll-behaviour: auto;
         }
 
         /* Accordion (Details) Styling */
@@ -222,6 +227,30 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
           font-size: 0.9em;
         }
+
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+          margin: 8px 0 8px !important;
+          padding: 0 0 12px !important
+        }
+
+        p, .label.p{
+          margin: 16px 0 !important
+        }
+
+        ul{
+          margin: 16px 0 !important
+        }
+
+        .sbdocs-wrapper{
+          padding: 0;
+          flex-direction: row;
+          justify-content: flex-start;
+        }
+
+        .doc-tab, .doc-tab:hover, .doc-tab:active, .doc-tab:focus{
+          background-color: transparent !important;
+        }
+
       `}</style>
 
       <div
