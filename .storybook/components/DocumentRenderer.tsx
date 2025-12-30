@@ -96,7 +96,6 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           color: var(--text-primary);
           min-width: 100%;
           padding: 0 24px;
-          scroll-behaviour: auto;
         }
 
         /* Accordion (Details) Styling */

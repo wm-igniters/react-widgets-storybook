@@ -32,7 +32,11 @@
     flex-wrap: wrap;
     padding: 20px;
     margin: 20px;
-    scroll-behavior: auto;
+  }
+
+  /* when dialog or modal open in any story book, it is applying as overflow:hidden causing scroll issue */
+  body.sb-show-main {
+    overflow: auto !important;
   }
 </style>
 
