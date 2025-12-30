@@ -180,7 +180,7 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           width: 100%;
           border-collapse: separate;
           border-spacing: 0;
-          margin: 20px 0;
+          margin: 20px 0 30px;
           border: 1px solid var(--border-color);
           border-radius: 8px;
           overflow: hidden;
@@ -228,7 +228,7 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
         }
 
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
-          margin: 20px 0 8px !important;
+          margin: 24px 0 8px !important;
           padding: 0 0 12px !important
         }
 
@@ -256,7 +256,7 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
         style={{
           display: "flex",
           borderBottom: "1px solid rgba(128,128,128,0.2)",
-          marginBottom: "20px",
+          marginBottom: "12px",
         }}
       >
         {overview && renderTab("overview", "Overview")}
