@@ -49,6 +49,21 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    options: {
+      storySort: {
+        order: [
+          'Basic',
+          'Input',
+          'Charts',
+          'Containers',
+          'Data',
+          'Layout',
+          'Navigation',
+          'Dialogs',
+          'Advanced'
+        ],
+      },
+    },
 
     // a11y: {
     //   // 'todo' - show a11y violations in the test UI only
