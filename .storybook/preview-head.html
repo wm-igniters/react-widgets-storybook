@@ -9,8 +9,8 @@
 <!-- Bootstrap 5.3.8 CDN -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"> -->
 
-<!-- Load custom CSS files -->
-<!-- <link rel="stylesheet" href="../style/icons.css"> -->
+<!-- Load custom overrides CSS files -->
+<link rel="stylesheet" href="../style/overrides.css">
 
 <!-- Font Awesome 4.7.0 CDN -->
 <link
@@ -32,25 +32,6 @@
     flex-wrap: wrap;
     padding: 20px;
     margin: 20px;
-  }
-
-  /* when dialog or modal open in any story book, it is applying as overflow:hidden causing scroll issue */
-  body.sb-show-main {
-    overflow: auto !important;
-  }
-
-  /* form field styles, foundation css is overriding */
-  .wm-app .form-control{
-    height: 40px !important;
-    padding: 4px 8px !important;
-  }
-
-  .MuiInputBase-formControl::before{
-    border-bottom: none !important;
-  }
-
-  .wm-app .app-spinner{
-    background: none !important;
   }
 </style>
 

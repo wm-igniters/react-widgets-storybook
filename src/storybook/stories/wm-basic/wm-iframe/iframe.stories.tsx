@@ -81,12 +81,13 @@ export const ModalWithIframe: Story = {
           onClick={() => setOpen(true)}
           sx={{
             padding: "10px 20px",
-            backgroundColor: "#2196f3",
-            color: "#ffffff",
+            backgroundColor: "var(--wm-color-secondary) !important",
+            color: "#ffffff !important",
             border: "none",
             borderRadius: "4px",
             cursor: "pointer",
             fontSize: "16px",
+            margin: "8px 0"
           }}
         >
           Open Iframe Modal

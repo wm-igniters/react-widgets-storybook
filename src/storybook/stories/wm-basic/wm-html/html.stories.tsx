@@ -70,7 +70,7 @@ export const Basic: Story = {
     show: true,
     children: (
       <div>
-        <h2>Basic HTML Content</h2>
+        <h2 style={{margin: '0 0 12px'}}>Basic HTML Content</h2>
         <p>This is basic HTML content rendered inside the HTML component.</p>
       </div>
     ),

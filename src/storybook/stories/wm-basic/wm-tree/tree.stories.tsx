@@ -241,7 +241,7 @@ export const CustomNodeProperties: Story = {
     nodelabel: "title",
     nodeid: "customId",
     nodechildren: "subnodes",
-    treeicons: "plus-minus",
+    treeicons: "fa fa-folder-tree",
     horizontalalign: "left",
     show: true,
   },

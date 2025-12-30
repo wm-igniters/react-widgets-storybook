@@ -78,7 +78,7 @@ export const Basic: Story = {
     horizontalalign: "left",
     verticalalign: "top",
     listener: mockListener,
-    styles: { minHeight: "150px", border: "1px dashed #ccc", minWidth: "300px" },
+    styles: { minHeight: "150px", border: "1px dashed #ccc", minWidth: "350px" },
     children: (
       <>
         <SampleBox label="Item 1" />

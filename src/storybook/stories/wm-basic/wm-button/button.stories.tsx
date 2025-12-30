@@ -44,10 +44,7 @@ const meta = {
       options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
         "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart",],
     }
-  },
-  parameters: {
-    layout: "centered",
-  },
+  }
 } satisfies Meta<typeof ButtonDefaultExport>;
 
 export default meta;
