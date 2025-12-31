@@ -137,7 +137,7 @@ export const Showcase: Story = {
               {/* Default Filled */}
               <Stack spacing={0.5}>
                 <Typography variant="caption" color="text.secondary">
-                  Filled
+                  Default
                 </Typography>
                 <ButtonDefaultExport
                   name="filledDefault"
@@ -151,7 +151,7 @@ export const Showcase: Story = {
               {/* Filled with Icon */}
               <Stack spacing={0.5}>
                 <Typography variant="caption" color="text.secondary">
-                  Filled + Icon
+                  Icon
                 </Typography>
                 <ButtonDefaultExport
                   name="filledIcon"
@@ -170,7 +170,7 @@ export const Showcase: Story = {
               {/* Filled with Badge */}
               <Stack spacing={0.5}>
                 <Typography variant="caption" color="text.secondary">
-                  Filled + Badge
+                  Badge
                 </Typography>
                 <ButtonDefaultExport
                   name="filledBadge"

@@ -71,7 +71,7 @@ export const Showcase: Story = {
   render: () => {
     return (
       <Box style={{ padding: 16 }}>
-        <Typography variant="h6" mb={3} style={{marginBottom: "10px"}}>
+        <Typography variant="h6" mb={3} style={{marginBottom: "20px"}}>
           Social Media Embeds
         </Typography>
         <Box
