@@ -75,3 +75,20 @@ body.sb-show-main {
 .wm-app a{
   justify-content: flex-start !important;
 }
+
+/* Button */
+.wm-app .btn:not(.btn-icon) + .btn:not(.btn-icon), .wm-app button:not(.btn-icon) + .btn:not(.btn-icon) {
+    margin-left: var(--wm-space-0) !important;
+}
+
+/* Search */
+.wm-app .app-search.input-group .form-control-feedback.clear-btn.show-btn{
+  top: 0;
+  border: none;
+  background-color: transparent;
+  right: 0;
+}
+
+.wm-app .app-search.input-group .form-control-feedback.clear-btn.show-btn .app-icon.wi.wi-close{
+  font-size: 16px;
+}

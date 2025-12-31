@@ -86,7 +86,7 @@ export const Showcase: Story = {
     return (
       <Box style={{ padding: 16 }}>
         <Stack spacing={3}>
-          <Typography variant="subtitle1">All Message Types:</Typography>
+          <Typography variant="h6" fontWeight={600}>All Message Types:</Typography>
           <Stack spacing={2}>
             <MessageDefaultExport
               name="success"

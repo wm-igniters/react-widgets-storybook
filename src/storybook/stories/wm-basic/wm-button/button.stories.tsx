@@ -42,8 +42,40 @@ const meta = {
         type:"select"
       },
       options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart",],
-    }
+        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-github"],
+    },
+    className: {
+  control: "select",
+  options: [
+    // Filled
+    "btn-filled btn-primary",
+    "btn-filled btn-secondary",
+    "btn-filled btn-success",
+    "btn-filled btn-danger",
+    "btn-filled btn-warning",
+    "btn-filled btn-info",
+    "btn-filled btn-default",
+
+    // Outlined
+    "btn-outlined btn-primary",
+    "btn-outlined btn-secondary",
+    "btn-outlined btn-success",
+    "btn-outlined btn-danger",
+    "btn-outlined btn-warning",
+    "btn-outlined btn-info",
+    "btn-outlined btn-default",
+
+    // Special
+    "btn-link",
+    "btn-transparent",
+    "no-border",
+
+    // Sizes (example with primary)
+    "btn-filled btn-primary btn-sm",
+    "btn-filled btn-primary btn-lg",
+    "btn-filled btn-primary btn-xs",
+  ],
+}
   }
 } satisfies Meta<typeof ButtonDefaultExport>;
 
@@ -71,35 +103,270 @@ export const Docs: Story = {
   },
 };
 
-export const Default: Story = {
+export const Basic: Story = {
   render: Template,
   args: {
-    name: "defaultButton",
+    name: "basicButton",
     caption: "Click Me",
     disabled: false,
     type: "button",
+    className: "btn-default btn-filled"
   },
 };
 
-export const Primary: Story = {
-  render: Template,
+export const Showcase: Story = {
+  render: () => {
+    return (
+      <Box sx={{ p: 4 }}>
+        <Stack spacing={4}>
+          <Typography variant="h6" fontWeight={600}>
+            Button Types
+          </Typography>
+
+          {/* Row 1: Common Buttons */}
+          <Stack spacing={1.5}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Common Variants
+            </Typography>
+
+            <Stack
+              direction="row"
+              spacing={4}
+              sx={{ flexWrap: "wrap", alignItems: "center" }}
+            >
+              {/* Default Filled */}
+              <Stack spacing={0.5}>
+                <Typography variant="caption" color="text.secondary">
+                  Filled
+                </Typography>
+                <ButtonDefaultExport
+                  name="filledDefault"
+                  caption="Filled Button"
+                  type="button"
+                  className="btn-filled btn-default"
+                  listener={mockListener}
+                />
+              </Stack>
+
+              {/* Filled with Icon */}
+              <Stack spacing={0.5}>
+                <Typography variant="caption" color="text.secondary">
+                  Filled + Icon
+                </Typography>
+                <ButtonDefaultExport
+                  name="filledIcon"
+                  caption="Icon Button"
+                  type="button"
+                  className="btn-filled btn-default"
+                  iconclass="fa fa-anchor"
+                  iconposition="left"
+                  iconwidth="16px"
+                  iconheight="16px"
+                  iconmargin="0 8px 0 0"
+                  listener={mockListener}
+                />
+              </Stack>
+
+              {/* Filled with Badge */}
+              <Stack spacing={0.5}>
+                <Typography variant="caption" color="text.secondary">
+                  Filled + Badge
+                </Typography>
+                <ButtonDefaultExport
+                  name="filledBadge"
+                  caption="Notifications"
+                  type="button"
+                  className="btn-filled btn-default"
+                  iconclass="fa fa-bell"
+                  iconposition="left"
+                  iconwidth="16px"
+                  iconheight="16px"
+                  iconmargin="0 8px 0 0"
+                  badgevalue="3"
+                  listener={mockListener}
+                />
+              </Stack>
+            </Stack>
+          </Stack>
+
+          {/* Row 2: Filled Variants */}
+          <Stack spacing={1.5}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Filled Variants
+            </Typography>
+
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gap: 3,
+                maxWidth: 900,
+              }}
+            >
+              <ButtonDefaultExport
+                name="filledPrimary"
+                caption="Primary"
+                type="button"
+                className="btn-filled btn-primary"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="filledSecondary"
+                caption="Secondary"
+                type="button"
+                className="btn-filled btn-secondary"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="filledSuccess"
+                caption="Success"
+                type="button"
+                className="btn-filled btn-success"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="filledDanger"
+                caption="Danger"
+                type="button"
+                className="btn-filled btn-danger"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="filledWarning"
+                caption="Warning"
+                type="button"
+                className="btn-filled btn-warning"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="filledInfo"
+                caption="Info"
+                type="button"
+                className="btn-filled btn-info"
+                listener={mockListener}
+              />
+            </Box>
+          </Stack>
+
+          {/* Row 3: Outlined Variants */}
+          <Stack spacing={1.5}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Outlined Variants
+            </Typography>
+
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gap: 3,
+                maxWidth: 900,
+              }}
+            >
+              <ButtonDefaultExport
+                name="outlinedPrimary"
+                caption="Primary"
+                type="button"
+                className="btn-outlined btn-primary"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="outlinedSecondary"
+                caption="Secondary"
+                type="button"
+                className="btn-outlined btn-secondary"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="outlinedSuccess"
+                caption="Success"
+                type="button"
+                className="btn-outlined btn-success"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="outlinedDanger"
+                caption="Danger"
+                type="button"
+                className="btn-outlined btn-danger"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="outlinedWarning"
+                caption="Warning"
+                type="button"
+                className="btn-outlined btn-warning"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="outlinedInfo"
+                caption="Info"
+                type="button"
+                className="btn-outlined btn-info"
+                listener={mockListener}
+              />
+            </Box>
+          </Stack>
+
+          {/* Row 4: Size Variants */}
+          <Stack spacing={1.5}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Size Variants
+            </Typography>
+
+            <Stack direction="row" flexWrap="wrap" sx={{ gap: 3 }}>
+              <ButtonDefaultExport
+                name="sizeXs"
+                caption="Extra Small"
+                type="button"
+                className="btn-filled btn-default btn-xs"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="sizeSm"
+                caption="Small"
+                type="button"
+                className="btn-filled btn-default btn-sm"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="sizeLg"
+                caption="Large"
+                type="button"
+                className="btn-filled btn-default btn-lg"
+                listener={mockListener}
+              />
+            </Stack>
+          </Stack>
+        </Stack>
+      </Box>
+    );
+  },
   args: {
-    name: "primaryButton",
-    caption: "Primary Button",
-    disabled: false,
-    type: "button",
-    styles: {
-      backgroundColor: "#007bff",
-      color: "white",
-      padding: "8px 16px",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-      fontSize: "14px",
-      fontWeight: "500",
-    },
+    name: "buttonShowcase",
+    listener: mockListener,
   },
 };
+
+
+// export const Primary: Story = {
+//   render: Template,
+//   args: {
+//     name: "primaryButton",
+//     caption: "Primary Button",
+//     disabled: false,
+//     type: "button",
+//     styles: {
+//       backgroundColor: "#007bff",
+//       color: "white",
+//       padding: "8px 16px",
+//       border: "none",
+//       borderRadius: "4px",
+//       cursor: "pointer",
+//       fontSize: "14px",
+//       fontWeight: "500",
+//     },
+//   },
+// };
 
 // // Interactive story with click handler
 // export const Interactive: Story = {
