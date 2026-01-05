@@ -7,6 +7,8 @@ interface DocumentationProps {
   events?:string;
   methods?:string;
   styling?: string;
+  style?: string;
+  token?: string;
 }
 
 // Wrapper component to provide Storybook docs context
@@ -48,6 +50,8 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
   events,
   methods,
   styling,
+  style,
+  token,
 }) => {
   const [activeTab, setActiveTab] = useState("overview");
   const activeColor = "#296df6"; // Blue theme
@@ -264,6 +268,7 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
         {events && renderTab("events", "Events")}
         {methods && renderTab("methods", "Methods")}
         {styling && renderTab("styling", "Styling")}
+        {(style || token) && renderTab("designSystem", "Styling")}
       </div>
 
       <div style={{ padding: "10px 0" }}>
@@ -290,6 +295,26 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
         {activeTab === "styling" && styling && (
           <div>
             <MarkdownWrapper>{styling}</MarkdownWrapper>
+          </div>
+        )}
+        {activeTab === "designSystem" && (style || token) && (
+          <div>
+            {style && (
+              <details>
+                <summary>Variants</summary>
+                <div>
+                  <MarkdownWrapper>{style}</MarkdownWrapper>
+                </div>
+              </details>
+            )}
+            {token && (
+              <details open>
+                <summary>Design Tokens</summary>
+                <div>
+                  <MarkdownWrapper>{token}</MarkdownWrapper>
+                </div>
+              </details>
+            )}
           </div>
         )}
 
