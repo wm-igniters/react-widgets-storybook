@@ -88,3 +88,123 @@ export const Basic: Story = {
     width: "100%",
   },
 };
+
+export const Showcase: Story = {
+  render: () => {
+    const showcaseItems = [
+      {
+        title: "Auto Slide (Animation: auto)",
+        props: {
+          animation: "auto",
+          animationinterval: 2,
+          controls: "both",
+        },
+      },
+      {
+        title: "Manual Slide (Animation: none)",
+        props: {
+          animation: "none",
+          controls: "both",
+        },
+      },
+      {
+        title: "Controls: Navigation Only",
+        props: {
+          animation: "none",
+          animationinterval: 3,
+          controls: "navs",
+        },
+      },
+      {
+        title: "Controls: Indicators Only",
+        props: {
+          animation: "none",
+          animationinterval: 3,
+          controls: "indicators",
+        },
+      },
+      {
+        title: "Controls: Both",
+        props: {
+          animation: "none",
+          animationinterval: 3,
+          controls: "both",
+        },
+      },
+      {
+        title: "Controls: None",
+        props: {
+          animation: "auto",
+          animationinterval: 3,
+          controls: "none",
+        },
+      },
+    ];
+
+    const Slide = ({
+      bg,
+      label,
+    }: {
+      bg: string;
+      label: string;
+    }) => (
+      <Box
+        sx={{
+          width: "100%",
+          height: "100%",
+          bgcolor: bg,
+          color: "#fff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h4">{label}</Typography>
+      </Box>
+    );
+
+    return (
+      <Box sx={{ width: "100%", p: 4 }}>
+        <Typography variant="h6" fontWeight={600} mb={3}>
+          Carousel Showcase
+        </Typography>
+
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              md: "1fr 1fr",
+            },
+            gap: 4,
+          }}
+        >
+          {showcaseItems.map((item, index) => (
+            <Box key={index}>
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                mb={1}
+              >
+                {item.title}
+              </Typography>
+
+              <Box sx={{ height: "320px", width: "100%" }}>
+                <CarouselDefaultExport
+                  name={`carousel_showcase_${index}`}
+                  height="300px"
+                  width="100%"
+                  {...item.props}
+                >
+                  <Slide bg="#1976d2" label="Slide 1" />
+                  <Slide bg="#2e7d32" label="Slide 2" />
+                  <Slide bg="#ed6c02" label="Slide 3" />
+                </CarouselDefaultExport>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    );
+  },
+};
