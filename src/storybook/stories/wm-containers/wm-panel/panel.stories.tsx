@@ -134,7 +134,7 @@ export const Showcase: Story = {
 
           {/* Basic Panel */}
           <Box>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }} style={{marginBottom: 12}}>
               Basic Panel
             </Typography>
             <WmPanel
@@ -154,7 +154,7 @@ export const Showcase: Story = {
 
           {/* Panel with Badge */}
           <Box>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }} style={{marginBottom: 12}}>
               Panel with Badge
             </Typography>
             <WmPanel
@@ -184,7 +184,7 @@ export const Showcase: Story = {
 
           {/* Collapsible Panel */}
           <Box>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }} style={{marginBottom: 12}}>
               Collapsible Panel
             </Typography>
             <WmPanel
@@ -230,7 +230,7 @@ export const Showcase: Story = {
 
           {/* Panel with Footer */}
           <Box>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }} style={{marginBottom: 12}}>
               Panel with Footer
             </Typography>
             <WmPanel
@@ -298,7 +298,7 @@ export const Showcase: Story = {
 
           {/* Warning Panel */}
           <Box>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }} style={{marginBottom: 12}}>
               Warning Panel
             </Typography>
             <WmPanel
@@ -321,7 +321,7 @@ export const Showcase: Story = {
 
           {/* Full Featured Panel */}
           <Box>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }} style={{marginBottom: 12}}>
               Full Featured Panel
             </Typography>
             <WmPanel
