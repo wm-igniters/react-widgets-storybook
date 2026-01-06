@@ -97,6 +97,7 @@ export const Docs: Story = {
 };
 
 export const Basic: Story = {
+  tags: ['show-panel'],
   args: {
     name: "basicList",
     title: "User List",
@@ -125,6 +126,7 @@ export const Basic: Story = {
 };
 
 export const WithPagination: Story = {
+  tags: ['show-panel'],
   args: {
     name: "paginatedList",
     title: "Users",
@@ -153,6 +155,7 @@ export const WithPagination: Story = {
 };
 
 export const ReorderableList: Story = {
+  tags: ['show-panel'],
   args: {
     name: "reorderableList",
     title: "Task Priority",

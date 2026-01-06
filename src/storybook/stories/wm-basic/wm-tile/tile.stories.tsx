@@ -58,25 +58,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicTile",
-    listener: mockListener,
-    children: (
-      <Box>
-        <Typography variant="h6" gutterBottom>
-          Tile Title
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          This is a tile with structured content including a title and description text.
-        </Typography>
-      </Box>
-    ),
-    className: "bg-primary",
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     const tilesHorizontal = [
@@ -172,6 +153,25 @@ export const Showcase: Story = {
   },
 };
 
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicTile",
+    listener: mockListener,
+    children: (
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Tile Title
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          This is a tile with structured content including a title and description text.
+        </Typography>
+      </Box>
+    ),
+    className: "bg-primary",
+  },
+};
 
 
 // export const FeatureTiles: Story = {

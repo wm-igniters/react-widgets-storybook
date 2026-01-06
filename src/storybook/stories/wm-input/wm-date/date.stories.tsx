@@ -91,24 +91,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicDate",
-    placeholder: "Select Date",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    datepattern: "yyyy-MM-dd",
-    outputformat: "yyyy-MM-dd",
-    selectfromothermonth: true,
-    dataentrymode: "default",
-    showdropdownon: "default",
-    datavalue:"CURRENT_DATE"
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     const today = new Date().toISOString().split("T")[0];
@@ -215,6 +197,25 @@ export const Showcase: Story = {
   args: {
     listener: mockListener,
     name: "showCaseDate"
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicDate",
+    placeholder: "Select Date",
+    listener: mockListener,
+    disabled: false,
+    readonly: false,
+    required: false,
+    datepattern: "yyyy-MM-dd",
+    outputformat: "yyyy-MM-dd",
+    selectfromothermonth: true,
+    dataentrymode: "default",
+    showdropdownon: "default",
+    datavalue:"CURRENT_DATE"
   },
 };
 

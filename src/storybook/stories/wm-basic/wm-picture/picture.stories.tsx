@@ -70,21 +70,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicPicture",
-    listener: mockListener,
-    picturesource: "https://picsum.photos/200",
-    alttext: "Placeholder image",
-    width: "200px",
-    height: "200px",
-    resizemode: "stretch",
-    shape: "thumbnail"
-  },
-};
-
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -156,6 +141,21 @@ export const Showcase: Story = {
   args: {
     name: "showcasePictureShapes",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicPicture",
+    listener: mockListener,
+    picturesource: "https://picsum.photos/200",
+    alttext: "Placeholder image",
+    width: "200px",
+    height: "200px",
+    resizemode: "stretch",
+    shape: "thumbnail"
   },
 };
 

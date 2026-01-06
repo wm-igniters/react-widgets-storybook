@@ -66,29 +66,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  args: {
-    name: "basicCard",
-    title: "User Profile",
-    subheading: "View and edit your profile information",
-    iconclass: "fa fa-user",
-    listener: mockListener,
-    children: (
-      <WmCardContent name="cardContent">
-        <Box sx={{ padding: 2 }}>
-          <Typography variant="body1">
-            Name: John Doe
-            <br />
-            Email: john@example.com
-            <br />
-            Role: Administrator
-          </Typography>
-        </Box>
-      </WmCardContent>
-    ),
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     const products = [
@@ -162,6 +139,34 @@ export const Showcase: Story = {
         ))}
       </Box>
     );
+  },
+  args:{
+    name: "showcaseCards",
+    listener: mockListener
+  }
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  args: {
+    name: "basicCard",
+    title: "User Profile",
+    subheading: "View and edit your profile information",
+    iconclass: "fa fa-user",
+    listener: mockListener,
+    children: (
+      <WmCardContent name="cardContent">
+        <Box sx={{ padding: 2 }}>
+          <Typography variant="body1">
+            Name: John Doe
+            <br />
+            Email: john@example.com
+            <br />
+            Role: Administrator
+          </Typography>
+        </Box>
+      </WmCardContent>
+    ),
   },
 };
 

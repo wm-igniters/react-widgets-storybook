@@ -81,6 +81,7 @@ export const Docs: Story = {
 };
 
 export const Basic: Story = {
+  tags: ['show-panel'],
   render: Template,
   args: {
     name: "basicPageDialog",
@@ -90,6 +91,7 @@ export const Basic: Story = {
     showactions: true,
     closable: true,
     content: "Main",
+    listener: mockListener
   },
 };
 

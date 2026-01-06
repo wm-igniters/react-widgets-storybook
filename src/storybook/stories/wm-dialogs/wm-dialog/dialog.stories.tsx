@@ -86,6 +86,7 @@ export const Docs: Story = {
 };
 
 export const Basic: Story = {
+  tags: ['show-panel'],
   render: (args: any) => {
     const [isOpen, setIsOpen] = useState(false);
 

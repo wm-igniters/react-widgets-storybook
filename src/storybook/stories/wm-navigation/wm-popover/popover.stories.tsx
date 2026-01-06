@@ -227,75 +227,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  args: {
-    name: "basicPopover",
-    caption: "Click for Info",
-    popoverwidth: "240px",
-    popoverheight: "auto",
-    popoverplacement: "bottom",
-    popoverarrow: true,
-    interaction: "click",
-    contentsource: "inline",
-    autoclose: "outsideClick",
-    listener: mockListener,
-  },
-  render: (args) => (
-    <WmPopover
-      {...args}
-      styles={{
-        backgroundColor: "#1976d2",
-        color: "#ffffff",
-        padding: "10px 20px",
-        border: "none",
-        borderRadius: "4px",
-        cursor: "pointer",
-      }}
-    >
-      <Box sx={{ p: 2.5 }}>
-        <Typography variant="body2" sx={{ lineHeight: 1.6 }}>
-          This is popover content with inline source. You can add any content here.
-        </Typography>
-      </Box>
-    </WmPopover>
-  ),
-};
-
-export const Animations: Story = {
-  args: {
-    name: "animationPopover",
-    caption: "Click for Info",
-    popoverwidth: "240px",
-    popoverheight: "auto",
-    popoverplacement: "bottom",
-    popoverarrow: true,
-    interaction: "click",
-    contentsource: "inline",
-    autoclose: "outsideClick",
-    listener: mockListener,
-    contentanimation: "fadeIn"
-  },
-  render: (args) => (
-    <WmPopover
-      {...args}
-      styles={{
-        backgroundColor: "#1976d2",
-        color: "#ffffff",
-        padding: "10px 20px",
-        border: "none",
-        borderRadius: "4px",
-        cursor: "pointer",
-      }}
-    >
-      <Box sx={{ p: 2.5 }}>
-        <Typography variant="body2" sx={{ lineHeight: 1.6 }}>
-          This is popover content with inline source. You can add any content here.
-        </Typography>
-      </Box>
-    </WmPopover>
-  ),
-};
-
 export const Showcase: Story = {
   render: () => {
     const showcaseItems = [
@@ -517,4 +448,75 @@ export const Showcase: Story = {
   parameters: {
     layout: "fullscreen",
   },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  args: {
+    name: "basicPopover",
+    caption: "Click for Info",
+    popoverwidth: "240px",
+    popoverheight: "auto",
+    popoverplacement: "bottom",
+    popoverarrow: true,
+    interaction: "click",
+    contentsource: "inline",
+    autoclose: "outsideClick",
+    listener: mockListener,
+  },
+  render: (args) => (
+    <WmPopover
+      {...args}
+      styles={{
+        backgroundColor: "#1976d2",
+        color: "#ffffff",
+        padding: "10px 20px",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+      }}
+    >
+      <Box sx={{ p: 2.5 }}>
+        <Typography variant="body2" sx={{ lineHeight: 1.6 }}>
+          This is popover content with inline source. You can add any content here.
+        </Typography>
+      </Box>
+    </WmPopover>
+  ),
+};
+
+export const Animations: Story = {
+  tags: ['show-panel'],
+  args: {
+    name: "animationPopover",
+    caption: "Click for Info",
+    popoverwidth: "240px",
+    popoverheight: "auto",
+    popoverplacement: "bottom",
+    popoverarrow: true,
+    interaction: "click",
+    contentsource: "inline",
+    autoclose: "outsideClick",
+    listener: mockListener,
+    contentanimation: "fadeIn"
+  },
+  render: (args) => (
+    <WmPopover
+      {...args}
+      styles={{
+        backgroundColor: "#1976d2",
+        color: "#ffffff",
+        padding: "10px 20px",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+      }}
+    >
+      <Box sx={{ p: 2.5 }}>
+        <Typography variant="body2" sx={{ lineHeight: 1.6 }}>
+          This is popover content with inline source. You can add any content here.
+        </Typography>
+      </Box>
+    </WmPopover>
+  ),
 };

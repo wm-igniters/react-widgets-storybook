@@ -60,136 +60,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: (args) => (
-    <WmAccordion {...args}>
-      <WmAccordionPane
-        name="pane1"
-        title="Section 1"
-        iconclass="fa fa-file"
-        listener={mockListener}
-      >
-        <Box sx={{ p: 2 }}>
-          <Typography>Content for section 1</Typography>
-        </Box>
-      </WmAccordionPane>
-
-      <WmAccordionPane
-        name="pane2"
-        title="Section 2"
-        iconclass="fa fa-folder"
-        listener={mockListener}
-      >
-        <Box sx={{ p: 2 }}>
-          <Typography>Content for section 2</Typography>
-        </Box>
-      </WmAccordionPane>
-
-      <WmAccordionPane
-        name="pane3"
-        title="Section 3"
-        iconclass="fa fa-cog"
-        listener={mockListener}
-      >
-        <Box sx={{ p: 2 }}>
-          <Typography>Content for section 3</Typography>
-        </Box>
-      </WmAccordionPane>
-    </WmAccordion>
-  ),
-  args: {
-    name: "basicAccordion",
-    type: "static",
-    closeothers: true,
-    defaultpaneindex: 0,
-    listener: mockListener,
-    className: "app-accordion panel panel-default"
-  },
-};
-
-export const DynamicAccordion: Story = {
-  args: {
-    name: "dynamicAccordion",
-    type: "dynamic",
-    closeothers: true,
-    defaultpaneindex: 0,
-    listener: mockListener,
-    className:"app-accordion panel panel-primary",
-    dataset: [
-      {
-        id: 1,
-        name: "pane1",
-        title: "Getting Started",
-        subheading: "Quick introduction",
-        iconclass: "fa fa-rocket",
-        badgevalue: "New",
-        badgetype: "success",
-        content: "Learn the basics of using our platform with step-by-step guides and tutorials.",
-      },
-      {
-        id: 2,
-        name: "pane2",
-        title: "Documentation",
-        iconclass: "fa fa-book",
-        badgevalue: "12",
-        badgetype: "primary",
-        content: "Comprehensive documentation covering all features, APIs, and best practices.",
-      },
-      {
-        id: 3,
-        name: "pane3",
-        title: "Examples",
-        subheading: "Code samples",
-        iconclass: "fa fa-code",
-        content: "Browse through practical examples and code samples to get started quickly.",
-      },
-      // {
-      //   id: 4,
-      //   name: "pane4",
-      //   title: "Support",
-      //   iconclass: "fa fa-life-ring",
-      //   badgevalue: "24/7",
-      //   badgetype: "info",
-      //   content: "Get help from our support team or community forums. We're here to help you succeed.",
-      // },
-      // {
-      //   id: 5,
-      //   name: "pane5",
-      //   title: "Updates",
-      //   subheading: "What's new",
-      //   iconclass: "fa fa-bell",
-      //   badgevalue: "3",
-      //   badgetype: "warning",
-      //   content: "Stay up to date with the latest features, improvements, and bug fixes.",
-      // },
-    ],
-    render: (itemProps: any) => {
-      return (
-        <WmAccordionPane
-          name={itemProps.name}
-          title={itemProps.title}
-          subheading={itemProps.subheading}
-          iconclass={itemProps.iconclass}
-          badgevalue={itemProps.badgevalue}
-          badgetype={itemProps.badgetype}
-          active={itemProps.active}
-          toggle={itemProps.toggle}
-          onExpand={itemProps.expand}
-          onCollapse={itemProps.collapse}
-          listener={mockListener}
-        >
-          {itemProps.active && (
-            <Box sx={{ padding: 2 }}>
-              <Typography variant="body1">{itemProps.content}</Typography>
-            </Box>
-          )}
-        </WmAccordionPane>
-      );
-    },
-  },
-};
-
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -477,6 +347,137 @@ export const Showcase: Story = {
     name: "showcaseAccordion",
     listener: mockListener,
   }
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: (args) => (
+    <WmAccordion {...args}>
+      <WmAccordionPane
+        name="pane1"
+        title="Section 1"
+        iconclass="fa fa-file"
+        listener={mockListener}
+      >
+        <Box sx={{ p: 2 }}>
+          <Typography>Content for section 1</Typography>
+        </Box>
+      </WmAccordionPane>
+
+      <WmAccordionPane
+        name="pane2"
+        title="Section 2"
+        iconclass="fa fa-folder"
+        listener={mockListener}
+      >
+        <Box sx={{ p: 2 }}>
+          <Typography>Content for section 2</Typography>
+        </Box>
+      </WmAccordionPane>
+
+      <WmAccordionPane
+        name="pane3"
+        title="Section 3"
+        iconclass="fa fa-cog"
+        listener={mockListener}
+      >
+        <Box sx={{ p: 2 }}>
+          <Typography>Content for section 3</Typography>
+        </Box>
+      </WmAccordionPane>
+    </WmAccordion>
+  ),
+  args: {
+    name: "basicAccordion",
+    type: "static",
+    closeothers: true,
+    defaultpaneindex: 0,
+    listener: mockListener,
+    className: "app-accordion panel panel-default"
+  },
+};
+
+export const DynamicAccordion: Story = {
+  tags: ['show-panel'],
+  args: {
+    name: "dynamicAccordion",
+    type: "dynamic",
+    closeothers: true,
+    defaultpaneindex: 0,
+    listener: mockListener,
+    className:"app-accordion panel panel-primary",
+    dataset: [
+      {
+        id: 1,
+        name: "pane1",
+        title: "Getting Started",
+        subheading: "Quick introduction",
+        iconclass: "fa fa-rocket",
+        badgevalue: "New",
+        badgetype: "success",
+        content: "Learn the basics of using our platform with step-by-step guides and tutorials.",
+      },
+      {
+        id: 2,
+        name: "pane2",
+        title: "Documentation",
+        iconclass: "fa fa-book",
+        badgevalue: "12",
+        badgetype: "primary",
+        content: "Comprehensive documentation covering all features, APIs, and best practices.",
+      },
+      {
+        id: 3,
+        name: "pane3",
+        title: "Examples",
+        subheading: "Code samples",
+        iconclass: "fa fa-code",
+        content: "Browse through practical examples and code samples to get started quickly.",
+      },
+      // {
+      //   id: 4,
+      //   name: "pane4",
+      //   title: "Support",
+      //   iconclass: "fa fa-life-ring",
+      //   badgevalue: "24/7",
+      //   badgetype: "info",
+      //   content: "Get help from our support team or community forums. We're here to help you succeed.",
+      // },
+      // {
+      //   id: 5,
+      //   name: "pane5",
+      //   title: "Updates",
+      //   subheading: "What's new",
+      //   iconclass: "fa fa-bell",
+      //   badgevalue: "3",
+      //   badgetype: "warning",
+      //   content: "Stay up to date with the latest features, improvements, and bug fixes.",
+      // },
+    ],
+    render: (itemProps: any) => {
+      return (
+        <WmAccordionPane
+          name={itemProps.name}
+          title={itemProps.title}
+          subheading={itemProps.subheading}
+          iconclass={itemProps.iconclass}
+          badgevalue={itemProps.badgevalue}
+          badgetype={itemProps.badgetype}
+          active={itemProps.active}
+          toggle={itemProps.toggle}
+          onExpand={itemProps.expand}
+          onCollapse={itemProps.collapse}
+          listener={mockListener}
+        >
+          {itemProps.active && (
+            <Box sx={{ padding: 2 }}>
+              <Typography variant="body1">{itemProps.content}</Typography>
+            </Box>
+          )}
+        </WmAccordionPane>
+      );
+    },
+  },
 };
 
 // export const DynamicWithBadges: Story = {

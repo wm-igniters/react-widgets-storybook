@@ -131,24 +131,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicChips",
-    listener: mockListener,
-    dataset: fruitDataset,
-    datafield: "name",
-    displayfield: "name",
-    placeholder: "Add a chip...",
-    datavalue: ["Apple"],
-    type: "autocomplete",
-    inputposition:"first",
-    inputwidth: "default",
-    disabled: false,
-    readonly: false,
-  },
-};
-
 export const Showcase: Story = {
   render: () => (
     <Box style={{ padding: 16 }}>
@@ -278,6 +260,25 @@ export const Showcase: Story = {
   args: {
     name: "showcaseChips",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicChips",
+    listener: mockListener,
+    dataset: fruitDataset,
+    datafield: "name",
+    displayfield: "name",
+    placeholder: "Add a chip...",
+    datavalue: ["Apple"],
+    type: "autocomplete",
+    inputposition:"first",
+    inputwidth: "default",
+    disabled: false,
+    readonly: false,
   },
 };
 

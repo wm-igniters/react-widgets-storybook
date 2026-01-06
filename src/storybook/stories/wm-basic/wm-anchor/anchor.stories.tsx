@@ -87,18 +87,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicAnchor",
-    listener: mockListener,
-    caption: "Click Me",
-    hyperlink: "https://www.wavemaker.com",
-    target: "_blank",
-    className:"link-default"
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -245,6 +233,19 @@ export const Showcase: Story = {
   args: {
     name: "showcaseAnchors",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicAnchor",
+    listener: mockListener,
+    caption: "Click Me",
+    hyperlink: "https://www.wavemaker.com",
+    target: "_blank",
+    className:"link-default"
   },
 };
 

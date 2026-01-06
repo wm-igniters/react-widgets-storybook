@@ -73,21 +73,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicVideo",
-    listener: mockListener,
-    mp4format: sampleMp4Video,
-    controls: true,
-    autoplay: false,
-    loop:false,
-    videopreload: "none",
-    showcontrols: true,
-    muted: false,
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -159,6 +144,22 @@ export const Showcase: Story = {
   args: {
     name: "showcaseVideo",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicVideo",
+    listener: mockListener,
+    mp4format: sampleMp4Video,
+    controls: true,
+    autoplay: false,
+    loop:false,
+    videopreload: "none",
+    showcontrols: true,
+    muted: false,
   },
 };
 

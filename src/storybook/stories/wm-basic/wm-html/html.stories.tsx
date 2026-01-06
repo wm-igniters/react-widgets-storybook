@@ -61,22 +61,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicHtml",
-    listener: mockListener,
-    horizontalalign: "center",
-    show: true,
-    children: (
-      <div>
-        <h2 style={{margin: '0 0 12px'}}>Basic HTML Content</h2>
-        <p>This is basic HTML content rendered inside the HTML component.</p>
-      </div>
-    ),
-  },
-};
-
 export const Showcase: Story = {
   render: () => (
     <Box sx={{ p: 4 }}>
@@ -154,6 +138,23 @@ export const Showcase: Story = {
       </Stack>
     </Box>
   ),
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicHtml",
+    listener: mockListener,
+    horizontalalign: "center",
+    show: true,
+    children: (
+      <div>
+        <h2 style={{margin: '0 0 12px'}}>Basic HTML Content</h2>
+        <p>This is basic HTML content rendered inside the HTML component.</p>
+      </div>
+    ),
+  },
 };
 
 

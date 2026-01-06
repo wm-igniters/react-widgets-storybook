@@ -68,19 +68,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicCheckbox",
-    caption: "Accept terms and conditions",
-    listener: mockListener,
-    datavalue: false,
-    disabled: false,
-    readonly: false,
-    type: "checkbox"
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -127,6 +114,20 @@ export const Showcase: Story = {
   args: {
     name: "checkboxShowcase",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicCheckbox",
+    caption: "Accept terms and conditions",
+    listener: mockListener,
+    datavalue: false,
+    disabled: false,
+    readonly: false,
+    type: "checkbox"
   },
 };
 

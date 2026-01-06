@@ -109,6 +109,7 @@ export const Docs: Story = {
 };
 
 export const Basic: Story = {
+  tags: ['show-panel'],
   args: {
     name: "basicLiveForm",
     title: "User Management",

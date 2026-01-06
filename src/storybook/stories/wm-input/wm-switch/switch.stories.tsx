@@ -73,38 +73,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicSwitch",
-    dataset: ["yes", "no", "maybe"],
-    datavalue: "yes",
-    listener: mockListener,
-    disabled: false,
-    multiple: false,
-    displaylabel: "Basic Switch",
-  },
-};
-
-export const ObjectDataset: Story = {
-  render: Template,
-  args: {
-    name: "objectSwitch",
-    dataset: [
-      { id: 1, label: "Day", value: "day" },
-      { id: 2, label: "Week", value: "week" },
-      { id: 3, label: "Month", value: "month" },
-    ],
-    datafield: "id",
-    displayfield: "label",
-    datavalue: 1,
-    listener: mockListener,
-    disabled: false,
-    multiple: false,
-    displaylabel: "Object Dataset Switch",
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     const dataset = [
@@ -188,6 +156,40 @@ export const Showcase: Story = {
         </Stack>
       </Box>
     );
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicSwitch",
+    dataset: ["yes", "no", "maybe"],
+    datavalue: "yes",
+    listener: mockListener,
+    disabled: false,
+    multiple: false,
+    displaylabel: "Basic Switch",
+  },
+};
+
+export const ObjectDataset: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "objectSwitch",
+    dataset: [
+      { id: 1, label: "Day", value: "day" },
+      { id: 2, label: "Week", value: "week" },
+      { id: 3, label: "Month", value: "month" },
+    ],
+    datafield: "id",
+    displayfield: "label",
+    datavalue: 1,
+    listener: mockListener,
+    disabled: false,
+    multiple: false,
+    displaylabel: "Object Dataset Switch",
   },
 };
 

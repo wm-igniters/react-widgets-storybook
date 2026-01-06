@@ -119,17 +119,6 @@ export const Docs: Story = {
   },
 };
 
-// export const Basic: Story = {
-//   render: Template,
-//   args: {
-//     name: "basicButton",
-//     caption: "Click Me",
-//     disabled: false,
-//     type: "button",
-//     className: "btn-default btn-filled"
-//   },
-// };
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -363,6 +352,18 @@ export const Showcase: Story = {
   },
 };
 
+// export const Basic: Story = {
+//   tags: ['show-panel'],
+//   render: Template,
+//   args: {
+//     name: "basicButton",
+//     caption: "Click Me",
+//     disabled: false,
+//     type: "button",
+//     className: "btn-default btn-filled"
+//   },
+// };
+
 // ============================================================================
 // DESIGN TOKEN STORY
 // ============================================================================
@@ -393,6 +394,7 @@ const buttonTokenConfig = parseDesignTokens(buttonTokensData, "btn");
 
 
 export const Filled: Story = {
+  tags: ['show-panel'],
   render: (args) => {
     const { className } = args;
     const variant = className.split(' ')[1]?.replace('btn-', '') || 'primary';
@@ -473,6 +475,7 @@ export const Filled: Story = {
 };
 
 export const Outlined: Story = {
+  tags: ['show-panel'],
   render: (args) => {
     const { className } = args;
     const variant = className.split(' ')[1]?.replace('btn-', '') || 'primary';
@@ -553,6 +556,7 @@ export const Outlined: Story = {
 };
 
 export const Text: Story = {
+  tags: ['show-panel'],
   render: (args) => {
     const { className } = args;
     const variant = className.split(' ')[1]?.replace('btn-', '') || 'primary';
@@ -633,6 +637,7 @@ export const Text: Story = {
 };
 
 export const Transparent: Story = {
+  tags: ['show-panel'],
   render: (args) => {
     const { className } = args;
 

@@ -74,31 +74,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicSpinner",
-    caption: "Loading...",
-    listener: mockListener,
-    show: true,
-    type: "default",
-  },
-};
-
-export const Animations: Story = {
-  render: Template,
-  args: {
-    name: "animationSpinner",
-    caption: "Loading...",
-    listener: mockListener,
-    show: true,
-    type: "icon",
-    iconsize: "22px",
-    iconclass: "fa fa-circle-o-notch fa-spin",
-    animation: "bounce"
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     const spinners = [
@@ -163,6 +138,33 @@ export const Showcase: Story = {
   args: {
     name: "showcaseSpinners",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicSpinner",
+    caption: "Loading...",
+    listener: mockListener,
+    show: true,
+    type: "default",
+  },
+};
+
+export const Animations: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "animationSpinner",
+    caption: "Loading...",
+    listener: mockListener,
+    show: true,
+    type: "icon",
+    iconsize: "22px",
+    iconclass: "fa fa-circle-o-notch fa-spin",
+    animation: "bounce"
   },
 };
 

@@ -50,18 +50,6 @@ export const Docs: Story = {
   },
 };
 
-// Basic Examples
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicMarquee",
-    direction: "left",
-    children: "This is a basic marquee scrolling",
-    scrollamount: 6,
-    scrolldelay: 85,
-  },
-};
-
 export const Showcase: Story = {
   render: () => (
     <Box style={{ padding: 16 }}>
@@ -108,4 +96,17 @@ export const Showcase: Story = {
       </Stack>
     </Box>
   ),
+};
+
+// Basic Examples
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicMarquee",
+    direction: "left",
+    children: "This is a basic marquee scrolling",
+    scrollamount: 6,
+    scrolldelay: 85,
+  },
 };

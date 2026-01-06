@@ -71,16 +71,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicIcon",
-    listener: mockListener,
-    iconclass: "fa fa-adjust",
-    iconsize: "24px",
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -173,6 +163,17 @@ export const FontAwesomeLibrary: Story = {
         iconClassPrefix="fa fa-"
       />
     );
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicIcon",
+    listener: mockListener,
+    iconclass: "fa fa-adjust",
+    iconsize: "24px",
   },
 };
 

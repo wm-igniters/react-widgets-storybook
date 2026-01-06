@@ -77,19 +77,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicProgressBar",
-    listener: mockListener,
-    datavalue: 30,
-    type: "default",
-    minvalue: 0,
-    maxvalue: 100,
-    captionplacement: "inside",
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     const progressBars = [
@@ -138,6 +125,20 @@ export const Showcase: Story = {
   args: {
     name: "showcase",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicProgressBar",
+    listener: mockListener,
+    datavalue: 30,
+    type: "default",
+    minvalue: 0,
+    maxvalue: 100,
+    captionplacement: "inside",
   },
 };
 

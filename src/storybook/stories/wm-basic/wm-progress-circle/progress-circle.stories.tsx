@@ -68,22 +68,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicprogressCircle",
-    listener: mockListener,
-    datavalue: 75,
-    type: "default",
-    minvalue: 0,
-    maxvalue: 100,
-    captionplacement: "inside",
-    hint: "75% Complete",
-    title: "",
-    subtitle:""
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -159,6 +143,23 @@ export const Showcase: Story = {
   args: {
     name: "allTypes",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicprogressCircle",
+    listener: mockListener,
+    datavalue: 75,
+    type: "default",
+    minvalue: 0,
+    maxvalue: 100,
+    captionplacement: "inside",
+    hint: "75% Complete",
+    title: "",
+    subtitle:""
   },
 };
 

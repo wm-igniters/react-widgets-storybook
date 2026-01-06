@@ -74,6 +74,7 @@ export const Docs: Story = {
 };
 
 export const Basic: Story = {
+  tags: ['show-panel'],
   render: Template,
   args: {
     name: "basicTopNav",
@@ -126,6 +127,7 @@ export const Basic: Story = {
 // };
 
 export const HorizontalTabs: Story = {
+  tags: ['show-panel'],
   render: () => {
     const [value, setValue] = useState(0);
 
@@ -160,6 +162,7 @@ export const HorizontalTabs: Story = {
 };
 
 export const BreadcrumbNavigation: Story = {
+  tags: ['show-panel'],
   render: Template,
   args: {
     name: "breadcrumbNav",

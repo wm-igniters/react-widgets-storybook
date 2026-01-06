@@ -77,22 +77,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicTime",
-    placeholder: "Select time",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-    timepattern: "h:mm a",
-    dataentrymode: "default",
-    showdropdownon: "default",
-    datavalue: "CURRENT_TIME",
-  },
-};
-
 export const Showcase: Story = {
   render: () => (
     <Box sx={{ p: 3 }}>
@@ -277,6 +261,23 @@ export const Showcase: Story = {
   args: {
     name: "timeShowcase",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicTime",
+    placeholder: "Select time",
+    listener: mockListener,
+    disabled: false,
+    readonly: false,
+    required: false,
+    timepattern: "h:mm a",
+    dataentrymode: "default",
+    showdropdownon: "default",
+    datavalue: "CURRENT_TIME",
   },
 };
 

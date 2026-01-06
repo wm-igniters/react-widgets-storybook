@@ -77,18 +77,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicNumber",
-    placeholder: "Enter number",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    inputmode: "natural",
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -174,6 +162,19 @@ export const Showcase: Story = {
   },
   args: {
     name: "showcaseNumber"
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicNumber",
+    placeholder: "Enter number",
+    listener: mockListener,
+    disabled: false,
+    readonly: false,
+    inputmode: "natural",
   },
 };
 

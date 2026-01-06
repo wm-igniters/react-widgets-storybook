@@ -73,21 +73,6 @@ export const Docs: Story = {
   },
 };
 
-// Basic Examples
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicTextarea",
-    placeholder: "Enter your text here...",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    autofocus: false,
-    autocapitalize: false,
-    required: false,
-  },
-};
-
 export const Showcase: Story = {
   render: () => (
     <Box sx={{ p: 3 }}>
@@ -167,6 +152,22 @@ export const Showcase: Story = {
   args: {
     name: "textareaShowcase",
     listener: mockListener,
+  },
+};
+
+// Basic Examples
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicTextarea",
+    placeholder: "Enter your text here...",
+    listener: mockListener,
+    disabled: false,
+    readonly: false,
+    autofocus: false,
+    autocapitalize: false,
+    required: false,
   },
 };
 

@@ -206,7 +206,21 @@ export const Docs: Story = {
 //   },
 // };
 
+export const Showcase: Story = {
+  render: Template,
+  args: {
+    name: "showcaseOrgChart",
+    listener: mockListener,
+    dataset: organizationData,
+    treeicons: "fa fa-arrow-right",
+    levels: 2,
+    horizontalalign: "left",
+    show: true,
+  },
+};
+
 export const Basic: Story = {
+  tags: ['show-panel'],
   render: Template,
   args: {
     name: "customPropsTree",
@@ -229,19 +243,6 @@ export const Basic: Story = {
     nodeid: "customId",
     nodechildren: "subnodes",
     treeicons: "fa fa-folder-tree",
-    horizontalalign: "left",
-    show: true,
-  },
-};
-
-export const Showcase: Story = {
-  render: Template,
-  args: {
-    name: "showcaseOrgChart",
-    listener: mockListener,
-    dataset: organizationData,
-    treeicons: "fa fa-arrow-right",
-    levels: 2,
     horizontalalign: "left",
     show: true,
   },

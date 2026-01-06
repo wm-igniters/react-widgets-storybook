@@ -89,24 +89,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicDateTime",
-    placeholder: "Select Date Time",
-    listener: mockListener,
-    outputformat: "dd/MM/yyyy HH:mm",
-    datepattern: "dd/MM/yyyy HH:mm",
-    disabled: false,
-    readonly: false,
-    required: false,
-    selectfromothermonth: true,
-    dataentrymode: "default",
-    showdropdownon: "default",
-    datavalue:"CURRENT_DATE"
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     const now = new Date();
@@ -212,6 +194,25 @@ export const Showcase: Story = {
   args: {
     listener: mockListener,
     name: "showcaseDateTime"
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicDateTime",
+    placeholder: "Select Date Time",
+    listener: mockListener,
+    outputformat: "dd/MM/yyyy HH:mm",
+    datepattern: "dd/MM/yyyy HH:mm",
+    disabled: false,
+    readonly: false,
+    required: false,
+    selectfromothermonth: true,
+    dataentrymode: "default",
+    showdropdownon: "default",
+    datavalue:"CURRENT_DATE"
   },
 };
 

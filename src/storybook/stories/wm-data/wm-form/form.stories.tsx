@@ -73,54 +73,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  args: {
-    name: "basicForm",
-    title: "Contact Form",
-    subheading: "Please fill in your details",
-    iconclass: "",
-    listener: mockListener,
-    children: (
-      <Box sx={{ padding: 3 }}>
-        <Stack spacing={3}>
-          <WmText
-            name="fullName"
-            placeholder="Enter your full name"
-            datavalue=""
-            listener={mockListener}
-            caption="Full Name"
-            required={true}
-          />
-          <WmText
-            name="email"
-            type="email"
-            placeholder="Enter your email"
-            datavalue=""
-            listener={mockListener}
-            caption="Email Address"
-            required={true}
-          />
-          <WmTextarea
-            name="message"
-            placeholder="Enter your message"
-            datavalue=""
-            listener={mockListener}
-            caption="Message"
-            rows={4}
-          />
-          <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end" }}>
-            <Button variant="outlined" type="reset">
-              Reset
-            </Button>
-            <Button variant="contained" type="submit">
-              Submit
-            </Button>
-          </Box>
-        </Stack>
-      </Box>
-    ),
-  },
-};
 
 export const Showcase: Story = {
   args: {
@@ -196,6 +148,56 @@ export const Showcase: Story = {
             <Button variant="outlined">Back</Button>
             <Button variant="contained" type="submit">
               Continue to Payment
+            </Button>
+          </Box>
+        </Stack>
+      </Box>
+    ),
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  args: {
+    name: "basicForm",
+    title: "Contact Form",
+    subheading: "Please fill in your details",
+    iconclass: "",
+    listener: mockListener,
+    children: (
+      <Box sx={{ padding: 3 }}>
+        <Stack spacing={3}>
+          <WmText
+            name="fullName"
+            placeholder="Enter your full name"
+            datavalue=""
+            listener={mockListener}
+            caption="Full Name"
+            required={true}
+          />
+          <WmText
+            name="email"
+            type="email"
+            placeholder="Enter your email"
+            datavalue=""
+            listener={mockListener}
+            caption="Email Address"
+            required={true}
+          />
+          <WmTextarea
+            name="message"
+            placeholder="Enter your message"
+            datavalue=""
+            listener={mockListener}
+            caption="Message"
+            rows={4}
+          />
+          <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end" }}>
+            <Button variant="outlined" type="reset">
+              Reset
+            </Button>
+            <Button variant="contained" type="submit">
+              Submit
             </Button>
           </Box>
         </Stack>

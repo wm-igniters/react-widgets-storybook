@@ -54,21 +54,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicFooter",
-    listener: mockListener,
-    children: (
-      <Box p={3} textAlign="center">
-        <Typography variant="body2" color="text.secondary">
-          © 2024 Wavemaker. All rights reserved.
-        </Typography>
-      </Box>
-    ),
-  },
-};
-
 export const Showcase: Story = {
   render: Template,
   args: {
@@ -189,6 +174,23 @@ export const Showcase: Story = {
             </Link>
           </Stack>
         </Box>
+      </Box>
+    ),
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicFooter",
+    listener: mockListener,
+    show:true,
+    children: (
+      <Box p={3} textAlign="center">
+        <Typography variant="body2" color="text.secondary">
+          © 2024 Wavemaker. All rights reserved.
+        </Typography>
       </Box>
     ),
   },

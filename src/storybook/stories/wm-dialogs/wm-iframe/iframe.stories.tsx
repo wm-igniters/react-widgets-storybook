@@ -85,6 +85,7 @@ export const Docs: Story = {
 };
 
 export const Basic: Story = {
+  tags: ['show-panel'],
   render: Template,
   args: {
     name: "basicIframe",
