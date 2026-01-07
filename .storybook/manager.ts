@@ -43,17 +43,17 @@ const customTheme = create({
 
 addons.setConfig({
   theme: customTheme,
-  layoutCustomisations: {
-    showPanel(state: State) {
-      const tags = state.storyId && state.index ? state.index[state.storyId]?.tags : [];
+  // layoutCustomisations: {
+  //   showPanel(state: State) {
+  //     const tags = state.storyId && state.index ? state.index[state.storyId]?.tags : [];
 
-      // Only show panel for stories with 'show-panel' tag
-      if (tags && tags.includes('show-panel')) {
-        return true;
-      }
+  //     // Only show panel for stories with 'show-panel' tag
+  //     if (tags && tags.includes('show-panel')) {
+  //       return true;
+  //     }
 
-      // Hide panel by default for all other stories
-      return false;
-    },
-  },
+  //     // Hide panel by default for all other stories
+  //     return false;
+  //   },
+  // },
 });
