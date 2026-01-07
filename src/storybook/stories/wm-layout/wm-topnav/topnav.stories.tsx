@@ -5,15 +5,9 @@ import {
   Stack,
   Typography,
   Link,
-  Button,
-  IconButton,
   Tabs,
   Tab,
   Breadcrumbs,
-  Chip,
-  Avatar,
-  Menu,
-  MenuItem,
 } from "@mui/material";
 
 import TopNavDefaultExport from "../../../../components/layout/topnav/index";
@@ -29,7 +23,7 @@ const meta: Meta<typeof TopNavDefaultExport> = {
   title: "Layout/TopNav",
   component: TopNavDefaultExport,
   argTypes: {
-    show: { control: "boolean" },
+    // show: { control: "boolean" },
     className: { control: "text" },
   },
 };
@@ -44,19 +38,6 @@ const mockListener = {
   },
   Widgets: {},
 };
-
-const Template = (args: any) => (
-  <Box style={{ padding: 16 }}>
-    <TopNavDefaultExport {...args} listener={mockListener}>
-      {args.children}
-    </TopNavDefaultExport>
-    <Box p={3} bgcolor="#f5f5f5" minHeight="300px" mt={2}>
-      <Typography variant="body2" color="text.secondary">
-        Page Content Area
-      </Typography>
-    </Box>
-  </Box>
-);
 
 export const Docs: Story = {
   render: () => (
@@ -73,12 +54,110 @@ export const Docs: Story = {
   },
 };
 
+export const Showcase: Story = {
+  render: () => {
+    const [tabValue, setTabValue] = useState(0);
+
+    const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+      setTabValue(newValue);
+    };
+
+    return (
+      <Box>
+        {/* Showcase Heading */}
+        <Box py={2} mb={4}>
+          <Typography variant="h6" fontWeight={600} textAlign="left">
+            TopNav Showcase
+          </Typography>
+        </Box>
+
+        {/* Horizontal Tabs Example */}
+        <Box mb={6}>
+          <Typography variant="subtitle2" color="text.secondary" mb={1}>
+            Horizontal Tabs
+          </Typography>
+          <TopNavDefaultExport name="tabsNav" listener={mockListener}>
+            <Box bgcolor="#ffffff">
+              <Tabs
+                value={tabValue}
+                onChange={handleTabChange}
+                aria-label="navigation tabs"
+                textColor="primary"
+                indicatorColor="primary"
+                sx={{
+                  borderBottom: 1,
+                  borderColor: 'divider',
+                  '& .MuiTab-root': {
+                    textTransform: 'none',
+                    minWidth: 100,
+                    fontWeight: 500,
+                  },
+                }}
+              >
+                <Tab label="Overview" />
+                <Tab label="Analytics" />
+                <Tab label="Reports" />
+                <Tab label="Settings" />
+              </Tabs>
+            </Box>
+          </TopNavDefaultExport>
+          <Box p={3} bgcolor="#f5f5f5" minHeight="150px">
+            <Typography variant="body2" color="text.secondary">
+              Content for Tab {tabValue + 1}
+            </Typography>
+          </Box>
+        </Box>
+
+
+        {/* Breadcrumb Navigation Example */}
+        <Box mb={6}>
+          <Typography variant="subtitle2" color="text.secondary" mb={1}>
+            Breadcrumb Navigation
+          </Typography>
+          <TopNavDefaultExport name="breadcrumbNav" listener={mockListener}>
+            <Box p={2} bgcolor="#ffffff" borderBottom="1px solid #e0e0e0">
+              <Breadcrumbs aria-label="breadcrumb">
+                <Link href="#" underline="hover" color="inherit">
+                  Home
+                </Link>
+                <Link href="#" underline="hover" color="inherit">
+                  Projects
+                </Link>
+                <Link href="#" underline="hover" color="inherit">
+                  Web Application
+                </Link>
+                <Typography color="text.primary">Current Page</Typography>
+              </Breadcrumbs>
+            </Box>
+          </TopNavDefaultExport>
+          <Box p={3} bgcolor="#f5f5f5" minHeight="150px" mt={2}>
+            <Typography variant="body2" color="text.secondary">
+              Page content area for breadcrumb navigation
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    );
+  },
+};
+
+
 export const Basic: Story = {
   tags: ['show-panel'],
-  render: Template,
+  render: (args) => (
+    <Box style={{ padding: 16 }}>
+      <TopNavDefaultExport {...args} listener={mockListener}>
+        {args.children}
+      </TopNavDefaultExport>
+      <Box p={3} bgcolor="#f5f5f5" minHeight="300px" mt={2}>
+        <Typography variant="body2" color="text.secondary">
+          Page Content Area
+        </Typography>
+      </Box>
+    </Box>
+  ),
   args: {
     name: "basicTopNav",
-    listener: mockListener,
     children: (
       <Box p={2} bgcolor="#ffffff" borderBottom="1px solid #e0e0e0">
         <Stack direction="row" spacing={3}>
@@ -126,65 +205,75 @@ export const Basic: Story = {
 //   },
 // };
 
-export const HorizontalTabs: Story = {
-  tags: ['show-panel'],
-  render: () => {
-    const [value, setValue] = useState(0);
+// export const HorizontalTabs: Story = {
+//   tags: ['show-panel'],
+//   render: () => {
+//     const [value, setValue] = useState(0);
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-      setValue(newValue);
-    };
+//     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+//       setValue(newValue);
+//     };
 
-    return (
-      <Box style={{ padding: 16 }}>
-        <TopNavDefaultExport name="tabsNav" listener={mockListener}>
-          <Box bgcolor="#ffffff" borderBottom="1px solid #e0e0e0">
-            <Tabs value={value} onChange={handleChange} aria-label="navigation tabs">
-              <Tab label="Overview" />
-              <Tab label="Analytics" />
-              <Tab label="Reports" />
-              <Tab label="Settings" />
-            </Tabs>
-          </Box>
-        </TopNavDefaultExport>
-        <Box p={3} bgcolor="#f5f5f5" minHeight="300px" mt={2}>
-          <Typography variant="body2" color="text.secondary">
-            Content for Tab {value + 1}
-          </Typography>
-        </Box>
-      </Box>
-    );
-  },
-  args: {
-    name: "tabsNav",
-    listener: mockListener,
-  },
-};
+//     return (
+//       <Box style={{ padding: 16 }}>
+//         <TopNavDefaultExport name="tabsNav" listener={mockListener}>
+//           <Box bgcolor="#ffffff" borderBottom="1px solid #e0e0e0">
+//             <Tabs value={value} onChange={handleChange} aria-label="navigation tabs">
+//               <Tab label="Overview" />
+//               <Tab label="Analytics" />
+//               <Tab label="Reports" />
+//               <Tab label="Settings" />
+//             </Tabs>
+//           </Box>
+//         </TopNavDefaultExport>
+//         <Box p={3} bgcolor="#f5f5f5" minHeight="300px" mt={2}>
+//           <Typography variant="body2" color="text.secondary">
+//             Content for Tab {value + 1}
+//           </Typography>
+//         </Box>
+//       </Box>
+//     );
+//   },
+//   args: {
+//     name: "tabsNav",
+//     listener: mockListener,
+//   },
+// };
 
-export const BreadcrumbNavigation: Story = {
-  tags: ['show-panel'],
-  render: Template,
-  args: {
-    name: "breadcrumbNav",
-    listener: mockListener,
-    children: (
-      <Box p={2} bgcolor="#ffffff" borderBottom="1px solid #e0e0e0">
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link href="#" underline="hover" color="inherit">
-            Home
-          </Link>
-          <Link href="#" underline="hover" color="inherit">
-            Projects
-          </Link>
-          <Link href="#" underline="hover" color="inherit">
-            Web Application
-          </Link>
-          <Typography color="text.primary">Current Page</Typography>
-        </Breadcrumbs>
-      </Box>
-    ),
-  },
-};
+// export const BreadcrumbNavigation: Story = {
+//   tags: ['show-panel'],
+//   render: (args) => (
+//     <Box style={{ padding: 16 }}>
+//       <TopNavDefaultExport {...args} listener={mockListener}>
+//         {args.children}
+//       </TopNavDefaultExport>
+//       <Box p={3} bgcolor="#f5f5f5" minHeight="300px" mt={2}>
+//         <Typography variant="body2" color="text.secondary">
+//           Page Content Area
+//         </Typography>
+//       </Box>
+//     </Box>
+//   ),
+//   args: {
+//     name: "breadcrumbNav",
+//     children: (
+//       <Box p={2} bgcolor="#ffffff" borderBottom="1px solid #e0e0e0">
+//         <Breadcrumbs aria-label="breadcrumb">
+//           <Link href="#" underline="hover" color="inherit">
+//             Home
+//           </Link>
+//           <Link href="#" underline="hover" color="inherit">
+//             Projects
+//           </Link>
+//           <Link href="#" underline="hover" color="inherit">
+//             Web Application
+//           </Link>
+//           <Typography color="text.primary">Current Page</Typography>
+//         </Breadcrumbs>
+//       </Box>
+//     ),
+//   },
+// };
 
 // export const NavigationWithButtons: Story = {
 //   render: Template,

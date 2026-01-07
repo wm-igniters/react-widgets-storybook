@@ -15,7 +15,7 @@ const meta: Meta<typeof FooterDefaultExport> = {
   title: "Layout/Footer",
   component: FooterDefaultExport,
   argTypes: {
-    show: { control: "boolean" },
+    // show: { control: "boolean" },
     className: { control: "text" },
   },
 };
@@ -57,127 +57,156 @@ export const Docs: Story = {
 export const Showcase: Story = {
   render: Template,
   args: {
-    name: "showcaseFooter",
+    name: "footerShowcase",
     listener: mockListener,
     children: (
-      <Box bgcolor="#212121" color="#ffffff">
-        <Box p={5}>
-          <Grid container spacing={4}>
-            <Grid item xs={12} md={4}>
-              <Typography variant="h5" gutterBottom>
-                Company Name
-              </Typography>
-              <Typography variant="body2" color="#b0b0b0" mb={2}>
-                Building amazing products that help people achieve their goals and dreams.
-              </Typography>
-              <Stack direction="row" spacing={1}>
-                <IconButton size="small" sx={{ color: "#ffffff" }}>
-                  <i className="fa fa-facebook" />
-                </IconButton>
-                <IconButton size="small" sx={{ color: "#ffffff" }}>
-                  <i className="fa fa-twitter" />
-                </IconButton>
-                <IconButton size="small" sx={{ color: "#ffffff" }}>
-                  <i className="fa fa-linkedin" />
-                </IconButton>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4} md={2}>
-              <Typography variant="h6" gutterBottom>
-                Product
-              </Typography>
-              <Stack spacing={1.5}>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Features
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Pricing
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Enterprise
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Roadmap
-                </Link>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4} md={2}>
-              <Typography variant="h6" gutterBottom>
-                Company
-              </Typography>
-              <Stack spacing={1.5}>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  About
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Blog
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Careers
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Press
-                </Link>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4} md={2}>
-              <Typography variant="h6" gutterBottom>
-                Resources
-              </Typography>
-              <Stack spacing={1.5}>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Documentation
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Help Center
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  API Reference
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Community
-                </Link>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4} md={2}>
-              <Typography variant="h6" gutterBottom>
-                Legal
-              </Typography>
-              <Stack spacing={1.5}>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Privacy
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Terms
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Security
-                </Link>
-                <Link href="#" color="#b0b0b0" underline="hover">
-                  Cookies
-                </Link>
-              </Stack>
-            </Grid>
-          </Grid>
-        </Box>
-        <Divider sx={{ bgcolor: "#404040" }} />
-        <Box p={2} display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="body2" color="#b0b0b0">
-            © 2024 Wavemaker. All rights reserved.
+      <Stack spacing={4} px={{ xs: 2, md: 3 }} py={3}>
+
+        {/* Header */}
+        <Box>
+          <Typography variant="h6" fontWeight={600}>
+            Footer Showcase
           </Typography>
-          <Stack direction="row" spacing={2}>
-            <Link href="#" variant="body2" color="#b0b0b0">
-              Privacy Policy
-            </Link>
-            <Link href="#" variant="body2" color="#b0b0b0">
-              Terms of Service
-            </Link>
-          </Stack>
         </Box>
-      </Box>
+
+        {/* Footer with Links */}
+        <Stack spacing={1}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Footer Links
+          </Typography>
+
+          <Box bgcolor="#2c3e50" color="#ffffff" px={3} py={3}>
+            <Stack spacing={3} alignItems="center">
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={4}
+                alignItems="center"
+              >
+                <Link href="#" color="inherit" underline="hover">About</Link>
+                <Link href="#" color="inherit" underline="hover">Contact</Link>
+                <Link href="#" color="inherit" underline="hover">Privacy Policy</Link>
+                <Link href="#" color="inherit" underline="hover">Terms of Service</Link>
+              </Stack>
+
+              <Divider flexItem sx={{ bgcolor: "rgba(255,255,255,0.2)" }} />
+
+              <Typography variant="body2" color="rgba(255,255,255,0.7)">
+                © 2024 Company Name. All rights reserved.
+              </Typography>
+            </Stack>
+          </Box>
+        </Stack>
+
+        {/* Footer with Social Media */}
+        <Stack spacing={1}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Footer Social
+          </Typography>
+
+          <Box bgcolor="#34495e" color="#ffffff" px={3} py={3}>
+            <Stack spacing={2} alignItems="center">
+              <Stack direction="row" spacing={2}>
+                {["facebook", "twitter", "linkedin", "instagram"].map((icon) => (
+                  <IconButton
+                    key={icon}
+                    size="small"
+                    sx={{
+                      color: "#fff",
+                      bgcolor: "rgba(255,255,255,0.12)",
+                      "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
+                    }}
+                  >
+                    <i className={`fa fa-${icon}`} />
+                  </IconButton>
+                ))}
+              </Stack>
+
+              <Typography variant="body2" color="rgba(255,255,255,0.7)">
+                © 2024 Company Name. All rights reserved.
+              </Typography>
+            </Stack>
+          </Box>
+        </Stack>
+
+        {/* Footer with Contact */}
+        <Stack spacing={1}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Footer Contact
+          </Typography>
+
+          <Box bgcolor="#ffffff" px={3} py={3}>
+            <Stack spacing={3}>
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                spacing={4}
+              >
+                {/* Contact */}
+                <Stack spacing={1} flex={1}>
+                  <Typography variant="subtitle2" fontWeight={500}>
+                    Contact Us
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <i className="fa fa-map-marker" style={{ marginRight: 6 }} />
+                    123 Main Street, City
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <i className="fa fa-phone" style={{ marginRight: 6 }} />
+                    (123) 456-7890
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <i className="fa fa-envelope" style={{ marginRight: 6 }} />
+                    contact@company.com
+                  </Typography>
+                </Stack>
+
+                {/* Quick Links */}
+                <Stack spacing={1} flex={1}>
+                  <Typography variant="subtitle2" fontWeight={500}>
+                    Quick Links
+                  </Typography>
+                  <Link underline="hover">Home</Link>
+                  <Link underline="hover">Services</Link>
+                  <Link underline="hover">Portfolio</Link>
+                  <Link underline="hover">Contact</Link>
+                </Stack>
+
+                {/* Social */}
+                <Stack spacing={1} flex={1}>
+                  <Typography variant="subtitle2" fontWeight={500}>
+                    Follow Us
+                  </Typography>
+                  <Stack direction="row" spacing={1}>
+                    <IconButton size="small" sx={{ bgcolor: "#1976d2", color: "#fff" }}>
+                      <i className="fa fa-facebook" />
+                    </IconButton>
+                    <IconButton size="small" sx={{ bgcolor: "#1da1f2", color: "#fff" }}>
+                      <i className="fa fa-twitter" />
+                    </IconButton>
+                    <IconButton size="small" sx={{ bgcolor: "#0077b5", color: "#fff" }}>
+                      <i className="fa fa-linkedin" />
+                    </IconButton>
+                  </Stack>
+                </Stack>
+              </Stack>
+
+              <Divider />
+
+              <Typography
+                variant="body2"
+                textAlign="center"
+                color="text.secondary"
+              >
+                © 2024 Company Name. All rights reserved.
+              </Typography>
+            </Stack>
+          </Box>
+        </Stack>
+
+      </Stack>
     ),
   },
 };
+
 
 export const Basic: Story = {
   tags: ['show-panel'],
@@ -185,7 +214,7 @@ export const Basic: Story = {
   args: {
     name: "basicFooter",
     listener: mockListener,
-    show:true,
+    // show:true,
     children: (
       <Box p={3} textAlign="center">
         <Typography variant="body2" color="text.secondary">

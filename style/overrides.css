@@ -96,3 +96,8 @@ body.sb-show-main {
 .wm-app .app-search.input-group .form-control-feedback.clear-btn.show-btn .app-icon.wi.wi-close{
   font-size: 16px;
 }
+
+/* foundation css button border styles impacting mui tabs */
+.css-1hwtygc-MuiTabs-root .MuiTab-root{
+  border: none !important;
+}
