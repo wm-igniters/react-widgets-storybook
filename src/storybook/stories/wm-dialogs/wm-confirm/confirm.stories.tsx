@@ -81,6 +81,130 @@ export const Docs: Story = {
   },
 };
 
+export const Showcase: Story = {
+  render: () => {
+    const [openDialogs, setOpenDialogs] = useState<{
+      delete: boolean;
+      save: boolean;
+      logout: boolean;
+    }>({
+      delete: false,
+      save: false,
+      logout: false,
+    });
+
+    const handleOpen = (type: "delete" | "save" | "logout") => {
+      setOpenDialogs((prev) => ({ ...prev, [type]: true }));
+    };
+
+    const handleClose = (type: "delete" | "save" | "logout") => {
+      setOpenDialogs((prev) => ({ ...prev, [type]: false }));
+    };
+
+    return (
+      <Box style={{ padding: 16 }}>
+        <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap", gap: 2 }}>
+          <WmButton
+            name="openDeleteBtn"
+            caption="Delete Item"
+            onClick={() => handleOpen("delete")}
+            listener={mockListener}
+            styles={{
+              backgroundColor: "#f44336",
+              color: "white",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          />
+          <WmButton
+            name="openSaveBtn"
+            caption="Save Changes"
+            onClick={() => handleOpen("save")}
+            listener={mockListener}
+            styles={{
+              backgroundColor: "#5AC588",
+              color: "white",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          />
+          <WmButton
+            name="openLogoutBtn"
+            caption="Logout"
+            onClick={() => handleOpen("logout")}
+            listener={mockListener}
+            styles={{
+              backgroundColor: "#00c8ff",
+              color: "white",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          />
+        </Stack>
+
+        <ConfirmDialogDefaultExport
+          name="deleteConfirm"
+          title="Delete Item"
+          message="Are you sure you want to delete this item?"
+          oktext="Delete"
+          canceltext="Cancel"
+          iconclass="wi wi-trash"
+          isopen={openDialogs.delete}
+          onClose={() => handleClose("delete")}
+          close={() => handleClose("delete")}
+          onOk={() => handleClose("delete")}
+          onCancel={() => handleClose("delete")}
+          listener={mockListener}
+        />
+        <ConfirmDialogDefaultExport
+          name="saveConfirm"
+          title="Save Changes"
+          message="Do you want to save your changes?"
+          oktext="Save"
+          canceltext="Discard"
+          iconclass="wi wi-save"
+          isopen={openDialogs.save}
+          onClose={() => handleClose("save")}
+          close={() => handleClose("save")}
+          onOk={() => handleClose("save")}
+          onCancel={() => handleClose("save")}
+          listener={mockListener}
+        />
+        <ConfirmDialogDefaultExport
+          name="logoutConfirm"
+          title="Logout"
+          message="Are you sure you want to logout?"
+          oktext="Yes"
+          canceltext="No"
+          iconclass="wi wi-sign-out"
+          isopen={openDialogs.logout}
+          onClose={() => handleClose("logout")}
+          close={() => handleClose("logout")}
+          onOk={() => handleClose("logout")}
+          onCancel={() => handleClose("logout")}
+          listener={mockListener}
+        />
+      </Box>
+    );
+  },
+  args:{
+    name:"showcaseConfirmDialog",
+    listener:mockListener
+  }
+};
+
 export const Basic: Story = {
   tags: ['show-panel'],
   render: Template,
@@ -238,126 +362,6 @@ export const Basic: Story = {
 //             listener={mockListener}
 //           />
 //         </Stack>
-//       </Box>
-//     );
-//   },
-// };
-
-// export const MultipleConfirms: Story = {
-//   render: () => {
-//     const [openDialogs, setOpenDialogs] = useState<{
-//       delete: boolean;
-//       save: boolean;
-//       logout: boolean;
-//     }>({
-//       delete: false,
-//       save: false,
-//       logout: false,
-//     });
-
-//     const handleOpen = (type: "delete" | "save" | "logout") => {
-//       setOpenDialogs((prev) => ({ ...prev, [type]: true }));
-//     };
-
-//     const handleClose = (type: "delete" | "save" | "logout") => {
-//       setOpenDialogs((prev) => ({ ...prev, [type]: false }));
-//     };
-
-//     return (
-//       <Box style={{ padding: 16 }}>
-//         <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap", gap: 2 }}>
-//           <WmButton
-//             name="openDeleteBtn"
-//             caption="Delete Item"
-//             onClick={() => handleOpen("delete")}
-//             listener={mockListener}
-//             styles={{
-//               backgroundColor: "#dc3545",
-//               color: "white",
-//               padding: "8px 16px",
-//               border: "none",
-//               borderRadius: "4px",
-//               cursor: "pointer",
-//               fontSize: "14px",
-//               fontWeight: "500",
-//             }}
-//           />
-//           <WmButton
-//             name="openSaveBtn"
-//             caption="Save Changes"
-//             onClick={() => handleOpen("save")}
-//             listener={mockListener}
-//             styles={{
-//               backgroundColor: "#28a745",
-//               color: "white",
-//               padding: "8px 16px",
-//               border: "none",
-//               borderRadius: "4px",
-//               cursor: "pointer",
-//               fontSize: "14px",
-//               fontWeight: "500",
-//             }}
-//           />
-//           <WmButton
-//             name="openLogoutBtn"
-//             caption="Logout"
-//             onClick={() => handleOpen("logout")}
-//             listener={mockListener}
-//             styles={{
-//               backgroundColor: "#6c757d",
-//               color: "white",
-//               padding: "8px 16px",
-//               border: "none",
-//               borderRadius: "4px",
-//               cursor: "pointer",
-//               fontSize: "14px",
-//               fontWeight: "500",
-//             }}
-//           />
-//         </Stack>
-
-//         <ConfirmDialogDefaultExport
-//           name="deleteConfirm"
-//           title="Delete Item"
-//           message="Are you sure you want to delete this item?"
-//           oktext="Delete"
-//           canceltext="Cancel"
-//           iconclass="wi wi-trash"
-//           isopen={openDialogs.delete}
-//           onClose={() => handleClose("delete")}
-//           close={() => handleClose("delete")}
-//           onOk={() => handleClose("delete")}
-//           onCancel={() => handleClose("delete")}
-//           listener={mockListener}
-//         />
-//         <ConfirmDialogDefaultExport
-//           name="saveConfirm"
-//           title="Save Changes"
-//           message="Do you want to save your changes?"
-//           oktext="Save"
-//           canceltext="Discard"
-//           iconclass="wi wi-save"
-//           isopen={openDialogs.save}
-//           onClose={() => handleClose("save")}
-//           close={() => handleClose("save")}
-//           onOk={() => handleClose("save")}
-//           onCancel={() => handleClose("save")}
-//           listener={mockListener}
-//         />
-//         <ConfirmDialogDefaultExport
-//           name="logoutConfirm"
-//           title="Logout"
-//           message="Are you sure you want to logout?"
-//           oktext="Yes"
-//           canceltext="No"
-//           iconclass="wi wi-sign-out"
-//           isopen={openDialogs.logout}
-//           onClose={() => handleClose("logout")}
-//           close={() => handleClose("logout")}
-//           onOk={() => handleClose("logout")}
-//           onCancel={() => handleClose("logout")}
-//           listener={mockListener}
-//         />
 //       </Box>
 //     );
 //   },
