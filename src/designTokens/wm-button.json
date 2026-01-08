@@ -6,6 +6,11 @@
           "web": ".app-button,button,.btn",
           "mobile": ".app-button"
         },
+        "childSelectors": {
+          "text": ".btn-caption",
+          "icon": ".app-icon, i",
+          "badge": ".badge"
+        },
         "states": {
           "hover": {
             "selector": {
@@ -23,6 +28,12 @@
             "selector": {
               "web": ":active,:active::before,:active::before,:active:focus::before,:active:focus::before,:active:hover::before,:active:hover::before,:active.focus::before,:active.focus::before",
               "mobile": ".active"
+            }
+          },
+          "disabled": {
+            "selector": {
+              "mobile": ".disabled",
+              "web": "[disabled]"
             }
           }
         }
@@ -54,12 +65,36 @@
           "description": "Controls how large the button text appears (the text content within clickable buttons). This affects the size of the button text that users see and interact with.<br>CSS variable: --wm-btn-font-size"
         }
       },
+      "font-family": {
+        "value": "{label.large.font-family.value}",
+        "type": "font",
+        "attributes": {
+          "subtype": "font-family",
+          "description": "Sets the typeface (font style) for button text (the text content within clickable buttons). This determines whether the button text appears in Arial, Times New Roman, or other font styles.<br>CSS variable: --wm-btn-font-family"
+        }
+      },
       "font-weight": {
         "value": "{label.large.font-weight.value}",
         "type": "font",
         "attributes": {
           "subtype": "font-weight",
           "description": "Controls how thick or bold the button text appears (the text content within clickable buttons). 'normal' makes it regular weight, 'bold' makes it thicker, and numbers (100-900) provide fine control over thickness.<br>CSS variable: --wm-btn-font-weight"
+        }
+      },
+      "line-height": {
+        "value": "{label.large.line-height.value}",
+        "type": "font",
+        "attributes": {
+          "subtype": "line-height",
+          "description": "Controls the vertical spacing between lines when button text wraps to multiple lines. This ensures proper spacing for the button text displayed in the button.<br>CSS variable: --wm-btn-line-height"
+        }
+      },
+      "letter-spacing": {
+        "value": "{label.large.letter-spacing.value}",
+        "type": "font",
+        "attributes": {
+          "subtype": "letter-spacing",
+          "description": "Controls the horizontal spacing between individual characters in button text (the text content within clickable buttons). This can help make the button text more readable and properly spaced.<br>CSS variable: --wm-btn-letter-spacing"
         }
       },
       "text-transform": {
@@ -191,7 +226,7 @@
                 "type": "radius",
                 "attributes": {
                   "subtype": "opacity",
-                  "description": "Controls the overlay opacity when you HOVER your mouse over the button. Creates a subtle darkening/lightening effect. Default 0.08 (8%) is subtle - increase to 0.3 (30%) to see it clearly. This provides visual feedback that the button is interactive.<br>Usage: Move your mouse over the button to see this effect.<br>CSS variable: --wm-btn-states-hover-state-layer-opacity"
+                  "description": "Controls the transparency of the state layer overlay when hovering over the button. Value ranges from 0 (invisible) to 1 (fully visible). Default is 8% (0.08) for subtle hover feedback.<br>CSS variable: --wm-btn-states-hover-state-layer-opacity"
                 }
               }
             }
@@ -205,7 +240,7 @@
                 "type": "radius",
                 "attributes": {
                   "subtype": "opacity",
-                  "description": "Controls the overlay opacity when the button is FOCUSED (selected via keyboard Tab or clicked). Creates a subtle highlight effect. Default 0.12 (12%) is subtle - increase to 0.5 (50%) to see it clearly. This provides visual feedback for keyboard navigation and accessibility.<br>Usage: Press Tab key to focus the button, or click it to see this effect.<br>CSS variable: --wm-btn-states-focus-state-layer-opacity"
+                  "description": "Controls the transparency of the state layer overlay when the button receives keyboard focus. Value ranges from 0 (invisible) to 1 (fully visible). Default is 12% (0.12) for clear focus indication.<br>CSS variable: --wm-btn-states-focus-state-layer-opacity"
                 }
               }
             }
@@ -219,9 +254,62 @@
                 "type": "radius",
                 "attributes": {
                   "subtype": "opacity",
-                  "description": "Controls the overlay opacity when the button is ACTIVE (mouse button pressed down). Creates a 'pushed down' visual effect. Default 0.12 (12%) is subtle - increase to 0.4 (40%) to see it clearly. This provides tactile feedback during the click action.<br>Usage: Click and HOLD the mouse button on the button to see this effect.<br>CSS variable: --wm-btn-states-active-state-layer-opacity"
+                  "description": "Controls the transparency of the state layer overlay when the button is being pressed/clicked. Value ranges from 0 (invisible) to 1 (fully visible). Default is 16% (0.16) for strong active feedback.<br>CSS variable: --wm-btn-states-active-state-layer-opacity"
                 }
               }
+            }
+          }
+        },
+        "disabled": {
+          "color": {
+            "value": "{color.on-surface.@.value}",
+            "type": "color",
+            "attributes": {
+              "subtype": "color",
+              "description": "Sets the text color for disabled buttons. Uses the default on-surface color but with reduced opacity (0.38) applied globally to the entire button.<br>CSS variable: --wm-btn-states-disabled-color"
+            }
+          },
+          "background": {
+            "value": "{color.surface.container.highest.@.value}",
+            "type": "color",
+            "attributes": {
+              "subtype": "color",
+              "description": "Sets the background color for disabled buttons. Uses a neutral surface color to indicate non-interactive state.<br>CSS variable: --wm-btn-states-disabled-background"
+            }
+          },
+          "border": {
+            "color": {
+              "value": "{color.surface.container.highest.@.value}",
+              "type": "color",
+              "attributes": {
+                "subtype": "color",
+                "description": "Sets the border color for disabled buttons. Matches the background color for a subtle, non-interactive appearance.<br>CSS variable: --wm-btn-states-disabled-border-color"
+              }
+            }
+          },
+          "opacity": {
+            "value": "0.38",
+            "type": "radius",
+            "attributes": {
+              "subtype": "opacity",
+              "description": "Controls the transparency of disabled buttons. When set to 0.38 (38% opacity), the button appears dimmed to indicate it's not interactive. This provides visual feedback that the button cannot be clicked.<br>CSS variable: --wm-btn-opacity (disabled state)"
+            }
+          },
+          "shadow": {
+            "@": {
+              "value": "none",
+              "type": "radius",
+              "attributes": {
+                "subtype": "elevation",
+                "description": "Removes the drop shadow from disabled buttons. This creates a flat appearance that reinforces the disabled state visually.<br>CSS variable: --wm-btn-shadow (disabled state)"
+              }
+            }
+          },
+          "cursor": {
+            "value": "not-allowed",
+            "type": "radius",
+            "attributes": {
+              "description": "Sets the mouse cursor to 'not-allowed' (blocked cursor) when hovering over disabled buttons. This provides immediate visual feedback that the button cannot be clicked.<br>CSS variable: --wm-btn-cursor (disabled state)"
             }
           }
         }
@@ -385,8 +473,7 @@
             "value": "{color.transparent.value}",
             "type": "color",
             "attributes": {
-              "subtype": "color",
-              "description": "Background color for OUTLINED buttons. Default is 'transparent' which gives the hollow/outlined appearance. You CAN change this to any color (e.g., '#f0f0f0' for a light gray background), but it will make the button less 'outlined' in appearance. Outlined buttons are meant to be subtle with just a border and no fill.<br>Tip: For outlined buttons, the border-color is more important than background.<br>CSS variable: --wm-btn-background"
+              "subtype": "color"
             }
           }
         },

@@ -22,8 +22,9 @@
 import React, { useState, useEffect } from "react";
 import { useStorybookApi } from "storybook/manager-api";
 import { styled } from "storybook/theming";
-import { DesignTokenParameters, TokenDefinition } from "./types";
-import { getTokensForClassName } from "./tokenParser";
+import { DesignTokenParameters, TokenDefinition, ComponentTokenConfig } from "./types";
+import { getTokensForClassName, parseDesignTokens } from "./tokenParser";
+import { extractCSSVariables, buildTokenReferenceMap, clearCache } from "./cssVariableExtractor";
 
 // ============================================================================
 // STYLED COMPONENTS
@@ -230,6 +231,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
   const [currentClassName, setCurrentClassName] = useState<string>("");
   const [tokens, setTokens] = useState<Record<string, string>>({});
   const [defaultTokens, setDefaultTokens] = useState<Record<string, string>>({});
+  const [cssVariableMap, setCssVariableMap] = useState<Map<string, string>>(new Map());
 
   // Track previous className to detect actual changes (not re-renders)
   const prevClassNameRef = React.useRef<string>("");
@@ -254,25 +256,44 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
     const updateStoryData = () => {
       const storyId = api.getUrlState().storyId;
-      if (storyId) {
-        const storyData = api.getData(storyId);
-        const designTokenParams = storyData?.parameters?.designTokens as DesignTokenParameters;
-        setParameters(designTokenParams || { enabled: false });
-
-        // Get className from args (Controls tab) if available, otherwise from parameters
-        const argsClassName = (storyData as any)?.args?.className as string;
-        const className = argsClassName || designTokenParams?.className || "";
-        setCurrentClassName(className);
-
-        // Mark as loaded after first data fetch
-        setIsLoading(false);
+      if (!storyId) {
+        // console.log('[Design Tokens] No story ID available yet');
+        return;
       }
+
+      const storyData = api.getData(storyId);
+      if (!storyData) {
+        // console.log('[Design Tokens] No story data available yet');
+        return;
+      }
+
+      const designTokenParams = storyData?.parameters?.designTokens as DesignTokenParameters;
+      setParameters(designTokenParams || { enabled: false });
+
+      // Get className from args (Controls tab) if available, otherwise from parameters
+      const argsClassName = (storyData as any)?.args?.className as string;
+      const className = argsClassName || designTokenParams?.className || "";
+      setCurrentClassName(className);
+
+      // Mark as loaded after a brief delay to ensure loading state is visible
+      setTimeout(() => setIsLoading(false), 100);
     };
 
-    updateStoryData();
+    // Set loading to true when story changes, then update after a brief delay
+    const handleStoryChanged = () => {
+      setIsLoading(true);
+      // Reset state
+      hasAppliedInitialTokensRef.current = false;
+      prevClassNameRef.current = "";
+      // Update data after a brief delay to ensure iframe is ready
+      setTimeout(updateStoryData, 150);
+    };
+
+    // Initial load with delay to ensure story is fully loaded
+    setTimeout(updateStoryData, 100);
 
     // Listen to story and args changes
-    const unsubscribeStoryChanged = api.on("storyChanged", updateStoryData);
+    const unsubscribeStoryChanged = api.on("storyChanged", handleStoryChanged);
     const unsubscribeArgsUpdated = api.on("argsUpdated", updateStoryData);
 
     return () => {
@@ -282,20 +303,117 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
   }, [api]);
 
   /**
+   * Effect: Extract CSS variables from iframe when runtime extraction is enabled
+   *
+   * This effect:
+   * 1. Checks if runtime extraction is enabled in parameters
+   * 2. Waits for iframe to be ready
+   * 3. Extracts all CSS variables from iframe's :root element
+   * 4. Builds token reference map for resolving {token.path} references
+   * 5. Updates cssVariableMap state
+   *
+   * The extraction happens once when the story loads and whenever the story changes.
+   */
+  useEffect(() => {
+    // Only run if runtime extraction is enabled
+    if (!parameters.enabled || !parameters.extractCSSVariablesAtRuntime) {
+      return;
+    }
+
+    // Clear cache when story changes
+    clearCache();
+
+    // Extract CSS variables with retry logic
+    const extractWithRetry = (attempt = 1, maxAttempts = 8) => {
+      const iframe = document.querySelector("#storybook-preview-iframe") as HTMLIFrameElement;
+
+      if (!iframe || !iframe.contentDocument || !iframe.contentWindow) {
+        if (attempt < maxAttempts) {
+          // console.log(`[Design Tokens] Iframe not ready for CSS extraction, retrying... (attempt ${attempt}/${maxAttempts})`);
+          setTimeout(() => extractWithRetry(attempt + 1, maxAttempts), 150);
+        } else {
+          // console.error('[Design Tokens] Failed to extract CSS variables: iframe not ready after max attempts');
+        }
+        return;
+      }
+
+      try {
+        // Extract CSS variables from iframe
+        const extractedVars = extractCSSVariables(iframe);
+
+        if (extractedVars.size === 0) {
+          if (attempt < maxAttempts) {
+            // console.log(`[Design Tokens] No CSS variables extracted yet, retrying... (attempt ${attempt}/${maxAttempts})`);
+            setTimeout(() => extractWithRetry(attempt + 1, maxAttempts), 150);
+          } else {
+            // console.warn('[Design Tokens] No CSS variables extracted after max attempts');
+          }
+          return;
+        }
+
+        // Build token reference map
+        const referenceMap = buildTokenReferenceMap(extractedVars);
+
+        // Update state
+        setCssVariableMap(referenceMap);
+
+        // console.log(`[Design Tokens] ✓ CSS extraction successful (attempt ${attempt})`);
+        // console.log(`  → Extracted ${extractedVars.size} CSS variables`);
+        // console.log(`  → Built ${referenceMap.size} token reference mappings`);
+      } catch (error) {
+        // console.error('[Design Tokens] Error during CSS extraction:', error);
+      }
+    };
+
+    // Start extraction with retry logic
+    extractWithRetry();
+  }, [parameters]);
+
+  /**
    * Effect: Initialize tokens when parameters or className change
    *
    * This effect:
-   * 1. Reads tokenConfig from parameters
-   * 2. If className is provided, gets variant-specific tokens
-   * 3. Creates initial token values object
-   * 4. Applies tokens to the iframe (sets CSS variables and injects CSS)
+   * 1. Reads tokenData + componentKey (new approach) OR tokenConfig (old approach) from parameters
+   * 2. If using new approach, parses tokens at runtime with CSS variables
+   * 3. If className is provided, gets variant-specific tokens
+   * 4. Creates initial token values object
+   * 5. Stores tokens in state (but doesn't apply them yet - only applies when panel becomes active)
+   * 6. Uses runtime-resolved values if cssVariableMap is available
    *
    * IMPORTANT: Only resets user changes when className actually changes,
    * not on every re-render!
    */
   useEffect(() => {
-    if (parameters.enabled && parameters.tokenConfig) {
-      const { tokenConfig } = parameters;
+    if (!parameters.enabled) return;
+
+    // Determine which approach to use: new (tokenData + componentKey) or old (tokenConfig)
+    let tokenConfig: ComponentTokenConfig | undefined;
+
+    if (parameters.tokenData && parameters.componentKey) {
+      // NEW APPROACH: Parse tokens at runtime with extracted CSS variables
+      // This ensures values are always in sync with foundation.css
+      if (parameters.extractCSSVariablesAtRuntime && cssVariableMap.size > 0) {
+        // console.log(`[Design Tokens] Parsing tokens at runtime with ${cssVariableMap.size} CSS variables`);
+        tokenConfig = parseDesignTokens(parameters.tokenData, parameters.componentKey, cssVariableMap);
+      } else if (parameters.extractCSSVariablesAtRuntime) {
+        // CSS variables not extracted yet, wait for them
+        // console.log(`[Design Tokens] Waiting for CSS variables to be extracted...`);
+        return;
+      } else {
+        // Runtime extraction not enabled, parse with fallback values
+        // console.warn(`[Design Tokens] Runtime extraction disabled, using fallback values`);
+        tokenConfig = parseDesignTokens(parameters.tokenData, parameters.componentKey);
+      }
+    } else if (parameters.tokenConfig) {
+      // OLD APPROACH: Use pre-parsed tokenConfig (deprecated but supported for backward compatibility)
+      // console.warn(`[Design Tokens] Using deprecated pre-parsed tokenConfig. Consider passing tokenData + componentKey instead.`);
+      tokenConfig = parameters.tokenConfig;
+    } else {
+      // console.error(`[Design Tokens] No token configuration found. Provide either (tokenData + componentKey) or tokenConfig.`);
+      return;
+    }
+
+    if (tokenConfig) {
       let tokensToUse = tokenConfig.tokens;
 
       // Get variant-specific tokens if className is provided
@@ -305,6 +423,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
       }
 
       // Convert token array to key-value pairs
+      // Token values are already resolved (either at runtime or with fallback)
       const initialTokens: Record<string, string> = {};
       tokensToUse.forEach((token: TokenDefinition) => {
         initialTokens[token.name] = token.value;
@@ -316,26 +435,31 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
       if (classNameChanged || isFirstLoad) {
         if (isFirstLoad) {
-          console.log(`[Design Tokens] First load - applying initial tokens`);
+          // console.log(`[Design Tokens] First load - preparing initial tokens`);
           hasAppliedInitialTokensRef.current = true;
         } else {
-          console.log(`[Design Tokens] ClassName changed: ${prevClassNameRef.current} → ${currentClassName}`);
+          // console.log(`[Design Tokens] ClassName changed: ${prevClassNameRef.current} → ${currentClassName}`);
         }
 
-        console.log(`[Design Tokens] Resetting tokens to defaults for variant: ${currentClassName}`);
-        console.log(`[Design Tokens] Token count: ${Object.keys(initialTokens).length}`);
+        // console.log(`[Design Tokens] Preparing tokens for variant: ${currentClassName}`);
+        // console.log(`[Design Tokens] Token count: ${Object.keys(initialTokens).length}`);
 
         prevClassNameRef.current = currentClassName;
 
         setDefaultTokens(initialTokens);
         setTokens(initialTokens);
-        applyTokens(initialTokens);
+
+        // Only apply tokens if the panel is currently active
+        // This prevents interference with story rendering when on other tabs
+        if (active) {
+          applyTokens(initialTokens);
+        }
       } else if (Object.keys(initialTokens).length > 0) {
         // Just update defaults, tokens state will be preserved
         setDefaultTokens(initialTokens);
       }
     }
-  }, [parameters, currentClassName]);
+  }, [parameters, currentClassName, cssVariableMap, active]);
 
   /**
    * Effect: Re-apply tokens when panel becomes active
@@ -348,12 +472,14 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
     const becameActive = !prevActiveRef.current && active;
     prevActiveRef.current = active;
 
-    if (becameActive && Object.keys(tokens).length > 0) {
-      console.log(`[Design Tokens] Panel became active - re-applying tokens`);
-      // Small delay to ensure panel is fully rendered
-      setTimeout(() => applyTokens(tokens), 50);
+    if (becameActive && Object.keys(tokens).length > 0 && parameters.enabled) {
+      // console.log(`[Design Tokens] Panel became active - applying tokens`);
+      // Delay to ensure iframe is fully ready and panel is rendered
+      setTimeout(() => {
+        applyTokens(tokens);
+      }, 200);
     }
-  }, [active]);
+  }, [active, tokens, parameters.enabled]);
 
   /**
    * Applies tokens to the Storybook preview iframe
@@ -371,30 +497,53 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
     const iframe = document.querySelector("#storybook-preview-iframe") as HTMLIFrameElement;
 
     // Helper function to apply tokens once iframe and buttons are ready
-    const applyTokensToIframe = (attempt = 1, maxAttempts = 10) => {
+    const applyTokensToIframe = (attempt = 1, maxAttempts = 5) => {
       if (!iframe || !iframe.contentDocument) {
-        // Iframe not ready yet, retry
+        // Iframe not ready yet, retry with reduced attempts
         if (attempt < maxAttempts) {
-          console.log(`[Design Tokens] Iframe not ready, retrying... (attempt ${attempt}/${maxAttempts})`);
-          setTimeout(() => applyTokensToIframe(attempt + 1, maxAttempts), 100);
+          // console.log(`[Design Tokens] Iframe not ready, retrying... (attempt ${attempt}/${maxAttempts})`);
+          setTimeout(() => applyTokensToIframe(attempt + 1, maxAttempts), 200);
         } else {
-          console.error('[Design Tokens] Failed to apply tokens: iframe not ready after max attempts');
+          // console.error('[Design Tokens] Failed to apply tokens: iframe not ready after max attempts');
         }
         return;
       }
 
-      // Check if buttons are rendered
-      const targetButtons = iframe.contentDocument.querySelectorAll('button[data-design-token-target="true"]');
-      if (targetButtons.length === 0 && attempt < maxAttempts) {
-        // Buttons not rendered yet, retry
-        console.log(`[Design Tokens] Buttons not rendered yet, retrying... (attempt ${attempt}/${maxAttempts})`);
-        setTimeout(() => applyTokensToIframe(attempt + 1, maxAttempts), 100);
+      // Get token config first - need it to determine component selector
+      let tokenConfig: ComponentTokenConfig | undefined;
+
+      if (parameters.tokenData && parameters.componentKey) {
+        // NEW APPROACH: Parse tokens at runtime
+        if (parameters.extractCSSVariablesAtRuntime && cssVariableMap.size > 0) {
+          tokenConfig = parseDesignTokens(parameters.tokenData, parameters.componentKey, cssVariableMap);
+        } else {
+          tokenConfig = parseDesignTokens(parameters.tokenData, parameters.componentKey);
+        }
+      } else if (parameters.tokenConfig) {
+        // OLD APPROACH: Use pre-parsed tokenConfig
+        tokenConfig = parameters.tokenConfig;
+      }
+
+      if (!tokenConfig) {
+        // console.error('[Design Tokens] No token configuration available for applying tokens');
         return;
       }
 
-      // Iframe and buttons are ready, apply tokens
-      if (parameters.tokenConfig) {
-        const { componentName, selector } = parameters.tokenConfig;
+      // Check if target elements are rendered (generic for any component)
+      // Use the component's selector with data-design-token-target attribute
+      const targetSelector = `[data-design-token-target="true"]`;
+      const targetElements = iframe.contentDocument.querySelectorAll(targetSelector);
+
+      if (targetElements.length === 0 && attempt < maxAttempts) {
+        // Target elements not rendered yet, retry with longer delay
+        // console.log(`[Design Tokens] Target elements (${tokenConfig.componentName}) not rendered yet, retrying... (attempt ${attempt}/${maxAttempts})`);
+        setTimeout(() => applyTokensToIframe(attempt + 1, maxAttempts), 200);
+        return;
+      }
+
+      // Iframe and target elements are ready, apply tokens
+      if (tokenConfig) {
+        const { componentName, selector } = tokenConfig;
         const styleId = `design-tokens-${componentName}`;
 
         // Remove existing style tag if present
@@ -408,33 +557,27 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         styleTag.id = styleId;
 
         // Generate CSS rules from tokens
-        const cssRules = generateCSSRules(tokenValues, selector || `.${componentName}`, currentClassName);
+        const cssRules = generateCSSRules(tokenValues, selector || `.${componentName}`, currentClassName, componentName, tokenConfig);
         styleTag.textContent = cssRules;
 
         iframe.contentDocument.head.appendChild(styleTag);
 
         // Console logging - cleaner output
-        console.log(`%c[Design Tokens] ✓ Tokens Applied (attempt ${attempt})`, 'color: #4CAF50; font-weight: bold');
-        console.log(`  → Variant: ${currentClassName}`);
-        console.log(`  → Token count: ${Object.keys(tokenValues).length}`);
-        console.log(`  → Generated CSS length: ${cssRules.length} chars`);
-        console.log(`  → Found ${targetButtons.length} target buttons`);
+        // console.log(`%c[Design Tokens] ✓ Tokens Applied (attempt ${attempt})`, 'color: #4CAF50; font-weight: bold');
+        // console.log(`  → Component: ${componentName}`);
+        // console.log(`  → Variant: ${currentClassName}`);
+        // console.log(`  → Token count: ${Object.keys(tokenValues).length}`);
+        // console.log(`  → Generated CSS length: ${cssRules.length} chars`);
+        // console.log(`  → Found ${targetElements.length} target elements`);
 
-        // Verify styles applied
-        if (targetButtons.length > 0) {
-          const button = targetButtons[0];
-          const computed = iframe.contentWindow?.getComputedStyle(button);
-          const textElement = button.querySelector('.btn-caption');
-          const textComputed = textElement ? iframe.contentWindow?.getComputedStyle(textElement) : null;
-
-          console.log(`  → Button background: ${computed?.backgroundColor}`);
-          console.log(`  → Button color: ${computed?.color}`);
-          console.log(`  → Button font-size: ${computed?.fontSize}`);
-          if (textComputed) {
-            console.log(`  → Text color: ${textComputed?.color}`);
-            console.log(`  → Text font-size: ${textComputed?.fontSize}`);
-          }
-        }
+        // Verify styles applied (debugging - commented out)
+        // if (targetElements.length > 0) {
+        //   const element = targetElements[0];
+        //   const computed = iframe.contentWindow?.getComputedStyle(element);
+        //   console.log(`  → Element background: ${computed?.backgroundColor}`);
+        //   console.log(`  → Element color: ${computed?.color}`);
+        //   console.log(`  → Element font-size: ${computed?.fontSize}`);
+        // }
       }
     };
 
@@ -447,33 +590,43 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
    *
    * This function creates CSS like:
    * ```css
-   * button[data-design-token-target="true"].btn-filled.btn-primary {
-   *   background-color: var(--wm-btn-background) !important;
-   *   color: var(--wm-btn-color) !important;
+   * .selector[data-design-token-target="true"].variant-class {
+   *   background-color: var(--wm-component-background) !important;
+   *   color: var(--wm-component-color) !important;
    *   ...
    * }
    * ```
    *
    * The [data-design-token-target="true"] attribute ensures that styles
-   * only apply to buttons in the DesignToken story, not to buttons in other stories.
-   * This prevents token changes from affecting all buttons globally.
+   * only apply to components in the DesignToken story, not globally.
+   * This prevents token changes from affecting all instances of the component.
    *
    * It also generates rules for :hover, :focus, :active, :disabled states
    */
   const generateCSSRules = (
     tokenValues: Record<string, string>,
-    _selector: string,
-    className: string
+    selector: string,
+    className: string,
+    componentName: string,
+    config: ComponentTokenConfig
   ): string => {
     // Build selector with data attribute to scope to DesignToken story only
-    // Example: "button[data-design-token-target="true"].btn-filled.btn-primary"
-    // This ensures token changes ONLY affect buttons in the DesignToken story
+    // Example: ".app-button[data-design-token-target="true"].btn-filled.btn-primary"
+    // This ensures token changes ONLY affect components in the DesignToken story
     const dataAttr = '[data-design-token-target="true"]';
 
-    // Generate ULTRA-HIGH specificity selector to override MUI and foundation.css
-    // Stack multiple classes to increase specificity: (0, 8+, 1)
+    // Use the component's selector from meta.mapping.selector.web
+    // For button: ".app-button,button,.btn"
+    // For anchor: ".app-anchor,a"
+    // We'll use the first selector for high specificity
+    const baseSelector = selector.split(',')[0].trim();
+
+    // Add className selectors for variant specificity
     const classSelectors = className ? `.${className.split(' ').join('.')}` : '';
-    const fullSelector = `button.MuiButton-root.MuiButtonBase-root.btn.app-button${dataAttr}${classSelectors}`;
+    const fullSelector = `${baseSelector}${dataAttr}${classSelectors}`;
+
+    // Helper function to build dynamic CSS variable names
+    const getVarName = (property: string) => `--wm-${componentName}-${property}`;
 
     let css = `
 /* Design Token Generated Styles - Auto-generated by Design Tokens Panel */
@@ -512,60 +665,68 @@ ${fullSelector} {
     css += `}\n\n`;
 
     // Add rules for text content (targets the span.btn-caption)
-    // This ensures color and font properties apply to text inside the button
-    // Also sets z-index to ensure text appears above state layer overlays
-    css += `${fullSelector} .btn-caption,\n`;
+    // Ensure all child elements have z-index above state layer overlays
     css += `${fullSelector} > * {\n`;
     css += `  position: relative !important;\n`;
     css += `  z-index: 1 !important;\n`;
     css += `}\n\n`;
 
-    css += `${fullSelector},\n`;
-    css += `${fullSelector} .btn-caption {\n`;
-    if (tokenValues['--wm-btn-color']) {
-      css += `  color: ${tokenValues['--wm-btn-color']} !important;\n`;
+    // Add main component styling
+    let mainSelectors = `${fullSelector}`;
+
+    // Add text child selector if defined (e.g., .btn-caption for buttons)
+    if (config.childSelectors?.text) {
+      const textSelectors = config.childSelectors.text.split(',').map(s => `${fullSelector} ${s.trim()}`).join(',\n');
+      mainSelectors += `,\n${textSelectors}`;
     }
-    if (tokenValues['--wm-btn-font-size']) {
-      css += `  font-size: ${tokenValues['--wm-btn-font-size']} !important;\n`;
+
+    css += `${mainSelectors} {\n`;
+    if (tokenValues[getVarName('color')]) {
+      css += `  color: ${tokenValues[getVarName('color')]} !important;\n`;
     }
-    if (tokenValues['--wm-btn-font-family']) {
-      css += `  font-family: ${tokenValues['--wm-btn-font-family']} !important;\n`;
+    if (tokenValues[getVarName('font-size')]) {
+      css += `  font-size: ${tokenValues[getVarName('font-size')]} !important;\n`;
     }
-    if (tokenValues['--wm-btn-font-weight']) {
-      css += `  font-weight: ${tokenValues['--wm-btn-font-weight']} !important;\n`;
+    if (tokenValues[getVarName('font-family')]) {
+      css += `  font-family: ${tokenValues[getVarName('font-family')]} !important;\n`;
     }
-    if (tokenValues['--wm-btn-line-height']) {
-      css += `  line-height: ${tokenValues['--wm-btn-line-height']} !important;\n`;
+    if (tokenValues[getVarName('font-weight')]) {
+      css += `  font-weight: ${tokenValues[getVarName('font-weight')]} !important;\n`;
     }
-    if (tokenValues['--wm-btn-letter-spacing']) {
-      css += `  letter-spacing: ${tokenValues['--wm-btn-letter-spacing']} !important;\n`;
+    if (tokenValues[getVarName('line-height')]) {
+      css += `  line-height: ${tokenValues[getVarName('line-height')]} !important;\n`;
     }
-    if (tokenValues['--wm-btn-text-transform']) {
-      css += `  text-transform: ${tokenValues['--wm-btn-text-transform']} !important;\n`;
+    if (tokenValues[getVarName('letter-spacing')]) {
+      css += `  letter-spacing: ${tokenValues[getVarName('letter-spacing')]} !important;\n`;
+    }
+    if (tokenValues[getVarName('text-transform')]) {
+      css += `  text-transform: ${tokenValues[getVarName('text-transform')]} !important;\n`;
     }
     css += `}\n\n`;
 
-    // Add rules for icons (targets .app-icon and i elements)
-    // Icons inherit color from button text color and can have custom size
-    css += `${fullSelector} .app-icon,\n`;
-    css += `${fullSelector} i {\n`;
-    if (tokenValues['--wm-btn-color']) {
-      css += `  color: ${tokenValues['--wm-btn-color']} !important;\n`;
+    // Add rules for icons (if icon child selector is defined)
+    if (config.childSelectors?.icon && (tokenValues[getVarName('color')] || tokenValues[getVarName('icon-size')])) {
+      const iconSelectors = config.childSelectors.icon.split(',').map(s => `${fullSelector} ${s.trim()}`).join(',\n');
+      css += `${iconSelectors} {\n`;
+      if (tokenValues[getVarName('color')]) {
+        css += `  color: ${tokenValues[getVarName('color')]} !important;\n`;
+      }
+      if (tokenValues[getVarName('icon-size')]) {
+        css += `  font-size: ${tokenValues[getVarName('icon-size')]} !important;\n`;
+        css += `  width: ${tokenValues[getVarName('icon-size')]} !important;\n`;
+        css += `  height: ${tokenValues[getVarName('icon-size')]} !important;\n`;
+      }
+      css += `  position: relative !important;\n`;
+      css += `  z-index: 1 !important;\n`;
+      css += `}\n\n`;
     }
-    if (tokenValues['--wm-btn-icon-size']) {
-      css += `  font-size: ${tokenValues['--wm-btn-icon-size']} !important;\n`;
-      css += `  width: ${tokenValues['--wm-btn-icon-size']} !important;\n`;
-      css += `  height: ${tokenValues['--wm-btn-icon-size']} !important;\n`;
-    }
-    css += `  position: relative !important;\n`;
-    css += `  z-index: 1 !important;\n`;
-    css += `}\n\n`;
 
-    // Add rules for badges (targets .badge elements)
-    if (tokenValues['--wm-btn-color']) {
-      css += `${fullSelector} .badge {\n`;
-      css += `  background-color: ${tokenValues['--wm-btn-color']} !important;\n`;
-      css += `  color: ${tokenValues['--wm-btn-background']} !important;\n`;
+    // Add rules for badges (if badge child selector is defined)
+    if (config.childSelectors?.badge && tokenValues[getVarName('color')]) {
+      const badgeSelectors = config.childSelectors.badge.split(',').map(s => `${fullSelector} ${s.trim()}`).join(',\n');
+      css += `${badgeSelectors} {\n`;
+      css += `  background-color: ${tokenValues[getVarName('color')]} !important;\n`;
+      css += `  color: ${tokenValues[getVarName('background')]} !important;\n`;
       css += `  position: relative !important;\n`;
       css += `  z-index: 1 !important;\n`;
       css += `  font-size: 0.75em !important;\n`;
@@ -573,7 +734,7 @@ ${fullSelector} {
     }
 
     // Ensure button has position:relative for state layer overlays
-    if (tokenValues['--wm-btn-state-layer-color']) {
+    if (tokenValues[getVarName('state-layer-color')]) {
       css += `${fullSelector} {\n`;
       css += `  position: relative !important;\n`;
       css += `  overflow: hidden !important;\n`;
@@ -596,7 +757,7 @@ ${fullSelector} {
     css += `}\n\n`;
 
     // Create state layer overlay for hover using ::before pseudo-element
-    if (tokenValues['--wm-btn-state-layer-color'] && tokenValues['--wm-btn-states-hover-state-layer-opacity']) {
+    if (tokenValues[getVarName('state-layer-color')] && tokenValues[getVarName('states-hover-state-layer-opacity')]) {
       css += `${fullSelector}:hover:not(:disabled)::before {\n`;
       css += `  content: '' !important;\n`;
       css += `  position: absolute !important;\n`;
@@ -604,8 +765,8 @@ ${fullSelector} {
       css += `  left: 0 !important;\n`;
       css += `  right: 0 !important;\n`;
       css += `  bottom: 0 !important;\n`;
-      css += `  background-color: ${tokenValues['--wm-btn-state-layer-color']} !important;\n`;
-      css += `  opacity: ${tokenValues['--wm-btn-states-hover-state-layer-opacity']} !important;\n`;
+      css += `  background-color: ${tokenValues[getVarName('state-layer-color')]} !important;\n`;
+      css += `  opacity: ${tokenValues[getVarName('states-hover-state-layer-opacity')]} !important;\n`;
       css += `  pointer-events: none !important;\n`;
       css += `  border-radius: inherit !important;\n`;
       css += `}\n\n`;
@@ -628,7 +789,7 @@ ${fullSelector} {
     css += `}\n\n`;
 
     // Create state layer overlay for focus
-    if (tokenValues['--wm-btn-state-layer-color'] && tokenValues['--wm-btn-states-focus-state-layer-opacity']) {
+    if (tokenValues[getVarName('state-layer-color')] && tokenValues[getVarName('states-focus-state-layer-opacity')]) {
       css += `${fullSelector}:focus:not(:disabled)::before {\n`;
       css += `  content: '' !important;\n`;
       css += `  position: absolute !important;\n`;
@@ -636,8 +797,8 @@ ${fullSelector} {
       css += `  left: 0 !important;\n`;
       css += `  right: 0 !important;\n`;
       css += `  bottom: 0 !important;\n`;
-      css += `  background-color: ${tokenValues['--wm-btn-state-layer-color']} !important;\n`;
-      css += `  opacity: ${tokenValues['--wm-btn-states-focus-state-layer-opacity']} !important;\n`;
+      css += `  background-color: ${tokenValues[getVarName('state-layer-color')]} !important;\n`;
+      css += `  opacity: ${tokenValues[getVarName('states-focus-state-layer-opacity')]} !important;\n`;
       css += `  pointer-events: none !important;\n`;
       css += `  border-radius: inherit !important;\n`;
       css += `}\n\n`;
@@ -658,7 +819,7 @@ ${fullSelector} {
     css += `}\n\n`;
 
     // Create state layer overlay for active (pressed down)
-    if (tokenValues['--wm-btn-state-layer-color'] && tokenValues['--wm-btn-states-active-state-layer-opacity']) {
+    if (tokenValues[getVarName('state-layer-color')] && tokenValues[getVarName('states-active-state-layer-opacity')]) {
       css += `${fullSelector}:active:not(:disabled)::before {\n`;
       css += `  content: '' !important;\n`;
       css += `  position: absolute !important;\n`;
@@ -666,8 +827,8 @@ ${fullSelector} {
       css += `  left: 0 !important;\n`;
       css += `  right: 0 !important;\n`;
       css += `  bottom: 0 !important;\n`;
-      css += `  background-color: ${tokenValues['--wm-btn-state-layer-color']} !important;\n`;
-      css += `  opacity: ${tokenValues['--wm-btn-states-active-state-layer-opacity']} !important;\n`;
+      css += `  background-color: ${tokenValues[getVarName('state-layer-color')]} !important;\n`;
+      css += `  opacity: ${tokenValues[getVarName('states-active-state-layer-opacity')]} !important;\n`;
       css += `  pointer-events: none !important;\n`;
       css += `  border-radius: inherit !important;\n`;
       css += `}\n\n`;
@@ -686,13 +847,13 @@ ${fullSelector} {
       }
     });
     // Use disabled-specific values if available, otherwise use defaults
-    if (tokenValues['--wm-btn-states-disabled-opacity']) {
-      css += `  opacity: ${tokenValues['--wm-btn-states-disabled-opacity']} !important;\n`;
+    if (tokenValues[getVarName('states-disabled-opacity')]) {
+      css += `  opacity: ${tokenValues[getVarName('states-disabled-opacity')]} !important;\n`;
     } else {
       css += `  opacity: 0.38 !important;\n`;
     }
-    if (tokenValues['--wm-btn-states-disabled-cursor']) {
-      css += `  cursor: ${tokenValues['--wm-btn-states-disabled-cursor']} !important;\n`;
+    if (tokenValues[getVarName('states-disabled-cursor')]) {
+      css += `  cursor: ${tokenValues[getVarName('states-disabled-cursor')]} !important;\n`;
     } else {
       css += `  cursor: not-allowed !important;\n`;
     }
@@ -749,8 +910,8 @@ ${fullSelector} {
    * Updates both state and applies to iframe
    */
   const handleTokenChange = (tokenName: string, value: string) => {
-    const propertyName = tokenName.split('-').slice(4).join('-');
-    console.log(`%c[Design Tokens] Changed: ${propertyName}`, 'color: #2196F3', `→ ${value}`);
+    // const propertyName = tokenName.split('-').slice(4).join('-');
+    // console.log(`%c[Design Tokens] Changed: ${propertyName}`, 'color: #2196F3', `→ ${value}`);
     const newTokens = { ...tokens, [tokenName]: value };
     setTokens(newTokens);
     applyTokens(newTokens);
@@ -766,19 +927,20 @@ ${fullSelector} {
 
   // ========== RENDER LOGIC ==========
 
-  // Show loading state while fetching story data
+  // Show loading state while story data is being fetched
   if (isLoading) {
     return (
       <PanelContent>
         <EmptyState>
-          <p>Loading design tokens...</p>
+          <h3>Loading Design Tokens...</h3>
+          <p>Please wait while we load the design token configuration.</p>
         </EmptyState>
       </PanelContent>
     );
   }
 
-  // Show empty state only if panel is inactive or tokens are truly not configured
-  if (!active || !parameters.enabled) {
+  // Show empty state if tokens are not configured for this story
+  if (!parameters.enabled) {
     return (
       <PanelContent>
         <EmptyState>
@@ -792,17 +954,43 @@ ${fullSelector} {
     );
   }
 
-  if (!parameters.tokenConfig) {
+  // Determine which approach to use for rendering
+  let tokenConfig: ComponentTokenConfig | undefined;
+
+  if (parameters.tokenData && parameters.componentKey) {
+    // NEW APPROACH: Parse tokens at runtime (same logic as in the effect)
+    if (parameters.extractCSSVariablesAtRuntime && cssVariableMap.size > 0) {
+      tokenConfig = parseDesignTokens(parameters.tokenData, parameters.componentKey, cssVariableMap);
+    } else if (parameters.extractCSSVariablesAtRuntime) {
+      // CSS variables not extracted yet, show loading
+      return (
+        <PanelContent>
+          <EmptyState>
+            <p>Extracting CSS variables from foundation.css...</p>
+          </EmptyState>
+        </PanelContent>
+      );
+    } else {
+      tokenConfig = parseDesignTokens(parameters.tokenData, parameters.componentKey);
+    }
+  } else if (parameters.tokenConfig) {
+    // OLD APPROACH: Use pre-parsed tokenConfig
+    tokenConfig = parameters.tokenConfig;
+  }
+
+  if (!tokenConfig) {
     return (
       <PanelContent>
         <EmptyState>
           <p>No token configuration found.</p>
+          <p style={{ fontSize: "12px", marginTop: "12px", color: "#999" }}>
+            Provide either <code>tokenData + componentKey</code> or <code>tokenConfig</code> in parameters.
+          </p>
         </EmptyState>
       </PanelContent>
     );
   }
 
-  const { tokenConfig } = parameters;
   let tokensToDisplay = tokenConfig.tokens;
 
   // Get variant-specific tokens if className is provided
@@ -878,7 +1066,7 @@ ${fullSelector} {
             value={colorValue}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const newColor = e.target.value;
-              console.log(`[Color Picker] ${token.label} picker changed to: ${newColor}`);
+              // console.log(`[Color Picker] ${token.label} picker changed to: ${newColor}`);
               handleTokenChange(token.name, newColor);
             }}
           />
@@ -887,7 +1075,7 @@ ${fullSelector} {
             value={value}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const newValue = e.target.value;
-              console.log(`[Color Input] ${token.label} text changed to: ${newValue}`);
+              // console.log(`[Color Input] ${token.label} text changed to: ${newValue}`);
               handleTokenChange(token.name, newValue);
             }}
             placeholder="#000000"
@@ -919,16 +1107,29 @@ ${fullSelector} {
 
     // Number input for opacity
     if (token.controlType === "number") {
+      // Convert percentage strings to decimals for the number input
+      // foundation.css uses "8%" but number input needs 0.08
+      let displayValue = value;
+      if (typeof value === 'string' && value.endsWith('%')) {
+        // Convert "8%" to "0.08"
+        const percentValue = parseFloat(value.replace('%', ''));
+        displayValue = (percentValue / 100).toString();
+      }
+
       return (
         <TokenInput
           type="number"
           step="0.01"
           min="0"
           max="1"
-          value={value}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleTokenChange(token.name, e.target.value)
-          }
+          value={displayValue}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            // Convert decimal back to percentage when saving
+            // User enters 0.08, we save as "8%"
+            const decimalValue = parseFloat(e.target.value);
+            const percentValue = `${(decimalValue * 100)}%`;
+            handleTokenChange(token.name, percentValue);
+          }}
         />
       );
     }
