@@ -223,21 +223,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicCalendar",
-    listener: mockListener,
-    view: "month",
-    calendartype: "basic",
-    selectionmode: "single",
-    controls: "navigation, today, year, month, week, day",
-    height: "600px",
-    width: "100%",
-    dataset: []
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -358,6 +343,22 @@ export const Showcase: Story = {
         </Stack>
       </Box>
     );
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicCalendar",
+    listener: mockListener,
+    view: "month",
+    calendartype: "basic",
+    selectionmode: "single",
+    controls: "navigation, today, year, month, week, day",
+    height: "600px",
+    width: "100%",
+    dataset: []
   },
 };
 

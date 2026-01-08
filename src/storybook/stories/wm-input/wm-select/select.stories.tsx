@@ -72,36 +72,6 @@ export const Docs: Story = {
   },
 };
 
-// Basic Examples
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicSelect",
-    placeholder: "Select an option",
-    dataset: "Option 1, Option 2, Option 3, Option 4",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-  },
-};
-
-export const ObjectDataset: Story = {
-  render: Template,
-  args: {
-    name: "objectDatasetSelect",
-    placeholder: "Select a user",
-    dataset: [
-      { id: 1, name: "John Doe", role: "Admin" },
-      { id: 2, name: "Jane Smith", role: "User" },
-      { id: 3, name: "Bob Johnson", role: "Manager" },
-      { id: 4, name: "Alice Brown", role: "User" },
-    ],
-    datafield: "id",
-    displayfield: "name",
-    listener: mockListener,
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     const dataset = [
@@ -172,6 +142,38 @@ export const Showcase: Story = {
         </Box>
       </Stack>
     );
+  },
+};
+
+// Basic Examples
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicSelect",
+    placeholder: "Select an option",
+    dataset: "Option 1, Option 2, Option 3, Option 4",
+    listener: mockListener,
+    disabled: false,
+    readonly: false,
+  },
+};
+
+export const ObjectDataset: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "objectDatasetSelect",
+    placeholder: "Select a user",
+    dataset: [
+      { id: 1, name: "John Doe", role: "Admin" },
+      { id: 2, name: "Jane Smith", role: "User" },
+      { id: 3, name: "Bob Johnson", role: "Manager" },
+      { id: 4, name: "Alice Brown", role: "User" },
+    ],
+    datafield: "id",
+    displayfield: "name",
+    listener: mockListener,
   },
 };
 

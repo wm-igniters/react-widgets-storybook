@@ -72,20 +72,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicUpload",
-    caption: "Select File",
-    multiple: false,
-    disabled: false,
-    readonly: false,
-    required: false,
-    showprogressbar: false,
-    showprogressbarpercentage: false,
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -172,6 +158,21 @@ export const Showcase: Story = {
   args:{
     name: "showcaseFileUpload"
   }
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicUpload",
+    caption: "Select File",
+    multiple: false,
+    disabled: false,
+    readonly: false,
+    required: false,
+    showprogressbar: false,
+    showprogressbarpercentage: false,
+  },
 };
 
 

@@ -30,6 +30,11 @@ const meta = {
     encodeurl: { control: "boolean" },
     width: { control: "text" },
     height: { control: "text" },
+    headinglevel: {control: "select", options:["h1", "h2", "h4"]},
+    iconurl: { control: "text" },
+    iconwidth: { control: "text" },
+    iconheight: { control: "text" },
+    iconmargin: { control: "text" }
   },
 } satisfies Meta<typeof IframeDialogDefaultExport>;
 
@@ -84,7 +89,139 @@ export const Docs: Story = {
   },
 };
 
+export const Showcase: Story = {
+  render: () => {
+    const [openDialogs, setOpenDialogs] = useState<{
+      docs: boolean;
+      video: boolean;
+      map: boolean;
+    }>({
+      docs: false,
+      video: false,
+      map: false,
+    });
+
+    const handleOpen = (type: "docs" | "video" | "map") => {
+      setOpenDialogs((prev) => ({ ...prev, [type]: true }));
+    };
+
+    const handleClose = (type: "docs" | "video" | "map") => {
+      setOpenDialogs((prev) => ({ ...prev, [type]: false }));
+    };
+
+    return (
+      <Box style={{ padding: 16 }}>
+        <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap", gap: 2 }}>
+          <WmButton
+            name="openDocsBtn"
+            caption="Open Docs"
+            onClick={() => handleOpen("docs")}
+            listener={mockListener}
+            styles={{
+              backgroundColor: "#00c8ff",
+              color: "white",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          />
+          <WmButton
+            name="openVideoBtn"
+            caption="Open Video"
+            onClick={() => handleOpen("video")}
+            listener={mockListener}
+            styles={{
+              backgroundColor: "#f44336",
+              color: "white",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          />
+          <WmButton
+            name="openMapBtn"
+            caption="Open Map"
+            onClick={() => handleOpen("map")}
+            listener={mockListener}
+            styles={{
+              backgroundColor: "#5AC588",
+              color: "white",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          />
+        </Stack>
+
+        <IframeDialogDefaultExport
+          name="docsDialog"
+          title="Documentation"
+          url="https://docs.wavemaker.com"
+          iconclass="wi wi-book"
+          oktext="Close"
+          showheader={true}
+          showactions={true}
+          closable={true}
+          isopen={openDialogs.docs}
+          onClose={() => handleClose("docs")}
+          close={() => handleClose("docs")}
+          onOk={() => handleClose("docs")}
+          listener={mockListener}
+          headinglevel="h4"
+        />
+        <IframeDialogDefaultExport
+          name="videoDialog"
+          title="Video Player"
+          url="https://www.youtube.com/embed/dQw4w9WgXcQ"
+          iconclass="wi wi-play-circle"
+          oktext="Close"
+          showheader={true}
+          showactions={true}
+          closable={true}
+          isopen={openDialogs.video}
+          onClose={() => handleClose("video")}
+          close={() => handleClose("video")}
+          onOk={() => handleClose("video")}
+          listener={mockListener}
+          headinglevel="h4"
+        />
+        <IframeDialogDefaultExport
+          name="mapDialog"
+          title="Location Map"
+          url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.1287387330084!2d-74.00601668459455!3d40.71277597933026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316e5e98bb%3A0xf0b5d9df9e1e8e8e!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+          iconclass="wi wi-map-marker"
+          oktext="Got it"
+          showheader={true}
+          showactions={true}
+          closable={true}
+          isopen={openDialogs.map}
+          onClose={() => handleClose("map")}
+          close={() => handleClose("map")}
+          onOk={() => handleClose("map")}
+          listener={mockListener}
+          headinglevel="h4"
+        />
+      </Box>
+    );
+  },
+  args:{
+    name: "showcaseIframeDialog",
+    listener:mockListener
+  }
+};
+
+
 export const Basic: Story = {
+  tags: ['show-panel'],
   render: Template,
   args: {
     name: "basicIframe",
@@ -95,9 +232,8 @@ export const Basic: Story = {
     showheader: true,
     showactions: true,
     closable: true,
-    width: "800px",
-    height: "600px",
     listener: mockListener,
+    headinglevel:"h4"
   },
 };
 
@@ -347,135 +483,6 @@ export const Basic: Story = {
 //             listener={mockListener}
 //           />
 //         </Stack>
-//       </Box>
-//     );
-//   },
-// };
-
-// export const MultipleDialogs: Story = {
-//   render: () => {
-//     const [openDialogs, setOpenDialogs] = useState<{
-//       docs: boolean;
-//       video: boolean;
-//       map: boolean;
-//     }>({
-//       docs: false,
-//       video: false,
-//       map: false,
-//     });
-
-//     const handleOpen = (type: "docs" | "video" | "map") => {
-//       setOpenDialogs((prev) => ({ ...prev, [type]: true }));
-//     };
-
-//     const handleClose = (type: "docs" | "video" | "map") => {
-//       setOpenDialogs((prev) => ({ ...prev, [type]: false }));
-//     };
-
-//     return (
-//       <Box style={{ padding: 16 }}>
-//         <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap", gap: 2 }}>
-//           <WmButton
-//             name="openDocsBtn"
-//             caption="Open Docs"
-//             onClick={() => handleOpen("docs")}
-//             listener={mockListener}
-//             styles={{
-//               backgroundColor: "#17a2b8",
-//               color: "white",
-//               padding: "8px 16px",
-//               border: "none",
-//               borderRadius: "4px",
-//               cursor: "pointer",
-//               fontSize: "14px",
-//               fontWeight: "500",
-//             }}
-//           />
-//           <WmButton
-//             name="openVideoBtn"
-//             caption="Open Video"
-//             onClick={() => handleOpen("video")}
-//             listener={mockListener}
-//             styles={{
-//               backgroundColor: "#dc3545",
-//               color: "white",
-//               padding: "8px 16px",
-//               border: "none",
-//               borderRadius: "4px",
-//               cursor: "pointer",
-//               fontSize: "14px",
-//               fontWeight: "500",
-//             }}
-//           />
-//           <WmButton
-//             name="openMapBtn"
-//             caption="Open Map"
-//             onClick={() => handleOpen("map")}
-//             listener={mockListener}
-//             styles={{
-//               backgroundColor: "#28a745",
-//               color: "white",
-//               padding: "8px 16px",
-//               border: "none",
-//               borderRadius: "4px",
-//               cursor: "pointer",
-//               fontSize: "14px",
-//               fontWeight: "500",
-//             }}
-//           />
-//         </Stack>
-
-//         <IframeDialogDefaultExport
-//           name="docsDialog"
-//           title="Documentation"
-//           url="https://docs.wavemaker.com"
-//           iconclass="wi wi-book"
-//           oktext="Close"
-//           showheader={true}
-//           showactions={true}
-//           closable={true}
-//           width="900px"
-//           height="700px"
-//           isopen={openDialogs.docs}
-//           onClose={() => handleClose("docs")}
-//           close={() => handleClose("docs")}
-//           onOk={() => handleClose("docs")}
-//           listener={mockListener}
-//         />
-//         <IframeDialogDefaultExport
-//           name="videoDialog"
-//           title="Video Player"
-//           url="https://www.youtube.com/embed/dQw4w9WgXcQ"
-//           iconclass="wi wi-play-circle"
-//           oktext="Close"
-//           showheader={true}
-//           showactions={true}
-//           closable={true}
-//           width="800px"
-//           height="500px"
-//           isopen={openDialogs.video}
-//           onClose={() => handleClose("video")}
-//           close={() => handleClose("video")}
-//           onOk={() => handleClose("video")}
-//           listener={mockListener}
-//         />
-//         <IframeDialogDefaultExport
-//           name="mapDialog"
-//           title="Location Map"
-//           url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.1287387330084!2d-74.00601668459455!3d40.71277597933026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316e5e98bb%3A0xf0b5d9df9e1e8e8e!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
-//           iconclass="wi wi-map-marker"
-//           oktext="Got it"
-//           showheader={true}
-//           showactions={true}
-//           closable={true}
-//           width="800px"
-//           height="600px"
-//           isopen={openDialogs.map}
-//           onClose={() => handleClose("map")}
-//           close={() => handleClose("map")}
-//           onOk={() => handleClose("map")}
-//           listener={mockListener}
-//         />
 //       </Box>
 //     );
 //   },

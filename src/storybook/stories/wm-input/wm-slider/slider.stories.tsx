@@ -63,21 +63,6 @@ export const Docs: Story = {
   },
 };
 
-// Basic Examples
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicSlider",
-    datavalue: 50,
-    minvalue: 0,
-    maxvalue: 100,
-    step: 1,
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-  },
-};
-
 export const Showcase: Story = {
   render: () => (
     <Stack spacing={4} padding={2}>
@@ -169,6 +154,22 @@ export const Showcase: Story = {
       </Box>
     </Stack>
   ),
+};
+
+// Basic Examples
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicSlider",
+    datavalue: 50,
+    minvalue: 0,
+    maxvalue: 100,
+    step: 1,
+    listener: mockListener,
+    disabled: false,
+    readonly: false,
+  },
 };
 
 // export const WithCustomRange: Story = {

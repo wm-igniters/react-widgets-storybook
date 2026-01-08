@@ -65,61 +65,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  args: {
-    name: "basicPanel",
-    title: "User Information",
-    subheading: "View and manage user details",
-    className: "panel panel-default",
-    iconclass: "fa fa-user",
-    badgevalue: "Active",
-    badgetype: "success",
-    collapsible: true,
-    expanded: true,
-    listener: mockListener,
-    closable: false,
-    enablefullscreen: false,
-    children: (
-      <Box sx={{ padding: 3 }}>
-        <Stack spacing={2}>
-          <Box>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-              Full Name
-            </Typography>
-            <Typography variant="body1" fontWeight={500}>
-              John Doe
-            </Typography>
-          </Box>
-          <Box>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-              Email Address
-            </Typography>
-            <Typography variant="body1" fontWeight={500}>
-              john.doe@example.com
-            </Typography>
-          </Box>
-          <Box>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-              Role
-            </Typography>
-            <Typography variant="body1" fontWeight={500}>
-              Administrator
-            </Typography>
-          </Box>
-          <Box>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-              Account Status
-            </Typography>
-            <Typography variant="body1" fontWeight={500} color="success.main">
-              Active
-            </Typography>
-          </Box>
-        </Stack>
-      </Box>
-    ),
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -387,7 +332,64 @@ export const Showcase: Story = {
   },
   args:{
     name:"showcasePanel",
+    listener:mockListener
   }
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  args: {
+    name: "basicPanel",
+    title: "User Information",
+    subheading: "View and manage user details",
+    className: "panel panel-default",
+    iconclass: "fa fa-user",
+    badgevalue: "Active",
+    badgetype: "success",
+    collapsible: true,
+    expanded: true,
+    listener: mockListener,
+    closable: false,
+    enablefullscreen: false,
+    children: (
+      <Box sx={{ padding: 3 }}>
+        <Stack spacing={2}>
+          <Box>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Full Name
+            </Typography>
+            <Typography variant="body1" fontWeight={500}>
+              John Doe
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Email Address
+            </Typography>
+            <Typography variant="body1" fontWeight={500}>
+              john.doe@example.com
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Role
+            </Typography>
+            <Typography variant="body1" fontWeight={500}>
+              Administrator
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Account Status
+            </Typography>
+            <Typography variant="body1" fontWeight={500} color="success.main">
+              Active
+            </Typography>
+          </Box>
+        </Stack>
+      </Box>
+    ),
+  },
 };
 
 // export const WithBadge: Story = {

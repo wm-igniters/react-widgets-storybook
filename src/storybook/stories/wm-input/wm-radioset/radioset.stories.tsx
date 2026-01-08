@@ -75,33 +75,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicRadioset",
-    dataset: "Option 1, Option 2, Option 3",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-  },
-};
-
-export const ObjectDataset: Story = {
-  render: Template,
-  args: {
-    name: "objectDataset",
-    dataset: [
-      { id: 1, name: "Economy", price: "$50" },
-      { id: 2, name: "Business", price: "$100" },
-      { id: 3, name: "First Class", price: "$200" },
-      { id: 4, name: "Premium", price: "$300" },
-    ],
-    datafield: "id",
-    displayfield: "name",
-    listener: mockListener,
-  },
-};
-
 export const Showcase: Story = {
   render: () => (
     <Box sx={{ p: 3 }}>
@@ -198,6 +171,35 @@ export const Showcase: Story = {
   ),
   args: {
     name: "showcaseRadioset",
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicRadioset",
+    dataset: "Option 1, Option 2, Option 3",
+    listener: mockListener,
+    disabled: false,
+    readonly: false,
+  },
+};
+
+export const ObjectDataset: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "objectDataset",
+    dataset: [
+      { id: 1, name: "Economy", price: "$50" },
+      { id: 2, name: "Business", price: "$100" },
+      { id: 3, name: "First Class", price: "$200" },
+      { id: 4, name: "Premium", price: "$300" },
+    ],
+    datafield: "id",
+    displayfield: "name",
+    listener: mockListener,
   },
 };
 

@@ -66,24 +66,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    captionposition: "left",
-    children: (
-      <>
-        <WmLabel>Name</WmLabel>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Enter your name"
-          style={{ padding: "8px", border: "1px solid #ddd", borderRadius: "4px", width: "100%" }}
-        />
-      </>
-    ),
-  },
-};
-
 export const Showcase: Story = {
   render: () => (
     <Box sx={{ p: 3 }}>
@@ -147,6 +129,25 @@ export const Showcase: Story = {
   args: {
     name: "showcaseComposite",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    captionposition: "left",
+    children: (
+      <>
+        <WmLabel>Name</WmLabel>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Enter your name"
+          style={{ padding: "8px", border: "1px solid #ddd", borderRadius: "4px", width: "100%" }}
+        />
+      </>
+    ),
   },
 };
 

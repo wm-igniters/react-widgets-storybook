@@ -72,26 +72,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    data: mockData,
-    dataKeys: ["Product_A", "Product_B"],
-    chartColors: ["#8884d8", "#82ca9d"],
-    margin: { top: 20, right: 30, left: 20, bottom: 20 },
-    showLegend: true,
-    legendPosition: "top",
-    xAxisConfig: { label: { value: "Time", position: "insideBottom", offset: -10 } },
-    yAxisConfig: { label: { value: "Value", angle: -90, position: "insideLeft" } },
-    numberFormat: "0,0",
-    xDataKeyArr: ["Q1", "Q2", "Q3", "Q4", "Q5"],
-    onChartClick: (data: any, index: number, event: any) =>
-      console.log("Bubble clicked:", data, index),
-    tooltips: true,
-    shape: "circle",
-  },
-};
-
 export const Showcase: StoryObj = {
   render: () => {
     const singleSeriesData = mockData;
@@ -220,6 +200,27 @@ export const Showcase: StoryObj = {
       </Box>
     );
   }
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    data: mockData,
+    dataKeys: ["Product_A", "Product_B"],
+    chartColors: ["#8884d8", "#82ca9d"],
+    margin: { top: 20, right: 30, left: 20, bottom: 20 },
+    showLegend: true,
+    legendPosition: "top",
+    xAxisConfig: { label: { value: "Time", position: "insideBottom", offset: -10 } },
+    yAxisConfig: { label: { value: "Value", angle: -90, position: "insideLeft" } },
+    numberFormat: "0,0",
+    xDataKeyArr: ["Q1", "Q2", "Q3", "Q4", "Q5"],
+    onChartClick: (data: any, index: number, event: any) =>
+      console.log("Bubble clicked:", data, index),
+    tooltips: true,
+    shape: "circle",
+  },
 };
 
 

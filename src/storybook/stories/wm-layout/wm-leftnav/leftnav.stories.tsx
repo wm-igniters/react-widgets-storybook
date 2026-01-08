@@ -29,10 +29,18 @@ const meta: Meta<typeof LeftNavDefaultExport> = {
   title: "Layout/LeftNav",
   component: LeftNavDefaultExport,
   argTypes: {
-    columnwidth: { control: "text" },
-    navheight: { control: "text" },
-    navtype: { control: "text" },
-    show: { control: "boolean" },
+    columnwidth: {
+      control: "select",
+      options: ["1", "2", "3", "4", "6"],
+      description: "Column width for the left nav panel"
+    },
+    navheight: {
+      control: "select",
+      options: ["full", "auto"],
+      description: "Height of the navigation panel"
+    },
+    navtype: { control: "select", options:["pills", "tabs"] },
+    // show: { control: "boolean" },
     className: { control: "text" },
   },
 };
@@ -47,19 +55,6 @@ const mockListener = {
   },
   Widgets: {},
 };
-
-const Template = (args: any) => (
-  <Box style={{ padding: 16, display: "flex", minHeight: "400px" }}>
-    <LeftNavDefaultExport {...args} listener={mockListener}>
-      {args.children}
-    </LeftNavDefaultExport>
-    <Box flex={1} p={2} bgcolor="#f5f5f5">
-      <Typography variant="body2" color="text.secondary">
-        Main Content Area
-      </Typography>
-    </Box>
-  </Box>
-);
 
 export const Docs: Story = {
   render: () => (
@@ -76,13 +71,161 @@ export const Docs: Story = {
   },
 };
 
+export const Showcase: Story = {
+  render: () => {
+    const [openItems, setOpenItems] = useState<string[]>([]);
+
+    const handleToggle = (item: string) => {
+      setOpenItems((prev) =>
+        prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+      );
+    };
+
+    return (
+      <Box>
+        {/* Story Heading */}
+        <Box px={{ xs: 2, md: 3 }} py={2}>
+          <Typography variant="h6" fontWeight={600} textAlign="left">
+            Left Nav Showcase
+          </Typography>
+        </Box>
+
+        <Box display="flex" minHeight="400px">
+          {/* Minimal Icon Nav */}
+          <LeftNavDefaultExport name="minimalIconNav" listener={mockListener} columnwidth="3">
+            <Box bgcolor="#f1ececff" height="100%" borderRight="1px solid #e0e0e0" py={2}>
+              <Stack spacing={2} alignItems="center">
+                <IconButton color="primary">
+                  <i className="fa fa-home" />
+                </IconButton>
+                <IconButton>
+                  <i className="fa fa-search" />
+                </IconButton>
+                <IconButton>
+                  <i className="fa fa-bell" />
+                </IconButton>
+                <IconButton>
+                  <i className="fa fa-envelope" />
+                </IconButton>
+                <Divider sx={{ width: "80%", my: 1 }} />
+                <IconButton>
+                  <i className="fa fa-cog" />
+                </IconButton>
+                <Avatar sx={{ width: 32, height: 32, mt: 2 }}>U</Avatar>
+              </Stack>
+            </Box>
+          </LeftNavDefaultExport>
+
+          {/* Main Content for Minimal Icon Nav */}
+          <Box flex={1} p={2} bgcolor="#f5f5f5">
+            <Typography variant="body2" color="text.secondary">
+              Minimal Icon Navigation Content Area
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Spacer */}
+        <Box height={32} />
+
+        <Box display="flex" minHeight="400px">
+          {/* Collapsible Menu */}
+          <LeftNavDefaultExport name="collapsibleMenu" listener={mockListener} columnwidth="5">
+            <Box bgcolor="#263238" color="#ffffff" height="100%">
+              <List>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={() => handleToggle("dashboard")}>
+                    <ListItemIcon sx={{ color: "#ffffff" }}>
+                      <i className="fa fa-dashboard" />
+                    </ListItemIcon>
+                    <ListItemText primary="Dashboard" />
+                    <i
+                      className={`fa fa-chevron-${openItems.includes("dashboard") ? "down" : "right"}`}
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Collapse in={openItems.includes("dashboard")}>
+                  <List disablePadding>
+                    <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemText primary="Analytics" />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemText primary="Reports" />
+                    </ListItemButton>
+                  </List>
+                </Collapse>
+
+                <ListItem disablePadding>
+                  <ListItemButton onClick={() => handleToggle("projects")}>
+                    <ListItemIcon sx={{ color: "#ffffff" }}>
+                      <i className="fa fa-folder" />
+                    </ListItemIcon>
+                    <ListItemText primary="Projects" />
+                    <i
+                      className={`fa fa-chevron-${openItems.includes("projects") ? "down" : "right"}`}
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Collapse in={openItems.includes("projects")}>
+                  <List disablePadding>
+                    <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemText primary="Active" />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemText primary="Archived" />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemText primary="Templates" />
+                    </ListItemButton>
+                  </List>
+                </Collapse>
+
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon sx={{ color: "#ffffff" }}>
+                      <i className="fa fa-cog" />
+                    </ListItemIcon>
+                    <ListItemText primary="Settings" />
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Box>
+          </LeftNavDefaultExport>
+
+          {/* Main Content for Collapsible Menu */}
+          <Box flex={1} p={2} bgcolor="#f5f5f5">
+            <Typography variant="body2" color="text.secondary">
+              Collapsible Menu Navigation Content Area
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    );
+  },
+};
+
 export const Basic: Story = {
-  render: Template,
+  tags: ['show-panel'],
+  render: (args) => {
+    const contentColumns = 12 - parseInt(args.columnwidth || "3");
+    return (
+      <Box style={{ padding: 16, display: "flex", minHeight: "400px" }}>
+        <LeftNavDefaultExport {...args} listener={mockListener}>
+          {args.children}
+        </LeftNavDefaultExport>
+        <Box className={`col-sm-${contentColumns}`} p={2} bgcolor="#f5f5f5">
+          <Typography variant="body2" color="text.secondary">
+            Main Content Area (Width: {contentColumns}/12 columns)
+          </Typography>
+        </Box>
+      </Box>
+    );
+  },
   args: {
     name: "basicLeftNav",
-    listener: mockListener,
+    columnwidth: "3",
+    navheight: "full",
     children: (
-      <Box p={2} bgcolor="#ffffff" height="100%">
+      <Box p={2} bgcolor="#f1ececff" height="100%">
         <Typography variant="h6" mb={2}>
           Navigation
         </Typography>

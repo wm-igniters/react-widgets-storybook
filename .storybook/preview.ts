@@ -43,13 +43,8 @@ const withProviders = (Story: any) => {
 
 const preview: Preview = {
   parameters: {
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i,
-      },
-    },
     options: {
+      selectedPanel: 'storybook/controls/panel',
       storySort: {
         order: [
           'Basic',
@@ -62,6 +57,12 @@ const preview: Preview = {
           'Dialogs',
           'Advanced'
         ],
+      },
+    },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
       },
     },
 

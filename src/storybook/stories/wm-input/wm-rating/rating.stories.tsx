@@ -68,17 +68,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicRating",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    required: false,
-  },
-};
-
 export const Showcase: Story = {
   render: () => (
     <Box style={{ padding: 16 }}>
@@ -179,6 +168,18 @@ export const Showcase: Story = {
     </Box>
   ),
 }
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicRating",
+    listener: mockListener,
+    disabled: false,
+    readonly: false,
+    required: false,
+  },
+};
 
 // export const CustomDataset: Story = {
 //   render: Template,

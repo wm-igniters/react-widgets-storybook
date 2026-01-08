@@ -83,29 +83,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    type: "Line",
-    data: mockData,
-    dataKeys: ["Sales", "Revenue", "Profit"],
-    chartColors: ["#8884d8", "#82ca9d", "#ffc658"],
-    margin: { top: 20, right: 30, left: 20, bottom: 5 },
-    showLegend: true,
-    legendPosition: "top",
-    xAxisConfig: { dataKey: "x" },
-    yAxisConfig: {},
-    numberFormat: "0,0",
-    xDataKeyArr: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-    interpolation: "linear",
-    strokeWidth: 2,
-    pointSize: 4,
-    onChartClick: (data: any, event: any) => console.log("Chart clicked:", data),
-    tooltips: true,
-    legendtype: "classic",
-  },
-};
-
 export const Showcase: StoryObj = {
   render: () => {
     const singleSeriesData = mockData;
@@ -263,6 +240,30 @@ export const Showcase: StoryObj = {
       </Box>
     );
   }
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    type: "Line",
+    data: mockData,
+    dataKeys: ["Sales", "Revenue", "Profit"],
+    chartColors: ["#8884d8", "#82ca9d", "#ffc658"],
+    margin: { top: 20, right: 30, left: 20, bottom: 5 },
+    showLegend: true,
+    legendPosition: "top",
+    xAxisConfig: { dataKey: "x" },
+    yAxisConfig: {},
+    numberFormat: "0,0",
+    xDataKeyArr: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    interpolation: "linear",
+    strokeWidth: 2,
+    pointSize: 4,
+    onChartClick: (data: any, event: any) => console.log("Chart clicked:", data),
+    tooltips: true,
+    legendtype: "classic",
+  },
 };
 
 

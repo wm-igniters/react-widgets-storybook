@@ -6,17 +6,9 @@ import {
   Typography,
   Link,
   Avatar,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
   Divider,
-  Card,
-  CardContent,
-  Chip,
   IconButton,
   Button,
-  LinearProgress,
 } from "@mui/material";
 
 import RightNavDefaultExport from "../../../../components/layout/rightnav/index";
@@ -32,7 +24,11 @@ const meta: Meta<typeof RightNavDefaultExport> = {
   title: "Layout/RightNav",
   component: RightNavDefaultExport,
   argTypes: {
-    columnwidth: { control: "text" },
+    columnwidth: {
+      control: "select",
+      options: ["1", "2", "3", "4", "6"],
+      description: "Column width for the right nav panel"
+    },
     show: { control: "boolean" },
     className: { control: "text" },
   },
@@ -49,19 +45,6 @@ const mockListener = {
   Widgets: {},
 };
 
-const Template = (args: any) => (
-  <Box style={{ padding: 16, display: "flex", minHeight: "400px" }}>
-    <Box flex={1} p={2} bgcolor="#f5f5f5">
-      <Typography variant="body2" color="text.secondary">
-        Main Content Area
-      </Typography>
-    </Box>
-    <RightNavDefaultExport {...args} listener={mockListener}>
-      {args.children}
-    </RightNavDefaultExport>
-  </Box>
-);
-
 export const Docs: Story = {
   render: () => (
     <ComponentDocumentation
@@ -77,13 +60,124 @@ export const Docs: Story = {
   },
 };
 
+export const Showcase: Story = {
+  render: () => {
+    return (
+      <Box>
+        {/* Story Heading */}
+        <Box px={{ xs: 2, md: 3 }} py={2}>
+          <Typography variant="h6" fontWeight={600} textAlign="left">
+            Right Nav Showcase
+          </Typography>
+        </Box>
+
+        <Box display="flex" minHeight="400px">
+          {/* Main Content for Minimal Icon Nav */}
+          <Box flex={1} p={2} bgcolor="#f5f5f5">
+            <Typography variant="body2" color="text.secondary">
+              Minimal Icon Navigation Content Area
+            </Typography>
+          </Box>
+
+          {/* Minimal Icon Nav */}
+          <RightNavDefaultExport name="minimalIconNav" listener={mockListener} columnwidth="3">
+            <Box bgcolor="#f1ececff" height="100%" borderLeft="1px solid #e0e0e0" py={2}>
+              <Stack spacing={2} alignItems="center">
+                <IconButton color="primary">
+                  <i className="fa fa-bell" />
+                </IconButton>
+                <IconButton>
+                  <i className="fa fa-bookmark" />
+                </IconButton>
+                <IconButton>
+                  <i className="fa fa-share" />
+                </IconButton>
+                <Divider sx={{ width: "80%", my: 1 }} />
+                <IconButton>
+                  <i className="fa fa-cog" />
+                </IconButton>
+                <Avatar sx={{ width: 32, height: 32, mt: 2 }}>U</Avatar>
+              </Stack>
+            </Box>
+          </RightNavDefaultExport>
+        </Box>
+
+        {/* Spacer */}
+        <Box height={32} />
+
+        <Box display="flex" minHeight="400px">
+          {/* Main Content for User Info Panel */}
+          <Box flex={1} p={2} bgcolor="#f5f5f5">
+            <Typography variant="body2" color="text.secondary">
+              User Info Panel Content Area
+            </Typography>
+          </Box>
+
+          {/* User Info Panel */}
+          <RightNavDefaultExport name="userInfoPanel" listener={mockListener} columnwidth="6">
+            <Box p={2} bgcolor="#f1ececff" height="100%" borderLeft="1px solid #e0e0e0">
+              <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
+                <Avatar sx={{ width: 80, height: 80, mb: 2 }}>JD</Avatar>
+                <Typography variant="h6">John Doe</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  john.doe@example.com
+                </Typography>
+              </Box>
+              <Divider sx={{ mb: 2 }} />
+              <Stack spacing={2}>
+                <Box>
+                  <Typography variant="caption" color="text.secondary">
+                    ROLE
+                  </Typography>
+                  <Typography variant="body1">Administrator</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="text.secondary">
+                    DEPARTMENT
+                  </Typography>
+                  <Typography variant="body1">Engineering</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="text.secondary">
+                    LOCATION
+                  </Typography>
+                  <Typography variant="body1">San Francisco, CA</Typography>
+                </Box>
+              </Stack>
+              <Button variant="outlined" fullWidth sx={{ mt: 3 }}>
+                View Profile
+              </Button>
+            </Box>
+          </RightNavDefaultExport>
+        </Box>
+      </Box>
+    );
+  },
+};
+
+
 export const Basic: Story = {
-  render: Template,
+  tags: ['show-panel'],
+  render: (args) => {
+    const contentColumns = 12 - parseInt(args.columnwidth || "3");
+    return (
+      <Box style={{ padding: 16, display: "flex", minHeight: "400px" }}>
+        <Box className={`col-sm-${contentColumns}`} p={2} bgcolor="#f5f5f5">
+          <Typography variant="body2" color="text.secondary">
+            Main Content Area (Width: {contentColumns}/12 columns)
+          </Typography>
+        </Box>
+        <RightNavDefaultExport {...args} listener={mockListener}>
+          {args.children}
+        </RightNavDefaultExport>
+      </Box>
+    );
+  },
   args: {
     name: "basicRightNav",
-    listener: mockListener,
+    columnwidth: "3",
     children: (
-      <Box p={2} bgcolor="#ffffff" height="100%" borderLeft="1px solid #e0e0e0">
+      <Box p={2} bgcolor="#f1ececff" height="100%" borderLeft="1px solid #e0e0e0">
         <Typography variant="h6" mb={2}>
           Sidebar
         </Typography>

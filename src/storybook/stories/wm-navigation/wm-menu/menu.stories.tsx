@@ -74,26 +74,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  args: {
-    name:"basicMenu",
-    caption: "Menu",
-    width: "200px",
-    height: "auto",
-    iconposition: "left",
-    iconclass: "",
-    disableMenuContext: false,
-    menuposition: "down,right",
-    menualign: "left",
-    menulayout: "vertical",
-    showonhover: false,
-    autoclose: "outsideClick",
-    autoopen: "never",
-    dataset: menuItems,
-    listener: mockListener,
-  }
-};
-
 export const Showcase: Story = {
   render: () => {
     const showcaseItems = [
@@ -172,6 +152,27 @@ export const Showcase: Story = {
     name: "menuShowcase",
     listener: mockListener,
   },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  args: {
+    name:"basicMenu",
+    caption: "Menu",
+    width: "200px",
+    height: "auto",
+    iconposition: "left",
+    iconclass: "",
+    disableMenuContext: false,
+    menuposition: "down,right",
+    menualign: "left",
+    menulayout: "vertical",
+    showonhover: false,
+    autoclose: "outsideClick",
+    autoopen: "never",
+    dataset: menuItems,
+    listener: mockListener,
+  }
 };
 
 

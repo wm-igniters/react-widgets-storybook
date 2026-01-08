@@ -67,19 +67,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicAudio",
-    listener: mockListener,
-    mp3format: sampleAudioUrl,
-    controls: true,
-    autoplay: false,
-    loop: false,
-    muted: false,
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -151,6 +138,20 @@ export const Showcase: Story = {
   args: {
     name: "showcaseAudio",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicAudio",
+    listener: mockListener,
+    mp3format: sampleAudioUrl,
+    controls: true,
+    autoplay: false,
+    loop: false,
+    muted: false,
   },
 };
 

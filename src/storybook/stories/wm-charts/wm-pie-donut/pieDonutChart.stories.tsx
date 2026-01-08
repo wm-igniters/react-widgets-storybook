@@ -84,26 +84,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    type: "Pie",
-    data: mockData,
-    chartColors: ["#8884d8", "#82ca9d", "#ffc658", "#ff7c7c", "#a4de6c"],
-    margin: { top: 20, right: 20, left: 20, bottom: 20 },
-    showlabels: "outside",
-    labeltype: "percent",
-    tooltips: true,
-    legendPosition: "right",
-    showLegend: true,
-    onChartClick: (data: any, index: number, event: any) => console.log("Clicked:", data),
-    numberFormat: "0,0",
-    xDataKeyArr: [],
-    ynumberformat: "0,0",
-    legendtype: "classic",
-  },
-};
-
 export const Showcase: StoryObj = {
   render: () => {
     const defaultData = mockData;
@@ -261,6 +241,27 @@ export const Showcase: StoryObj = {
       </Box>
     );
   }
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    type: "Pie",
+    data: mockData,
+    chartColors: ["#8884d8", "#82ca9d", "#ffc658", "#ff7c7c", "#a4de6c"],
+    margin: { top: 20, right: 20, left: 20, bottom: 20 },
+    showlabels: "outside",
+    labeltype: "percent",
+    tooltips: true,
+    legendPosition: "right",
+    showLegend: true,
+    onChartClick: (data: any, index: number, event: any) => console.log("Clicked:", data),
+    numberFormat: "0,0",
+    xDataKeyArr: [],
+    ynumberformat: "0,0",
+    legendtype: "classic",
+  },
 };
 
 

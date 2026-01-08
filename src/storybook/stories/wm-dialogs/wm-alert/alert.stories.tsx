@@ -82,7 +82,130 @@ export const Docs: Story = {
   },
 };
 
+export const Showcase: Story = {
+  render: () => {
+    const [openAlerts, setOpenAlerts] = useState<{
+      error: boolean;
+      warning: boolean;
+      success: boolean;
+    }>({
+      error: false,
+      warning: false,
+      success: false,
+    });
+
+    const handleOpen = (type: "error" | "warning" | "success") => {
+      setOpenAlerts((prev) => ({ ...prev, [type]: true }));
+    };
+
+    const handleClose = (type: "error" | "warning" | "success") => {
+      setOpenAlerts((prev) => ({ ...prev, [type]: false }));
+    };
+
+    return (
+      <Box style={{ padding: 16 }}>
+        <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap", gap: 2 }}>
+          <WmButton
+            name="openErrorBtn"
+            caption="Show Error"
+            onClick={() => handleOpen("error")}
+            listener={mockListener}
+            styles={{
+              backgroundColor: "#f44336",
+              color: "white",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          />
+          <WmButton
+            name="openWarningBtn"
+            caption="Show Warning"
+            onClick={() => handleOpen("warning")}
+            listener={mockListener}
+            styles={{
+              backgroundColor: "#ffae00",
+              color: "black",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          />
+          <WmButton
+            name="openSuccessBtn"
+            caption="Show Success"
+            onClick={() => handleOpen("success")}
+            listener={mockListener}
+            styles={{
+              backgroundColor: "#5AC588",
+              color: "white",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          />
+        </Stack>
+
+        <AlertDialogDefaultExport
+          name="errorAlert"
+          title="Error"
+          text="An error occurred!"
+          oktext="OK"
+          alerttype="error"
+          iconclass="wi wi-error"
+          isopen={openAlerts.error}
+          onClose={() => handleClose("error")}
+          close={() => handleClose("error")}
+          onOkClick={() => handleClose("error")}
+          listener={mockListener}
+        />
+        <AlertDialogDefaultExport
+          name="warningAlert"
+          title="Warning"
+          text="Please be careful!"
+          oktext="OK"
+          alerttype="warning"
+          iconclass="wi wi-warning"
+          isopen={openAlerts.warning}
+          onClose={() => handleClose("warning")}
+          close={() => handleClose("warning")}
+          onOkClick={() => handleClose("warning")}
+          listener={mockListener}
+        />
+        <AlertDialogDefaultExport
+          name="successAlert"
+          title="Success"
+          text="Operation completed successfully!"
+          oktext="OK"
+          alerttype="success"
+          iconclass="wi wi-check-circle"
+          isopen={openAlerts.success}
+          onClose={() => handleClose("success")}
+          close={() => handleClose("success")}
+          onOkClick={() => handleClose("success")}
+          listener={mockListener}
+        />
+      </Box>
+    );
+  },
+  args:{
+    name:"showcaseAlerts",
+    listener:mockListener
+  }
+};
+
+
 export const Basic: Story = {
+  tags: ['show-panel'],
   render: Template,
   args: {
     name: "basicAlert",
@@ -229,123 +352,6 @@ export const Basic: Story = {
 //             listener={mockListener}
 //           />
 //         </Stack>
-//       </Box>
-//     );
-//   },
-// };
-
-// export const MultipleAlerts: Story = {
-//   render: () => {
-//     const [openAlerts, setOpenAlerts] = useState<{
-//       error: boolean;
-//       warning: boolean;
-//       success: boolean;
-//     }>({
-//       error: false,
-//       warning: false,
-//       success: false,
-//     });
-
-//     const handleOpen = (type: "error" | "warning" | "success") => {
-//       setOpenAlerts((prev) => ({ ...prev, [type]: true }));
-//     };
-
-//     const handleClose = (type: "error" | "warning" | "success") => {
-//       setOpenAlerts((prev) => ({ ...prev, [type]: false }));
-//     };
-
-//     return (
-//       <Box style={{ padding: 16 }}>
-//         <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap", gap: 2 }}>
-//           <WmButton
-//             name="openErrorBtn"
-//             caption="Show Error"
-//             onClick={() => handleOpen("error")}
-//             listener={mockListener}
-//             styles={{
-//               backgroundColor: "#dc3545",
-//               color: "white",
-//               padding: "8px 16px",
-//               border: "none",
-//               borderRadius: "4px",
-//               cursor: "pointer",
-//               fontSize: "14px",
-//               fontWeight: "500",
-//             }}
-//           />
-//           <WmButton
-//             name="openWarningBtn"
-//             caption="Show Warning"
-//             onClick={() => handleOpen("warning")}
-//             listener={mockListener}
-//             styles={{
-//               backgroundColor: "#ffc107",
-//               color: "black",
-//               padding: "8px 16px",
-//               border: "none",
-//               borderRadius: "4px",
-//               cursor: "pointer",
-//               fontSize: "14px",
-//               fontWeight: "500",
-//             }}
-//           />
-//           <WmButton
-//             name="openSuccessBtn"
-//             caption="Show Success"
-//             onClick={() => handleOpen("success")}
-//             listener={mockListener}
-//             styles={{
-//               backgroundColor: "#28a745",
-//               color: "white",
-//               padding: "8px 16px",
-//               border: "none",
-//               borderRadius: "4px",
-//               cursor: "pointer",
-//               fontSize: "14px",
-//               fontWeight: "500",
-//             }}
-//           />
-//         </Stack>
-
-//         <AlertDialogDefaultExport
-//           name="errorAlert"
-//           title="Error"
-//           text="An error occurred!"
-//           oktext="OK"
-//           alerttype="error"
-//           iconclass="wi wi-error"
-//           isopen={openAlerts.error}
-//           onClose={() => handleClose("error")}
-//           close={() => handleClose("error")}
-//           onOkClick={() => handleClose("error")}
-//           listener={mockListener}
-//         />
-//         <AlertDialogDefaultExport
-//           name="warningAlert"
-//           title="Warning"
-//           text="Please be careful!"
-//           oktext="OK"
-//           alerttype="warning"
-//           iconclass="wi wi-warning"
-//           isopen={openAlerts.warning}
-//           onClose={() => handleClose("warning")}
-//           close={() => handleClose("warning")}
-//           onOkClick={() => handleClose("warning")}
-//           listener={mockListener}
-//         />
-//         <AlertDialogDefaultExport
-//           name="successAlert"
-//           title="Success"
-//           text="Operation completed successfully!"
-//           oktext="OK"
-//           alerttype="success"
-//           iconclass="wi wi-check-circle"
-//           isopen={openAlerts.success}
-//           onClose={() => handleClose("success")}
-//           close={() => handleClose("success")}
-//           onOkClick={() => handleClose("success")}
-//           listener={mockListener}
-//         />
 //       </Box>
 //     );
 //   },

@@ -71,19 +71,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicLabel",
-    listener: mockListener,
-    caption: "Label",
-    required: false,
-    type: "p",
-    className:"text-primary",
-    hint:"This is a basic label"
-  },  
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -189,6 +176,19 @@ export const Showcase: Story = {
   },
 };
 
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicLabel",
+    listener: mockListener,
+    caption: "Label",
+    required: false,
+    type: "p",
+    className:"text-primary",
+    hint:"This is a basic label"
+  },  
+};
 
 // export const Default: Story = {
 //   render: Template,

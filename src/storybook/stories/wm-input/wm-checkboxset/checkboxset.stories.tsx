@@ -79,37 +79,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicCheckboxset",
-    dataset: "Option 1, Option 2, Option 3",
-    listener: mockListener,
-    disabled: false,
-    readonly: false,
-    layout: "inline"
-  },
-};
-
-export const ObjectDataset: Story = {
-  render: Template,
-  args: {
-    name: "objectDataset",
-    label: "",
-    dataset: [
-      { id: 1, name: "United States", code: "US" },
-      { id: 2, name: "United Kingdom", code: "UK" },
-      { id: 3, name: "Canada", code: "CA" },
-      { id: 4, name: "Australia", code: "AU" },
-      { id: 5, name: "Germany", code: "DE" },
-    ],
-    datafield: "id",
-    displayfield: "name",
-    listener: mockListener,
-    layout:"inline"
-  },
-};
-
 export const Showcase: Story = {
   render: () => (
     <Box sx={{ p: 3 }}>
@@ -245,6 +214,40 @@ export const Showcase: Story = {
   ),
   args: {
     name: "showcaseCheckboxset",
+    listener: mockListener
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicCheckboxset",
+    dataset: "Option 1, Option 2, Option 3",
+    listener: mockListener,
+    disabled: false,
+    readonly: false,
+    layout: "inline"
+  },
+};
+
+export const ObjectDataset: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "objectDataset",
+    label: "",
+    dataset: [
+      { id: 1, name: "United States", code: "US" },
+      { id: 2, name: "United Kingdom", code: "UK" },
+      { id: 3, name: "Canada", code: "CA" },
+      { id: 4, name: "Australia", code: "AU" },
+      { id: 5, name: "Germany", code: "DE" },
+    ],
+    datafield: "id",
+    displayfield: "name",
+    listener: mockListener,
+    layout:"inline"
   },
 };
 

@@ -65,28 +65,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicColorPicker",
-    listener: mockListener,
-    placeholder: "Select a color",
-    datavalue: "",
-    autoclose: "always",
-  },
-};
-
-export const AutocloseOutsideClick: Story = {
-  render: Template,
-  args: {
-    name: "autocloseOutside",
-    listener: mockListener,
-    placeholder: "Closes on outside click",
-    datavalue: "#2ECC71",
-    autoclose: "outsideClick",
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -140,6 +118,30 @@ export const Showcase: Story = {
   args: {
     name: "showcaseColorPicker",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicColorPicker",
+    listener: mockListener,
+    placeholder: "Select a color",
+    datavalue: "",
+    autoclose: "always",
+  },
+};
+
+export const AutocloseOutsideClick: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "autocloseOutside",
+    listener: mockListener,
+    placeholder: "Closes on outside click",
+    datavalue: "#2ECC71",
+    autoclose: "outsideClick",
   },
 };
 

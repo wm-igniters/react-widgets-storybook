@@ -58,29 +58,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicMessage",
-    listener: mockListener,
-    caption: "Operation completed successfully!",
-    type: "success",
-    hideclose: false,
-  },
-};
-
-export const Animation: Story = {
-  render: Template,
-  args: {
-    name: "animatedMessage",
-    listener: mockListener,
-    caption: "This message has an animation applied",
-    type: "success",
-    hideclose: false,
-    animation: "fadeIn",
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -131,6 +108,31 @@ export const Showcase: Story = {
   args: {
     name: "allMessageTypes",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicMessage",
+    listener: mockListener,
+    caption: "Operation completed successfully!",
+    type: "success",
+    hideclose: false,
+  },
+};
+
+export const Animation: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "animatedMessage",
+    listener: mockListener,
+    caption: "This message has an animation applied",
+    type: "success",
+    hideclose: false,
+    animation: "fadeIn",
   },
 };
 

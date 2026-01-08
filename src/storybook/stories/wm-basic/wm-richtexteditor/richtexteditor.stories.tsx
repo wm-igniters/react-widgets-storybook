@@ -61,18 +61,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicRichTextEditor",
-    listener: mockListener,
-    placeholder: "Start typing...",
-    readonly: false,
-    disabled: false,
-    showpreview: false,
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     const editors = [
@@ -198,6 +186,19 @@ export const Showcase: Story = {
   args: {
     name: "showcaseEditor",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicRichTextEditor",
+    listener: mockListener,
+    placeholder: "Start typing...",
+    readonly: false,
+    disabled: false,
+    showpreview: false,
   },
 };
 

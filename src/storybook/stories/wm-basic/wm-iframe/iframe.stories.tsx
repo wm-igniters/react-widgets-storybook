@@ -56,17 +56,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicIframe",
-    listener: mockListener,
-    iframesrc: "https://docs.wavemaker.com/learn/",
-    width: "600px",
-    height: "400px",
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -110,6 +99,18 @@ export const Showcase: Story = {
   args: {
     name: "showcaseIframe",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicIframe",
+    listener: mockListener,
+    iframesrc: "https://docs.wavemaker.com/learn/",
+    width: "600px",
+    height: "400px",
   },
 };
 

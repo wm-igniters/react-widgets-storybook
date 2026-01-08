@@ -62,33 +62,6 @@ export const Docs: Story = {
   },
 };
 
-// Basic Examples
-export const Basic: Story = {
-  render: (args) => (
-    <Box style={{ padding: 16,  height: "500px", width: "800px" }}>
-      <CarouselDefaultExport {...args}>
-        <Box sx={{ width: "100%", height: "100%", bgcolor: "#1976d2", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Typography variant="h3">Slide 1</Typography>
-        </Box>
-        <Box sx={{ width: "100%", height: "100%", bgcolor: "#2e7d32", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Typography variant="h3">Slide 2</Typography>
-        </Box>
-        <Box sx={{ width: "100%", height: "100%", bgcolor: "#ed6c02", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Typography variant="h3">Slide 3</Typography>
-        </Box>
-      </CarouselDefaultExport>
-    </Box>
-  ),
-  args: {
-    name: "basicCarousel",
-    animation: "auto",
-    animationinterval: 2,
-    controls: "both",
-    height: "400px",
-    width: "100%",
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     const showcaseItems = [
@@ -206,5 +179,33 @@ export const Showcase: Story = {
         </Box>
       </Box>
     );
+  },
+};
+
+// Basic Examples
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: (args) => (
+    <Box style={{ padding: 16,  height: "500px", width: "800px" }}>
+      <CarouselDefaultExport {...args}>
+        <Box sx={{ width: "100%", height: "100%", bgcolor: "#1976d2", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Typography variant="h3">Slide 1</Typography>
+        </Box>
+        <Box sx={{ width: "100%", height: "100%", bgcolor: "#2e7d32", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Typography variant="h3">Slide 2</Typography>
+        </Box>
+        <Box sx={{ width: "100%", height: "100%", bgcolor: "#ed6c02", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Typography variant="h3">Slide 3</Typography>
+        </Box>
+      </CarouselDefaultExport>
+    </Box>
+  ),
+  args: {
+    name: "basicCarousel",
+    animation: "auto",
+    animationinterval: 2,
+    controls: "both",
+    height: "400px",
+    width: "100%",
   },
 };

@@ -68,44 +68,6 @@ const Template = (args: any) => {
   );
 };
 
-export const Docs: Story = {
-  render: () => (
-    <ComponentDocumentation
-      overview={overview}
-      properties={props}
-      events={events}
-      methods={methods}
-      styling={styling}
-    />
-  ),
-  parameters: {
-    layout: 'fullscreen',
-  },
-};
-
-export const Basic: Story = {
-  render: Template,
-  args: {
-    type: "Bar",
-    data: mockData,
-    dataKeys: ["Sales", "Revenue", "Profit"],
-    chartColors: ["#8884d8", "#82ca9d", "#ffc658"],
-    margin: { top: 20, right: 30, left: 20, bottom: 5 },
-    barSpacing: "medium",
-    showValues: false,
-    legendPosition: "top",
-    xAxisConfig: {},
-    yAxisConfig: {},
-    numberFormat: "0,0",
-    xDataKeyArr: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-    onChartClick: (data: any, event: any) => console.log("Chart clicked:", data),
-    tooltips: true,
-    showlegend: true,
-    viewtype: "Grouped",
-    legendtype: "classic",
-  },
-};
-
 const mockDataMonthly = [
   { x: "Jan", Sales: 4000, Revenue: 2400, Profit: 2400 },
   { x: "Feb", Sales: 3000, Revenue: 1398, Profit: 2210 },
@@ -128,6 +90,21 @@ const mockDataRegions = [
   { x: "East", Direct: 4000, Online: 4000, Partner: 2500 },
   { x: "West", Direct: 5500, Online: 3200, Partner: 1800 },
 ];
+
+export const Docs: Story = {
+  render: () => (
+    <ComponentDocumentation
+      overview={overview}
+      properties={props}
+      events={events}
+      methods={methods}
+      styling={styling}
+    />
+  ),
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
 
 export const Showcase: StoryObj = {
   render: () => (
@@ -260,6 +237,29 @@ export const Showcase: StoryObj = {
   ),
 };
 
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    type: "Bar",
+    data: mockData,
+    dataKeys: ["Sales", "Revenue", "Profit"],
+    chartColors: ["#8884d8", "#82ca9d", "#ffc658"],
+    margin: { top: 20, right: 30, left: 20, bottom: 5 },
+    barSpacing: "medium",
+    showValues: false,
+    legendPosition: "top",
+    xAxisConfig: {},
+    yAxisConfig: {},
+    numberFormat: "0,0",
+    xDataKeyArr: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    onChartClick: (data: any, event: any) => console.log("Chart clicked:", data),
+    tooltips: true,
+    showlegend: true,
+    viewtype: "Grouped",
+    legendtype: "classic",
+  },
+};
 
 // export const DefaultColumn: Story = {
 //   render: Template,

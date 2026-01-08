@@ -46,7 +46,7 @@ const meta = {
       control: { type: "select" },
       options: ["top", "bottom", "center"],
     },
-    spacing: { control: "text" },
+    // spacing: { control: "text" },
   },
   parameters: {
     layout: "padded",
@@ -68,24 +68,6 @@ export const Docs: Story = {
   ),
   parameters: {
     layout: 'fullscreen',
-  },
-};
-
-export const Basic: Story = {
-  args: {
-    name: "basicLinearLayout",
-    direction: "row",
-    horizontalalign: "left",
-    verticalalign: "top",
-    listener: mockListener,
-    styles: { minHeight: "150px", border: "1px dashed #ccc", minWidth: "350px" },
-    children: (
-      <>
-        <SampleBox label="Item 1" />
-        <SampleBox label="Item 2" />
-        <SampleBox label="Item 3" />
-      </>
-    ),
   },
 };
 
@@ -212,6 +194,29 @@ export const Showcase: Story = {
       </Box>
     </Box>
   ),
+  args:{
+    name:"showcaseLinearLayout",
+    listener:mockListener
+  }
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  args: {
+    name: "basicLinearLayout",
+    direction: "row",
+    horizontalalign: "left",
+    verticalalign: "top",
+    listener: mockListener,
+    styles: { minHeight: "150px", border: "1px dashed #ccc", minWidth: "350px" },
+    children: (
+      <>
+        <SampleBox label="Item 1" />
+        <SampleBox label="Item 2" />
+        <SampleBox label="Item 3" />
+      </>
+    ),
+  },
 };
 
 

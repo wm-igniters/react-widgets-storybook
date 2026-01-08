@@ -86,22 +86,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicCurrency",
-    listener: mockListener,
-    currency: "USD",
-    placeholder: "Enter amount",
-    inputmode: "natural",
-    datavalue: null,
-    disabled : false,
-    readonly: false,
-    required: false,
-    decimalplaces: 2,
-    trailingzero: false,
-  },
-};
 
 export const Showcase: Story = {
   render: () => {
@@ -187,6 +171,24 @@ export const Showcase: Story = {
   args: {
     name: "showcaseCurrency",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicCurrency",
+    listener: mockListener,
+    currency: "USD",
+    placeholder: "Enter amount",
+    inputmode: "natural",
+    datavalue: null,
+    disabled : false,
+    readonly: false,
+    required: false,
+    decimalplaces: 2,
+    trailingzero: false,
   },
 };
 

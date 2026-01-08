@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import {
   Box,
@@ -6,12 +6,8 @@ import {
   Typography,
   Link,
   IconButton,
-  Button,
   Avatar,
-  Menu,
-  MenuItem,
   Badge,
-  Divider,
 } from "@mui/material";
 
 import HeaderDefaultExport from "../../../../components/layout/header/index";
@@ -27,7 +23,6 @@ const meta: Meta<typeof HeaderDefaultExport> = {
   title: "Layout/Header",
   component: HeaderDefaultExport,
   argTypes: {
-    show: { control: "boolean" },
     className: { control: "text" },
   },
 };
@@ -43,14 +38,6 @@ const mockListener = {
   Widgets: {},
 };
 
-const Template = (args: any) => (
-  <Box style={{ padding: 16 }}>
-    <HeaderDefaultExport {...args} listener={mockListener}>
-      {args.children}
-    </HeaderDefaultExport>
-  </Box>
-);
-
 export const Docs: Story = {
   render: () => (
     <ComponentDocumentation
@@ -64,35 +51,219 @@ export const Docs: Story = {
   parameters: {
     layout: 'fullscreen',
   },
+  args: {} as any,
 };
 
+export const Showcase: Story = {
+  render: (args: any) => (
+    <>
+      {/* Page intro — OUTSIDE header component */}
+      <Box px={{ xs: 2, md: 3 }} py={3} sx={{ width: "100%", display: "block",}}>
+        <Typography variant="h6" fontWeight={600} textAlign="left">
+          Header Showcase
+        </Typography>
+      </Box>
+
+      <HeaderDefaultExport {...args} listener={mockListener}>
+        {args.children}
+      </HeaderDefaultExport>
+    </>
+  ),
+
+  args: {
+    name: "headerShowcase",
+    listener: mockListener,
+
+    children: (
+      <Stack spacing={4} px={{ xs: 2, md: 3 }} py={3} bgcolor="#fafafa">
+
+        {/* Simple Navigation */}
+        <Stack spacing={1}>
+          <Typography variant="caption" color="text.secondary">
+            Simple Header
+          </Typography>
+
+          <Box
+            bgcolor="#ffffff"
+            borderBottom="1px solid"
+            borderColor="divider"
+            position="relative"
+            zIndex={1}
+          >
+            <Box
+              px={3}
+              py={2}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Stack direction="row" spacing={1.5} alignItems="center">
+                <Avatar
+                  src="https://docs.wavemaker.com/learn/img/WM_blue_logo.png"
+                  sx={{ width: 32, height: 32 }}
+                />
+                <Typography variant="body2" fontWeight={600} color="text.secondary">
+                  AppName
+                </Typography>
+              </Stack>
+
+              <Stack direction="row" spacing={3}>
+                <Link underline="hover">Home</Link>
+                <Link underline="hover">Features</Link>
+                <Link underline="hover">Contact</Link>
+              </Stack>
+            </Box>
+          </Box>
+        </Stack>
+
+        {/* Header with Search */}
+        <Stack spacing={1}>
+          <Typography variant="caption" color="text.secondary">
+            Header with Search
+          </Typography>
+
+          <Box
+            bgcolor="#ffffff"
+            borderBottom="1px solid"
+            borderColor="divider"
+            position="relative"
+            zIndex={1}
+          >
+            <Box
+              px={3}
+              py={2}
+              display="flex"
+              alignItems="center"
+              gap={3}
+            >
+              <Stack direction="row" spacing={1.5} alignItems="center">
+                <Avatar
+                  src="https://docs.wavemaker.com/learn/img/WM_blue_logo.png"
+                  sx={{ width: 32, height: 32 }}
+                />
+                <Typography variant="body2" fontWeight={600} color="text.secondary">
+                  Company
+                </Typography>
+              </Stack>
+
+              <Box
+                component="input"
+                type="search"
+                placeholder="Search…"
+                style={{
+                  flex: 1,
+                  padding: "8px 14px",
+                  borderRadius: 6,
+                  border: "1px solid #e0e0e0",
+                }}
+              />
+
+              <Stack direction="row" spacing={2}>
+                <Link underline="hover">Docs</Link>
+                <Link underline="hover">Login</Link>
+              </Stack>
+            </Box>
+          </Box>
+        </Stack>
+
+        {/* Header with Notifications */}
+        <Stack spacing={1}>
+          <Typography variant="caption" color="text.secondary">
+            Header with Notifications
+          </Typography>
+
+          <Box
+            bgcolor="#ffffff"
+            borderBottom="1px solid"
+            borderColor="divider"
+            position="relative"
+            zIndex={1}
+          >
+            <Box
+              px={3}
+              py={2}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Stack direction="row" spacing={1.5} alignItems="center">
+                <Avatar
+                  src="https://docs.wavemaker.com/learn/img/WM_blue_logo.png"
+                  sx={{ width: 32, height: 32 }}
+                />
+                <Typography variant="body2" fontWeight={600} color="text.secondary">
+                  Dashboard
+                </Typography>
+              </Stack>
+
+              <Stack direction="row" spacing={2} alignItems="center">
+                <IconButton size="small">
+                  <Badge badgeContent={4} color="error">
+                    <i className="fa fa-bell" />
+                  </Badge>
+                </IconButton>
+
+                <IconButton size="small">
+                  <Badge badgeContent={7} color="primary">
+                    <i className="fa fa-envelope" />
+                  </Badge>
+                </IconButton>
+
+                <Avatar sx={{ width: 32, height: 32 }}>
+                  JD
+                </Avatar>
+              </Stack>
+            </Box>
+          </Box>
+        </Stack>
+
+      </Stack>
+    ),
+  },
+};
+
+
 export const Basic: Story = {
-  render: Template,
+  tags: ['show-panel'],
+  render: (args: any) => (
+    <HeaderDefaultExport {...args} listener={mockListener}>
+      {args.children}
+    </HeaderDefaultExport>
+  ),
   args: {
     name: "basicHeader",
     listener: mockListener,
-    show: true,
     children: (
       <Box
-        p={2}
+        px={3}
+        py={2}
         display="flex"
-        justifyContent="space-between"
         alignItems="center"
+        justifyContent="space-between"
         bgcolor="#ffffff"
-        borderBottom="1px solid #e0e0e0"
       >
-        <Typography variant="h6">Application Name</Typography>
-        <Stack direction="row" spacing={2}>
-          <Link href="#" underline="hover">
-            Home
-          </Link>
-          <Link href="#" underline="hover">
-            About
-          </Link>
-          <Link href="#" underline="hover">
-            Contact
-          </Link>
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          <Avatar
+            src="https://docs.wavemaker.com/learn/img/WM_blue_logo.png"
+            sx={{ width: 40, height: 40 }}
+          />
+          <Typography variant="body2" fontWeight={600} color="text.secondary">
+            Wavemaker
+          </Typography>
         </Stack>
+
+        <Box
+          component="input"
+          type="search"
+          placeholder="Search…"
+          style={{
+            minWidth: "200px",
+            padding: "10px 16px",
+            borderRadius: 6,
+            border: "1px solid #e0e0e0",
+            fontSize: "14px",
+          }}
+        />
       </Box>
     ),
   },

@@ -110,27 +110,6 @@ export const Docs: Story = {
   },
 };
 
-export const Basic: Story = {
-  render: Template,
-  args: {
-    name: "basicSearch",
-    listener: mockListener,
-    type: "autocomplete",
-    placeholder: "Search...",
-    dataset: sampleDataset,
-    datafield: "name",
-    displayfield: "name",
-    searchon: "onsearchiconclick",
-    searchkey: "name",
-    showclear: true,
-    showsearchicon: true,
-    showbackbutton:false,
-    disabled: false,
-    readonly: false,
-    autofocus: false,
-  },
-};
-
 export const Showcase: Story = {
   render: () => {
     return (
@@ -200,6 +179,28 @@ export const Showcase: Story = {
   args: {
     name: "showcaseSearchTypes",
     listener: mockListener,
+  },
+};
+
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicSearch",
+    listener: mockListener,
+    type: "autocomplete",
+    placeholder: "Search...",
+    dataset: sampleDataset,
+    datafield: "name",
+    displayfield: "name",
+    searchon: "onsearchiconclick",
+    searchkey: "name",
+    showclear: true,
+    showsearchicon: true,
+    showbackbutton:false,
+    disabled: false,
+    readonly: false,
+    autofocus: false,
   },
 };
 
