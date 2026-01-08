@@ -65,6 +65,7 @@ export interface TokenDefinition {
  *     "outlined-secondary": [tokens specific to btn-outlined btn-secondary],
  *     ...
  *   }
+ * - childSelectors: Optional component-specific child element selectors
  */
 export interface ComponentTokenConfig {
   componentName: string;     // Component identifier (e.g., "btn", "input")
@@ -73,23 +74,43 @@ export interface ComponentTokenConfig {
   variants?: {
     [key: string]: TokenDefinition[];  // Variant-specific token overrides
   };
+  childSelectors?: {
+    text?: string;           // Text content selector (e.g., ".btn-caption")
+    icon?: string;           // Icon element selector (e.g., ".app-icon, i")
+    badge?: string;          // Badge element selector (e.g., ".badge")
+    [key: string]: string | undefined;  // Allow additional child selectors
+  };
 }
 
 /**
  * DesignTokenParameters - Story-level configuration
  * This is passed in the story's parameters.designTokens object
  *
- * Example usage in story:
+ * Example usage in story (NEW APPROACH - pass raw JSON):
  * parameters: {
  *   designTokens: {
  *     enabled: true,
- *     tokenConfig: buttonTokenConfig,  // Parsed from JSON
+ *     tokenData: buttonTokensData,  // Raw JSON data (not pre-parsed)
+ *     componentKey: "btn",  // Component identifier for parsing
+ *     extractCSSVariablesAtRuntime: true,  // Enable runtime CSS extraction
+ *   }
+ * }
+ *
+ * Example usage in story (OLD APPROACH - pre-parsed config):
+ * parameters: {
+ *   designTokens: {
+ *     enabled: true,
+ *     tokenConfig: buttonTokenConfig,  // Pre-parsed configuration (deprecated)
+ *     extractCSSVariablesAtRuntime: true,  // Enable runtime CSS extraction
  *   }
  * }
  */
 export interface DesignTokenParameters {
   enabled: boolean;                   // Whether to show Design Tokens tab
-  tokenConfig?: ComponentTokenConfig; // Parsed token configuration
+  tokenConfig?: ComponentTokenConfig; // (Deprecated) Pre-parsed token configuration
+  tokenData?: any;                    // Raw JSON data from design tokens file (preferred)
+  componentKey?: string;              // Component identifier for parsing (e.g., "btn")
   tokenFilePath?: string;            // (Optional) Path to JSON file
   className?: string;                // (Optional) Fallback className if not in args
+  extractCSSVariablesAtRuntime?: boolean;  // Enable runtime CSS variable extraction from foundation.css
 }

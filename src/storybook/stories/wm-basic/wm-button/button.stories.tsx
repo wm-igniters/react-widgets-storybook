@@ -20,10 +20,6 @@ import token from "./docs/token.md?raw";
 // - States (hover, focus, active, disabled)
 import buttonTokensData from "../../../../designTokens/wm-button.json";
 
-// Import the design token parser utility
-// This parser converts the JSON token structure into a format that the Design Token panel can use
-import { parseDesignTokens } from "../../../../../.storybook/addons/design-tokens/tokenParser";
-
 const mockListener = {
   appLocale: {
     LABEL_ICON: "Icon",
@@ -380,17 +376,13 @@ export const Showcase: Story = {
 //
 // How it works:
 // 1. User selects className in Controls tab (e.g., "btn-filled btn-primary")
-// 2. Design Tokens panel reads the JSON and shows tokens for that variant
-// 3. Default values shown are from the JSON (e.g., primary = blue background)
-// 4. User modifies a token (e.g., change background to red)
-// 5. CSS is dynamically generated and injected into the iframe
-// 6. All buttons with that className update instantly
+// 2. Design Tokens panel extracts CSS variables from foundation.css at runtime
+// 3. Design Tokens panel parses the JSON with actual CSS values (not hardcoded)
+// 4. Default values shown are from foundation.css (e.g., primary = actual theme color)
+// 5. User modifies a token (e.g., change background to red)
+// 6. CSS is dynamically generated and injected into the iframe
+// 7. All buttons with that className update instantly
 // ============================================================================
-
-// Parse the button design tokens from JSON
-// This converts the hierarchical JSON structure into a flat list of tokens
-// with proper CSS variable names (--wm-btn-background, --wm-btn-color, etc.)
-const buttonTokenConfig = parseDesignTokens(buttonTokensData, "btn");
 
 
 export const Filled: Story = {
@@ -468,7 +460,9 @@ export const Filled: Story = {
   parameters: {
     designTokens: {
       enabled: true,
-      tokenConfig: buttonTokenConfig,
+      tokenData: buttonTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "btn",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
     },
     layout: 'padded',
   },
@@ -549,7 +543,9 @@ export const Outlined: Story = {
   parameters: {
     designTokens: {
       enabled: true,
-      tokenConfig: buttonTokenConfig,
+      tokenData: buttonTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "btn",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
     },
     layout: 'padded',
   },
@@ -630,7 +626,9 @@ export const Text: Story = {
   parameters: {
     designTokens: {
       enabled: true,
-      tokenConfig: buttonTokenConfig,
+      tokenData: buttonTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "btn",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
     },
     layout: 'padded',
   },
@@ -706,7 +704,9 @@ export const Transparent: Story = {
   parameters: {
     designTokens: {
       enabled: true,
-      tokenConfig: buttonTokenConfig,
+      tokenData: buttonTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "btn",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
     },
     layout: 'padded',
   },

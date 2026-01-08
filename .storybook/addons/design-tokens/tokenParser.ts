@@ -33,6 +33,7 @@
  */
 
 import { TokenDefinition, TokenControlType, ComponentTokenConfig } from "./types";
+import { resolveTokenReference } from "./cssVariableExtractor";
 
 /**
  * Determines the UI control type based on token attributes
@@ -108,18 +109,53 @@ function cleanDescription(description?: string): string {
 }
 
 /**
- * Resolves token reference values like {color.primary.@.value}
+ * Resolves token reference values using runtime CSS variable extraction
+ *
+ * This is the PREFERRED method for resolving token values. It extracts
+ * CSS variable values from the foundation.css at runtime, ensuring values
+ * are always in sync with the actual stylesheet.
+ *
+ * @param value - Token value (may contain references)
+ * @param cssVariableMap - Map of token references to CSS values from cssVariableExtractor
+ * @returns Resolved CSS value from runtime extraction
+ *
+ * @example
+ * ```typescript
+ * const cssVars = extractCSSVariables(iframe);
+ * const tokenMap = buildTokenReferenceMap(cssVars);
+ * resolveTokenValueRuntime("{color.primary.@.value}", tokenMap);
+ * // Returns: "rgb(255, 114, 80)" (from foundation.css)
+ * ```
+ */
+export function resolveTokenValueRuntime(
+  value: string,
+  cssVariableMap: Map<string, string>
+): string {
+  if (!value || cssVariableMap.size === 0) {
+    return value;
+  }
+
+  return resolveTokenReference(value, cssVariableMap);
+}
+
+/**
+ * Resolves token reference values like {color.primary.@.value} using HARDCODED values
+ *
+ * ⚠️ DEPRECATED: This function uses hardcoded values and should only be used as a fallback
+ * when runtime CSS variable extraction is not available.
  *
  * The JSON uses references to shared color/space/font values.
- * This function maps those references to actual CSS values.
+ * This function maps those references to hardcoded CSS values.
  *
  * @param value - Token value (may be a reference or literal)
  * @returns Resolved CSS value
  *
  * Examples:
- * - "{color.primary.@.value}" → "#1976d2"
+ * - "{color.primary.@.value}" → "#FF7250"
  * - "{space.6.value}" → "24px"
  * - "solid" → "solid" (literal value, no change)
+ *
+ * @deprecated Use resolveTokenValueRuntime() instead for runtime CSS extraction
  */
 function resolveTokenValue(value: string): string {
   // Color mappings (from @wavemaker/app-runtime-wm-build/wmapp/styles/foundation/foundation.css)
@@ -161,11 +197,11 @@ function resolveTokenValue(value: string): string {
     "{label.large.letter-spacing.value}": "0",
   };
 
-  // Opacity mappings
+  // Opacity mappings (matching foundation.css values)
   const opacityMap: Record<string, string> = {
-    "{opacity.hover.value}": "0.08",
-    "{opacity.focus.value}": "0.12",
-    "{opacity.active.value}": "0.12",
+    "{opacity.hover.value}": "8%",   // foundation.css: --wm-opacity-hover: 8%
+    "{opacity.focus.value}": "12%",  // foundation.css: --wm-opacity-focus: 12%
+    "{opacity.active.value}": "16%", // foundation.css: --wm-opacity-active: 16%
   };
 
   // Combine all mappings
@@ -191,6 +227,7 @@ function resolveTokenValue(value: string): string {
  * @param componentKey - Component identifier (e.g., "btn")
  * @param parentPath - Current path in the token hierarchy
  * @param category - Category name for grouping tokens in the UI
+ * @param cssVariableMap - Optional map for runtime CSS variable resolution
  * @returns Array of TokenDefinition objects
  *
  * Example JSON:
@@ -223,7 +260,8 @@ function parseTokenObject(
   obj: any,
   componentKey: string,
   parentPath: string[] = [],
-  category?: string
+  category?: string,
+  cssVariableMap?: Map<string, string>
 ): TokenDefinition[] {
   const tokens: TokenDefinition[] = [];
 
@@ -234,12 +272,24 @@ function parseTokenObject(
       const cssVar = getCSSVariableName(componentKey, currentPath);
       const parentObj = obj as any;
 
+      // Use runtime resolution if cssVariableMap is provided, otherwise fallback to hardcoded
+      let resolvedValue: string;
+      if (cssVariableMap && cssVariableMap.size > 0) {
+        resolvedValue = resolveTokenValueRuntime(value, cssVariableMap);
+      } else {
+        resolvedValue = resolveTokenValue(value);
+        // Log warning if using fallback
+        if (value.includes("{")) {
+          // console.warn(`[Token Parser] Using fallback hardcoded value for: ${value}`);
+        }
+      }
+
       const token: TokenDefinition = {
         name: cssVar,
         label: currentPath[currentPath.length - 1]
           .replace(/-/g, " ")
           .replace(/\b\w/g, (l) => l.toUpperCase()),
-        value: resolveTokenValue(value),
+        value: resolvedValue,
         type: parentObj.type || "text",
         controlType: getControlType(parentObj.type, parentObj.attributes?.subtype),
         description: cleanDescription(parentObj.attributes?.description),
@@ -252,7 +302,7 @@ function parseTokenObject(
       // Recursively parse nested objects
       const newPath = [...parentPath, key];
       const newCategory = category || (parentPath.length === 0 ? key : category);
-      tokens.push(...parseTokenObject(value, componentKey, newPath, newCategory));
+      tokens.push(...parseTokenObject(value, componentKey, newPath, newCategory, cssVariableMap));
     }
   }
 
@@ -268,6 +318,7 @@ function parseTokenObject(
  *
  * @param tokenData - Complete JSON object (e.g., contents of wm-button.json)
  * @param componentKey - Component identifier (e.g., "btn" from JSON root)
+ * @param cssVariableMap - Optional map for runtime CSS variable resolution
  * @returns ComponentTokenConfig with base tokens and all variants
  *
  * Example:
@@ -284,15 +335,26 @@ function parseTokenObject(
  *   }
  * }
  */
-export function parseDesignTokens(tokenData: any, componentKey: string): ComponentTokenConfig {
+export function parseDesignTokens(
+  tokenData: any,
+  componentKey: string,
+  cssVariableMap?: Map<string, string>
+): ComponentTokenConfig {
   const componentData = tokenData[componentKey];
 
   if (!componentData) {
     throw new Error(`Component "${componentKey}" not found in token data`);
   }
 
+  // Log whether using runtime or fallback resolution
+  if (cssVariableMap && cssVariableMap.size > 0) {
+    // console.log(`[Token Parser] Using runtime CSS variable extraction (${cssVariableMap.size} tokens)`);
+  } else {
+    // console.warn(`[Token Parser] Using fallback hardcoded values (runtime extraction not available)`);
+  }
+
   // Parse base mapping tokens (applies to all variants)
-  const baseTokens = parseTokenObject(componentData.mapping, componentKey);
+  const baseTokens = parseTokenObject(componentData.mapping, componentKey, [], undefined, cssVariableMap);
 
   // Parse variant tokens from appearances
   // Structure: appearances.{appearance}.variantGroups.status.{variant}
@@ -303,7 +365,7 @@ export function parseDesignTokens(tokenData: any, componentKey: string): Compone
       const appearanceData = appearanceValue as any;
 
       // Parse appearance-level mapping (applies to all variants of this appearance)
-      const appearanceTokens = parseTokenObject(appearanceData.mapping || {}, componentKey);
+      const appearanceTokens = parseTokenObject(appearanceData.mapping || {}, componentKey, [], undefined, cssVariableMap);
 
       // Parse variantGroups (e.g., status: primary, secondary, tertiary)
       if (appearanceData.variantGroups) {
@@ -312,7 +374,7 @@ export function parseDesignTokens(tokenData: any, componentKey: string): Compone
 
           for (const [variantKey, variantValue] of Object.entries(groupData)) {
             // Parse variant-specific tokens
-            const variantTokens = parseTokenObject(variantValue, componentKey);
+            const variantTokens = parseTokenObject(variantValue, componentKey, [], undefined, cssVariableMap);
 
             // Create variant key (e.g., "filled-primary", "outlined-secondary")
             const variantName = `${appearanceKey}-${variantKey}`;
@@ -331,6 +393,7 @@ export function parseDesignTokens(tokenData: any, componentKey: string): Compone
     selector: componentData.meta?.mapping?.selector?.web || `.${componentKey}`,
     tokens: baseTokens,
     variants,
+    childSelectors: componentData.meta?.mapping?.childSelectors,
   };
 }
 
