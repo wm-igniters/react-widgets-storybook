@@ -234,6 +234,7 @@ export const DesignToken: Story = {
       control: { type: "select" },
       options: ["left", "right"],
     },
+    "data-design-token-target": { control: false }
   },
   parameters: {
     designTokens: {

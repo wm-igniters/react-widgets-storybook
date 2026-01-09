@@ -11,17 +11,19 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import iframeTokensData from "../../../../designTokens/components/iframe/iframe.json";
+
 const meta: Meta<typeof IframeDefaultExport> = {
   title: "Basic/Iframe",
   component: IframeDefaultExport,
-  argTypes: {
-    iframesrc: { control: "text" },
-    // encodeurl: { control: "boolean" },
-    width: { control: "text" },
-    height: { control: "text" },
-    // hint: { control: "text" },
-    // arialabel: { control: "text" },
-  },
+  // argTypes: {
+  //   iframesrc: { control: "text" },
+  //   // encodeurl: { control: "boolean" },
+  //   width: { control: "text" },
+  //   height: { control: "text" },
+  //   // hint: { control: "text" },
+  //   // arialabel: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -51,6 +53,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name: "docsIframe",
+    listener: mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -111,6 +117,53 @@ export const Basic: Story = {
     iframesrc: "https://docs.wavemaker.com/learn/",
     width: "600px",
     height: "400px",
+  },
+  argTypes: {
+    iframesrc: { control: "text" },
+    width: { control: "text" },
+    height: { control: "text" },
+  },
+};
+
+export const DesignToken: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+    // Iframe component can't spread data-design-token-target and has inline styles
+    // Wrap it and don't pass width/height to let CSS control sizing
+    const { "data-design-token-target": dataAttr, width, height, ...componentArgs } = args as any;
+
+    return (
+      <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+        <IframeDefaultExport {...componentArgs} listener={mockListener} />
+      </Box>
+    );
+  },
+  args: {
+    name: "designTokenIframe",
+    listener: mockListener,
+    iframesrc: "https://docs.wavemaker.com/learn/",
+    width: undefined,  // Don't pass width so CSS can control it, design token change not working
+    height: undefined,  // Don't pass height so CSS can control it, design token change not working
+    "data-design-token-target":"true"
+  },
+  argTypes: {
+    iframesrc: { control: "text" },
+    width: {
+      table: { disable: true }
+    },  // Hide width control
+    height: {
+      table: { disable: true }
+    },  // Hide height control
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: iframeTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "iframe",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
   },
 };
 

@@ -680,9 +680,33 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
     // Add className selectors for variant specificity
     const classSelectors = className ? `.${className.split(' ').join('.')}` : '';
 
-    // SPECIAL CASE: Icon component can't spread data attributes to its root element
-    // So we look for the data attribute on an ancestor element instead
-    const fullSelector = componentName === 'icon'
+    // ============================================================================
+    // UNIVERSAL SELECTOR PATTERN SYSTEM
+    // ============================================================================
+    // This system supports two selector patterns to handle all component types:
+    //
+    // PATTERN 1: Direct Selector (Most Components)
+    // Format: .component[data-design-token-target="true"].variant-class
+    // Example: .app-button[data-design-token-target="true"].btn-filled.btn-primary
+    // Use when: Component can spread props to its root element
+    // Components: Button, Anchor, Label, Audio, Video, Picture, Message, etc.
+    //
+    // PATTERN 2: Ancestor Selector (Special Components)
+    // Format: [data-design-token-target="true"] .component.variant-class
+    // Example: [data-design-token-target="true"] .app-icon-wrapper
+    // Use when: Component CANNOT spread props OR has inline styles to override
+    // Components: Icon (renders FontAwesome elements), Iframe (has inline width/height)
+    //
+    // Why two patterns?
+    // - Some components like Icon render child elements (i.fa-*) that don't accept custom attributes
+    // - Some components like Iframe have inline styles that need wrapper pattern to override
+    // - Wrapper pattern requires wrapping component in <Box data-design-token-target="true">
+    //
+    // Adding new special cases:
+    // - If component can't spread data attribute to root: add to this condition
+    // - Also add child element targeting below in mainSelectors section
+    // ============================================================================
+    const fullSelector = (componentName === 'icon' || componentName === 'iframe')
       ? `${dataAttr} ${baseSelector}${classSelectors}`
       : `${baseSelector}${dataAttr}${classSelectors}`;
 
@@ -732,16 +756,50 @@ ${fullSelector} {
     css += `  z-index: 1 !important;\n`;
     css += `}\n\n`;
 
-    // Add main component styling
-    // SPECIAL CASE: Icon component - properties target child .app-icon element
+    // ============================================================================
+    // CHILD ELEMENT TARGETING SYSTEM
+    // ============================================================================
+    // Different components need CSS applied to different elements:
+    //
+    // MOST COMPONENTS: Apply directly to root element
+    // - Button, Anchor, Label: styles go on the root element
+    // - May also target text children (.btn-caption) if defined in childSelectors.text
+    //
+    // ICON COMPONENT: Apply to child icon elements
+    // - Icon wrapper (.app-icon-wrapper) is just a container
+    // - Actual icons are: .app-icon, i.fa-*, i.wi-*, img
+    // - Must target these children for color, font-size to work
+    // - Icon component uses wrapper pattern (ancestor selector)
+    //
+    // IFRAME COMPONENT: Apply to child iframe element
+    // - Wrapper (Box) only provides container
+    // - iframe element has inline width/height that needs overriding
+    // - Must target child iframe element: iframe, .iframe-content
+    // - Iframe component uses wrapper pattern (ancestor selector)
+    //
+    // CONTAINER COMPONENTS: May have nested subsections
+    // - Card: .card-body, .card-footer with nested properties
+    // - List: .list-item, .list-item-header with item-level styling
+    // - Handled automatically by nested token path system (body.padding → .card-body)
+    //
+    // Adding new special cases:
+    // - Add else if (componentName === 'newComponent') block
+    // - Specify which child elements need styling
+    // - Must also be added to special selector condition above
+    // ============================================================================
     let mainSelectors = `${fullSelector}`;
 
     if (componentName === 'icon') {
-      // For icon component, target the child .app-icon element AND all its FontAwesome classes
-      // Use high specificity to override inline styles and FontAwesome CSS
+      // Icon component: Target child icon elements (not the wrapper)
+      // Includes: .app-icon (wavemaker icon), FontAwesome (i.fa-*), Weather icons (i.wi-*), img
       mainSelectors = `${fullSelector} .app-icon,\n${fullSelector} i[class*="fa-"],\n${fullSelector} i[class*="wi-"],\n${fullSelector} img`;
+    } else if (componentName === 'iframe') {
+      // Iframe component: Target child iframe element (not the wrapper Box)
+      // iframe has inline width/height that needs !important to override
+      mainSelectors = `${fullSelector} iframe,\n${fullSelector} .iframe-content`;
     } else {
-      // For other components, add text child selector if defined (e.g., .btn-caption for buttons)
+      // Standard components: Apply to root element + optional text children
+      // childSelectors.text defines text child elements (e.g., .btn-caption for buttons)
       if (config.childSelectors?.text) {
         const textSelectors = config.childSelectors.text.split(',').map(s => `${fullSelector} ${s.trim()}`).join(',\n');
         mainSelectors += `,\n${textSelectors}`;
@@ -750,38 +808,71 @@ ${fullSelector} {
 
     css += `${mainSelectors} {\n`;
 
-    // Dynamically apply ALL CSS properties from tokenValues
-    // This ensures any property defined in design tokens will work automatically
+    // ============================================================================
+    // UNIVERSAL DYNAMIC PROPERTY APPLICATION
+    // ============================================================================
+    // This is the CORE of the universal system. Instead of hardcoding each property
+    // (background, color, font-size, etc.), we dynamically apply ALL properties
+    // found in the tokenValues object.
+    //
+    // How it works:
+    // 1. Loop through all CSS variables: --wm-component-property
+    // 2. Extract property name: "property"
+    // 3. Map to CSS property via mapToCSSProperty(): "property" -> "css-property"
+    // 4. Apply: css-property: value !important;
+    //
+    // Examples:
+    // - --wm-audio-width -> width: 600px !important;
+    // - --wm-button-color -> color: #FFFFFF !important;
+    // - --wm-card-body-padding -> padding: 24px !important; (nested token)
+    // - --wm-list-item-header-font-size -> font-size: 14px !important; (deeply nested)
+    //
+    // Why this is universal:
+    // - Works with ANY component without code changes
+    // - Supports nested tokens automatically (body.padding, footer.border.color)
+    // - New properties in JSON work immediately
+    // - No hardcoded property list to maintain
+    //
+    // Special handling:
+    // - Some properties (icon-size, image-size, state-layer) have dedicated sections
+    // - State properties (states-hover-*, states-focus-*) handled in :hover, :focus rules
+    // - Skip these here to avoid duplication
+    // ============================================================================
     Object.entries(tokenValues).forEach(([varName, value]) => {
       // Extract property name from CSS variable name
-      // e.g., --wm-audio-width -> width, --wm-button-color -> color
-      // Use componentName to properly extract the property part
+      // --wm-audio-width -> prefix="--wm-audio-", property="width"
+      // --wm-card-body-padding -> prefix="--wm-card-", property="body-padding"
       const prefix = `--wm-${componentName}-`;
       if (!varName.startsWith(prefix)) {
-        return; // Skip if it doesn't match expected format
+        return; // Skip variables from other components
       }
       const property = varName.substring(prefix.length);
 
-      // Skip properties that have special handling elsewhere
+      // Skip properties that have dedicated handling sections below
       const skipProperties = [
-        'icon-size',           // Handled in icon section (for child icons in other components)
-        'image-size',          // Handled in image section
-        'image-radius',        // Handled in image section
-        'state-layer-color',   // Handled in state layer section
-        'state-layer-opacity', // Handled in state layer section
+        'icon-size',           // Handled in "Child Icon Elements" section (for buttons/anchors with icons)
+        'image-size',          // Handled in "Child Image Elements" section (for anchors with images)
+        'image-radius',        // Handled in "Child Image Elements" section
+        'state-layer-color',   // Handled in "State Layer Overlays" section (interactive feedback)
+        'state-layer-opacity', // Handled in "State Layer Overlays" section
       ];
 
-      // Skip interactive state properties (they're handled in :hover, :focus, :active rules)
+      // Skip interactive state properties - handled in :hover, :focus, :active, :disabled rules below
+      // states-hover-background, states-focus-color, etc.
       if (property.startsWith('states-')) {
         return;
       }
 
-      // Skip if this property has special handling (but NOT for icon component itself)
-      if (skipProperties.includes(property) && componentName !== 'icon') {
+      // Skip if this property has special handling
+      // EXCEPTION: For icon/iframe components, DON'T skip because properties apply to child elements
+      // Icon component needs width/height applied to the icon element itself
+      // Iframe component needs width/height applied to the iframe element itself
+      if (skipProperties.includes(property) && componentName !== 'icon' && componentName !== 'iframe') {
         return;
       }
 
-      // Map to CSS property and apply
+      // Map token property to CSS property and apply
+      // Examples: "background" -> "background-color", "radius" -> "border-radius"
       const cssProperty = mapToCSSProperty(property);
       if (cssProperty && value) {
         css += `  ${cssProperty}: ${value} !important;\n`;

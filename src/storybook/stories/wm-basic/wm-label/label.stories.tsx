@@ -23,30 +23,30 @@ const mockListener = {
 const meta = {
   title: "Basic/Label",
   component: LabelDefaultExport,
-  args:{
-    caption:"",
-  },
-  argTypes: {
-    caption: { control: "text" },
-    required: { control: "boolean" },
-    // trustAs: { control: "boolean" },
-    type: {
-      control: { type: "select" },
-      options: ["h1", "h2", "h3", "h4", "h5", "h6", "p"],
-    },
-     className: {
-      control: {
-        type: "select",
-      },
-      options: ["text-primary", "text-secondary", "text-success", "text-danger", "text-warning", "text-info","text-muted","h1", "h2", "h3", "h4", "h5", "h6", "p", "label-primary", "label-secondary", "label-success", "label-danger", "label-warning", "label-info"],
-    },
-    textalign:{
-      control:{
-        type:'select',
-      },
-      options:['left','center','right']
-    }
-  },
+  // args:{
+  //   caption:"",
+  // },
+  // argTypes: {
+  //   caption: { control: "text" },
+  //   required: { control: "boolean" },
+  //   // trustAs: { control: "boolean" },
+  //   type: {
+  //     control: { type: "select" },
+  //     options: ["h1", "h2", "h3", "h4", "h5", "h6", "p"],
+  //   },
+  //    className: {
+  //     control: {
+  //       type: "select",
+  //     },
+  //     options: ["text-primary", "text-secondary", "text-success", "text-danger", "text-warning", "text-info","text-muted","h1", "h2", "h3", "h4", "h5", "h6", "p", "label-primary", "label-secondary", "label-success", "label-danger", "label-warning", "label-info"],
+  //   },
+  //   textalign:{
+  //     control:{
+  //       type:'select',
+  //     },
+  //     options:['left','center','right']
+  //   }
+  // },
 } satisfies Meta<typeof LabelDefaultExport>;
 
 export default meta;
@@ -68,6 +68,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name: "docsLabel",
+    listener: mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -185,11 +189,30 @@ export const Basic: Story = {
     name: "basicLabel",
     listener: mockListener,
     caption: "Label",
-    required: false,
     type: "p",
     className:"text-primary",
-    hint:"This is a basic label"
-  },  
+    hint:"This is a basic label",
+    textalign: "left"
+  }, 
+  argTypes: {
+    caption: { control: "text" },
+    type: {
+      control: { type: "select" },
+      options: ["h1", "h2", "h3", "h4", "h5", "h6", "p"],
+    },
+     className: {
+      control: {
+        type: "select",
+      },
+      options: ["text-primary", "text-secondary", "text-success", "text-danger", "text-warning", "text-info","text-muted","h1", "h2", "h3", "h4", "h5", "h6", "p", "label-primary", "label-secondary", "label-success", "label-danger", "label-warning", "label-info"],
+    },
+    textalign:{
+      control:{
+        type:'select',
+      },
+      options:['left','center','right']
+    }
+  }, 
 };
 
 export const DesignToken: Story = {
@@ -209,11 +232,23 @@ export const DesignToken: Story = {
     name: "designTokenLabel",
     listener: mockListener,
     caption: "Label",
-    required: false,
     type: "p",
     className:"text-primary",
     hint:"This is a basic label"
   }, 
+  argTypes: {
+    caption: { control: "text" },
+    type: {
+      control: { type: "select" },
+      options: ["h1", "h2", "h3", "h4", "h5", "h6", "p"],
+    },
+     className: {
+      control: {
+        type: "select",
+      },
+      options: ["text-primary", "text-secondary", "text-success", "text-danger", "text-warning", "text-info","text-muted","h1", "h2", "h3", "h4", "h5", "h6", "p", "label-primary", "label-secondary", "label-success", "label-danger", "label-warning", "label-info"],
+    }
+  },
   parameters: {
     designTokens: {
       enabled: true,
@@ -221,7 +256,7 @@ export const DesignToken: Story = {
       componentKey: "label",  // Component identifier for parsing
       extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
     },
-    layout: 'padded',
+    layout: 'fullscreen',
   }, 
 };
 
