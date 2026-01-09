@@ -1,6 +1,6 @@
 # Design Tokens Addon
 
-A **generic, reusable Design Token system** for Storybook that works with any component. Automatically extracts values from foundation.css at runtime.
+A **fully generic, dynamic Design Token system** for Storybook that works with ANY component automatically. Uses dynamic token reference resolution and extracts values from foundation.css at runtime - no hardcoded mappings needed!
 
 ---
 
@@ -61,30 +61,44 @@ export const Filled: Story = {
 ```
 
 ### 3. Done!
-Open story → Design Tokens tab appears → Modify tokens → See instant changes ✅
+Open story → **Controls tab is default** → Click Design Tokens tab → Modify tokens → See instant changes ✅
 
 ---
 
 ## How It Works
 
-### Runtime CSS Extraction Flow
+### Dynamic Token Resolution + Runtime CSS Extraction Flow
 
 ```
 Story loads with extractCSSVariablesAtRuntime: true
   ↓
-extractCSSVariables() runs
+Controls tab is shown by default (no performance impact)
+  ↓
+User clicks Design Tokens tab (panel becomes active)
+  ↓
+extractCSSVariables() runs (ONLY when panel is active)
   ↓
 Reads iframe's foundation.css :root styles
   ↓
 Extracts all --wm-* CSS variables (1306+ variables)
   ↓
-Builds token reference map: {color.primary.@.value} → "rgb(255, 114, 80)"
+Token reference detected: "{color.primary.@.value}"
   ↓
-parseDesignTokens() resolves references using extracted values
+tokenReferenceToCSSVariable() dynamically converts it to "--wm-color-primary"
+  ↓
+Looks up "--wm-color-primary" in extracted CSS variables → "rgb(255, 114, 80)"
+  ↓
+parseDesignTokens() resolves ALL references dynamically (no hardcoded mappings!)
   ↓
 Design Tokens panel displays with real foundation.css values
   ↓
+Polling monitors className changes every 300ms (when panel is active)
+  ↓
+User changes className in Controls → Detected by polling → Tokens refresh automatically
+  ↓
 User changes token → CSS regenerated → Injected into iframe → Instant update
+  ↓
+User switches story → Previous tokens cleared → Clean slate for new story
 ```
 
 ### Example
@@ -125,24 +139,33 @@ User changes token → CSS regenerated → Injected into iframe → Instant upda
 
 ## Key Features
 
+✅ **Generic className parsing** - Automatically works with ANY component className pattern (button, label, pagination, etc.)
+✅ **Dynamic token resolution** - Automatically converts ANY token reference to CSS variable name
 ✅ **Runtime extraction** - Reads actual values from foundation.css (no hardcoding)
-✅ **Generic** - Works for any component (button, input, anchor, card, etc.)
+✅ **Zero manual mapping** - Works with ALL foundation CSS variables automatically
+✅ **Fully generic** - Works for ANY component with ANY JSON structure
+✅ **Multiple JSON structures** - Supports appearances at root/meta, with/without variantGroups
 ✅ **Variant-aware** - Different tokens for different className variants
 ✅ **Real-time updates** - Changes apply instantly without reload
 ✅ **Smart controls** - Color pickers, dropdowns, number inputs based on token type
 ✅ **Automatic conversion** - Handles percentages (8% ↔ 0.08) for opacity values
 ✅ **Fallback support** - Uses hardcoded values if extraction fails
 ✅ **Reset button** - Restore default values anytime
+✅ **Default Controls tab** - No performance impact on story load, CSS extraction only when panel active
+✅ **Polling-based detection** - Reliably detects className changes (300ms polling when active)
+✅ **Story isolation** - Automatic cleanup when switching stories prevents glitches
+✅ **Icon size support** - Works with .app-icon, Font Awesome, and all icon classes automatically
+✅ **Performance optimized** - Reduced delays (50-100ms) and minimal re-renders
 
 ---
 
 ## Adding New Components
 
-To add design tokens for anchor, card, input, list, etc.:
+To add design tokens for ANY component (anchor, tabs, pagination, card, input, list, etc.):
 
 ### 1. Create JSON file
 ```json
-// /src/designTokens/wm-anchor.json
+// /src/designTokens/components/anchor/anchor.json
 {
   "anchor": {
     "meta": {
@@ -157,6 +180,14 @@ To add design tokens for anchor, card, input, list, etc.:
         "attributes": {
           "subtype": "color",
           "description": "Link text color"
+        }
+      },
+      "font-size": {
+        "value": "{h6.font-size.value}",  // ← Can reference ANY foundation token!
+        "type": "font",
+        "attributes": {
+          "subtype": "font-size",
+          "description": "Link font size"
         }
       }
     },
@@ -174,12 +205,22 @@ To add design tokens for anchor, card, input, list, etc.:
 }
 ```
 
+**Supported JSON Structures:**
+- **With variantGroups** (like buttons): `appearances.filled.variantGroups.status.primary`
+- **Without variantGroups** (like pagination): `meta.appearances.basic.mapping`
+- **No appearances** (like tabs): Just base `mapping` tokens
+
 ### 2. Add to story
 ```typescript
-import anchorTokensData from "../../../../designTokens/wm-anchor.json";
+import anchorTokensData from "../../../../designTokens/components/anchor/anchor.json";
 
 export const DesignToken: Story = {
-  render: (args) => <AnchorComponent className={args.className} />,
+  render: (args) => (
+    <AnchorComponent
+      className={args.className}
+      data-design-token-target="true"  // REQUIRED for scoping
+    />
+  ),
   args: { className: "anchor-primary" },
   parameters: {
     designTokens: {
@@ -192,18 +233,19 @@ export const DesignToken: Story = {
 };
 ```
 
-### 3. Add token references (if new foundation tokens)
-If your JSON uses new foundation.css tokens, add them to `cssVariableExtractor.ts`:
+### 3. Done! ✅
 
-```typescript
-const TOKEN_TO_CSS_VAR_MAP: Record<string, string> = {
-  // ... existing mappings ...
+**That's it!** No manual mapping needed. The system:
+- Automatically converts `{any.token.reference.value}` to `--wm-any-token-reference`
+- Looks it up in foundation.css at runtime
+- Works with ALL foundation CSS variables automatically
+- Supports ANY JSON structure variation
 
-  // New mappings:
-  "{elevation.sm.value}": "--wm-elevation-sm",
-  "{transition.duration.fast.value}": "--wm-transition-duration-fast",
-};
-```
+**Can use ANY foundation token:**
+- `{h6.font-size.value}` → `--wm-h6-font-size`
+- `{border.style.base.value}` → `--wm-border-style-base`
+- `{elevation.shadow-3.value}` → `--wm-elevation-shadow-3`
+- `{any.new.token.value}` → `--wm-any-new-token` (works automatically!)
 
 ---
 
@@ -287,20 +329,50 @@ If empty, check console for extraction errors.
 - Number input expects: `0.08` (decimal between 0-1)
 - System converts: `8%` ↔ `0.08` automatically
 
+### Q: Tokens not refreshing when I change className in Controls tab?
+
+**A:** The system uses **polling** to detect className changes reliably:
+1. Change className in Controls tab → UI updates visually
+2. If Design Tokens tab is active → Tokens refresh within 300ms automatically
+3. If Design Tokens tab is inactive → Tokens refresh when you switch to the tab
+4. Polling only runs when the panel is active (no performance impact on Controls tab)
+
+**Why polling?** Storybook's `argsUpdated` event is unreliable. Polling every 300ms ensures className changes are always detected.
+
 ### Q: Token changes not applying?
 
 **Check:**
-1. **Console logs** - Look for `[Design Tokens] ✓ Tokens Applied`
-2. **data-design-token-target** - Buttons must have this attribute
-3. **tokenData + componentKey** - Both must be provided in parameters
-4. **Iframe ready** - Extraction waits up to 10 retries
+1. **data-design-token-target** - Components must have this attribute
+2. **tokenData + componentKey** - Both must be provided in parameters
+3. **Panel is active** - CSS extraction and polling only run when Design Tokens tab is active
+4. **Iframe ready** - Extraction waits up to 6 retries with 100ms intervals
+5. **Browser DevTools** - Check for CSS in iframe's `<style id="design-tokens-{component}">`
 
 ### Q: Values not matching foundation.css?
 
 **Check:**
-1. **Extraction success** - Console should show "✓ CSS extraction successful"
+1. **Panel is active** - CSS extraction only runs when Design Tokens panel is active
 2. **Fallback values** - If using fallback, values in tokenParser.ts must match foundation.css
-3. **Token reference map** - Check TOKEN_TO_CSS_VAR_MAP in cssVariableExtractor.ts
+3. **Token reference conversion** - Verify tokenReferenceToCSSVariable() converts correctly
+4. **CSS variable exists** - Check foundation.css has the expected `--wm-*` variable
+5. **Cache cleared** - Cache is automatically cleared when switching stories
+
+### Q: Can I use custom/new foundation tokens?
+
+**A:** YES! The system works with ALL foundation CSS variables automatically:
+```json
+{
+  "custom-property": {
+    "value": "{my.new.custom.token.value}"
+  }
+}
+```
+Will automatically:
+1. Convert to `--wm-my-new-custom-token`
+2. Look it up in foundation.css
+3. Use the value if found
+
+No code changes needed!
 
 ---
 
@@ -379,7 +451,7 @@ button[data-design-token-target="true"]:hover:not(:disabled)::before {
 
 ## Token Naming Convention
 
-### CSS Variable Names
+### CSS Variable Names (Component-specific)
 Pattern: `--wm-{componentKey}-{path}-{property}`
 
 Examples:
@@ -394,31 +466,50 @@ JSON: btn → mapping → states → hover → state → layer → opacity
 CSS:  --wm-btn-states-hover-state-layer-opacity
 ```
 
-### Token References
-Map to foundation.css variables:
+### Token References (Dynamic Conversion)
+**NO MANUAL MAPPING NEEDED!** The system automatically converts token references:
 
 ```typescript
 // In JSON:
 "value": "{color.primary.@.value}"
+"value": "{h6.font-size.value}"
+"value": "{border.style.base.value}"
 
-// Maps to:
-"--wm-color-primary" (in foundation.css)
+// Automatically converted by tokenReferenceToCSSVariable():
+"{color.primary.@.value}" → "--wm-color-primary"
+"{h6.font-size.value}" → "--wm-h6-font-size"
+"{border.style.base.value}" → "--wm-border-style-base"
 
-// Defined in cssVariableExtractor.ts:
-"{color.primary.@.value}": "--wm-color-primary"
+// Then looked up in foundation.css:
+"--wm-color-primary" → "rgb(255, 114, 80)"
+"--wm-h6-font-size" → "14px"
+"--wm-border-style-base" → "solid"
 ```
+
+**Conversion Rules:**
+1. Remove curly braces `{ }`
+2. Remove `.value` suffix
+3. Replace `@` placeholder with empty string
+4. Replace dots `.` with hyphens `-`
+5. Add `--wm-` prefix
+
+**Works with ANY foundation token automatically!**
 
 ---
 
 ## Architecture Benefits
 
-1. **No manual CSS files** - CSS generated dynamically from JSON
-2. **Single source of truth** - All design decisions in JSON
-3. **Type-safe** - Full TypeScript support
-4. **Scalable** - Add unlimited components without code changes
-5. **Designer-friendly** - Designers can edit JSON without touching code
-6. **Runtime sync** - Always uses actual foundation.css values
-7. **Graceful fallback** - Works even if extraction fails
+1. **Zero manual mapping** - Token references converted dynamically, no hardcoded maps
+2. **Fully generic** - Works with ANY component and ANY JSON structure automatically
+3. **Future-proof** - New foundation CSS variables work without code changes
+4. **No manual CSS files** - CSS generated dynamically from JSON
+5. **Single source of truth** - All design decisions in JSON
+6. **Type-safe** - Full TypeScript support
+7. **Scalable** - Add unlimited components without code changes
+8. **Designer-friendly** - Designers can edit JSON without touching code
+9. **Runtime sync** - Always uses actual foundation.css values
+10. **Graceful fallback** - Works even if extraction fails
+11. **Multiple structure support** - Handles variantGroups, meta.appearances, or no appearances
 
 ---
 
@@ -445,33 +536,59 @@ npm run storybook
 
 ---
 
-## Debug Mode
+## Performance & Architecture
 
-All console statements are commented out for production. To enable debugging:
+### Optimizations Applied:
+- **Lazy CSS extraction**: Only runs when Design Tokens panel is active (prevents blocking Controls tab)
+- **Polling mechanism**: Detects className changes every 300ms (only when panel active)
+- **Reduced delays**: 50-100ms timeouts instead of 150-200ms for faster responsiveness
+- **Story isolation**: Automatic cleanup on story switch prevents interference
+- **Minimal re-renders**: Effects optimized with proper dependencies
+- **Cache management**: CSS variables cached per story, cleared on story change
 
-1. Open the file you want to debug:
-   - `DesignTokenPanel.tsx` - UI and token application
-   - `tokenParser.ts` - JSON parsing and resolution
-   - `cssVariableExtractor.ts` - CSS variable extraction
+### Icon Size Handling:
+The system automatically targets icons using default selectors:
+```css
+.app-icon, i[class*="fa-"], i[class*="wi-"], i[class*="icon-"]
+```
 
-2. Uncomment console statements:
-   ```typescript
-   // console.log("Debug message");
-   console.log("Debug message");  // Uncommented
-   ```
+When you change `--wm-btn-icon-size`, it applies:
+```css
+font-size: 32px !important;
+width: 32px !important;
+height: 32px !important;
+min-width: 32px !important;
+min-height: 32px !important;
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+```
 
-3. Reload Storybook and check browser console
+This ensures icons resize properly regardless of icon library used.
+
+### Story Switch Behavior:
+When switching stories, the system:
+1. Clears all token state (tokens, defaultTokens, cssVariableMap)
+2. Removes injected `<style id="design-tokens-*">` tags from iframe
+3. Resets all refs and parameters
+4. Clears CSS variable cache
+5. Ensures Controls tab is default (no performance impact)
+
+This prevents glitches and ensures a clean slate for each story.
 
 ---
 
-## Future Components
+## All Components Supported
 
-The system is ready for:
+The system is **fully generic** and works with:
 - ✅ wm-button.json (completed)
-- ⏳ wm-anchor.json
-- ⏳ wm-card.json
-- ⏳ wm-input.json
-- ⏳ wm-list.json
-- ⏳ Any component with design tokens
+- ✅ Any component in `/src/designTokens/components/*/*.json`
+- ✅ tabs, pagination, radioset, progress-circle, fileupload, etc.
+- ✅ Components with variantGroups (buttons)
+- ✅ Components without variantGroups (pagination)
+- ✅ Components with nested tokens (tabs)
+- ✅ ANY future component
 
-Just follow the JSON structure and it works automatically!
+**Just create the JSON file and add to story - it works automatically!**
+
+No code changes needed. No manual mapping required. **Zero configuration.**

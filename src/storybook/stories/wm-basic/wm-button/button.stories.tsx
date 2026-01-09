@@ -18,7 +18,7 @@ import token from "./docs/token.md?raw";
 // - Appearances (filled, outlined, text, transparent)
 // - Variants (primary, secondary, tertiary, default)
 // - States (hover, focus, active, disabled)
-import buttonTokensData from "../../../../designTokens/wm-button.json";
+import buttonTokensData from "../../../../designTokens/components/button/button.json";
 
 const mockListener = {
   appLocale: {
@@ -348,17 +348,17 @@ export const Showcase: Story = {
   },
 };
 
-// export const Basic: Story = {
-//   tags: ['show-panel'],
-//   render: Template,
-//   args: {
-//     name: "basicButton",
-//     caption: "Click Me",
-//     disabled: false,
-//     type: "button",
-//     className: "btn-default btn-filled"
-//   },
-// };
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "basicButton",
+    caption: "Click Me",
+    disabled: false,
+    type: "button",
+    className: "btn-default btn-filled"
+  },
+};
 
 // ============================================================================
 // DESIGN TOKEN STORY

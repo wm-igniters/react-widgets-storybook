@@ -11,6 +11,8 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import labelTokensData from "../../../../designTokens/components/label/label.json";
+
 const mockListener = {
   appLocale: {
     LABEL_ICON: "Icon",
@@ -188,6 +190,39 @@ export const Basic: Story = {
     className:"text-primary",
     hint:"This is a basic label"
   },  
+};
+
+export const DesignToken: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+    const {className} = args;
+    return(
+      <LabelDefaultExport
+        name="designTokenLabel"
+        className={className}
+        listener={mockListener}
+        data-design-token-target="true"
+        />
+    )
+  },
+  args: {
+    name: "designTokenLabel",
+    listener: mockListener,
+    caption: "Label",
+    required: false,
+    type: "p",
+    className:"text-primary",
+    hint:"This is a basic label"
+  }, 
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: labelTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "label",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'padded',
+  }, 
 };
 
 // export const Default: Story = {

@@ -6,11 +6,6 @@
           "web": ".app-button,button,.btn",
           "mobile": ".app-button"
         },
-        "childSelectors": {
-          "text": ".btn-caption",
-          "icon": ".app-icon, i",
-          "badge": ".badge"
-        },
         "states": {
           "hover": {
             "selector": {
@@ -225,8 +220,7 @@
                 "value": "{opacity.hover.value}",
                 "type": "radius",
                 "attributes": {
-                  "subtype": "opacity",
-                  "description": "Controls the transparency of the state layer overlay when hovering over the button. Value ranges from 0 (invisible) to 1 (fully visible). Default is 8% (0.08) for subtle hover feedback.<br>CSS variable: --wm-btn-states-hover-state-layer-opacity"
+                  "subtype": "opacity"
                 }
               }
             }
@@ -239,8 +233,7 @@
                 "value": "{opacity.focus.value}",
                 "type": "radius",
                 "attributes": {
-                  "subtype": "opacity",
-                  "description": "Controls the transparency of the state layer overlay when the button receives keyboard focus. Value ranges from 0 (invisible) to 1 (fully visible). Default is 12% (0.12) for clear focus indication.<br>CSS variable: --wm-btn-states-focus-state-layer-opacity"
+                  "subtype": "opacity"
                 }
               }
             }
@@ -253,8 +246,7 @@
                 "value": "{opacity.active.value}",
                 "type": "radius",
                 "attributes": {
-                  "subtype": "opacity",
-                  "description": "Controls the transparency of the state layer overlay when the button is being pressed/clicked. Value ranges from 0 (invisible) to 1 (fully visible). Default is 16% (0.16) for strong active feedback.<br>CSS variable: --wm-btn-states-active-state-layer-opacity"
+                  "subtype": "opacity"
                 }
               }
             }
@@ -265,16 +257,14 @@
             "value": "{color.on-surface.@.value}",
             "type": "color",
             "attributes": {
-              "subtype": "color",
-              "description": "Sets the text color for disabled buttons. Uses the default on-surface color but with reduced opacity (0.38) applied globally to the entire button.<br>CSS variable: --wm-btn-states-disabled-color"
+              "subtype": "color"
             }
           },
           "background": {
             "value": "{color.surface.container.highest.@.value}",
             "type": "color",
             "attributes": {
-              "subtype": "color",
-              "description": "Sets the background color for disabled buttons. Uses a neutral surface color to indicate non-interactive state.<br>CSS variable: --wm-btn-states-disabled-background"
+              "subtype": "color"
             }
           },
           "border": {
@@ -282,8 +272,7 @@
               "value": "{color.surface.container.highest.@.value}",
               "type": "color",
               "attributes": {
-                "subtype": "color",
-                "description": "Sets the border color for disabled buttons. Matches the background color for a subtle, non-interactive appearance.<br>CSS variable: --wm-btn-states-disabled-border-color"
+                "subtype": "color"
               }
             }
           },

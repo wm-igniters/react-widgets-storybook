@@ -237,19 +237,21 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
   const prevClassNameRef = React.useRef<string>("");
   // Track if we've done initial token application
   const hasAppliedInitialTokensRef = React.useRef<boolean>(false);
+  // Track the className when the panel was last active to detect changes while panel was inactive
+  const classNameWhenActiveRef = React.useRef<string>("");
+  // Track if tokens need refresh (used to trigger re-parse when className changes while active)
+  const needsRefreshRef = React.useRef<boolean>(false);
 
   /**
    * Effect: Monitor story changes and args updates
-   * 
+   *
    * This effect:
    * 1. Gets the current story ID
    * 2. Reads story parameters (designTokens configuration)
    * 3. Reads args.className from Controls tab
    * 4. Updates state when either changes
-   * 
-   * Events listened:
-   * - storyChanged: When user switches to a different story
-   * - argsUpdated: When user changes className in Controls tab
+   *
+   * Uses polling to detect className changes since argsUpdated event is unreliable
    */
   useEffect(() => {
     if (!api) return;
@@ -257,50 +259,82 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
     const updateStoryData = () => {
       const storyId = api.getUrlState().storyId;
       if (!storyId) {
-        // console.log('[Design Tokens] No story ID available yet');
         return;
       }
 
       const storyData = api.getData(storyId);
       if (!storyData) {
-        // console.log('[Design Tokens] No story data available yet');
         return;
       }
 
       const designTokenParams = storyData?.parameters?.designTokens as DesignTokenParameters;
       setParameters(designTokenParams || { enabled: false });
 
-      // Get className from args (Controls tab) if available, otherwise from parameters
+      // Get className from story data args
       const argsClassName = (storyData as any)?.args?.className as string;
       const className = argsClassName || designTokenParams?.className || "";
-      setCurrentClassName(className);
 
-      // Mark as loaded after a brief delay to ensure loading state is visible
-      setTimeout(() => setIsLoading(false), 100);
+      // Only update if className actually changed
+      if (className !== currentClassName) {
+        setCurrentClassName(className);
+      }
+
+      // Mark as loaded
+      setIsLoading(false);
     };
 
-    // Set loading to true when story changes, then update after a brief delay
+    // Set loading to true when story changes
     const handleStoryChanged = () => {
       setIsLoading(true);
       // Reset state
       hasAppliedInitialTokensRef.current = false;
       prevClassNameRef.current = "";
+      needsRefreshRef.current = false;
+      classNameWhenActiveRef.current = "";
+
+      // Clear previous design tokens state
+      setTokens({});
+      setDefaultTokens({});
+      setCssVariableMap(new Map());
+      setCurrentClassName("");
+      setParameters({ enabled: false });
+
+      // Remove any injected style tags from previous story
+      const iframe = document.querySelector("#storybook-preview-iframe") as HTMLIFrameElement;
+      if (iframe?.contentDocument) {
+        // Remove all design token style tags
+        const styleTags = iframe.contentDocument.querySelectorAll('style[id^="design-tokens-"]');
+        styleTags.forEach(tag => tag.remove());
+      }
+
+      // Clear cache
+      clearCache();
+
       // Update data after a brief delay to ensure iframe is ready
-      setTimeout(updateStoryData, 150);
+      setTimeout(updateStoryData, 100);
     };
 
-    // Initial load with delay to ensure story is fully loaded
-    setTimeout(updateStoryData, 100);
+    // Initial load
+    setTimeout(updateStoryData, 50);
 
-    // Listen to story and args changes
+    // Listen to story changes
     const unsubscribeStoryChanged = api.on("storyChanged", handleStoryChanged);
-    const unsubscribeArgsUpdated = api.on("argsUpdated", updateStoryData);
+
+    // Poll for className changes when panel is active (since argsUpdated is unreliable)
+    let pollInterval: NodeJS.Timeout | null = null;
+    if (active) {
+      pollInterval = setInterval(() => {
+        updateStoryData();
+      }, 300); // Poll every 300ms when panel is active
+    }
 
     return () => {
       unsubscribeStoryChanged();
-      unsubscribeArgsUpdated();
+      if (pollInterval) {
+        clearInterval(pollInterval);
+      }
     };
-  }, [api]);
+  }, [api, active, currentClassName]);
 
   /**
    * Effect: Extract CSS variables from iframe when runtime extraction is enabled
@@ -313,24 +347,26 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
    * 5. Updates cssVariableMap state
    *
    * The extraction happens once when the story loads and whenever the story changes.
+   * IMPORTANT: Only runs when panel is active to avoid blocking UI on initial load
    */
   useEffect(() => {
-    // Only run if runtime extraction is enabled
-    if (!parameters.enabled || !parameters.extractCSSVariablesAtRuntime) {
+    // Only run if runtime extraction is enabled AND panel is active
+    if (!parameters.enabled || !parameters.extractCSSVariablesAtRuntime || !active) {
       return;
     }
 
     // Clear cache when story changes
     clearCache();
 
-    // Extract CSS variables with retry logic
-    const extractWithRetry = (attempt = 1, maxAttempts = 8) => {
+    // Extract CSS variables with retry logic (optimized for better performance)
+    const extractWithRetry = (attempt = 1, maxAttempts = 6) => {
       const iframe = document.querySelector("#storybook-preview-iframe") as HTMLIFrameElement;
 
       if (!iframe || !iframe.contentDocument || !iframe.contentWindow) {
         if (attempt < maxAttempts) {
           // console.log(`[Design Tokens] Iframe not ready for CSS extraction, retrying... (attempt ${attempt}/${maxAttempts})`);
-          setTimeout(() => extractWithRetry(attempt + 1, maxAttempts), 150);
+          // Reduced retry delay for better responsiveness
+          setTimeout(() => extractWithRetry(attempt + 1, maxAttempts), 100);
         } else {
           // console.error('[Design Tokens] Failed to extract CSS variables: iframe not ready after max attempts');
         }
@@ -344,7 +380,8 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         if (extractedVars.size === 0) {
           if (attempt < maxAttempts) {
             // console.log(`[Design Tokens] No CSS variables extracted yet, retrying... (attempt ${attempt}/${maxAttempts})`);
-            setTimeout(() => extractWithRetry(attempt + 1, maxAttempts), 150);
+            // Reduced retry delay
+            setTimeout(() => extractWithRetry(attempt + 1, maxAttempts), 100);
           } else {
             // console.warn('[Design Tokens] No CSS variables extracted after max attempts');
           }
@@ -367,7 +404,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
     // Start extraction with retry logic
     extractWithRetry();
-  }, [parameters]);
+  }, [parameters, active]);
 
   /**
    * Effect: Initialize tokens when parameters or className change
@@ -435,24 +472,30 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
       if (classNameChanged || isFirstLoad) {
         if (isFirstLoad) {
-          // console.log(`[Design Tokens] First load - preparing initial tokens`);
           hasAppliedInitialTokensRef.current = true;
-        } else {
-          // console.log(`[Design Tokens] ClassName changed: ${prevClassNameRef.current} → ${currentClassName}`);
+          // Initialize the classNameWhenActive ref on first load if panel is active
+          if (active) {
+            classNameWhenActiveRef.current = currentClassName;
+          }
         }
-
-        // console.log(`[Design Tokens] Preparing tokens for variant: ${currentClassName}`);
-        // console.log(`[Design Tokens] Token count: ${Object.keys(initialTokens).length}`);
 
         prevClassNameRef.current = currentClassName;
 
         setDefaultTokens(initialTokens);
         setTokens(initialTokens);
 
-        // Only apply tokens if the panel is currently active
-        // This prevents interference with story rendering when on other tabs
+        // IMPORTANT: Apply tokens if panel is active, otherwise mark for refresh
         if (active) {
-          applyTokens(initialTokens);
+          // Panel is active, apply tokens immediately
+          classNameWhenActiveRef.current = currentClassName;
+          needsRefreshRef.current = false;
+          // Reduced delay for better responsiveness
+          setTimeout(() => {
+            applyTokens(initialTokens);
+          }, 50);
+        } else {
+          // Panel is not active, mark that refresh is needed when it becomes active
+          needsRefreshRef.current = true;
         }
       } else if (Object.keys(initialTokens).length > 0) {
         // Just update defaults, tokens state will be preserved
@@ -466,20 +509,36 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
    *
    * This ensures tokens are applied when user clicks the Design Tokens tab,
    * even if they navigated to the story earlier and the iframe is already loaded.
+   *
+   * IMPORTANT: If className changed while panel was inactive, tokens have already been
+   * updated by the previous effect, we just need to apply them.
    */
   const prevActiveRef = React.useRef(active);
   useEffect(() => {
     const becameActive = !prevActiveRef.current && active;
     prevActiveRef.current = active;
 
-    if (becameActive && Object.keys(tokens).length > 0 && parameters.enabled) {
-      // console.log(`[Design Tokens] Panel became active - applying tokens`);
-      // Delay to ensure iframe is fully ready and panel is rendered
-      setTimeout(() => {
-        applyTokens(tokens);
-      }, 200);
+    if (becameActive && parameters.enabled) {
+      // Check if refresh was needed (className changed while panel was inactive)
+      if (needsRefreshRef.current) {
+        classNameWhenActiveRef.current = currentClassName;
+        needsRefreshRef.current = false;
+
+        // Apply tokens with reduced delay for better responsiveness
+        setTimeout(() => {
+          applyTokens(tokens);
+        }, 100);
+      } else if (Object.keys(tokens).length > 0) {
+        // No className change, just apply existing tokens
+        classNameWhenActiveRef.current = currentClassName;
+
+        // Apply tokens with reduced delay
+        setTimeout(() => {
+          applyTokens(tokens);
+        }, 100);
+      }
     }
-  }, [active, tokens, parameters.enabled]);
+  }, [active, parameters, tokens, currentClassName]);
 
   /**
    * Applies tokens to the Storybook preview iframe
@@ -497,12 +556,14 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
     const iframe = document.querySelector("#storybook-preview-iframe") as HTMLIFrameElement;
 
     // Helper function to apply tokens once iframe and buttons are ready
-    const applyTokensToIframe = (attempt = 1, maxAttempts = 5) => {
+    // Optimized with reduced retries and delays for better performance
+    const applyTokensToIframe = (attempt = 1, maxAttempts = 4) => {
       if (!iframe || !iframe.contentDocument) {
-        // Iframe not ready yet, retry with reduced attempts
+        // Iframe not ready yet, retry with reduced delay
         if (attempt < maxAttempts) {
           // console.log(`[Design Tokens] Iframe not ready, retrying... (attempt ${attempt}/${maxAttempts})`);
-          setTimeout(() => applyTokensToIframe(attempt + 1, maxAttempts), 200);
+          // Reduced delay for better responsiveness
+          setTimeout(() => applyTokensToIframe(attempt + 1, maxAttempts), 100);
         } else {
           // console.error('[Design Tokens] Failed to apply tokens: iframe not ready after max attempts');
         }
@@ -535,9 +596,10 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
       const targetElements = iframe.contentDocument.querySelectorAll(targetSelector);
 
       if (targetElements.length === 0 && attempt < maxAttempts) {
-        // Target elements not rendered yet, retry with longer delay
+        // Target elements not rendered yet, retry with reduced delay
         // console.log(`[Design Tokens] Target elements (${tokenConfig.componentName}) not rendered yet, retrying... (attempt ${attempt}/${maxAttempts})`);
-        setTimeout(() => applyTokensToIframe(attempt + 1, maxAttempts), 200);
+        // Reduced delay for better responsiveness
+        setTimeout(() => applyTokensToIframe(attempt + 1, maxAttempts), 100);
         return;
       }
 
@@ -562,13 +624,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
         iframe.contentDocument.head.appendChild(styleTag);
 
-        // Console logging - cleaner output
-        // console.log(`%c[Design Tokens] ✓ Tokens Applied (attempt ${attempt})`, 'color: #4CAF50; font-weight: bold');
-        // console.log(`  → Component: ${componentName}`);
-        // console.log(`  → Variant: ${currentClassName}`);
-        // console.log(`  → Token count: ${Object.keys(tokenValues).length}`);
-        // console.log(`  → Generated CSS length: ${cssRules.length} chars`);
-        // console.log(`  → Found ${targetElements.length} target elements`);
+        // Tokens applied successfully
 
         // Verify styles applied (debugging - commented out)
         // if (targetElements.length > 0) {
@@ -704,17 +760,31 @@ ${fullSelector} {
     }
     css += `}\n\n`;
 
-    // Add rules for icons (if icon child selector is defined)
-    if (config.childSelectors?.icon && (tokenValues[getVarName('color')] || tokenValues[getVarName('icon-size')])) {
-      const iconSelectors = config.childSelectors.icon.split(',').map(s => `${fullSelector} ${s.trim()}`).join(',\n');
+    // Add rules for icons
+    // Use childSelectors.icon if defined, otherwise default to common icon selectors
+    const hasIconSize = tokenValues[getVarName('icon-size')];
+    const hasIconColor = tokenValues[getVarName('color')];
+
+    if (hasIconSize || hasIconColor) {
+      // Default icon selectors for button component
+      const defaultIconSelectors = '.app-icon,i[class*="fa-"],i[class*="wi-"],i[class*="icon-"]';
+      const iconSelectorList = config.childSelectors?.icon || defaultIconSelectors;
+      const iconSelectors = iconSelectorList.split(',').map(s => `${fullSelector} ${s.trim()}`).join(',\n');
+
       css += `${iconSelectors} {\n`;
-      if (tokenValues[getVarName('color')]) {
+      if (hasIconColor) {
         css += `  color: ${tokenValues[getVarName('color')]} !important;\n`;
       }
-      if (tokenValues[getVarName('icon-size')]) {
+      if (hasIconSize) {
         css += `  font-size: ${tokenValues[getVarName('icon-size')]} !important;\n`;
         css += `  width: ${tokenValues[getVarName('icon-size')]} !important;\n`;
         css += `  height: ${tokenValues[getVarName('icon-size')]} !important;\n`;
+        css += `  min-width: ${tokenValues[getVarName('icon-size')]} !important;\n`;
+        css += `  min-height: ${tokenValues[getVarName('icon-size')]} !important;\n`;
+        css += `  line-height: 1 !important;\n`;
+        css += `  display: inline-flex !important;\n`;
+        css += `  align-items: center !important;\n`;
+        css += `  justify-content: center !important;\n`;
       }
       css += `  position: relative !important;\n`;
       css += `  z-index: 1 !important;\n`;
@@ -873,6 +943,7 @@ ${fullSelector} {
 
     const mapping: Record<string, string> = {
       'background': 'background-color',
+      'background-color': 'background-color',  // Support explicit background-color (used by label component)
       'color': 'color',
       'border-color': 'border-color',
       'border-width': 'border-width',
@@ -880,6 +951,7 @@ ${fullSelector} {
       'border-radius': 'border-radius',
       'radius': 'border-radius',
       'padding': 'padding',
+      'margin': 'margin',  // Support margin (used by label component)
       'font-family': 'font-family',
       'font-size': 'font-size',
       'font-weight': 'font-weight',
@@ -902,7 +974,32 @@ ${fullSelector} {
       return null;
     }
 
-    return mapping[normalizedProperty] || null;
+    // Return mapped property, or if not in mapping, check if it's already a valid CSS property
+    // This allows properties like "background-color", "text-align", etc. to work even if not explicitly mapped
+    const mappedProperty = mapping[normalizedProperty];
+    if (mappedProperty) {
+      return mappedProperty;
+    }
+
+    // Common CSS properties that should pass through as-is
+    const validCSSProperties = [
+      'text-align', 'text-decoration', 'display', 'position', 'overflow',
+      'width', 'max-width', 'min-height', 'max-height',
+      'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+      'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+      'border', 'border-top', 'border-right', 'border-bottom', 'border-left',
+      'flex', 'flex-direction', 'flex-wrap', 'justify-content', 'align-items',
+      'grid', 'grid-template-columns', 'grid-template-rows', 'grid-gap',
+      'transform', 'transition', 'animation',
+      'z-index', 'visibility', 'box-sizing',
+    ];
+
+    if (validCSSProperties.includes(normalizedProperty)) {
+      return normalizedProperty;
+    }
+
+    // If not in mapping and not a common CSS property, return null
+    return null;
   };
 
   /**
@@ -1007,6 +1104,7 @@ ${fullSelector} {
     }
     groupedTokens[category].push(token);
   });
+
 
   /**
    * Renders the appropriate input control based on token type

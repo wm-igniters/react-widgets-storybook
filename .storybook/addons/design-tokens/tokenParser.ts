@@ -1,12 +1,14 @@
 /**
  * ============================================================================
- * DESIGN TOKENS JSON PARSER
+ * DESIGN TOKENS JSON PARSER - GENERIC FOR ALL COMPONENTS
  * ============================================================================
  *
  * This file parses design token JSON files from /src/designTokens/
  * and converts them into a format usable by the Design Tokens panel.
  *
- * JSON Structure (example from wm-button.json):
+ * Supports multiple JSON structures:
+ *
+ * Structure 1 - With variantGroups (e.g., wm-button.json):
  * {
  *   "btn": {
  *     "meta": { selector, states... },
@@ -19,16 +21,36 @@
  *             "secondary": { background, color,... }
  *           }
  *         }
- *       },
- *       "outlined": {...},
- *       "text": {...}
+ *       }
  *     }
  *   }
  * }
  *
+ * Structure 2 - Appearances in meta (e.g., pagination.json):
+ * {
+ *   "pagination": {
+ *     "meta": {
+ *       "mapping": { selector... },
+ *       "appearances": {
+ *         "basic": { mapping: {...} },
+ *         "pager": { mapping: {...} }
+ *       }
+ *     },
+ *     "mapping": { background, color,... }
+ *   }
+ * }
+ *
+ * Structure 3 - No appearances (e.g., tabs.json):
+ * {
+ *   "tabs": {
+ *     "meta": { selector, states... },
+ *     "mapping": { background, nav: { border: {...} }, item: { heading: {...} } }
+ *   }
+ * }
+ *
  * Output:
- * - Base tokens from btn.mapping (apply to all buttons)
- * - Variant tokens merged: base + appearance + variant
+ * - Base tokens from mapping (apply to all variants)
+ * - Variant tokens merged: base + appearance + variant (if applicable)
  *   Example: "filled-primary" = btn.mapping + btn.appearances.filled.mapping + btn.appearances.filled.variantGroups.status.primary
  */
 
@@ -357,17 +379,23 @@ export function parseDesignTokens(
   const baseTokens = parseTokenObject(componentData.mapping, componentKey, [], undefined, cssVariableMap);
 
   // Parse variant tokens from appearances
-  // Structure: appearances.{appearance}.variantGroups.status.{variant}
+  // Structure can be in two locations:
+  // 1. componentData.appearances (e.g., wm-button.json)
+  // 2. componentData.meta.appearances (e.g., pagination.json)
   const variants: Record<string, TokenDefinition[]> = {};
 
-  if (componentData.appearances) {
-    for (const [appearanceKey, appearanceValue] of Object.entries(componentData.appearances)) {
+  // Check for appearances in both locations
+  const appearancesSource = componentData.appearances || componentData.meta?.appearances;
+
+  if (appearancesSource) {
+    for (const [appearanceKey, appearanceValue] of Object.entries(appearancesSource)) {
       const appearanceData = appearanceValue as any;
 
       // Parse appearance-level mapping (applies to all variants of this appearance)
       const appearanceTokens = parseTokenObject(appearanceData.mapping || {}, componentKey, [], undefined, cssVariableMap);
 
       // Parse variantGroups (e.g., status: primary, secondary, tertiary)
+      // Some components have variantGroups, others just have appearance-level tokens
       if (appearanceData.variantGroups) {
         for (const [, groupValue] of Object.entries(appearanceData.variantGroups)) {
           const groupData = groupValue as any;
@@ -384,6 +412,10 @@ export function parseDesignTokens(
             variants[variantName] = [...appearanceTokens, ...variantTokens];
           }
         }
+      } else if (appearanceTokens.length > 0) {
+        // No variantGroups, but appearance has its own tokens
+        // Create a variant using just the appearance key (e.g., "basic", "pager", "advanced")
+        variants[appearanceKey] = appearanceTokens;
       }
     }
   }
@@ -398,68 +430,156 @@ export function parseDesignTokens(
 }
 
 /**
- * Extracts appearance and variant from className string
+ * Extracts the variant key from className string by matching against available variants
  *
- * @param className - CSS class string (e.g., "btn-filled btn-primary")
- * @returns Object with appearance and variant
+ * This function is FULLY GENERIC and works with ANY component by matching the className
+ * against the actual variant keys defined in the tokenConfig.
+ *
+ * @param className - CSS class string from the component
+ * @param tokenConfig - Parsed token configuration with available variants
+ * @returns The matching variant key, or null if no match found
  *
  * Examples:
- * - "btn-filled btn-primary" → { appearance: "filled", variant: "primary" }
- * - "btn-outlined btn-secondary" → { appearance: "outlined", variant: "secondary" }
- * - "btn-text btn-tertiary" → { appearance: "text", variant: "tertiary" }
+ * - Button: "btn-filled btn-primary" → matches variant key "filled-primary"
+ * - Label: "text-primary" → matches variant key "text-primary"
+ * - Label: "label-danger" → matches variant key "label-danger"
+ * - Label: "h1" → matches variant key "default-h1"
+ * - Pagination: "basic" → matches variant key "basic"
+ * - Tabs: any class → returns null (no variants)
+ *
+ * Algorithm:
+ * 1. Try exact match: className === variantKey
+ * 2. Try direct lookup: className maps to a variant key
+ * 3. Try multi-class pattern: "btn-filled btn-primary" → "filled-primary"
+ * 4. Try single-class pattern: "text-primary" → "text-primary"
+ * 5. Try size variant pattern: "h1" → "default-h1"
  */
-export function parseClassName(className: string): { appearance: string; variant: string } {
-  const classes = className.split(" ");
-  let appearance = "filled"; // default
-  let variant = "default"; // default
-
-  // Look for appearance (filled, outlined, text, transparent)
-  const appearanceMatch = classes.find((c) =>
-    ["filled", "outlined", "text", "transparent"].some((a) => c.includes(a))
-  );
-  if (appearanceMatch) {
-    appearance = appearanceMatch.replace("btn-", "");
+export function parseClassName(
+  className: string,
+  tokenConfig: ComponentTokenConfig
+): string | null {
+  if (!className || !tokenConfig.variants) {
+    return null;
   }
 
-  // Look for variant (primary, secondary, tertiary, default)
-  const variantMatch = classes.find((c) =>
-    ["primary", "secondary", "tertiary", "default"].includes(c.replace("btn-", ""))
-  );
-  if (variantMatch) {
-    variant = variantMatch.replace("btn-", "");
+  const variantKeys = Object.keys(tokenConfig.variants);
+
+  if (variantKeys.length === 0) {
+    return null;
   }
 
-  return { appearance, variant };
+  // Normalize className: trim and convert to lowercase for comparison
+  const normalizedClassName = className.trim().toLowerCase();
+  const classes = normalizedClassName.split(/\s+/);
+
+  // Strategy 1: Try exact match
+  // Example: "basic" matches "basic", "text-primary" matches "text-primary"
+  if (variantKeys.includes(normalizedClassName)) {
+    return normalizedClassName;
+  }
+
+  // Strategy 2: Try matching single classes directly
+  // Example: "text-primary" in classes matches variant key "text-primary"
+  for (const cls of classes) {
+    if (variantKeys.includes(cls)) {
+      return cls;
+    }
+  }
+
+  // Strategy 3: Try matching multi-class patterns to hyphenated variant keys
+  // Example: ["btn-filled", "btn-primary"] → "filled-primary"
+  // Extract base names by removing common prefixes (btn-, text-, label-, etc.)
+  const baseNames = classes.map(cls => {
+    // Remove common component prefixes
+    return cls.replace(/^(btn-|text-|label-|app-)/, '');
+  }).filter(name => name.length > 0);
+
+  // Try all possible combinations of base names with hyphens
+  if (baseNames.length >= 2) {
+    // Try appearance-variant pattern: "filled-primary"
+    const combined = baseNames.join('-');
+    if (variantKeys.includes(combined)) {
+      return combined;
+    }
+
+    // Try first-last pattern: "filled" + "primary" = "filled-primary"
+    const firstLast = `${baseNames[0]}-${baseNames[baseNames.length - 1]}`;
+    if (variantKeys.includes(firstLast)) {
+      return firstLast;
+    }
+  }
+
+  // Strategy 4: Try matching size variants with "default-" prefix
+  // Example: "h1" → "default-h1", "h2" → "default-h2"
+  // This handles label size variants (h1, h2, h3, h4, h5, h6, p)
+  for (const cls of classes) {
+    const withDefaultPrefix = `default-${cls}`;
+    if (variantKeys.includes(withDefaultPrefix)) {
+      return withDefaultPrefix;
+    }
+  }
+
+  // Strategy 5: Partial matching - check if any class contains a variant key part
+  // Example: "text-primary" contains "text" and "primary"
+  for (const variantKey of variantKeys) {
+    const variantParts = variantKey.split('-');
+
+    // Check if all parts of the variant key appear in the className
+    const allPartsPresent = variantParts.every(part =>
+      classes.some(cls => cls.includes(part))
+    );
+
+    if (allPartsPresent) {
+      return variantKey;
+    }
+  }
+
+  // Strategy 6: Try matching without prefixes more aggressively
+  // Example: "btn-filled btn-primary" with baseNames ["filled", "primary"]
+  for (const variantKey of variantKeys) {
+    const variantParts = variantKey.split('-');
+
+    // Check if baseNames match variant parts in order
+    if (baseNames.length === variantParts.length) {
+      const matches = baseNames.every((name, i) => name === variantParts[i]);
+      if (matches) {
+        return variantKey;
+      }
+    }
+  }
+
+  // No match found
+  return null;
 }
 
 /**
  * Gets tokens for a specific className (merges base + variant tokens)
  *
  * This function:
- * 1. Parses the className to get appearance and variant
+ * 1. Parses the className to get the variant key
  * 2. Looks up variant-specific tokens
  * 3. Merges base tokens with variant tokens (variant overrides base)
  *
  * @param tokenConfig - Parsed token configuration
- * @param className - CSS class string (e.g., "btn-filled btn-primary")
+ * @param className - CSS class string (e.g., "btn-filled btn-primary", "text-primary", "h1")
  * @returns Merged array of tokens showing values for this specific variant
  *
- * Example:
- * className="btn-filled btn-primary"
- * → appearance="filled", variant="primary"
- * → variantKey="filled-primary"
- * → Returns base tokens + variant-specific overrides
- *   (e.g., background changes from default to primary blue)
+ * Examples:
+ * - Button: "btn-filled btn-primary" → variantKey="filled-primary" → base + filled-primary tokens
+ * - Label: "text-primary" → variantKey="text-primary" → base + text-primary tokens
+ * - Label: "h1" → variantKey="default-h1" → base + default-h1 tokens
+ * - Pagination: "basic" → variantKey="basic" → base + basic tokens
+ * - Tabs: any class → variantKey=null → base tokens only
  */
 export function getTokensForClassName(
   tokenConfig: ComponentTokenConfig,
   className: string
 ): TokenDefinition[] {
-  const { appearance, variant } = parseClassName(className);
-  const variantKey = `${appearance}-${variant}`;
+  // Use the generic parseClassName function to get the variant key
+  const variantKey = parseClassName(className, tokenConfig);
 
-  // Get variant-specific tokens
-  const variantTokens = tokenConfig.variants?.[variantKey] || [];
+  // Get variant-specific tokens (if a variant key was found)
+  const variantTokens = variantKey ? (tokenConfig.variants?.[variantKey] || []) : [];
 
   // Create a map to merge tokens (variant overrides base)
   const tokenMap = new Map<string, TokenDefinition>();
@@ -467,7 +587,7 @@ export function getTokensForClassName(
   // Add base tokens first
   tokenConfig.tokens.forEach((token) => tokenMap.set(token.name, token));
 
-  // Override with variant tokens
+  // Override with variant tokens (if any)
   variantTokens.forEach((token) => tokenMap.set(token.name, token));
 
   return Array.from(tokenMap.values());
