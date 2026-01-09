@@ -15,28 +15,30 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import iconTokensData from "../../../../designTokens/components/icon/icon.json";
+
 const meta: Meta<typeof IconDefaultExport> = {
   title: "Basic/Icon",
   component: IconDefaultExport,
-  argTypes: {
-    caption: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:[ "fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
-    },
-    iconurl: { control: "text" },
-    iconposition: {
-      control: { type: "select" },
-      options: ["left", "right"],
-    },
-    iconsize: { control: "text" },
-    // arialabel: { control: "text" },
-    // prefabName: { control: "text" },
-    // hint: { control: "text" },
-  },
+  // argTypes: {
+  //   caption: { control: "text" },
+  //   iconclass:{
+  //     control:{
+  //       type:"select"
+  //     },
+  //     options:[ "fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
+  //       "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
+  //   },
+  //   iconurl: { control: "text" },
+  //   iconposition: {
+  //     control: { type: "select" },
+  //     options: ["left", "right"],
+  //   },
+  //   iconsize: { control: "text" },
+  //   // arialabel: { control: "text" },
+  //   // prefabName: { control: "text" },
+  //   // hint: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -66,6 +68,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsIcon",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -164,6 +170,10 @@ export const FontAwesomeLibrary: Story = {
       />
     );
   },
+  args:{
+    name:"fontAwesomeIconLibrary",
+    listener:mockListener
+  }
 };
 
 export const Basic: Story = {
@@ -172,9 +182,68 @@ export const Basic: Story = {
   args: {
     name: "basicIcon",
     listener: mockListener,
-    iconclass: "fa fa-adjust",
-    iconsize: "24px",
+    iconclass: "fa fa-bar-chart",
   },
+  argTypes: {
+    caption: { control: "text" },
+    iconclass:{
+      control:{
+        type:"select"
+      },
+      options:[ "fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
+        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
+    },
+    iconurl: { control: "text" },
+    iconposition: {
+      control: { type: "select" },
+      options: ["left", "right"],
+    },
+    iconsize: { control: "text" },
+  },
+};
+
+export const DesignToken: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+    // Icon component can't spread data-design-token-target, so we apply it to a wrapper
+    const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+
+    return (
+      <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+        <IconDefaultExport {...componentArgs} listener={mockListener} />
+      </Box>
+    );
+  },
+  args: {
+    name: "designTokenIcon",
+    listener: mockListener,
+    iconclass: "fa fa-bar-chart",
+    "data-design-token-target":"true"
+  },
+  argTypes: {
+    // caption: { control: "text" },
+    iconclass:{
+      control:{
+        type:"select"
+      },
+      options:[ "fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
+        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
+    },
+    iconurl: { control: "text" },
+    iconposition: {
+      control: { type: "select" },
+      options: ["left", "right"],
+    },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: iconTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "icon",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
 };
 
 

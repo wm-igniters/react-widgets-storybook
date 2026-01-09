@@ -11,24 +11,26 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import audioTokensData from "../../../../designTokens/components/audio/audio.json";
+
 const meta: Meta<typeof AudioDefaultExport> = {
   title: "Basic/Audio",
   component: AudioDefaultExport,
-  argTypes: {
-    mp3format: { control: "text" },
-    controls: { control: "boolean" },
-    autoplay: { control: "boolean" },
-    loop: { control: "boolean" },
-    muted: { control: "boolean" },
-    audiopreload: {
-      control: { type: "select" },
-      options: ["auto", "metadata", "none"],
-    },
-    audiosupportmessage: { control: "text" },
-    // hint: { control: "text" },
-    // arialabel: { control: "text" },
-    // tabindex: { control: "number" },
-  },
+  // argTypes: {
+  //   mp3format: { control: "text" },
+  //   controls: { control: "boolean" },
+  //   autoplay: { control: "boolean" },
+  //   loop: { control: "boolean" },
+  //   muted: { control: "boolean" },
+  //   audiopreload: {
+  //     control: { type: "select" },
+  //     options: ["auto", "metadata", "none"],
+  //   },
+  //   audiosupportmessage: { control: "text" },
+  //   // hint: { control: "text" },
+  //   // arialabel: { control: "text" },
+  //   // tabindex: { control: "number" },
+  // },
 };
 
 export default meta;
@@ -62,6 +64,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name: "docsAudio",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -152,6 +158,43 @@ export const Basic: Story = {
     autoplay: false,
     loop: false,
     muted: false,
+  },
+  argTypes: {
+    mp3format: { control: "text" },
+    controls: { control: "boolean" },
+    autoplay: { control: "boolean" },
+    loop: { control: "boolean" },
+    muted: { control: "boolean" },
+    audiopreload: {
+      control: { type: "select" },
+      options: ["auto", "metadata", "none"],
+    },
+    audiosupportmessage: { control: "text" },
+  },
+};
+
+export const DesignToken: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "designTokenAudio",
+    listener: mockListener,
+    mp3format: sampleAudioUrl,
+    controls: true,
+    "data-design-token-target": "true",
+  },
+  argTypes: {
+    mp3format: { control: "text" },
+    controls: { control: "boolean" },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: audioTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "audio",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
   },
 };
 

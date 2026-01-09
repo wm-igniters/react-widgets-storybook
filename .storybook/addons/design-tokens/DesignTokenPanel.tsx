@@ -679,7 +679,12 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
     // Add className selectors for variant specificity
     const classSelectors = className ? `.${className.split(' ').join('.')}` : '';
-    const fullSelector = `${baseSelector}${dataAttr}${classSelectors}`;
+
+    // SPECIAL CASE: Icon component can't spread data attributes to its root element
+    // So we look for the data attribute on an ancestor element instead
+    const fullSelector = componentName === 'icon'
+      ? `${dataAttr} ${baseSelector}${classSelectors}`
+      : `${baseSelector}${dataAttr}${classSelectors}`;
 
     // Helper function to build dynamic CSS variable names
     const getVarName = (property: string) => `--wm-${componentName}-${property}`;
@@ -728,36 +733,68 @@ ${fullSelector} {
     css += `}\n\n`;
 
     // Add main component styling
+    // SPECIAL CASE: Icon component - properties target child .app-icon element
     let mainSelectors = `${fullSelector}`;
 
-    // Add text child selector if defined (e.g., .btn-caption for buttons)
-    if (config.childSelectors?.text) {
-      const textSelectors = config.childSelectors.text.split(',').map(s => `${fullSelector} ${s.trim()}`).join(',\n');
-      mainSelectors += `,\n${textSelectors}`;
+    if (componentName === 'icon') {
+      // For icon component, target the child .app-icon element AND all its FontAwesome classes
+      // Use high specificity to override inline styles and FontAwesome CSS
+      mainSelectors = `${fullSelector} .app-icon,\n${fullSelector} i[class*="fa-"],\n${fullSelector} i[class*="wi-"],\n${fullSelector} img`;
+    } else {
+      // For other components, add text child selector if defined (e.g., .btn-caption for buttons)
+      if (config.childSelectors?.text) {
+        const textSelectors = config.childSelectors.text.split(',').map(s => `${fullSelector} ${s.trim()}`).join(',\n');
+        mainSelectors += `,\n${textSelectors}`;
+      }
     }
 
     css += `${mainSelectors} {\n`;
-    if (tokenValues[getVarName('color')]) {
-      css += `  color: ${tokenValues[getVarName('color')]} !important;\n`;
+
+    // Dynamically apply ALL CSS properties from tokenValues
+    // This ensures any property defined in design tokens will work automatically
+    Object.entries(tokenValues).forEach(([varName, value]) => {
+      // Extract property name from CSS variable name
+      // e.g., --wm-audio-width -> width, --wm-button-color -> color
+      // Use componentName to properly extract the property part
+      const prefix = `--wm-${componentName}-`;
+      if (!varName.startsWith(prefix)) {
+        return; // Skip if it doesn't match expected format
+      }
+      const property = varName.substring(prefix.length);
+
+      // Skip properties that have special handling elsewhere
+      const skipProperties = [
+        'icon-size',           // Handled in icon section (for child icons in other components)
+        'image-size',          // Handled in image section
+        'image-radius',        // Handled in image section
+        'state-layer-color',   // Handled in state layer section
+        'state-layer-opacity', // Handled in state layer section
+      ];
+
+      // Skip interactive state properties (they're handled in :hover, :focus, :active rules)
+      if (property.startsWith('states-')) {
+        return;
+      }
+
+      // Skip if this property has special handling (but NOT for icon component itself)
+      if (skipProperties.includes(property) && componentName !== 'icon') {
+        return;
+      }
+
+      // Map to CSS property and apply
+      const cssProperty = mapToCSSProperty(property);
+      if (cssProperty && value) {
+        css += `  ${cssProperty}: ${value} !important;\n`;
+      }
+    });
+
+    // For icon component, add additional properties to ensure proper rendering
+    if (componentName === 'icon') {
+      css += `  display: inline-flex !important;\n`;
+      css += `  align-items: center !important;\n`;
+      css += `  justify-content: center !important;\n`;
     }
-    if (tokenValues[getVarName('font-size')]) {
-      css += `  font-size: ${tokenValues[getVarName('font-size')]} !important;\n`;
-    }
-    if (tokenValues[getVarName('font-family')]) {
-      css += `  font-family: ${tokenValues[getVarName('font-family')]} !important;\n`;
-    }
-    if (tokenValues[getVarName('font-weight')]) {
-      css += `  font-weight: ${tokenValues[getVarName('font-weight')]} !important;\n`;
-    }
-    if (tokenValues[getVarName('line-height')]) {
-      css += `  line-height: ${tokenValues[getVarName('line-height')]} !important;\n`;
-    }
-    if (tokenValues[getVarName('letter-spacing')]) {
-      css += `  letter-spacing: ${tokenValues[getVarName('letter-spacing')]} !important;\n`;
-    }
-    if (tokenValues[getVarName('text-transform')]) {
-      css += `  text-transform: ${tokenValues[getVarName('text-transform')]} !important;\n`;
-    }
+
     css += `}\n\n`;
 
     // Add rules for icons
@@ -1282,7 +1319,6 @@ ${fullSelector} {
           )}
           <br />
           Modify any token below to see real-time changes in the component above.
-          Change the className in the Controls tab to switch variants.
         </InfoText>
       </InfoBox>
 

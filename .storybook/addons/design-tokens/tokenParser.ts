@@ -422,7 +422,7 @@ export function parseDesignTokens(
 
   return {
     componentName: componentKey,
-    selector: componentData.meta?.mapping?.selector?.web || `.${componentKey}`,
+    selector: componentData.meta?.mapping?.selector?.web || `.app-${componentKey}`,
     tokens: baseTokens,
     variants,
     childSelectors: componentData.meta?.mapping?.childSelectors,
