@@ -94,51 +94,28 @@ const TokenLabel = styled.label`
   color: #333;
   gap: 8px;
   margin-bottom: 0;
+  position: relative;
+
+  /* Show help icon on label hover */
+  &:hover [data-help-icon] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Wrap long text */
+  & > span {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
 `;
 
 // Removed TokenName - CSS variable names now shown only in tooltips
 
 // Removed FontFamilyValue - no longer displaying font-family values inline
 
-const StateBadge = styled.span<{ state: string }>`
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 3px;
-  margin-left: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-
-  ${props => {
-    switch (props.state) {
-      case 'hover':
-        return `
-          background-color: #e8f5e9;
-          color: #2e7d32;
-        `;
-      case 'focus':
-        return `
-          background-color: #e3f2fd;
-          color: #1565c0;
-        `;
-      case 'active':
-        return `
-          background-color: #fff3e0;
-          color: #e65100;
-        `;
-      case 'disabled':
-        return `
-          background-color: #f5f5f5;
-          color: #757575;
-        `;
-      default:
-        return `
-          background-color: #f0f0f0;
-          color: #666;
-        `;
-    }
-  }}
-`;
+// Removed StateBadge - no longer showing state badges next to labels
 
 const HelpIconWrapper = styled.span`
   position: relative;
@@ -146,6 +123,9 @@ const HelpIconWrapper = styled.span`
   align-items: center;
   margin-left: 6px;
   z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 `;
 
 const HelpIcon = styled.button`
@@ -186,8 +166,8 @@ const HelpTooltip = styled.div<{ show: boolean; top?: number; left?: number; isA
   top: ${props => props.top !== undefined ? `${props.top}px` : 'auto'};
   left: ${props => props.left !== undefined ? `${props.left}px` : 'auto'};
   transform: ${props => props.isAbove ? 'translate(-50%, -100%)' : 'translate(-50%, 0)'};
-  background-color: #2c2c2c;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
   padding: 0;
   border-radius: 8px;
   font-size: 12px;
@@ -202,8 +182,8 @@ const HelpTooltip = styled.div<{ show: boolean; top?: number; left?: number; isA
   opacity: ${props => props.show ? 1 : 0};
   visibility: ${props => props.show ? 'visible' : 'hidden'};
   transition: opacity 0.25s ease-in-out, visibility 0.25s ease-in-out;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
   overflow: auto;
 
   &::after {
@@ -212,11 +192,11 @@ const HelpTooltip = styled.div<{ show: boolean; top?: number; left?: number; isA
     ${props => props.isAbove ? `
       top: 100%;
       border: 7px solid transparent;
-      border-top-color: #2c2c2c;
+      border-top-color: #ffffff;
     ` : `
       bottom: 100%;
       border: 7px solid transparent;
-      border-bottom-color: #2c2c2c;
+      border-bottom-color: #ffffff;
     `}
     left: 50%;
     transform: translateX(-50%);
@@ -231,19 +211,30 @@ const HelpTooltip = styled.div<{ show: boolean; top?: number; left?: number; isA
 `;
 
 const TooltipVariableName = styled.div`
-  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
-  color: #ffffff;
+  background-color: #f5f5f5;
+  color: #000000;
   padding: 10px 16px;
-  font-family: 'Courier New', Courier, monospace;
   font-size: 13px;
   font-weight: 600;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid #e0e0e0;
   word-break: break-all;
+`;
+
+const TooltipVariableLabel = styled.span`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  opacity: 0.7;
+  margin-right: 6px;
+`;
+
+const TooltipVariableValue = styled.span`
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 600;
 `;
 
 const TooltipDescription = styled.div`
   padding: 14px 18px;
-  color: #ffffff;
+  color: #000000;
 
   & br {
     display: block;
@@ -252,11 +243,12 @@ const TooltipDescription = styled.div`
   }
 
   & code {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: #f5f5f5;
     padding: 2px 6px;
     border-radius: 3px;
     font-family: monospace;
     font-size: 11px;
+    color: #000000;
   }
 `;
 
@@ -1424,19 +1416,19 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
   // Map category keys to friendly display names
   const categoryNames: Record<string, string> = {
-    'state-layer': 'State Layer (Hover, Focus, Active Overlays)',
-    'disabled-state': 'Disabled State (All Disabled Properties)',
-    'colors': 'Colors (Background, Text)',
-    'typography': 'Typography (Font Properties)',
-    'borders': 'Borders & Lines (Width, Style, Radius, Color, Connectors)',
-    'spacing': 'Spacing & Dimensions (Padding, Gap, Margin, Size)',
-    'layout': 'Layout & Positioning (Display, Position, Z-Index, Alignment, Overflow, Transitions)',
+    'state-layer': 'State Layer',
+    'disabled-state': 'Disabled',
+    'colors': 'Colors',
+    'typography': 'Typography',
+    'borders': 'Borders & Lines',
+    'spacing': 'Spacing & Dimensions',
+    'layout': 'Layout & Positioning',
     'shadows': 'Shadows & Effects',
     'opacity': 'Opacity',
-    'text-styling': 'Text Styling (Decoration, Transform)',
-    'icons': 'Icons (Size, Color, Dimensions)',
-    'overlay': 'Overlay (Loading, Modal Overlays)',
-    'interaction': 'Interaction (Cursor, Pointer Events)',
+    'text-styling': 'Text Styling',
+    'icons': 'Icons',
+    'overlay': 'Overlay',
+    'interaction': 'Interaction',
     'other': 'Other Properties'
   };
 
@@ -1746,8 +1738,6 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         // Calculate available space
         const spaceAbove = rect.top;
         const spaceBelow = viewportHeight - rect.bottom;
-        const spaceLeft = rect.left;
-        const spaceRight = viewportWidth - rect.right;
 
         let tooltipTop: number;
         let tooltipLeft: number;
@@ -1832,18 +1822,10 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         <TokenSection key={typeKey}>
           <SectionTitle>{categoryNames[typeKey] || typeKey}</SectionTitle>
           {categoryTokens.map((token) => {
-            // Determine if this is a state token and which state
-            let stateType: string | null = null;
-            if (token.name.includes('-states-hover-')) stateType = 'hover';
-            else if (token.name.includes('-states-focus-')) stateType = 'focus';
-            else if (token.name.includes('-states-active-')) stateType = 'active';
-            else if (token.name.includes('-states-disabled-')) stateType = 'disabled';
-
             return (
               <TokenGroup key={token.name}>
                 <TokenLabel htmlFor={token.name}>
                   <span>{token.label}</span>
-                  {stateType && <StateBadge state={stateType}>{stateType}</StateBadge>}
                   <HelpIconWrapper data-help-icon>
                     <HelpIcon
                       type="button"
@@ -1881,7 +1863,10 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
           left={tooltipPosition.left}
           isAbove={tooltipPosition.isAbove}
         >
-          <TooltipVariableName>{activeTooltip}</TooltipVariableName>
+          <TooltipVariableName>
+            <TooltipVariableLabel>Variable name:</TooltipVariableLabel>
+            <TooltipVariableValue>{activeTooltip}</TooltipVariableValue>
+          </TooltipVariableName>
           {(() => {
             // Find the token to get its description
             const allTokens = Object.values(sortedGroupedTokens).flat();

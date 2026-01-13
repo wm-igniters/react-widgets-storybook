@@ -120,6 +120,40 @@ function getCSSVariableName(componentKey: string, path: string[]): string {
 }
 
 /**
+ * Extracts a label from CSS variable name
+ *
+ * Examples:
+ * - "--wm-btn-background" → "background"
+ * - "--wm-btn-border-color" → "border.color"
+ * - "--wm-btn-states-disabled-background" → "disabled.background"
+ * - "--wm-btn-states-hover-state-layer-opacity" → "hover.state.layer.opacity"
+ * - "--wm-btn-font-size" → "font.size"
+ *
+ * @param cssVarName - CSS variable name (e.g., "--wm-btn-background")
+ * @param componentKey - Component key (e.g., "btn")
+ * @returns Label string with dots for nested properties
+ */
+function extractLabelFromCSSVariable(cssVarName: string, componentKey: string): string {
+  // Remove the CSS variable prefix: --wm-{component}-
+  const prefix = `--wm-${componentKey}-`;
+  if (!cssVarName.startsWith(prefix)) {
+    // Fallback: just use the variable name without --
+    return cssVarName.replace(/^--/, '');
+  }
+
+  // Extract the token path (everything after the prefix)
+  let tokenPath = cssVarName.substring(prefix.length);
+
+  // Remove "states-" prefix if present
+  if (tokenPath.startsWith('states-')) {
+    tokenPath = tokenPath.substring(7); // Remove "states-"
+  }
+
+  // Convert hyphens to dots for nested properties
+  return tokenPath.replace(/-/g, '.');
+}
+
+/**
  * Removes HTML tags from description text
  *
  * @param description - Description text from JSON (may contain <br> tags)
@@ -318,31 +352,18 @@ function parseTokenObject(
         }
       }
 
-      // Generate label from the last non-@ path segment
-      // Only exclude "disabled" and "states" from labels (keep hover, focus, active)
-      const filteredPath = currentPath.filter(segment => segment !== "@");
-      const excludedSegments = ['disabled', 'states'];
-
-      // Find the last non-excluded segment to use as label
-      let effectiveLabelPath = filteredPath[filteredPath.length - 1] || '';
-      for (let i = filteredPath.length - 1; i >= 0; i--) {
-        if (!excludedSegments.includes(filteredPath[i].toLowerCase())) {
-          effectiveLabelPath = filteredPath[i];
-          break;
-        }
-      }
-
-      // Also filter out excluded words from within hyphenated segments
-      // e.g., "background-disabled" becomes "background"
-      const labelParts = effectiveLabelPath.split('-').filter(part =>
-        part && !excludedSegments.includes(part.toLowerCase())
-      );
-      const finalLabel = labelParts.length > 0 ? labelParts.join(' ') : effectiveLabelPath;
+      // Generate label from CSS variable name
+      // This extracts the token path and converts it to a readable label
+      // Examples:
+      // - "--wm-btn-background" → "background"
+      // - "--wm-btn-border-color" → "border.color"
+      // - "--wm-btn-states-disabled-background" → "disabled.background"
+      // - "--wm-btn-states-hover-state-layer-opacity" → "hover.state.layer.opacity"
+      const label = extractLabelFromCSSVariable(cssVar, componentKey);
 
       const token: TokenDefinition = {
         name: cssVar,
-        label: finalLabel
-          .replace(/\b\w/g, (l) => l.toUpperCase()),
+        label: label,
         value: resolvedValue,
         type: parentObj.type || "text",
         controlType: getControlType(parentObj.type, parentObj.attributes?.subtype),
