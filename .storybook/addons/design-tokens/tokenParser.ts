@@ -297,15 +297,24 @@ function parseTokenObject(
       const cssVar = getCSSVariableName(componentKey, currentPath);
       const parentObj = obj as any;
 
+      // Clean up Less/SCSS escape syntax (e.g., ~"color-mix(...)")
+      let cleanValue = value;
+      if (value.startsWith('~"') || value.startsWith("~'")) {
+        // Remove ~" and trailing " or ~' and trailing '
+        cleanValue = value.slice(2, -1);
+        // Unescape quotes
+        cleanValue = cleanValue.replace(/\\"/g, '"').replace(/\\'/g, "'");
+      }
+
       // Use runtime resolution if cssVariableMap is provided, otherwise fallback to hardcoded
       let resolvedValue: string;
       if (cssVariableMap && cssVariableMap.size > 0) {
-        resolvedValue = resolveTokenValueRuntime(value, cssVariableMap);
+        resolvedValue = resolveTokenValueRuntime(cleanValue, cssVariableMap);
       } else {
-        resolvedValue = resolveTokenValue(value);
+        resolvedValue = resolveTokenValue(cleanValue);
         // Log warning if using fallback
-        if (value.includes("{")) {
-          // console.warn(`[Token Parser] Using fallback hardcoded value for: ${value}`);
+        if (cleanValue.includes("{")) {
+          // console.warn(`[Token Parser] Using fallback hardcoded value for: ${cleanValue}`);
         }
       }
 

@@ -542,6 +542,7 @@ export const Filled: Story = {
               className={className}
               listener={mockListener}
               data-design-token-target="true"
+              disabled={false}
             />
             <ButtonDefaultExport
               name={`filled${variantLabel}IconOnly`}
@@ -553,6 +554,7 @@ export const Filled: Story = {
               iconheight="16px"
               listener={mockListener}
               data-design-token-target="true"
+              disabled={false}
             />
             <ButtonDefaultExport
               name={`filled${variantLabel}IconText`}
@@ -566,6 +568,7 @@ export const Filled: Story = {
               iconmargin="0 8px 0 0"
               listener={mockListener}
               data-design-token-target="true"
+              disabled={false}
             />
           </Stack>
         </Stack>

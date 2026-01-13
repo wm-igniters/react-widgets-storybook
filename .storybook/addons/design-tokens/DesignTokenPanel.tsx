@@ -19,7 +19,7 @@
  * - Applies !important to ensure token styles take precedence
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useStorybookApi } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 import { DesignTokenParameters, TokenDefinition, ComponentTokenConfig } from "./types";
@@ -45,6 +45,7 @@ const TokenSection = styled.div`
   border-radius: 6px;
   padding: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: visible;
 `;
 
 const SectionTitle = styled.h3`
@@ -60,6 +61,8 @@ const SectionTitle = styled.h3`
 
 const TokenGroup = styled.div`
   margin-bottom: 16px;
+  position: relative;
+  overflow: visible;
 
   &:last-child {
     margin-bottom: 0;
@@ -68,12 +71,13 @@ const TokenGroup = styled.div`
 
 const TokenLabel = styled.label`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   font-size: 12px;
   font-weight: 500;
   margin-bottom: 6px;
   color: #333;
+  gap: 8px;
 `;
 
 const TokenName = styled.span`
@@ -85,15 +89,163 @@ const TokenName = styled.span`
   border-radius: 3px;
 `;
 
-const TokenDescription = styled.p`
+const FontFamilyValue = styled.span`
+  font-family: monospace;
   font-size: 11px;
-  color: #757575;
-  margin: 4px 0 8px 0;
-  line-height: 1.5;
+  color: #1976d2;
+  background-color: #e3f2fd;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: auto;
 `;
 
+const StateBadge = styled.span<{ state: string }>`
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  ${props => {
+    switch (props.state) {
+      case 'hover':
+        return `
+          background-color: #e8f5e9;
+          color: #2e7d32;
+        `;
+      case 'focus':
+        return `
+          background-color: #e3f2fd;
+          color: #1565c0;
+        `;
+      case 'active':
+        return `
+          background-color: #fff3e0;
+          color: #e65100;
+        `;
+      case 'disabled':
+        return `
+          background-color: #f5f5f5;
+          color: #757575;
+        `;
+      default:
+        return `
+          background-color: #f0f0f0;
+          color: #666;
+        `;
+    }
+  }}
+`;
+
+const HelpIconWrapper = styled.span`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  z-index: 1;
+`;
+
+const HelpIcon = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #000;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all 0.2s;
+  position: relative;
+
+  &:hover {
+    background-color: #1565c0;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.3);
+  }
+`;
+
+const HelpTooltip = styled.div<{ show: boolean }>`
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2c2c2c;
+  color: #ffffff;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.7;
+  max-width: 450px;
+  min-width: 280px;
+  width: max-content;
+  white-space: normal;
+  z-index: 999999;
+  pointer-events: ${props => props.show ? 'auto' : 'none'};
+  opacity: ${props => props.show ? 1 : 0};
+  visibility: ${props => props.show ? 'visible' : 'hidden'};
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 7px solid transparent;
+    border-top-color: #2c2c2c;
+  }
+
+  & br {
+    display: block;
+    content: "";
+    margin-top: 8px;
+  }
+
+  & code {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 11px;
+  }
+
+  /* Handle edge cases where tooltip goes off screen */
+  @media (max-width: 600px) {
+    max-width: 300px;
+    min-width: 200px;
+    left: auto;
+    right: 0;
+    transform: none;
+
+    &::after {
+      left: auto;
+      right: 10px;
+      transform: none;
+    }
+  }
+`;
+
+
 const TokenInput = styled.input`
-  width: 100%;
+  width: 35%;
   padding: 8px 10px;
   font-size: 13px;
   border: 1px solid #d0d0d0;
@@ -125,7 +277,7 @@ const TokenInput = styled.input`
 `;
 
 const TokenSelect = styled.select`
-  width: 100%;
+  width: 35%;
   padding: 8px 10px;
   font-size: 13px;
   border: 1px solid #d0d0d0;
@@ -152,13 +304,16 @@ const ColorInputWrapper = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
+  width: 35%;
 `;
 
 const ColorInput = styled(TokenInput)`
+  width: auto;
   flex: 0 0 60px;
 `;
 
 const ColorTextInput = styled(TokenInput)`
+  width: auto;
   flex: 1;
 `;
 
@@ -232,15 +387,16 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
   const [tokens, setTokens] = useState<Record<string, string>>({});
   const [defaultTokens, setDefaultTokens] = useState<Record<string, string>>({});
   const [cssVariableMap, setCssVariableMap] = useState<Map<string, string>>(new Map());
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
 
   // Track previous className to detect actual changes (not re-renders)
-  const prevClassNameRef = React.useRef<string>("");
+  const prevClassNameRef = useRef<string>("");
   // Track if we've done initial token application
-  const hasAppliedInitialTokensRef = React.useRef<boolean>(false);
+  const hasAppliedInitialTokensRef = useRef<boolean>(false);
   // Track the className when the panel was last active to detect changes while panel was inactive
-  const classNameWhenActiveRef = React.useRef<string>("");
+  const classNameWhenActiveRef = useRef<string>("");
   // Track if tokens need refresh (used to trigger re-parse when className changes while active)
-  const needsRefreshRef = React.useRef<boolean>(false);
+  const needsRefreshRef = useRef<boolean>(false);
 
   /**
    * Effect: Monitor story changes and args updates
@@ -561,7 +717,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
    * IMPORTANT: If className changed while panel was inactive, tokens have already been
    * updated by the previous effect, we just need to apply them.
    */
-  const prevActiveRef = React.useRef(active);
+  const prevActiveRef = useRef(active);
   useEffect(() => {
     const becameActive = !prevActiveRef.current && active;
     prevActiveRef.current = active;
@@ -587,6 +743,27 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
       }
     }
   }, [active, parameters, tokens, currentClassName]);
+
+  /**
+   * Effect: Close tooltip when clicking outside
+   */
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (activeTooltip && !target.closest('[data-help-icon]')) {
+        // console.log('[Help Icon] Closing tooltip due to outside click');
+        setActiveTooltip(null);
+      }
+    };
+
+    if (activeTooltip) {
+      // console.log('[Help Icon] Adding click outside listener for:', activeTooltip);
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [activeTooltip]);
 
   /**
    * Applies tokens to the Storybook preview iframe
@@ -774,6 +951,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
                 htmlElement.style.setProperty('--wm-opacity-active', value);
                 appliedCount++;
               }
+
             }
           });
 
@@ -848,6 +1026,119 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
       // Apply tokens with retry logic for child elements
       applyToElementAndChildren(targetElements);
+
+      // DYNAMIC STATE TOKEN HANDLING: Inject CSS rules for pseudo-class states
+      // Many components use the same CSS variables in different pseudo-class selectors
+      // We need to inject CSS rules because inline styles can't handle pseudo-classes
+      // Examples:
+      // - --wm-anchor-states-hover-color → --wm-anchor-color in .app-anchor:hover
+      // - --wm-btn-states-hover-background → --wm-btn-background in .app-button:hover
+      const stateTokens = Object.entries(tokenValues).filter(([varName]) =>
+        varName.includes('-states-hover-') ||
+        varName.includes('-states-focus-') ||
+        varName.includes('-states-active-')
+      );
+
+      if (stateTokens.length > 0) {
+        // Remove existing state style tag if it exists
+        const existingStyleTag = iframe.contentDocument.querySelector('#design-token-component-states');
+        if (existingStyleTag) {
+          existingStyleTag.remove();
+        }
+
+        // Group state tokens by component and state
+        // Structure: { componentName: { hover: [...], focus: [...], active: [...] } }
+        const componentStateRules: Record<string, Record<string, string[]>> = {};
+
+        stateTokens.forEach(([varName, value]) => {
+          // Skip state-layer-opacity tokens (handled separately by global opacity variables)
+          if (varName.includes('-state-layer-opacity')) {
+            return;
+          }
+
+          // Extract component name from variable name
+          // --wm-anchor-states-hover-color → anchor
+          // --wm-btn-states-hover-background → btn
+          const match = varName.match(/--wm-([^-]+)-states-(hover|focus|active)-(.*)/);
+          if (!match) return;
+
+          const [, componentName, state, propertyPath] = match;
+          const baseVarName = `--wm-${componentName}-${propertyPath}`;
+
+          // Initialize component entry if needed
+          if (!componentStateRules[componentName]) {
+            componentStateRules[componentName] = {
+              hover: [],
+              focus: [],
+              active: []
+            };
+          }
+
+          // Add CSS rule
+          componentStateRules[componentName][state].push(`${baseVarName}: ${value} !important;`);
+        });
+
+        // Generate CSS rules for each component
+        let cssRules = '';
+        Object.entries(componentStateRules).forEach(([componentName, stateRules]) => {
+          // Map component names to CSS class patterns
+          const componentClassMap: Record<string, string> = {
+            'anchor': '.app-anchor',
+            'btn': '.app-button, .btn, button',
+            'label': '.app-label',
+            'checkbox': '.app-checkbox',
+            'radioset': '.app-radioset',
+            'switch': '.app-switch',
+            'toggle': '.app-toggle',
+            'message': '.app-message',
+            'badge': '.app-badge',
+            'card': '.app-card',
+            'panel': '.app-panel',
+            'nav': '.app-nav',
+            'tabs': '.app-tabs',
+            'pagination': '.app-pagination',
+            'breadcrumb': '.app-breadcrumb',
+            'search': '.app-search',
+            'rating': '.app-rating',
+            'chips': '.app-chips',
+            'tile': '.app-tile',
+            'wizard': '.app-wizard',
+            'carousel': '.app-carousel',
+            'picture': '.app-picture',
+            'icon': '.app-icon',
+            'video': '.app-video',
+            'audio': '.app-audio',
+            'iframe': '.app-iframe',
+            'list': '.app-list',
+            'container': '.app-container',
+            'popover': '.app-popover',
+            'toast': '.app-toast'
+          };
+
+          const componentClass = componentClassMap[componentName] || `.app-${componentName}`;
+
+          // Generate CSS for each state
+          Object.entries(stateRules).forEach(([state, rules]) => {
+            if (rules.length > 0) {
+              cssRules += `
+[data-design-token-target="true"] ${componentClass}:${state},
+[data-design-token-target="true"]${componentClass}:${state} {
+  ${rules.join('\n  ')}
+}
+`;
+            }
+          });
+        });
+
+        // Inject the CSS rules
+        if (cssRules) {
+          const styleTag = iframe.contentDocument.createElement('style');
+          styleTag.id = 'design-token-component-states';
+          styleTag.textContent = cssRules;
+          iframe.contentDocument.head.appendChild(styleTag);
+          console.log('[Design Tokens] Injected state CSS rules for components:', Object.keys(componentStateRules).join(', '));
+        }
+      }
 
       // Verification - check if the values are actually being used
       const firstElement = targetElements[0] as HTMLElement;
@@ -975,15 +1266,282 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
     );
   }
 
-  // Group tokens by category
+  /**
+   * SMART CATEGORIZATION SYSTEM
+   *
+   * This function intelligently categorizes 1000+ CSS variables across ALL 50+ component JSON files
+   * by detecting PROPERTY TYPE rather than component part.
+   *
+   * KEY PRINCIPLE: Properties are grouped by WHAT THEY CONTROL, not WHERE THEY'RE USED
+   *
+   * Examples of cross-component categorization:
+   * - --wm-btn-font-size, --wm-accordion-heading-font-size, --wm-checkbox-caption-font-size
+   *   → ALL go to Typography (Font Properties) category
+   *
+   * - --wm-btn-padding, --wm-accordion-heading-padding, --wm-message-container-padding
+   *   → ALL go to Spacing & Dimensions category
+   *
+   * - --wm-btn-background, --wm-accordion-heading-background, --wm-nav-item-background
+   *   → ALL go to Colors category
+   *
+   * This approach works seamlessly for ANY component part:
+   * - container, heading, caption, description, content, actions
+   * - nav, item, submenu, indicator, caret
+   * - group, list, overlay
+   * - step, connector, icon, badge
+   *
+   * The system supports 14 categories covering all design token patterns.
+   */
+  const getCategoryKey = (token: TokenDefinition): string => {
+    const tokenName = token.name;
+
+    // 1. STATE LAYER - All state layer properties (base + hover + focus + active)
+    // Includes both "-state-layer-" and "-layer-" patterns (e.g., --wm-btn-state-layer-opacity, --wm-chips-item-layer-opacity)
+    if (tokenName.includes('-state-layer-') ||
+        (tokenName.includes('-layer-') && (tokenName.includes('-layer-color') || tokenName.includes('-layer-opacity')))) {
+      return 'state-layer';
+    }
+
+    // 2. DISABLED STATE - All disabled state properties together
+    if (tokenName.includes('-states-disabled-')) {
+      return 'disabled-state';
+    }
+
+    // 3. OVERLAY - All overlay-related properties (background, color, opacity)
+    // Example: --wm-data-table-overlay-background, --wm-data-table-overlay-opacity
+    if (tokenName.includes('-overlay-')) {
+      return 'overlay';
+    }
+
+    // 4. ICONS - All icon-related properties (size, width, height, color)
+    // Example: --wm-btn-icon-size, --wm-checkbox-icon-color, --wm-btn-image-radius
+    if (tokenName.includes('-icon-') || tokenName.includes('-image-size') || tokenName.includes('-image-radius')) {
+      return 'icons';
+    }
+
+    // 5. COLORS - Background, text color (excluding border-color, icon-color, overlay)
+    // Includes colors from ANY component part: container, heading, caption, item, nav, etc.
+    // Example: --wm-btn-background, --wm-message-container-background, --wm-accordion-heading-color
+    if ((tokenName.includes('-background') || (tokenName.includes('-color') && !tokenName.includes('-border-color') && !tokenName.includes('-icon-') && !tokenName.includes('-overlay-'))) &&
+        !tokenName.includes('-states-disabled-')) {
+      return 'colors';
+    }
+
+    // 6. TYPOGRAPHY - All font properties (size, family, weight, line-height, letter-spacing)
+    // Includes typography from ANY component part: caption, heading, description, item, nav, etc.
+    // Example: --wm-btn-font-size, --wm-checkbox-caption-font-family, --wm-accordion-heading-font-weight
+    if (tokenName.includes('-font-') || tokenName.includes('-line-height') || tokenName.includes('-letter-spacing')) {
+      return 'typography';
+    }
+
+    // 7. BORDERS - border-width, border-style, border-radius, border-color, border-collapse, border-spacing, connector-style
+    // Includes borders from ANY component part: container, nav, item, connector, etc.
+    // Example: --wm-btn-border-width, --wm-tabs-nav-border-color, --wm-data-table-border-collapse, --wm-wizard-step-connector-style
+    if (tokenName.includes('-border-') || (tokenName.includes('-radius') && !tokenName.includes('-image-radius')) ||
+        tokenName.includes('-connector-style')) {
+      return 'borders';
+    }
+
+    // 8. SPACING & DIMENSIONS - padding, gap, margin, height, width, size, min-*, max-*, space
+    // Includes spacing from ANY component part: container, heading, group, list, item, nav, etc.
+    // Example: --wm-btn-padding, --wm-accordion-heading-gap, --wm-card-list-gap, --wm-tabs-item-heading-height
+    if (tokenName.includes('-padding') || tokenName.includes('-gap') || tokenName.includes('-margin') ||
+        tokenName.includes('-height') || tokenName.includes('-width') || tokenName.includes('-size') ||
+        tokenName.includes('-min-') || tokenName.includes('-max-') || tokenName.includes('-space')) {
+      return 'spacing';
+    }
+
+    // 9. LAYOUT & POSITIONING - flexbox/grid alignment, position, display, overflow, z-index, transitions
+    // Example: --wm-modal-align-items, --wm-modal-justify-content, --wm-modal-z-index, --wm-toast-position-top
+    if (tokenName.includes('-align-') || tokenName.includes('-justify-') ||
+        tokenName.includes('-position') || tokenName.includes('-display') ||
+        tokenName.includes('-overflow') || tokenName.includes('-z-index') ||
+        tokenName.includes('-transition') || tokenName.includes('-animation') ||
+        tokenName.includes('-transform') && !tokenName.includes('-text-transform')) {
+      return 'layout';
+    }
+
+    // 10. SHADOWS & EFFECTS - shadow, elevation (excluding disabled state shadows)
+    // Example: --wm-btn-shadow, --wm-card-elevation, --wm-accordion-shadow
+    if ((tokenName.includes('-shadow') || tokenName.includes('-elevation')) && !tokenName.includes('-states-disabled-')) {
+      return 'shadows';
+    }
+
+    // 11. OPACITY - opacity properties (excluding state-layer-opacity, overlay-opacity, disabled opacity)
+    // Example: --wm-btn-opacity (general opacity controls)
+    if (tokenName.includes('-opacity') && !tokenName.includes('-state-layer-') && !tokenName.includes('-overlay-') && !tokenName.includes('-states-disabled-')) {
+      return 'opacity';
+    }
+
+    // 12. TEXT STYLING - text-decoration, text-transform
+    // Example: --wm-anchor-text-decoration, --wm-label-text-transform
+    if (tokenName.includes('-text-decoration') || tokenName.includes('-text-transform')) {
+      return 'text-styling';
+    }
+
+    // 13. INTERACTION - cursor, pointer-events properties
+    // Example: --wm-btn-cursor, --wm-anchor-cursor, --wm-chips-pointer-events
+    if (tokenName.includes('-cursor') || tokenName.includes('-pointer-events')) {
+      return 'interaction';
+    }
+
+    // 14. OTHER - anything else that doesn't fit the above categories
+    return 'other';
+  };
+
+  // Group tokens by category (considering subtype and state)
   const groupedTokens: Record<string, TokenDefinition[]> = {};
   tokensToDisplay.forEach((token: TokenDefinition) => {
-    const category = token.category || "General";
-    if (!groupedTokens[category]) {
-      groupedTokens[category] = [];
+    const categoryKey = getCategoryKey(token);
+    if (!groupedTokens[categoryKey]) {
+      groupedTokens[categoryKey] = [];
     }
-    groupedTokens[category].push(token);
+    groupedTokens[categoryKey].push(token);
   });
+
+  // Map category keys to friendly display names
+  const categoryNames: Record<string, string> = {
+    'state-layer': 'State Layer (Hover, Focus, Active Overlays)',
+    'disabled-state': 'Disabled State (All Disabled Properties)',
+    'colors': 'Colors (Background, Text)',
+    'typography': 'Typography (Font Properties)',
+    'borders': 'Borders & Lines (Width, Style, Radius, Color, Connectors)',
+    'spacing': 'Spacing & Dimensions (Padding, Gap, Margin, Size)',
+    'layout': 'Layout & Positioning (Display, Position, Z-Index, Alignment, Overflow, Transitions)',
+    'shadows': 'Shadows & Effects',
+    'opacity': 'Opacity',
+    'text-styling': 'Text Styling (Decoration, Transform)',
+    'icons': 'Icons (Size, Color, Dimensions)',
+    'overlay': 'Overlay (Loading, Modal Overlays)',
+    'interaction': 'Interaction (Cursor, Pointer Events)',
+    'other': 'Other Properties'
+  };
+
+  // Define custom sort order for categories
+  const categoryOrder = [
+    'colors',
+    'typography',
+    'borders',
+    'spacing',
+    'layout',
+    'shadows',
+    'opacity',
+    'text-styling',
+    'icons',
+    'overlay',
+    'state-layer',
+    'disabled-state',
+    'interaction',
+    'other'
+  ];
+
+  // Helper function to determine state priority for sorting within categories
+  const getStatePriority = (tokenName: string): number => {
+    // Base properties first
+    if (!tokenName.includes('-states-')) return 0;
+
+    // Then hover, focus, active, disabled
+    if (tokenName.includes('-states-hover-')) return 1;
+    if (tokenName.includes('-states-focus-')) return 2;
+    if (tokenName.includes('-states-active-')) return 3;
+    if (tokenName.includes('-states-disabled-')) return 4;
+    return 5; // Other states
+  };
+
+  // Helper function to get property type priority for sorting within categories
+  const getPropertyTypePriority = (tokenName: string): number => {
+    // For state-layer category: color before opacity
+    if (tokenName.includes('-state-layer-color')) return 0;
+    if (tokenName.includes('-state-layer-opacity')) return 1;
+
+    // For colors category: background before color
+    if (tokenName.includes('-background')) return 0;
+    if (tokenName.endsWith('-color') || tokenName.includes('-color-')) return 1;
+
+    // For typography: size, family, weight, line-height, letter-spacing
+    if (tokenName.includes('-font-size')) return 0;
+    if (tokenName.includes('-font-family')) return 1;
+    if (tokenName.includes('-font-weight')) return 2;
+    if (tokenName.includes('-line-height')) return 3;
+    if (tokenName.includes('-letter-spacing')) return 4;
+
+    // For borders: width, style, radius, color, collapse, spacing
+    if (tokenName.includes('-border-width')) return 0;
+    if (tokenName.includes('-border-style')) return 1;
+    if (tokenName.includes('-border-radius') || (tokenName.includes('-radius') && !tokenName.includes('-image-'))) return 2;
+    if (tokenName.includes('-border-color')) return 3;
+    if (tokenName.includes('-border-collapse')) return 4;
+    if (tokenName.includes('-border-spacing')) return 5;
+
+    // For icons: size, color, width, height, radius
+    if (tokenName.includes('-icon-size') || tokenName.includes('-image-size')) return 0;
+    if (tokenName.includes('-icon-color')) return 1;
+    if (tokenName.includes('-icon-width')) return 2;
+    if (tokenName.includes('-icon-height')) return 3;
+    if (tokenName.includes('-image-radius')) return 4;
+
+    // For overlay: background, color, opacity
+    if (tokenName.includes('-overlay-background')) return 0;
+    if (tokenName.includes('-overlay-color')) return 1;
+    if (tokenName.includes('-overlay-opacity')) return 2;
+
+    // For layout: display, position, coordinates, alignment, overflow, z-index, transform, transition
+    if (tokenName.includes('-display')) return 0;
+    if (tokenName.includes('-position') && !tokenName.includes('-left') && !tokenName.includes('-right') && !tokenName.includes('-top') && !tokenName.includes('-bottom')) return 1;
+    if (tokenName.includes('-position-top')) return 2;
+    if (tokenName.includes('-position-right')) return 3;
+    if (tokenName.includes('-position-bottom')) return 4;
+    if (tokenName.includes('-position-left')) return 5;
+    if (tokenName.includes('-align-')) return 6;
+    if (tokenName.includes('-justify-')) return 7;
+    if (tokenName.includes('-overflow')) return 8;
+    if (tokenName.includes('-z-index')) return 9;
+    if (tokenName.includes('-transform')) return 10;
+    if (tokenName.includes('-transition') || tokenName.includes('-animation')) return 11;
+
+    return 20; // Default
+  };
+
+  // Sort categories based on defined order
+  const sortedGroupedTokens = Object.keys(groupedTokens)
+    .sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a);
+      const indexB = categoryOrder.indexOf(b);
+
+      // If both are in the order array, sort by their position
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+      // If only one is in the order array, prioritize it
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      // Otherwise sort alphabetically
+      return a.localeCompare(b);
+    })
+    .reduce((acc, key) => {
+      // Sort tokens within each category by property type priority, then state priority
+      acc[key] = groupedTokens[key].sort((a, b) => {
+        // First sort by property type (e.g., background before color, font-size before font-family)
+        const propertyPriorityA = getPropertyTypePriority(a.name);
+        const propertyPriorityB = getPropertyTypePriority(b.name);
+
+        if (propertyPriorityA !== propertyPriorityB) {
+          return propertyPriorityA - propertyPriorityB;
+        }
+
+        // Then sort by state (base, hover, focus, active, disabled)
+        const statePriorityA = getStatePriority(a.name);
+        const statePriorityB = getStatePriority(b.name);
+
+        if (statePriorityA !== statePriorityB) {
+          return statePriorityA - statePriorityB;
+        }
+
+        // If same priority, maintain alphabetical order
+        return a.name.localeCompare(b.name);
+      });
+      return acc;
+    }, {} as Record<string, TokenDefinition[]>);
 
 
   /**
@@ -1143,6 +1701,16 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
   const propInfo = getCurrentPropInfo();
 
+  // Toggle help tooltip visibility
+  const toggleTooltip = (tokenName: string) => {
+    // console.log('[Help Icon] Toggling tooltip for:', tokenName);
+    setActiveTooltip(prev => {
+      const newValue = prev === tokenName ? null : tokenName;
+      // console.log('[Help Icon] Active tooltip changed from', prev, 'to', newValue);
+      return newValue;
+    });
+  };
+
   return (
     <PanelContent>
       <InfoBox>
@@ -1164,19 +1732,51 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         </InfoText>
       </InfoBox>
 
-      {Object.entries(groupedTokens).map(([category, categoryTokens]) => (
-        <TokenSection key={category}>
-          <SectionTitle>{category}</SectionTitle>
-          {categoryTokens.map((token) => (
-            <TokenGroup key={token.name}>
-              <TokenLabel htmlFor={token.name}>
-                <span>{token.label}</span>
-                <TokenName>{token.name}</TokenName>
-              </TokenLabel>
-              {token.description && <TokenDescription>{token.description}</TokenDescription>}
-              {renderTokenInput(token)}
-            </TokenGroup>
-          ))}
+      {Object.entries(sortedGroupedTokens).map(([typeKey, categoryTokens]) => (
+        <TokenSection key={typeKey}>
+          <SectionTitle>{categoryNames[typeKey] || typeKey}</SectionTitle>
+          {categoryTokens.map((token) => {
+            // Determine if this is a state token and which state
+            let stateType: string | null = null;
+            if (token.name.includes('-states-hover-')) stateType = 'hover';
+            else if (token.name.includes('-states-focus-')) stateType = 'focus';
+            else if (token.name.includes('-states-active-')) stateType = 'active';
+            else if (token.name.includes('-states-disabled-')) stateType = 'disabled';
+
+            return (
+              <TokenGroup key={token.name}>
+                <TokenLabel htmlFor={token.name}>
+                  <span>{token.label}</span>
+                  {stateType && <StateBadge state={stateType}>{stateType}</StateBadge>}
+                  <TokenName>{token.name}</TokenName>
+                  {token.description && (
+                    <HelpIconWrapper data-help-icon>
+                      <HelpIcon
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          // console.log('[Help Icon] Clicked on', token.name);
+                          toggleTooltip(token.name);
+                        }}
+                        title="Click to show description"
+                      >
+                        ?
+                      </HelpIcon>
+                      <HelpTooltip
+                        show={activeTooltip === token.name}
+                        dangerouslySetInnerHTML={{ __html: token.description }}
+                      />
+                    </HelpIconWrapper>
+                  )}
+                  {token.name.includes('font-family') && tokens[token.name] && (
+                    <FontFamilyValue>{tokens[token.name]}</FontFamilyValue>
+                  )}
+                </TokenLabel>
+                {renderTokenInput(token)}
+              </TokenGroup>
+            );
+          })}
         </TokenSection>
       ))}
 

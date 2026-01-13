@@ -43,6 +43,7 @@ const customTheme = create({
 
 addons.setConfig({
   theme: customTheme,
+  panelPosition: 'right', // Set panel to display on the right side by default
   // layoutCustomisations: {
   //   showPanel(state: State) {
   //     const tags = state.storyId && state.index ? state.index[state.storyId]?.tags : [];
