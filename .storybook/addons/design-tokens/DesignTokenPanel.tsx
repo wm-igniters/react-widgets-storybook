@@ -20,6 +20,7 @@
  */
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useStorybookApi } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 import { DesignTokenParameters, TokenDefinition, ComponentTokenConfig } from "./types";
@@ -36,7 +37,11 @@ const PanelContent = styled.div`
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   height: 100%;
   overflow-y: auto;
+  overflow-x: visible;
   background-color: #f8f8f8;
+  container-type: inline-size;
+  container-name: panel-content;
+  position: relative;
 `;
 
 const TokenSection = styled.div`
@@ -46,6 +51,8 @@ const TokenSection = styled.div`
   padding: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: visible;
+  position: relative;
+  z-index: 1;
 `;
 
 const SectionTitle = styled.h3`
@@ -63,6 +70,15 @@ const TokenGroup = styled.div`
   margin-bottom: 16px;
   position: relative;
   overflow: visible;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+
+  /* Bottom panel: 3-column layout with empty third column */
+  @container (min-width: 800px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 
   &:last-child {
     margin-bottom: 0;
@@ -75,29 +91,14 @@ const TokenLabel = styled.label`
   align-items: center;
   font-size: 12px;
   font-weight: 500;
-  margin-bottom: 6px;
   color: #333;
   gap: 8px;
+  margin-bottom: 0;
 `;
 
-const TokenName = styled.span`
-  font-family: monospace;
-  font-size: 11px;
-  color: #666;
-  background-color: #f0f0f0;
-  padding: 2px 6px;
-  border-radius: 3px;
-`;
+// Removed TokenName - CSS variable names now shown only in tooltips
 
-const FontFamilyValue = styled.span`
-  font-family: monospace;
-  font-size: 11px;
-  color: #1976d2;
-  background-color: #e3f2fd;
-  padding: 2px 6px;
-  border-radius: 3px;
-  margin-left: auto;
-`;
+// Removed FontFamilyValue - no longer displaying font-family values inline
 
 const StateBadge = styled.span<{ state: string }>`
   font-size: 10px;
@@ -144,7 +145,7 @@ const HelpIconWrapper = styled.span`
   display: inline-flex;
   align-items: center;
   margin-left: 6px;
-  z-index: 1;
+  z-index: 10000;
 `;
 
 const HelpIcon = styled.button`
@@ -180,38 +181,69 @@ const HelpIcon = styled.button`
   }
 `;
 
-const HelpTooltip = styled.div<{ show: boolean }>`
-  position: absolute;
-  bottom: calc(100% + 14px);
-  left: 50%;
-  transform: translateX(-50%);
+const HelpTooltip = styled.div<{ show: boolean; top?: number; left?: number; isAbove?: boolean }>`
+  position: fixed;
+  top: ${props => props.top !== undefined ? `${props.top}px` : 'auto'};
+  left: ${props => props.left !== undefined ? `${props.left}px` : 'auto'};
+  transform: ${props => props.isAbove ? 'translate(-50%, -100%)' : 'translate(-50%, 0)'};
   background-color: #2c2c2c;
   color: #ffffff;
-  padding: 14px 18px;
+  padding: 0;
   border-radius: 8px;
   font-size: 12px;
   line-height: 1.7;
   max-width: 450px;
   min-width: 280px;
   width: max-content;
+  max-height: 400px;
   white-space: normal;
-  z-index: 999999;
+  z-index: 2147483647;
   pointer-events: ${props => props.show ? 'auto' : 'none'};
   opacity: ${props => props.show ? 1 : 0};
   visibility: ${props => props.show ? 'visible' : 'hidden'};
-  transition: all 0.25s ease-in-out;
+  transition: opacity 0.25s ease-in-out, visibility 0.25s ease-in-out;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: auto;
 
   &::after {
     content: '';
     position: absolute;
-    top: 100%;
+    ${props => props.isAbove ? `
+      top: 100%;
+      border: 7px solid transparent;
+      border-top-color: #2c2c2c;
+    ` : `
+      bottom: 100%;
+      border: 7px solid transparent;
+      border-bottom-color: #2c2c2c;
+    `}
     left: 50%;
     transform: translateX(-50%);
-    border: 7px solid transparent;
-    border-top-color: #2c2c2c;
+    z-index: 2147483647;
   }
+
+  /* Handle edge cases where tooltip goes off screen */
+  @media (max-width: 600px) {
+    max-width: 300px;
+    min-width: 200px;
+  }
+`;
+
+const TooltipVariableName = styled.div`
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  color: #ffffff;
+  padding: 10px 16px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  word-break: break-all;
+`;
+
+const TooltipDescription = styled.div`
+  padding: 14px 18px;
+  color: #ffffff;
 
   & br {
     display: block;
@@ -226,26 +258,11 @@ const HelpTooltip = styled.div<{ show: boolean }>`
     font-family: monospace;
     font-size: 11px;
   }
-
-  /* Handle edge cases where tooltip goes off screen */
-  @media (max-width: 600px) {
-    max-width: 300px;
-    min-width: 200px;
-    left: auto;
-    right: 0;
-    transform: none;
-
-    &::after {
-      left: auto;
-      right: 10px;
-      transform: none;
-    }
-  }
 `;
 
 
 const TokenInput = styled.input`
-  width: 35%;
+  width: 100%;
   padding: 8px 10px;
   font-size: 13px;
   border: 1px solid #d0d0d0;
@@ -277,7 +294,7 @@ const TokenInput = styled.input`
 `;
 
 const TokenSelect = styled.select`
-  width: 35%;
+  width: 100%;
   padding: 8px 10px;
   font-size: 13px;
   border: 1px solid #d0d0d0;
@@ -300,11 +317,18 @@ const TokenSelect = styled.select`
   }
 `;
 
+const TokenInputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+`;
+
 const ColorInputWrapper = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
-  width: 35%;
+  width: 100%;
 `;
 
 const ColorInput = styled(TokenInput)`
@@ -388,6 +412,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
   const [defaultTokens, setDefaultTokens] = useState<Record<string, string>>({});
   const [cssVariableMap, setCssVariableMap] = useState<Map<string, string>>(new Map());
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState<{ top: number; left: number; isAbove: boolean } | null>(null);
 
   // Track previous className to detect actual changes (not re-renders)
   const prevClassNameRef = useRef<string>("");
@@ -1136,31 +1161,29 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
           styleTag.id = 'design-token-component-states';
           styleTag.textContent = cssRules;
           iframe.contentDocument.head.appendChild(styleTag);
-          console.log('[Design Tokens] Injected state CSS rules for components:', Object.keys(componentStateRules).join(', '));
+          // console.log('[Design Tokens] Injected state CSS rules for components:', Object.keys(componentStateRules).join(', '));
         }
       }
 
-      // Verification - check if the values are actually being used
-      const firstElement = targetElements[0] as HTMLElement;
-      const labelColorVar = '--wm-label-color';
-      if (tokenValues[labelColorVar]) {
-        const inlineValue = firstElement.style.getPropertyValue(labelColorVar);
-        const computedValue = iframe.contentWindow?.getComputedStyle(firstElement).getPropertyValue(labelColorVar).trim();
-        const actualColor = iframe.contentWindow?.getComputedStyle(firstElement).color;
-
-        // console.log('%c[Design Tokens] Verification:', 'color: #9C27B0; font-weight: bold');
-        // console.log(`  CSS Variable (${labelColorVar}):`);
-        // console.log(`    Inline value: "${inlineValue}"`);
-        // console.log(`    Computed value: "${computedValue}"`);
-        // console.log(`    Expected value: "${tokenValues[labelColorVar]}"`);
-        // console.log(`  Actual element color: "${actualColor}"`);
-
-        // if (computedValue === tokenValues[labelColorVar]) {
-        //   console.log('%c  ✓ CSS variable set correctly!', 'color: #4CAF50');
-        // } else {
-        //   console.error('%c  ✗ CSS variable mismatch!', 'color: #F44336');
-        // }
-      }
+      // Verification code commented out - for debugging only
+      // const firstElement = targetElements[0] as HTMLElement;
+      // const labelColorVar = '--wm-label-color';
+      // if (tokenValues[labelColorVar]) {
+      //   const inlineValue = firstElement.style.getPropertyValue(labelColorVar);
+      //   const computedValue = iframe.contentWindow?.getComputedStyle(firstElement).getPropertyValue(labelColorVar).trim();
+      //   const actualColor = iframe.contentWindow?.getComputedStyle(firstElement).color;
+      //   console.log('%c[Design Tokens] Verification:', 'color: #9C27B0; font-weight: bold');
+      //   console.log(`  CSS Variable (${labelColorVar}):`);
+      //   console.log(`    Inline value: "${inlineValue}"`);
+      //   console.log(`    Computed value: "${computedValue}"`);
+      //   console.log(`    Expected value: "${tokenValues[labelColorVar]}"`);
+      //   console.log(`  Actual element color: "${actualColor}"`);
+      //   if (computedValue === tokenValues[labelColorVar]) {
+      //     console.log('%c  ✓ CSS variable set correctly!', 'color: #4CAF50');
+      //   } else {
+      //     console.error('%c  ✗ CSS variable mismatch!', 'color: #F44336');
+      //   }
+      // }
     };
 
     // Start applying tokens with retry logic
@@ -1172,7 +1195,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
    * Updates both state and applies to iframe
    */
   const handleTokenChange = (tokenName: string, value: string) => {
-    const propertyName = tokenName.split('-').slice(3).join('-');
+    // const propertyName = tokenName.split('-').slice(3).join('-');
     // console.log(`%c[Design Tokens] Token changed: ${propertyName}`, 'color: #2196F3; font-weight: bold', `\n  Variable: ${tokenName}\n  New value: ${value}`);
     const newTokens = { ...tokens, [tokenName]: value };
     // console.log('[Design Tokens] Updated tokens object:', newTokens);
@@ -1701,12 +1724,85 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
   const propInfo = getCurrentPropInfo();
 
-  // Toggle help tooltip visibility
-  const toggleTooltip = (tokenName: string) => {
-    // console.log('[Help Icon] Toggling tooltip for:', tokenName);
+  // Toggle help tooltip visibility with smart position calculation
+  const toggleTooltip = (tokenName: string, event: React.MouseEvent<HTMLButtonElement>) => {
     setActiveTooltip(prev => {
       const newValue = prev === tokenName ? null : tokenName;
-      // console.log('[Help Icon] Active tooltip changed from', prev, 'to', newValue);
+
+      if (newValue) {
+        // Calculate position based on button location with smart positioning
+        const button = event.currentTarget;
+        const rect = button.getBoundingClientRect();
+
+        // Estimate tooltip dimensions (will be adjusted by CSS if needed)
+        const tooltipHeight = 180; // Increased for better safety margin
+        const tooltipWidth = 350; // Approximate width
+        const margin = 10; // Margin from viewport edges
+
+        // Get viewport dimensions
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+
+        // Calculate available space
+        const spaceAbove = rect.top;
+        const spaceBelow = viewportHeight - rect.bottom;
+        const spaceLeft = rect.left;
+        const spaceRight = viewportWidth - rect.right;
+
+        let tooltipTop: number;
+        let tooltipLeft: number;
+        let isAbove: boolean;
+
+        // Decide if tooltip should be above or below
+        if (spaceAbove >= tooltipHeight + margin) {
+          // Enough space above - position above
+          tooltipTop = rect.top - 8;
+          isAbove = true;
+        } else if (spaceBelow >= tooltipHeight + margin) {
+          // Not enough space above but space below - position below
+          tooltipTop = rect.bottom + 8;
+          isAbove = false;
+        } else {
+          // Not enough space in either direction - choose the larger space
+          if (spaceAbove > spaceBelow) {
+            tooltipTop = rect.top - 8;
+            isAbove = true;
+          } else {
+            tooltipTop = rect.bottom + 8;
+            isAbove = false;
+          }
+        }
+
+        // Calculate horizontal position - try to center on button
+        tooltipLeft = rect.left + (rect.width / 2);
+
+        // Ensure tooltip doesn't go off-screen horizontally
+        const halfWidth = tooltipWidth / 2;
+        const minLeft = halfWidth + margin;
+        const maxLeft = viewportWidth - halfWidth - margin;
+
+        if (tooltipLeft < minLeft) {
+          tooltipLeft = minLeft;
+        } else if (tooltipLeft > maxLeft) {
+          tooltipLeft = maxLeft;
+        }
+
+        // console.log(`[Tooltip] Positioning for ${tokenName}:`, {
+        //   buttonRect: { top: rect.top, left: rect.left, bottom: rect.bottom, right: rect.right },
+        //   space: { above: spaceAbove, below: spaceBelow },
+        //   position: { top: tooltipTop, left: tooltipLeft, isAbove },
+        //   viewport: { width: viewportWidth, height: viewportHeight }
+        // });
+
+        setTooltipPosition({
+          top: tooltipTop,
+          left: tooltipLeft,
+          isAbove
+        });
+      } else {
+        setTooltipPosition(null);
+      }
+
       return newValue;
     });
   };
@@ -1748,32 +1844,25 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
                 <TokenLabel htmlFor={token.name}>
                   <span>{token.label}</span>
                   {stateType && <StateBadge state={stateType}>{stateType}</StateBadge>}
-                  <TokenName>{token.name}</TokenName>
-                  {token.description && (
-                    <HelpIconWrapper data-help-icon>
-                      <HelpIcon
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          // console.log('[Help Icon] Clicked on', token.name);
-                          toggleTooltip(token.name);
-                        }}
-                        title="Click to show description"
-                      >
-                        ?
-                      </HelpIcon>
-                      <HelpTooltip
-                        show={activeTooltip === token.name}
-                        dangerouslySetInnerHTML={{ __html: token.description }}
-                      />
-                    </HelpIconWrapper>
-                  )}
-                  {token.name.includes('font-family') && tokens[token.name] && (
-                    <FontFamilyValue>{tokens[token.name]}</FontFamilyValue>
-                  )}
+                  <HelpIconWrapper data-help-icon>
+                    <HelpIcon
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleTooltip(token.name, e);
+                      }}
+                      title="Click to show CSS variable and description"
+                      data-token-name={token.name}
+                      data-token-description={token.description || ''}
+                    >
+                      ?
+                    </HelpIcon>
+                  </HelpIconWrapper>
                 </TokenLabel>
-                {renderTokenInput(token)}
+                <TokenInputContainer>
+                  {renderTokenInput(token)}
+                </TokenInputContainer>
               </TokenGroup>
             );
           })}
@@ -1783,6 +1872,27 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
       <ButtonGroup>
         <ResetButton onClick={handleReset}>Reset to Defaults</ResetButton>
       </ButtonGroup>
+
+      {/* Render tooltip using portal to escape panel overflow constraints */}
+      {activeTooltip && tooltipPosition && createPortal(
+        <HelpTooltip
+          show={true}
+          top={tooltipPosition.top}
+          left={tooltipPosition.left}
+          isAbove={tooltipPosition.isAbove}
+        >
+          <TooltipVariableName>{activeTooltip}</TooltipVariableName>
+          {(() => {
+            // Find the token to get its description
+            const allTokens = Object.values(sortedGroupedTokens).flat();
+            const token = allTokens.find(t => t.name === activeTooltip);
+            return token?.description ? (
+              <TooltipDescription dangerouslySetInnerHTML={{ __html: token.description }} />
+            ) : null;
+          })()}
+        </HelpTooltip>,
+        document.body
+      )}
     </PanelContent>
   );
 };

@@ -319,13 +319,29 @@ function parseTokenObject(
       }
 
       // Generate label from the last non-@ path segment
+      // Only exclude "disabled" and "states" from labels (keep hover, focus, active)
       const filteredPath = currentPath.filter(segment => segment !== "@");
-      const labelPath = filteredPath.length > 0 ? filteredPath[filteredPath.length - 1] : currentPath[currentPath.length - 1];
+      const excludedSegments = ['disabled', 'states'];
+
+      // Find the last non-excluded segment to use as label
+      let effectiveLabelPath = filteredPath[filteredPath.length - 1] || '';
+      for (let i = filteredPath.length - 1; i >= 0; i--) {
+        if (!excludedSegments.includes(filteredPath[i].toLowerCase())) {
+          effectiveLabelPath = filteredPath[i];
+          break;
+        }
+      }
+
+      // Also filter out excluded words from within hyphenated segments
+      // e.g., "background-disabled" becomes "background"
+      const labelParts = effectiveLabelPath.split('-').filter(part =>
+        part && !excludedSegments.includes(part.toLowerCase())
+      );
+      const finalLabel = labelParts.length > 0 ? labelParts.join(' ') : effectiveLabelPath;
 
       const token: TokenDefinition = {
         name: cssVar,
-        label: labelPath
-          .replace(/-/g, " ")
+        label: finalLabel
           .replace(/\b\w/g, (l) => l.toUpperCase()),
         value: resolvedValue,
         type: parentObj.type || "text",
