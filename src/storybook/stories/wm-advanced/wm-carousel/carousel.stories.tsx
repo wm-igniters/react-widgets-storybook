@@ -11,37 +11,39 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import carouselTokensData from "../../../../designTokens/components/carousel/carousel.json";
+
 const meta: Meta<typeof CarouselDefaultExport> = {
   title: "Advanced/Carousel",
   component: CarouselDefaultExport,
-  argTypes: {
-    animation: {
-      control: { type: "select" },
-      options: ["auto", "none"],
-      description: "Animation type for carousel transitions"
-    },
-    animationinterval: {
-      control: { type: "number", min: 1, max: 10, step: 0.5 },
-      description: "Interval in seconds for auto-play (when animation is 'auto')"
-    },
-    controls: {
-      control: { type: "select" },
-      options: ["navs", "indicators", "both", "none"],
-      description: "Type of navigation controls to display"
-    },
-    height: {
-      control: "text",
-      description: "Height of the carousel"
-    },
-    width: {
-      control: "text",
-      description: "Width of the carousel"
-    },
-    nodatamessage: {
-      control: "text",
-      description: "Message to display when there is no data"
-    },
-  },
+  // argTypes: {
+  //   animation: {
+  //     control: { type: "select" },
+  //     options: ["auto", "none"],
+  //     description: "Animation type for carousel transitions"
+  //   },
+  //   animationinterval: {
+  //     control: { type: "number", min: 1, max: 10, step: 0.5 },
+  //     description: "Interval in seconds for auto-play (when animation is 'auto')"
+  //   },
+  //   controls: {
+  //     control: { type: "select" },
+  //     options: ["navs", "indicators", "both", "none"],
+  //     description: "Type of navigation controls to display"
+  //   },
+  //   height: {
+  //     control: "text",
+  //     description: "Height of the carousel"
+  //   },
+  //   width: {
+  //     control: "text",
+  //     description: "Width of the carousel"
+  //   },
+  //   nodatamessage: {
+  //     control: "text",
+  //     description: "Message to display when there is no data"
+  //   },
+  // },
 };
 
 export default meta;
@@ -57,6 +59,9 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsCarousel",
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -180,6 +185,9 @@ export const Showcase: Story = {
       </Box>
     );
   },
+  args:{
+    name:"showcaseCarousel"
+  }
 };
 
 // Basic Examples
@@ -208,4 +216,83 @@ export const Basic: Story = {
     height: "400px",
     width: "100%",
   },
+  argTypes: {
+    animation: {
+      control: { type: "select" },
+      options: ["auto", "none"],
+      description: "Animation type for carousel transitions"
+    },
+    animationinterval: {
+      control: { type: "number", min: 1, max: 10, step: 0.5 },
+      description: "Interval in seconds for auto-play (when animation is 'auto')"
+    },
+    controls: {
+      control: { type: "select" },
+      options: ["navs", "indicators", "both", "none"],
+      description: "Type of navigation controls to display"
+    },
+    height: {
+      control: "text",
+      description: "Height of the carousel"
+    },
+    width: {
+      control: "text",
+      description: "Width of the carousel"
+    },
+    nodatamessage: {
+      control: "text",
+      description: "Message to display when there is no data"
+    },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => (
+    <Box style={{ padding: 16,  height: "500px", width: "800px" }}>
+      <CarouselDefaultExport {...args}>
+        <Box sx={{ width: "100%", height: "100%", bgcolor: "#1976d2", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Typography variant="h3">Slide 1</Typography>
+        </Box>
+        <Box sx={{ width: "100%", height: "100%", bgcolor: "#2e7d32", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Typography variant="h3">Slide 2</Typography>
+        </Box>
+        <Box sx={{ width: "100%", height: "100%", bgcolor: "#ed6c02", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Typography variant="h3">Slide 3</Typography>
+        </Box>
+      </CarouselDefaultExport>
+    </Box>
+  ),
+  args: {
+    name: "basicCarousel",
+    controls: "both",
+    height: "400px",
+    width: "100%",
+    "data-design-token-target":"true",
+    nodatamessage:"No data to display here"
+  },
+  argTypes: {
+    controls: {
+      control: false
+    },
+    height: {
+      control: false,
+    },
+    width: {
+      control: false,
+    },
+    nodatamessage: {
+      control: false,
+    },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: carouselTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "carousel",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
 };
