@@ -21,16 +21,16 @@ const mockData = [
 const meta = {
   title: "Charts/Bubble Chart",
   component: BubbleChart,
-  argTypes: {
-    shape: {
-      control: { type: "select" },
-      options: ["circle", "diamond", "square", "triangle", "random"],
-    },
-    tooltips: { control: "boolean" },
-    showLegend: { control: "boolean" },
-  },
+  // argTypes: {
+  //   shape: {
+  //     control: { type: "select" },
+  //     options: ["circle", "diamond", "square", "triangle", "random"],
+  //   },
+  //   tooltips: { control: "boolean" },
+  //   showLegend: { control: "boolean" },
+  // },
   parameters: {
-    layout: "padded",
+    layout: "fullscreen",
   },
 } satisfies Meta<typeof BubbleChart>;
 
@@ -199,6 +199,9 @@ export const Showcase: StoryObj = {
         </Stack>
       </Box>
     );
+  },
+  args:{
+    name:"showcaseBubbleChart"
   }
 };
 
@@ -220,6 +223,14 @@ export const Basic: Story = {
       console.log("Bubble clicked:", data, index),
     tooltips: true,
     shape: "circle",
+  },
+  argTypes: {
+    shape: {
+      control: { type: "select" },
+      options: ["circle", "diamond", "square", "triangle", "random"],
+    },
+    tooltips: { control: "boolean" },
+    showLegend: { control: "boolean" },
   },
 };
 
