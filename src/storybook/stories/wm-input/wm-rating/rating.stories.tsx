@@ -11,28 +11,30 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import ratingTokensData from "../../../../designTokens/components/rating/rating.json";
+
 const meta: Meta<typeof RatingDefaultExport> = {
   title: "Input/Rating",
   component: RatingDefaultExport,
-  argTypes: {
-    maxvalue: { control: "number" },
-    caption: { control: "text" },
-    readonly: { control: "boolean" },
-    showcaptions: { control: "boolean" },
-    iconcolor: { control: "color" },
-    iconsize: { control: "text" },
-    activeiconclass: { control: "select", options:["fa fa-star", "fa fa-heart"] },
-    inactiveiconclass: { control: "select", options:["fa fa-star", "fa fa-heart"] },
-    datavalue: { control: "number" },
-    dataset: { control: "object" },
-    datafield: { control: "text" },
-    displayfield: { control: "text" },
-    disabled: { control: "boolean" },
-    required: { control: "boolean" },
-    // width: { control: "text" },
-    // height: { control: "text" },
-    // className: { control: "text" },
-  },
+  // argTypes: {
+  //   maxvalue: { control: "number" },
+  //   caption: { control: "text" },
+  //   readonly: { control: "boolean" },
+  //   showcaptions: { control: "boolean" },
+  //   iconcolor: { control: "color" },
+  //   iconsize: { control: "text" },
+  //   activeiconclass: { control: "select", options:["fa fa-star", "fa fa-heart"] },
+  //   inactiveiconclass: { control: "select", options:["fa fa-star", "fa fa-heart"] },
+  //   datavalue: { control: "number" },
+  //   dataset: { control: "object" },
+  //   datafield: { control: "text" },
+  //   displayfield: { control: "text" },
+  //   disabled: { control: "boolean" },
+  //   required: { control: "boolean" },
+  //   // width: { control: "text" },
+  //   // height: { control: "text" },
+  //   // className: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -63,6 +65,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsRating",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -167,6 +173,10 @@ export const Showcase: Story = {
       </Stack>
     </Box>
   ),
+  args:{
+    name:"showcaseRating",
+    listener:mockListener
+  }
 }
 
 export const Basic: Story = {
@@ -178,6 +188,70 @@ export const Basic: Story = {
     disabled: false,
     readonly: false,
     required: false,
+    datavalue:2,
+  },
+  argTypes: {
+    maxvalue: { control: "number" },
+    caption: { control: "text" },
+    readonly: { control: "boolean" },
+    showcaptions: { control: "boolean" },
+    iconcolor: { control: "color" },
+    iconsize: { control: "text" },
+    activeiconclass: { control: "select", options:["fa fa-star", "fa fa-heart"] },
+    inactiveiconclass: { control: "select", options:["fa fa-star", "fa fa-heart"] },
+    datavalue: { control: "number" },
+    dataset: { control: "object" },
+    datafield: { control: "text" },
+    displayfield: { control: "text" },
+    disabled: { control: "boolean" },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+      // Icon component can't spread data-design-token-target, so we apply it to a wrapper
+      const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+  
+      return (
+        <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+          <RatingDefaultExport {...componentArgs} listener={mockListener} />
+        </Box>
+      );
+    },
+  args: {
+    name: "standardRating",
+    listener: mockListener,
+    disabled: false,
+    readonly: false,
+    required: false,
+    datavalue:2,
+    "data-design-token-target":"true",
+  },
+  argTypes: {
+    maxvalue: { control: "number" },
+    caption: { control: "text" },
+    readonly: { control: "boolean" },
+    showcaptions: { control: "boolean" },
+    iconcolor: { control: "color" },
+    iconsize: { control: "text" },
+    activeiconclass: { control: "select", options:["fa fa-star", "fa fa-heart"] },
+    inactiveiconclass: { control: "select", options:["fa fa-star", "fa fa-heart"] },
+    datavalue: { control: "number" },
+    dataset: { control: "object" },
+    datafield: { control: "text" },
+    displayfield: { control: "text" },
+    disabled: { control: "boolean" },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: ratingTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "rating",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
   },
 };
 

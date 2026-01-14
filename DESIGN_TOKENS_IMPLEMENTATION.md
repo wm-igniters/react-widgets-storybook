@@ -11,6 +11,7 @@ A **fully generic, zero-configuration Design Token system** for Storybook with *
 3. **That's it!** No code changes needed ✅
 
 ### Latest UI/UX Improvements:
+- ✅ **State dropdown** - Dynamic state selector (default, hover, focus, active, disabled, checked, etc.) with intelligent filtering and label simplification
 - ✅ **Smart label generation** - Labels extracted from CSS variable names (e.g., `border.color` from `--wm-btn-border-color`)
 - ✅ **Simplified categories** - Only 4 categories: Color, Text, Size, Style (type-based)
 - ✅ **Hover-based help icons** - Help icons appear only on label hover
@@ -1106,6 +1107,7 @@ Total documentation: 1200+ lines of comments across all files.
 You now have a **production-ready, fully generic, zero-configuration Design Token system** with **intuitive UI** that:
 
 ### Core Features
+- ✅ **State dropdown with intelligent filtering** - Auto-detects states, filters tokens, prevents duplicates, simplifies labels
 - ✅ Works with the existing button component
 - ✅ Shows 3 button variations (basic, icon, badge)
 - ✅ Has a dedicated "Design Tokens" tab in the panel
@@ -1114,6 +1116,7 @@ You now have a **production-ready, fully generic, zero-configuration Design Toke
 - ✅ **Supports multiple JSON structures** (variantGroups, meta.appearances, nested tokens)
 - ✅ **Compatible with ALL 50+ components** in `/src/designTokens/components/`
 - ✅ **Supports both className and type prop components** (button, anchor, message, progress-bar, etc.)
+- ✅ **Supports state-based token editing** (hover, focus, active, disabled, checked, selected, error, etc.)
 - ✅ **Dynamic selector lookup from JSON** - zero hardcoding for variant detection
 - ✅ **Automatic wrapper pattern detection** - intelligently handles components that can't spread attributes
 - ✅ Reads tokens from JSON files
@@ -1126,6 +1129,7 @@ You now have a **production-ready, fully generic, zero-configuration Design Toke
 - ✅ Has comprehensive comments and documentation
 
 ### UI/UX Features
+- ✅ **State dropdown** - Dynamic state selector (default, hover, focus, active, disabled, checked, etc.) with intelligent filtering
 - ✅ **Smart label generation** from CSS variable names (e.g., `border.color` from `--wm-btn-border-color`)
 - ✅ **Simplified 4 categories** based on token type: Color, Text, Size, Style
 - ✅ **Hover-based help icons** that appear only when needed
@@ -1137,7 +1141,61 @@ You now have a **production-ready, fully generic, zero-configuration Design Toke
 
 ## 🆕 What's New (Latest Updates)
 
-### UI/UX Improvements (Current Release)
+### State Dropdown Feature (Current Release)
+
+#### Dynamic State Management
+- **Before**: All tokens shown together regardless of state, difficult to understand state-specific tokens
+- **After**: State dropdown automatically appears for components with states, filters tokens intelligently
+- **Impact**: Easy to view and edit tokens for specific states (hover, focus, active, disabled, checked, selected, error, etc.)
+
+**Key Features:**
+- **Auto-detection**: Reads from `mapping.states` in JSON, works with ANY state names
+- **Intelligent filtering**: Shows base + state-specific tokens together, prevents duplicates
+- **Label simplification**: Removes state prefix when that state is selected (e.g., "checked.background" → "background")
+- **Overlay handling**: Hides main background in hover/focus/active states (uses state-layer)
+- **Responsive layout**: Matches token input grid (2-column right panel, 3-column bottom panel)
+
+**Example:**
+```typescript
+// Button with hover, focus, active, disabled states
+// State dropdown shows: Default, Hover, Focus, Active, Disabled
+
+// Select "Hover" state:
+// Tokens shown: background, color, state-layer-color, state.layer.opacity
+// Labels: "background" (not "hover.background"), "state.layer.opacity"
+// Main background hidden (uses overlay)
+```
+
+#### State Detection Implementation
+```typescript
+export function detectAvailableStates(
+  tokenData: any,
+  componentKey: string
+): string[] {
+  // Automatically discovers states from JSON structure
+  // Returns: ["default", "hover", "focus", "active", "disabled"]
+}
+```
+
+#### Smart Token Filtering
+```typescript
+const filterTokensByState = (tokens: TokenDefinition[], state: string) => {
+  // Default: shows only base tokens
+  // Other states: shows base + state-specific, prevents duplicates
+  // Overlay states: hides main background
+}
+```
+
+#### Benefits
+✅ **Test state styling** without manual interaction (hover/click)
+✅ **Clear state visibility** - understand which tokens are active
+✅ **Prevent duplicates** - intelligent filtering shows only relevant tokens
+✅ **Clean labels** - state prefix removed for better readability
+✅ **Fully dynamic** - works with any component and any state names
+
+---
+
+### UI/UX Improvements (Previous Release)
 
 #### Smart Label Generation from CSS Variables
 - **Before**: Labels were generic or based on JSON paths

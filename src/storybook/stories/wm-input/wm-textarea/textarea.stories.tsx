@@ -14,30 +14,30 @@ import styling from "./docs/styling.md?raw";
 const meta: Meta<typeof TextareaDefaultExport> = {
   title: "Input/Textarea",
   component: TextareaDefaultExport,
-  argTypes: {
-    datavalue: { control: "text" },
-    placeholder: { control: "text" },
-    readonly: { control: "boolean" },
-    required: { control: "boolean" },
-    disabled: { control: "boolean" },
-    maxchars: { control: "number" },
-    // tabindex: { control: "number" },
-    // shortcutkey: { control: "text" },
-    autofocus: { control: "boolean" },
-    // arialabel: { control: "text" },
-    limitdisplaytext: { control: "text" },
-    regexp: { control: "text" },
-    updatedelay: { control: "text" },
-    updateon: {
-      control: { type: "select" },
-      options: ["keypress", "blur"]
-    },
-    autocapitalize: { control: "boolean" },
-    // hint: { control: "text" },
-    // width: { control: "text" },
-    // height: { control: "text" },
-    // className: { control: "text" },
-  },
+  // argTypes: {
+  //   datavalue: { control: "text" },
+  //   placeholder: { control: "text" },
+  //   readonly: { control: "boolean" },
+  //   required: { control: "boolean" },
+  //   disabled: { control: "boolean" },
+  //   maxchars: { control: "number" },
+  //   // tabindex: { control: "number" },
+  //   // shortcutkey: { control: "text" },
+  //   autofocus: { control: "boolean" },
+  //   // arialabel: { control: "text" },
+  //   limitdisplaytext: { control: "text" },
+  //   regexp: { control: "text" },
+  //   updatedelay: { control: "text" },
+  //   updateon: {
+  //     control: { type: "select" },
+  //     options: ["keypress", "blur"]
+  //   },
+  //   autocapitalize: { control: "boolean" },
+  //   // hint: { control: "text" },
+  //   // width: { control: "text" },
+  //   // height: { control: "text" },
+  //   // className: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -68,6 +68,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsTextArea",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -168,6 +172,23 @@ export const Basic: Story = {
     autofocus: false,
     autocapitalize: false,
     required: false,
+  },
+  argTypes: {
+    datavalue: { control: "text" },
+    placeholder: { control: "text" },
+    readonly: { control: "boolean" },
+    required: { control: "boolean" },
+    disabled: { control: "boolean" },
+    maxchars: { control: "number" },
+    autofocus: { control: "boolean" },
+    limitdisplaytext: { control: "text" },
+    regexp: { control: "text" },
+    updatedelay: { control: "text" },
+    updateon: {
+      control: { type: "select" },
+      options: ["keypress", "blur"]
+    },
+    autocapitalize: { control: "boolean" },
   },
 };
 

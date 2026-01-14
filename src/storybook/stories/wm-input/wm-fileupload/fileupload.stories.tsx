@@ -11,41 +11,43 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import fileuploadTokensData from "../../../../designTokens/components/fileupload/fileupload.json";
+
 const meta: Meta<typeof FileUploadDefaultExport> = {
   title: "Input/FileUpload",
   component: FileUploadDefaultExport,
-  argTypes: {
-    caption: { control: "text" },
-    multiple: { control: "boolean" },
-    fileuploadmessage: { control: "text" },
-    disabled: { control: "boolean" },
-    readonly: { control: "boolean" },
-    // required: { control: "boolean" },
-    contenttype: { control: "text" },
-    // extensions: {
-    //   control: { type: "select" },
-    //   options: ["", "jpg,jpeg,png,gif", "pdf,doc,docx,txt", "mp4,avi,mov", "xls,xlsx,csv"],
-    // },
-    extensions: { control: "text" },
-    // filetype: { control: "text" },
-    maxfilesize: { control: "text" },
-    // iconclass: { control: "text" },
-    // cleariconclass: { control: "text" },
-    // cleariconhint: { control: "text" },
-    // deleteiconhint: { control: "text" },
-    displayname: { control: "text" },
-    hint: { control: "text" },
-    // arialabel: { control: "text" },
-    // tabindex: { control: "number" },
-    width: { control: "text" },
-    height: { control: "text" },
-    // filelistheight: { control: "number" },
-    showprogressbar: { control: "boolean" },
-    showprogressbarpercentage: { control: "boolean" },
-    uploadpath: { control: "text" },
-    // destination: { control: "text" },
-    // className: { control: "text" },
-  },
+  // argTypes: {
+  //   caption: { control: "text" },
+  //   multiple: { control: "boolean" },
+  //   fileuploadmessage: { control: "text" },
+  //   disabled: { control: "boolean" },
+  //   readonly: { control: "boolean" },
+  //   // required: { control: "boolean" },
+  //   contenttype: { control: "text" },
+  //   // extensions: {
+  //   //   control: { type: "select" },
+  //   //   options: ["", "jpg,jpeg,png,gif", "pdf,doc,docx,txt", "mp4,avi,mov", "xls,xlsx,csv"],
+  //   // },
+  //   extensions: { control: "text" },
+  //   // filetype: { control: "text" },
+  //   maxfilesize: { control: "text" },
+  //   // iconclass: { control: "text" },
+  //   // cleariconclass: { control: "text" },
+  //   // cleariconhint: { control: "text" },
+  //   // deleteiconhint: { control: "text" },
+  //   displayname: { control: "text" },
+  //   hint: { control: "text" },
+  //   // arialabel: { control: "text" },
+  //   // tabindex: { control: "number" },
+  //   width: { control: "text" },
+  //   height: { control: "text" },
+  //   // filelistheight: { control: "number" },
+  //   showprogressbar: { control: "boolean" },
+  //   showprogressbarpercentage: { control: "boolean" },
+  //   uploadpath: { control: "text" },
+  //   // destination: { control: "text" },
+  //   // className: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -67,6 +69,9 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsFileupload",
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -173,6 +178,73 @@ export const Basic: Story = {
     showprogressbar: false,
     showprogressbarpercentage: false,
   },
+  argTypes: {
+    caption: { control: "text" },
+    multiple: { control: "boolean" },
+    fileuploadmessage: { control: "text" },
+    disabled: { control: "boolean" },
+    readonly: { control: "boolean" },
+    contenttype: { control: "text" },
+    extensions: {
+      control: { type: "select" },
+      options: ["", "jpg,jpeg,png,gif", "pdf,doc,docx,txt", "mp4,avi,mov", "xls,xlsx,csv"],
+    },
+    maxfilesize: { control: "text" },
+    iconclass: { control: "select", options:["fa fa-upload", "wm-sl-l sl-cloud-upload"] },
+    // cleariconclass: { control: "text" },
+    // cleariconhint: { control: "text" },
+    // deleteiconhint: { control: "text" },
+    displayname: { control: "text" },
+    hint: { control: "text" },
+    width: { control: "text" },
+    height: { control: "text" },
+    // filelistheight: { control: "number" },
+    showprogressbar: { control: "boolean" },
+    showprogressbarpercentage: { control: "boolean" },
+    uploadpath: { control: "text" },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+      // Icon component can't spread data-design-token-target, so we apply it to a wrapper
+      const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+  
+      return (
+        <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+          <FileUploadDefaultExport {...componentArgs} />
+        </Box>
+      );
+    },
+  args: {
+    name: "standardFileUpload",
+    caption: "Select File",
+    multiple: true,
+    disabled: false,
+    showprogressbar: true,
+    showprogressbarpercentage: true,
+    fileuploadmessage:"Drop any type of file here",
+    "data-design-token-target":"true"
+  },
+  argTypes: {
+    caption: { control: "text" },
+    multiple: { control: "boolean" },
+    fileuploadmessage: { control: "text" },
+    disabled: { control: "boolean" },
+    showprogressbar: { control: "boolean" },
+    showprogressbarpercentage: { control: "boolean" },
+    "data-design-token-target": { control: false },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: fileuploadTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "file-upload",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
 };
 
 

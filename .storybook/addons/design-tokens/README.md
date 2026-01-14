@@ -1,6 +1,7 @@
 # Design Tokens Addon
 
 A **fully generic, dynamic Design Token system** for Storybook that works with ANY component automatically. Features:
+- 🎛️ **State dropdown** - Dynamic state selector (default, hover, focus, active, disabled, checked, etc.) with intelligent token filtering
 - 🎨 **Clean white tooltips** with hover-based help icons
 - 🏷️ **Smart label generation** from CSS variable names (e.g., `border.color` from `--wm-btn-border-color`)
 - 📂 **Simplified categories** - Color, Text, Size, Style (type-based categorization)
@@ -155,6 +156,249 @@ User switches story → Previous tokens cleared → Clean slate for new story
 
 ---
 
+## State Dropdown Feature
+
+### Overview
+
+Components with multiple interaction states (hover, focus, active, disabled, checked, selected, error, etc.) automatically display a **State dropdown** at the top of the Design Token panel. This feature enables you to:
+
+- View and edit tokens specific to each state
+- See base tokens combined with state-specific tokens
+- Understand which tokens are active in each state
+- Test state-specific styling without manual interaction
+
+### Key Features
+
+**✅ Dynamic State Detection**
+- Automatically discovers states from JSON `mapping.states` structure
+- Works with any state name (hover, focus, active, disabled, checked, selected, error, etc.)
+- No hardcoded state lists - fully generic
+
+**✅ Intelligent Token Filtering**
+- **Default state**: Shows all base tokens, hides state-specific tokens
+- **Other states**: Shows base tokens + selected state tokens together
+- **Duplicate prevention**: Hides base tokens when state-specific version exists
+- **Overlay state handling**: Hides main background in hover/focus/active (uses state-layer)
+
+**✅ Clean Label Simplification**
+- Removes state prefix from labels when that state is selected
+- Example: State "checked" → `--wm-checkbox-states-checked-background` displays as `"background"` (not "checked.background")
+- Reduces redundancy since dropdown already indicates the selected state
+
+**✅ Responsive Layout**
+- Matches token input styling (2-column right panel, 3-column bottom panel)
+- Clean, intuitive UI that fits naturally with other controls
+
+### How It Works
+
+#### State Detection (`tokenParser.ts`)
+
+```typescript
+export function detectAvailableStates(
+  tokenData: any,
+  componentKey: string
+): string[] {
+  const componentData = tokenData[componentKey];
+  if (!componentData) return ["default"];
+
+  const states: string[] = ["default"];
+
+  // Look for states in mapping.states
+  if (componentData.mapping && componentData.mapping.states) {
+    const statesObj = componentData.mapping.states;
+    for (const stateName of Object.keys(statesObj)) {
+      if (stateName !== "attributes" && !states.includes(stateName)) {
+        states.push(stateName);
+      }
+    }
+  }
+
+  return states;
+}
+```
+
+#### Label Simplification (`tokenParser.ts`)
+
+```typescript
+export function extractLabelFromCSSVariable(
+  cssVarName: string,
+  componentKey: string,
+  selectedState: string = "default"
+): string {
+  const prefix = `--wm-${componentKey}-`;
+  if (!cssVarName.startsWith(prefix)) {
+    return cssVarName.replace(/^--/, '');
+  }
+
+  let tokenPath = cssVarName.substring(prefix.length);
+
+  // Remove state prefix for ALL states when that state is selected
+  if (selectedState !== "default" && tokenPath.startsWith('states-')) {
+    const statePrefix = `states-${selectedState}-`;
+    if (tokenPath.startsWith(statePrefix)) {
+      tokenPath = tokenPath.substring(statePrefix.length);
+    }
+  }
+
+  return tokenPath.replace(/-/g, '.');
+}
+```
+
+#### Token Filtering (`DesignTokenPanel.tsx`)
+
+```typescript
+const filterTokensByState = (tokens: TokenDefinition[], state: string): TokenDefinition[] => {
+  // Helper: Check if there's a state-specific version of this token
+  const hasStateSpecificVersion = (tokenName: string, targetState: string): boolean => {
+    if (tokenName.includes('-states-')) return false;
+    const propertyName = getPropertyName(tokenName);
+    const stateSpecificName = `--wm-${componentKey}-states-${targetState}-${propertyName}`;
+    return tokens.some(t => t.name === stateSpecificName);
+  };
+
+  // Helper: Check if this state uses overlay (hover/focus/active)
+  const isOverlayState = (stateName: string): boolean => {
+    return ['hover', 'focus', 'active'].includes(stateName);
+  };
+
+  return tokens.filter((token) => {
+    const tokenName = token.name;
+    const isBase = !tokenName.includes('-states-');
+    const isMainBackground = tokenName === `--wm-${componentKey}-background`;
+    const tokenState = getTokenState(tokenName);
+
+    // Default state: show only base tokens
+    if (state === 'default') {
+      return isBase && tokenState === null;
+    }
+
+    // Other states: show state-specific + base tokens
+    if (tokenState === state) return true; // Show state-specific
+
+    if (isBase) {
+      // Hide main background in overlay states (uses state-layer)
+      if (isMainBackground && isOverlayState(state)) return false;
+
+      // Hide base token if state-specific version exists
+      if (hasStateSpecificVersion(tokenName, state)) return false;
+
+      return true; // Show base token
+    }
+
+    return false;
+  });
+};
+```
+
+### UI Components
+
+**State Dropdown** (styled to match token inputs):
+```typescript
+const StateDropdownContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  @container (min-width: 800px) {
+    grid-template-columns: 1fr 1fr 1fr; // 3-column for bottom panel
+  }
+`;
+```
+
+### Examples
+
+#### Button with States
+
+**JSON Structure:**
+```json
+{
+  "btn": {
+    "mapping": {
+      "background": { "value": "{color.primary.@.value}" },
+      "color": { "value": "{color.on-primary.@.value}" },
+      "state-layer-color": { "value": "{color.on-primary.@.value}" },
+      "states": {
+        "hover": {
+          "state-layer-opacity": { "value": "{opacity.hover.value}" }
+        },
+        "focus": {
+          "state-layer-opacity": { "value": "{opacity.focus.value}" }
+        },
+        "disabled": {
+          "background": { "value": "{color.surface.container.@.value}" },
+          "color": { "value": "{color.on-surface.opacity-38.value}" }
+        }
+      }
+    }
+  }
+}
+```
+
+**Design Token Panel Behavior:**
+
+| State Selected | Tokens Displayed | Notes |
+|---------------|------------------|-------|
+| **default** | `background`, `color`, `state-layer-color` | Only base tokens shown |
+| **hover** | `background`, `color`, `state-layer-color`, `state.layer.opacity` | Base + hover tokens, background hidden (uses overlay) |
+| **disabled** | `background`, `color` (disabled versions) | Base tokens with disabled overrides, duplicates prevented |
+
+#### Checkbox with Checked State
+
+**JSON Structure:**
+```json
+{
+  "checkbox": {
+    "mapping": {
+      "background": { "value": "transparent" },
+      "border": { "color": { "value": "{color.outline.@.value}" } },
+      "states": {
+        "checked": {
+          "background": { "value": "{color.primary.@.value}" },
+          "border": { "color": { "value": "{color.primary.@.value}" } }
+        }
+      }
+    }
+  }
+}
+```
+
+**Label Simplification:**
+
+| State | Token | Label Displayed |
+|-------|-------|-----------------|
+| default | `--wm-checkbox-background` | `background` |
+| default | `--wm-checkbox-border-color` | `border.color` |
+| checked | `--wm-checkbox-background` | `background` (base, hidden due to duplicate) |
+| checked | `--wm-checkbox-states-checked-background` | `background` (not "checked.background") |
+| checked | `--wm-checkbox-states-checked-border-color` | `border.color` (state prefix removed) |
+
+### Supported States
+
+The system dynamically supports ANY state defined in your JSON:
+
+**Common States:**
+- `hover` - Hover interaction
+- `focus` - Focus state
+- `active` - Active/pressed state
+- `disabled` - Disabled state
+- `checked` - Checked state (checkboxes, radios, toggles)
+- `selected` - Selected state (switches, tabs)
+- `error` - Error state
+- `error-focus` - Error + focus combination
+
+**No hardcoding required** - just add states to your JSON `mapping.states` and they'll appear automatically!
+
+### Benefits
+
+✅ **Test state styling without interaction** - No need to hover/click to see state tokens
+✅ **Clear state visibility** - Understand which tokens are active in each state
+✅ **Prevent duplicate tokens** - Intelligent filtering shows only relevant tokens
+✅ **Clean labels** - State prefix removed for better readability
+✅ **Fully dynamic** - Works with any component and any state names
+✅ **Responsive design** - Matches existing token input layouts
+
+---
+
 ## Label Generation & Categorization
 
 ### Smart Label Extraction from CSS Variables
@@ -221,6 +465,7 @@ Click help icon → Tooltip shows:
 ## Key Features
 
 ### UI/UX Features
+✅ **State dropdown** - Dynamic state selector (default, hover, focus, active, disabled, checked, etc.) with intelligent token filtering and label simplification
 ✅ **Smart label generation** - Labels extracted from CSS variable names (e.g., `border.color` from `--wm-btn-border-color`)
 ✅ **Simplified categories** - Only 4 categories based on token type: Color, Text, Size, Style
 ✅ **Hover-based help icons** - Help icons (?) only appear when hovering over labels
@@ -231,6 +476,7 @@ Click help icon → Tooltip shows:
 ✅ **No state badges** - Clean UI without redundant DISABLED/HOVER/FOCUS badges
 
 ### Core Features
+✅ **Dynamic state management** - Auto-detects states from JSON, filters tokens intelligently, prevents duplicates
 ✅ **Generic className parsing** - Automatically works with ANY component className pattern (button, label, pagination, etc.)
 ✅ **Type prop support (propToVariantMap)** - Works with components using type/variant props instead of className (message, progress-bar, accordion, etc.)
 ✅ **Dynamic selector lookup** - Reads selectors from JSON and matches variants automatically
@@ -241,6 +487,7 @@ Click help icon → Tooltip shows:
 ✅ **Fully generic** - Works for ANY component with ANY JSON structure
 ✅ **Multiple JSON structures** - Supports appearances at root/meta, with/without variantGroups
 ✅ **Variant-aware** - Different tokens for different className/type variants
+✅ **State-aware** - Different tokens for different states (hover, focus, active, disabled, checked, selected, error, etc.)
 ✅ **Real-time updates** - Changes apply instantly without reload
 ✅ **Smart controls** - Color pickers, dropdowns, number inputs based on token type
 ✅ **Automatic conversion** - Handles percentages (8% ↔ 0.08) for opacity values

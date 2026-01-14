@@ -14,34 +14,34 @@ import styling from "./docs/styling.md?raw";
 const meta: Meta<typeof TimeDefaultExport> = {
   title: "Input/Time",
   component: TimeDefaultExport,
-  argTypes: {
-    placeholder: { control: "text" },
-    // hint: { control: "text" },
-    // arialabel: { control: "text" },
-    // tabindex: { control: "number" },
-    // shortcutkey: { control: "text" },
-    datavalue: { control: "text" },
-    timepattern: { control: "select", options: ["h:mm a", "HH:mm", "h:mm:ss a", "HH:mm:ss"] },
-    hourstep: { control: "number" },
-    minutestep: { control: "number" },
-    secondsstep: { control: "number" },
-    outputformat: { control: "text" },
-    mintime: { control: "text" },
-    maxtime: { control: "text" },
-    required: { control: "boolean" },
-    autofocus: { control: "boolean" },
-    readonly: { control: "boolean" },
-    disabled: { control: "boolean" },
-    showdropdownon: {
-      control: { type: "select" },
-      options: ["default", "button"],
-    },
-    dataentrymode: {
-      control: { type: "select" },
-      options: ["default", "picker"],
-    },
-    // className: { control: "text" },
-  },
+  // argTypes: {
+  //   placeholder: { control: "text" },
+  //   // hint: { control: "text" },
+  //   // arialabel: { control: "text" },
+  //   // tabindex: { control: "number" },
+  //   // shortcutkey: { control: "text" },
+  //   datavalue: { control: "text" },
+  //   timepattern: { control: "select", options: ["h:mm a", "HH:mm", "h:mm:ss a", "HH:mm:ss"] },
+  //   hourstep: { control: "number" },
+  //   minutestep: { control: "number" },
+  //   secondsstep: { control: "number" },
+  //   outputformat: { control: "text" },
+  //   mintime: { control: "text" },
+  //   maxtime: { control: "text" },
+  //   required: { control: "boolean" },
+  //   autofocus: { control: "boolean" },
+  //   readonly: { control: "boolean" },
+  //   disabled: { control: "boolean" },
+  //   showdropdownon: {
+  //     control: { type: "select" },
+  //     options: ["default", "button"],
+  //   },
+  //   dataentrymode: {
+  //     control: { type: "select" },
+  //     options: ["default", "picker"],
+  //   },
+  //   // className: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -72,6 +72,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsTime",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -278,6 +282,29 @@ export const Basic: Story = {
     dataentrymode: "default",
     showdropdownon: "default",
     datavalue: "CURRENT_TIME",
+  },
+  argTypes: {
+    placeholder: { control: "text" },
+    datavalue: { control: "text" },
+    timepattern: { control: "select", options: ["h:mm a", "HH:mm", "h:mm:ss a", "HH:mm:ss"] },
+    hourstep: { control: "number" },
+    minutestep: { control: "number" },
+    secondsstep: { control: "number" },
+    outputformat: { control: "text" },
+    mintime: { control: "text" },
+    maxtime: { control: "text" },
+    required: { control: "boolean" },
+    autofocus: { control: "boolean" },
+    readonly: { control: "boolean" },
+    disabled: { control: "boolean" },
+    showdropdownon: {
+      control: { type: "select" },
+      options: ["default", "button"],
+    },
+    dataentrymode: {
+      control: { type: "select" },
+      options: ["default", "picker"],
+    },
   },
 };
 

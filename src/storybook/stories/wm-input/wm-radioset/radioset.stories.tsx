@@ -12,34 +12,36 @@ import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 import layoutGrid from "@wavemaker/react-runtime/components/container/layout-grid";
 
+import radiosetTokensData from "../../../../designTokens/components/radioset/radioset.json";
+
 
 const meta: Meta<typeof RadiosetDefaultExport> = {
   title: "Input/RadioSet",
   component: RadiosetDefaultExport,
-  argTypes: {
-    // collapsible: { control: "boolean" },
-    // compareby: { control: "object" },
-    datafield: { control: "text" },
-    dataset: { control: "object" },
-    datavalue: { control: "text" },
-    disabled: { control: "boolean" },
-    displayfield: { control: "text" },
-    displayValue: { control: "text" },
-    groupby: { control: "text" },
-    // itemclass: { control: "text" },
-    itemsperrow: { control: "select", options: ["xs-1 sm-1 md-1 lg-1","xs-1 sm-2 md-2 lg-2","xs-1 sm-2 md-3 lg-3","xs-1 sm-2 md-3 lg-4","xs-1 sm-2 md-4 lg-6"] },
-    // listclass: { control: "text" },
-    // match: { control: "text" },
-    orderby: { control: "text" },
-    readonly: { control: "boolean" },
-    // required: { control: "boolean" },
-    // showcount: { control: "boolean" },
-    // usekeys: { control: "boolean" },
-    // tabindex: { control: "number" },
-    // width: { control: "text" },
-    // height: { control: "text" },
-    // className: { control: "text" },
-  },
+  // argTypes: {
+  //   // collapsible: { control: "boolean" },
+  //   // compareby: { control: "object" },
+  //   datafield: { control: "text" },
+  //   dataset: { control: "object" },
+  //   datavalue: { control: "text" },
+  //   disabled: { control: "boolean" },
+  //   displayfield: { control: "text" },
+  //   displayValue: { control: "text" },
+  //   groupby: { control: "text" },
+  //   // itemclass: { control: "text" },
+  //   itemsperrow: { control: "select", options: ["xs-1 sm-1 md-1 lg-1","xs-1 sm-2 md-2 lg-2","xs-1 sm-2 md-3 lg-3","xs-1 sm-2 md-3 lg-4","xs-1 sm-2 md-4 lg-6"] },
+  //   // listclass: { control: "text" },
+  //   // match: { control: "text" },
+  //   orderby: { control: "text" },
+  //   readonly: { control: "boolean" },
+  //   // required: { control: "boolean" },
+  //   // showcount: { control: "boolean" },
+  //   // usekeys: { control: "boolean" },
+  //   // tabindex: { control: "number" },
+  //   // width: { control: "text" },
+  //   // height: { control: "text" },
+  //   // className: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -70,6 +72,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsRadioset",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -171,6 +177,7 @@ export const Showcase: Story = {
   ),
   args: {
     name: "showcaseRadioset",
+    listener:mockListener
   },
 };
 
@@ -183,6 +190,18 @@ export const Basic: Story = {
     listener: mockListener,
     disabled: false,
     readonly: false,
+  },
+  argTypes: {
+    datafield: { control: "text" },
+    dataset: { control: "object" },
+    datavalue: { control: "text" },
+    disabled: { control: "boolean" },
+    displayfield: { control: "text" },
+    displayValue: { control: "text" },
+    groupby: { control: "text" },
+    itemsperrow: { control: "select", options: ["xs-1 sm-1 md-1 lg-1","xs-1 sm-2 md-2 lg-2","xs-1 sm-2 md-3 lg-3","xs-1 sm-2 md-3 lg-4","xs-1 sm-2 md-4 lg-6"] },
+    orderby: { control: "text" },
+    readonly: { control: "boolean" },
   },
 };
 
@@ -200,6 +219,52 @@ export const ObjectDataset: Story = {
     datafield: "id",
     displayfield: "name",
     listener: mockListener,
+  },
+  argTypes: {
+    datafield: { control: "text" },
+    dataset: { control: "object" },
+    datavalue: { control: "text" },
+    disabled: { control: "boolean" },
+    displayfield: { control: "text" },
+    displayValue: { control: "text" },
+    groupby: { control: "text" },
+    itemsperrow: { control: "select", options: ["xs-1 sm-1 md-1 lg-1","xs-1 sm-2 md-2 lg-2","xs-1 sm-2 md-3 lg-3","xs-1 sm-2 md-3 lg-4","xs-1 sm-2 md-4 lg-6"] },
+    orderby: { control: "text" },
+    readonly: { control: "boolean" },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+      // Icon component can't spread data-design-token-target, so we apply it to a wrapper
+      const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+  
+      return (
+        <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+          <RadiosetDefaultExport {...componentArgs} listener={mockListener} />
+        </Box>
+      );
+  },
+  args: {
+    name: "standardRadioset",
+    dataset: "Option 1, Option 2, Option 3",
+    listener: mockListener,
+    "data-design-token-target":"true"
+  },
+  argTypes: {
+    dataset: { control: false },
+    datavalue: { control: false },
+     "data-design-token-target": { control: false },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: radiosetTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "radiobutton",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
   },
 };
 
