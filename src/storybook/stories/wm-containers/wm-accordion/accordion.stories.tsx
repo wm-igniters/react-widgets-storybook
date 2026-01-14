@@ -11,6 +11,8 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import accordionTokensData from "../../../../designTokens/components/accordion/accordion.json";
+
 const mockListener = {
   appLocale: {},
   Widgets: {},
@@ -20,23 +22,23 @@ const mockListener = {
 const meta = {
   title: "Containers/Accordion",
   component: WmAccordion,
-  argTypes: {
-    closeothers: { control: "boolean" },
-    defaultpaneindex: { control: "number" },
-    type: { control: { type: "select", options: ["static", "dynamic"] } },
-    dataset: { control: "object" },
-    className: {
-      control: { type: "select" },
-      options: [
-        "app-accordion panel panel-default",
-        "app-accordion panel panel-success",
-        "app-accordion panel panel-primary",
-        "app-accordion panel panel-info",
-        "app-accordion panel panel-warning",
-        "app-accordion panel panel-danger",
-      ],
-    }
-  },
+  // argTypes: {
+  //   closeothers: { control: "boolean" },
+  //   defaultpaneindex: { control: "number" },
+  //   type: { control: { type: "select", options: ["static", "dynamic"] } },
+  //   dataset: { control: "object" },
+  //   className: {
+  //     control: { type: "select" },
+  //     options: [
+  //       "app-accordion panel panel-default",
+  //       "app-accordion panel panel-success",
+  //       "app-accordion panel panel-primary",
+  //       "app-accordion panel panel-info",
+  //       "app-accordion panel panel-warning",
+  //       "app-accordion panel panel-danger",
+  //     ],
+  //   }
+  // },
   parameters: {
     layout: "fullscreen",
   },
@@ -55,6 +57,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsAccordion",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -395,6 +401,23 @@ export const Basic: Story = {
     listener: mockListener,
     className: "app-accordion panel panel-default"
   },
+  argTypes: {
+    closeothers: { control: "boolean" },
+    defaultpaneindex: { control: "number" },
+    type: { control: { type: "select", options: ["static", "dynamic"] } },
+    dataset: { control: "object" },
+    className: {
+      control: { type: "select" },
+      options: [
+        "app-accordion panel panel-default",
+        "app-accordion panel panel-success",
+        "app-accordion panel panel-primary",
+        "app-accordion panel panel-info",
+        "app-accordion panel panel-warning",
+        "app-accordion panel panel-danger",
+      ],
+    }
+  }
 };
 
 export const DynamicAccordion: Story = {
@@ -478,6 +501,99 @@ export const DynamicAccordion: Story = {
       );
     },
   },
+  argTypes: {
+    closeothers: { control: "boolean" },
+    defaultpaneindex: { control: "number" },
+    type: { control: { type: "select", options: ["static", "dynamic"] } },
+    dataset: { control: "object" },
+    className: {
+      control: { type: "select" },
+      options: [
+        "app-accordion panel panel-default",
+        "app-accordion panel panel-success",
+        "app-accordion panel panel-primary",
+        "app-accordion panel panel-info",
+        "app-accordion panel panel-warning",
+        "app-accordion panel panel-danger",
+      ],
+    }
+  }
+};
+
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+    //component can't spread data-design-token-target, so we apply it to a wrapper
+    const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+    
+    return(
+      <Box style={{ padding: 16, width: "100%" }} data-design-token-target={dataAttr}>
+        <WmAccordion {...args}>
+          <WmAccordionPane
+            name="pane1"
+            title="Section 1"
+            iconclass="fa fa-file"
+            listener={mockListener}
+            subheading="Standard Accordion"
+            {...componentArgs}
+          >
+          <Box sx={{ p: 2 }}>
+            <Typography>Content for section 1</Typography>
+          </Box>
+          </WmAccordionPane>
+
+          <WmAccordionPane
+            name="pane2"
+            title="Section 2"
+            iconclass="fa fa-file"
+            listener={mockListener}
+            subheading="Standard Accordion"
+            {...componentArgs}
+          >
+          <Box sx={{ p: 2 }}>
+            <Typography>Content for section 2</Typography>
+          </Box>
+          </WmAccordionPane>
+
+        </WmAccordion>
+      </Box>
+  )},
+  args: {
+    name: "StandardAccordion",
+    type: "static",
+    closeothers: true,
+    defaultpaneindex: 0,
+    listener: mockListener,
+    className: "app-accordion panel panel-default",
+    "data-design-token-target":"true"
+  },
+  argTypes: {
+    closeothers: { control: false },
+    defaultpaneindex: { control: false },
+    type: { control: false },
+    className: {
+      control: { type: "select" },
+      options: [
+        "app-accordion panel panel-default",
+        "app-accordion panel panel-success",
+        "app-accordion panel panel-primary",
+        "app-accordion panel panel-info",
+        "app-accordion panel panel-warning",
+        "app-accordion panel panel-danger",
+      ],
+    },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: accordionTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "accordion",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
 };
 
 // export const DynamicWithBadges: Story = {

@@ -10,6 +10,8 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import panelTokensData from "../../../../designTokens/components/panel/panel.json";
+
 const mockListener = {
   appLocale: {},
   Widgets: {},
@@ -19,29 +21,29 @@ const mockListener = {
 const meta = {
   title: "Containers/Panel",
   component: WmPanel,
-  argTypes: {
-    title: { control: "text" },
-    subheading: { control: "text" },
-    className: {
-      control: { type: "select" },
-      options: [
-        "panel panel-default",
-        "panel panel-success",
-        "panel panel-primary",
-        "panel panel-info",
-        "panel panel-warning",
-        "panel panel-danger",
-      ],
-    },
-    badgetype: {
-      control: { type: "select" },
-      options: ["default", "success", "primary", "info", "warning", "danger"],
-    },
-    collapsible: { control: "boolean" },
-    closable: { control: "boolean" },
-    expanded: { control: "boolean" },
-    enablefullscreen: { control: "boolean" },
-  },
+  // argTypes: {
+  //   title: { control: "text" },
+  //   subheading: { control: "text" },
+  //   className: {
+  //     control: { type: "select" },
+  //     options: [
+  //       "panel panel-default",
+  //       "panel panel-success",
+  //       "panel panel-primary",
+  //       "panel panel-info",
+  //       "panel panel-warning",
+  //       "panel panel-danger",
+  //     ],
+  //   },
+  //   badgetype: {
+  //     control: { type: "select" },
+  //     options: ["default", "success", "primary", "info", "warning", "danger"],
+  //   },
+  //   collapsible: { control: "boolean" },
+  //   closable: { control: "boolean" },
+  //   expanded: { control: "boolean" },
+  //   enablefullscreen: { control: "boolean" },
+  // },
   parameters: {
     layout: "fullscreen",
   },
@@ -60,6 +62,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsPanel",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -390,7 +396,171 @@ export const Basic: Story = {
       </Box>
     ),
   },
+  argTypes: {
+    title: { control: "text" },
+    subheading: { control: "text" },
+    className: {
+      control: { type: "select" },
+      options: [
+        "panel panel-default",
+        "panel panel-success",
+        "panel panel-primary",
+        "panel panel-info",
+        "panel panel-warning",
+        "panel panel-danger",
+      ],
+    },
+    badgetype: {
+      control: { type: "select" },
+      options: ["default", "success", "primary", "info", "warning", "danger"],
+    },
+    collapsible: { control: "boolean" },
+    closable: { control: "boolean" },
+    expanded: { control: "boolean" },
+    enablefullscreen: { control: "boolean" },
+  }
 };
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+      //component can't spread data-design-token-target, so we apply it to a wrapper
+      const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+
+      return(
+        <Box style={{ padding: 16, width: "100%" }} data-design-token-target={dataAttr}>
+          <WmPanel
+              name="standardPanel"
+              listener={mockListener}
+              title="User Information"
+              subheading="View and manage user details"
+              iconclass="fa fa-user"
+              badgevalue="Active"
+              collapsible="true"
+              expanded="true"
+              closable="true"
+              enablefullscreen="true"
+              ex
+              {...componentArgs}
+            >
+              <>
+                {/* Panel Body/Content */}
+                <Box sx={{ padding: 2 }}>
+                  <Stack spacing={2}>
+                    <Box>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        Full Name
+                      </Typography>
+                      <Typography variant="body1" fontWeight={500}>
+                        John Doe
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        Email Address
+                      </Typography>
+                      <Typography variant="body1" fontWeight={500}>
+                        john.doe@example.com
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        Role
+                      </Typography>
+                      <Typography variant="body1" fontWeight={500}>
+                        Administrator
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        Account Status
+                      </Typography>
+                      <Typography variant="body1" fontWeight={500} color="success.main">
+                        Active
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Box>
+
+                {/* Panel Footer */}
+                <WmPanelFooter name="standardPanelFooter">
+                  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <Typography variant="caption" color="text.secondary">
+                      Last updated: 2 hours ago
+                    </Typography>
+                    <Box sx={{ display: "flex", gap: 1 }}>
+                      <button
+                        style={{
+                          padding: "8px 20px",
+                          backgroundColor: "#6c757d",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                          fontSize: "14px",
+                        }}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        style={{
+                          padding: "8px 20px",
+                          backgroundColor: "#007bff",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                          fontSize: "14px",
+                        }}
+                      >
+                        Save Changes
+                      </button>
+                    </Box>
+                  </Box>
+                </WmPanelFooter>
+              </>
+            </WmPanel>
+        </Box>
+    );
+  },
+  args: {
+    name: "standardPanel",
+    className: "panel panel-default",
+    badgetype: "success",
+    listener: mockListener,
+    "data-design-token-target":"true"
+  },
+  argTypes: {
+    className: {
+      control: { type: "select" },
+      options: [
+        "panel panel-default",
+        "panel panel-success",
+        "panel panel-primary",
+        "panel panel-info",
+        "panel panel-warning",
+        "panel panel-danger",
+      ],
+    },
+    badgetype: {
+      control: { type: "select" },
+      options: ["default", "success", "primary", "info", "warning", "danger"],
+    },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: panelTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "panel",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  },
+};
+
+
+
 
 // export const WithBadge: Story = {
 //   args: {
