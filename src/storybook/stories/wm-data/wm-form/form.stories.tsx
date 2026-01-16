@@ -575,7 +575,7 @@ export const Standard: Story = {
                 subheading: args.subheading,
                 iconclass: args.iconclass,
                 captionposition: args.captionposition,
-                captionalign: args.captionalign,
+                // captionalign: args.captionalign,
                 collapsible: args.collapsible,
                 expanded: args.expanded,
                 listener: mockListener,
@@ -733,32 +733,17 @@ export const Standard: Story = {
     subheading: "Complete the form to apply for a position",
     iconclass: "fa fa-briefcase",
     captionposition: "top",
-    captionalign: "left",
+    // captionalign: "left",
     collapsible: false,
     expanded: true,
   } as any,
   argTypes: {
     title: { control: "text" },
     subheading: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart",
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-briefcase", "fa fa-user"],
-    },
-    collapsible: { control: "boolean" },
-    expanded: { control: "boolean" },
-    captionposition: {
-      control: "select",
-      options: ["left", "top", "floating"],
-      description: "Position of field labels (top = above input, left = beside input, floating = inside input)"
-    },
-    captionalign: {
-      control: "select",
-      options: ["left", "center", "right"],
-      description: "Horizontal alignment of field labels"
-    },
+    iconclass:{control: false},
+    collapsible: { control: false },
+    expanded: { control: false },
+    captionposition:{control: false},
   },
   parameters: {
     designTokens: {

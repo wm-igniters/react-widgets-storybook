@@ -777,29 +777,14 @@ export const Standard: Story = {
   argTypes: {
     title: { control: "text" },
     subheading: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart",
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-briefcase", "fa fa-user"],
-    },
-    defaultmode: {
-      control: "select",
-      options: ["view", "edit", "create"]
-    },
-    formlayout: {
-      control: "select",
-      options: ["inline", "dialog"]
-    },
-    messagelayout: {
-      control: "select",
-      options: ["Toaster", "Inline"]
-    },
-    insertmessage: { control: "text" },
-    updatemessage: { control: "text" },
-    deletemessage: { control: "text" },
-    errormessage: { control: "text" },
+    iconclass:{control: false},
+    defaultmode: {control: false},
+    formlayout: {control: false},
+    messagelayout: {control: false},
+    insertmessage: { control: false },
+    updatemessage: { control: false },
+    deletemessage: { control: false },
+    errormessage: { control: false },
   },
   parameters: {
     designTokens: {

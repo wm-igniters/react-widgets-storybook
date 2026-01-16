@@ -303,8 +303,8 @@ export const Standard: Story = {
               <AnchorDefaultExport
                   name="basic"
                   caption="Anchor"
-                  hyperlink="https://www.wavemaker.com"
-                  target="_blank"
+                  hyperlink=""
+                  target="_self"
                   listener={mockListener}
                   className={className}
                   data-design-token-target="true"
@@ -312,8 +312,8 @@ export const Standard: Story = {
               <AnchorDefaultExport
                   name="withIcon"
                   caption="Icon Anchor"
-                  hyperlink="https://www.wavemaker.com"
-                  target="_blank"
+                  hyperlink=""
+                  target="_self"
                   listener={mockListener}
                   className={className}
                   iconclass="fa fa-github"
@@ -326,8 +326,8 @@ export const Standard: Story = {
               <AnchorDefaultExport
                   name="withBadge"
                   caption="Image Anchor"
-                  hyperlink="https://www.wavemaker.com"
-                  target="_blank"
+                  hyperlink=""
+                  target="_self"
                   listener={mockListener}
                   className={className}
                   iconposition="left"
