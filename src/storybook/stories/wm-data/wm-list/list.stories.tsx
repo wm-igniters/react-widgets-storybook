@@ -10,6 +10,8 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import listTokensData from "../../../../designTokens/components/list/list.json";
+
 const mockListener = {
   appLocale: {},
   Widgets: {},
@@ -405,15 +407,21 @@ export const Basic: Story = {
     subheading: "All registered users",
     iconclass: "fa fa-user",
     dataset: usersData,
-    navigation: "None",
+    navigation: "Advanced",
+    pagesize: 3,
+    maxsize: 5,
+    boundarylinks: true,
     direction: "vertical",
     multiselect: false,
-    showrecordcount: false,
+    showrecordcount: true,
     collapsible: false,
     selectfirstitem: false,
     enablereorder: false,
+    allowpagesizechange: true,
+    pagesizeoptions: "3,5,8",
+    navigationalign: "left",
     listener: mockListener,
-    renderItem: (item: any, index: number) => (
+    renderItem: (item: any) => (
       <Box sx={{ padding: 2, display: "flex", alignItems: "center", gap: 2 }}>
         <Avatar src={item.avatar} alt={item.name} />
         <Box sx={{ flex: 1 }}>
@@ -431,7 +439,7 @@ export const Basic: Story = {
       control:{
         type:"select"
       },
-      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
+      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart",
         "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
     },
     navigation: {
@@ -443,12 +451,106 @@ export const Basic: Story = {
       options: ["vertical", "horizontal"]
     },
     pagesize: { control: "number" },
+    maxsize: { control: "number" },
+    boundarylinks: { control: "boolean" },
     multiselect: { control: "boolean" },
     collapsible: { control: "boolean" },
     selectfirstitem: { control: "boolean" },
     showrecordcount: { control: "boolean" },
     enablereorder: { control: "boolean" },
+    allowpagesizechange: { control: "boolean" },
+    pagesizeoptions: { control: "text" },
+    navigationalign: {
+      control: "select",
+      options: ["left", "center", "right"]
+    },
   }
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+    return (
+      <Box sx={{ p: 4, width: "100%" }}>
+        <div data-design-token-target="true">
+          <WmList {...args} />
+        </div>
+      </Box>
+    );
+  },
+  args: {
+    name: "standardList",
+    title: "User List",
+    subheading: "All registered users",
+    iconclass: "fa fa-user",
+    dataset: usersData,
+    navigation: "Advanced",
+    pagesize: 3,
+    maxsize: 5,
+    boundarylinks: true,
+    direction: "vertical",
+    multiselect: false,
+    showrecordcount: true,
+    collapsible: false,
+    selectfirstitem: false,
+    enablereorder: false,
+    allowpagesizechange: true,
+    pagesizeoptions: "3,5,8",
+    navigationalign: "left",
+    listener: mockListener,
+    renderItem: (item: any) => (
+      <Box sx={{ padding: 2, display: "flex", alignItems: "center", gap: 2 }}>
+        <Avatar src={item.avatar} alt={item.name} />
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="h6">{item.name}</Typography>
+          <Typography variant="body2" color="text.secondary">{item.email}</Typography>
+        </Box>
+        <Chip label={item.role} size="small" color="primary" />
+      </Box>
+    ),
+  },
+  argTypes: {
+    title: { control: "text" },
+    subheading: { control: "text" },
+    iconclass:{
+      control:{
+        type:"select"
+      },
+      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart",
+        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
+    },
+    navigation: {
+      control: "select",
+      options: ["None", "Basic", "Pager", "Classic", "Advanced", "Inline", "On-Demand", "Scroll"]
+    },
+    direction: {
+      control: "select",
+      options: ["vertical", "horizontal"]
+    },
+    pagesize: { control: "number" },
+    maxsize: { control: "number" },
+    boundarylinks: { control: "boolean" },
+    multiselect: { control: "boolean" },
+    collapsible: { control: "boolean" },
+    selectfirstitem: { control: "boolean" },
+    showrecordcount: { control: "boolean" },
+    enablereorder: { control: "boolean" },
+    allowpagesizechange: { control: "boolean" },
+    pagesizeoptions: { control: "text" },
+    navigationalign: {
+      control: "select",
+      options: ["left", "center", "right"]
+    },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: listTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "list",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  },
 };
 
 // export const WithPagination: Story = {

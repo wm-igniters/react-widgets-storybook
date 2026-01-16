@@ -15,6 +15,8 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import cardsTokensData from "../../../../designTokens/components/cards/cards.json";
+
 const mockListener = {
   appLocale: {},
   Widgets: {},
@@ -285,7 +287,7 @@ export const Basic: Story = {
     width: "500px",
     listener: mockListener,
     children: (
-      <WmCardContent name="cardContent">
+      <WmCardContent name="cardContent" listener={mockListener}>
         <Box sx={{ padding: 2 }}>
           <Typography variant="body1">
             This card has a menu with multiple actions. Click the menu icon in the header to see
@@ -313,6 +315,114 @@ export const Basic: Story = {
     height: { control: "text" },
     animation: { control: "select", options: animationNames },
     actions: { control: "text" },
+  },
+};
+
+export const Standard: Story = {
+  tags: ["show-panel"],
+  render: (args) => {
+    // component can't spread data-design-token-target, so we apply it to a wrapper
+    const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+
+    return (
+      <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+        <WmCard {...componentArgs} listener={mockListener}>
+          {componentArgs.children}
+        </WmCard>
+      </Box>
+    );
+  },
+  args: {
+    name: "standardCard",
+    title: "User Overview",
+    subheading: "Summary and recent activity",
+    iconclass: "fa fa-user",
+    width: "500px",
+    // height: "500px",
+    listener: mockListener,
+    children: [
+      <WmCardContent name="cardContent" listener={mockListener} key="content">
+        <Box sx={{ p: 2 }}>
+          <Typography variant="body1" fontWeight={500} gutterBottom>
+            Account details
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            This section provides a quick overview of the user profile and
+            current system status.
+          </Typography>
+
+          <Stack spacing={0.5}>
+            <Typography variant="body2">
+              <strong>Name:</strong> Alex Johnson
+            </Typography>
+            <Typography variant="body2">
+              <strong>Role:</strong> Project Administrator
+            </Typography>
+            <Typography variant="body2">
+              <strong>Status:</strong> Active
+            </Typography>
+          </Stack>
+        </Box>
+      </WmCardContent>,
+
+      <WmCardFooter name="cardFooter" listener={mockListener} key="footer">
+        <Box
+          sx={{
+            px: 2,
+            py: 1,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="caption" color="text.secondary">
+            Last updated: 2 hours ago
+          </Typography>
+
+          <Typography variant="caption" color="text.secondary">
+            Activity score: 82%
+          </Typography>
+        </Box>
+      </WmCardFooter>,
+    ],
+
+    "data-design-token-target": "true",
+  },
+
+  argTypes: {
+    title: { control: "text" },
+    subheading: { control: "text" },
+    iconclass: {
+      control: { type: "select" },
+      options: [
+        "fa fa-adjust",
+        "fa fa-anchor",
+        "fa fa-archive",
+        "fa fa-area-chart",
+        "fa fa-asterisk",
+        "fa fa-at",
+        "fa fa-automobile",
+        "fa fa-balance-scale",
+        "fa fa-bank",
+        "fa fa-bar-chart",
+        "fa fa-user",
+        "wi wi-dashboard",
+      ],
+    },
+    width: { control: "text" },
+    height: { control: "text" },
+    "data-design-token-target": { control: false },
+  },
+
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: cardsTokensData,
+      componentKey: "card",
+      extractCSSVariablesAtRuntime: true,
+    },
+    layout: "fullscreen",
   },
 };
 
