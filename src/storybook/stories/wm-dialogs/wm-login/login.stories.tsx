@@ -4,6 +4,8 @@ import { Box, Stack, Typography } from "@mui/material";
 import LoginDialogDefaultExport from "../../../../components/dialogs/login-dialog/index";
 import { WmButton } from "@wavemaker/react-runtime/components/form/button";
 
+import { iconClassNames } from "../../constants/iconClassConstants";
+
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
@@ -198,7 +200,7 @@ export const Basic: Story = {
   args: {
     name: "basicLogin",
     title: "Login",
-    iconclass: "fa fa-user",
+    iconclass: "wi wi-sign-in",
     logintext: "Login",
     canceltext: "Cancel",
     eventsource: createMockEventSource(true, 1000),
@@ -206,7 +208,7 @@ export const Basic: Story = {
   },
   argTypes: {
     title: { control: "text" },
-    iconclass: { control: "select", options: ["fa fa-circle-check", "fa fa-trash", "fa fa-save", "fa fa-file", "fa-fa-user"] },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
     logintext: { control: "text" },
     canceltext: { control: "text" },
     errormessage: { control: "text" },

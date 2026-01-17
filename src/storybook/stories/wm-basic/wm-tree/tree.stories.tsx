@@ -225,7 +225,7 @@ export const Showcase: Story = {
     dataset: { control: "object" },
     treeicons: {
       control: { type: "select" },
-      options: ["fa fa-minus", "fa fa-arrow-right", "fa fa-folder-tree", "fa fa-circle"],
+      options: ["wi wi-keyboard-arrow-right", "wi wi-arrow-forward", "wi wi-minus", "fa fa-minus", "fa fa-arrow-right", "fa fa-folder-tree", "fa fa-circle"],
     },
     levels: { control: "number" },
     horizontalalign: {
@@ -268,7 +268,7 @@ export const Basic: Story = {
     datavalue: { control: "text" },
     treeicons: {
       control: { type: "select" },
-      options: ["fa fa-minus", "fa fa-arrow-right", "fa fa-folder-tree", "fa fa-circle"],
+      options: ["wi wi-keyboard-arrow-right", "wi wi-arrow-forward", "wi wi-minus", "fa fa-minus", "fa fa-arrow-right", "fa fa-folder-tree", "fa fa-circle"],
     },
     levels: { control: "number" },
     nodelabel: { control: "text" },

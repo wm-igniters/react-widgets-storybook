@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box, Stack, Typography } from "@mui/material";
 import WmPanel, { WmPanelFooter } from "../../../../components/container/panel";
+import { iconClassNames } from "../../constants/iconClassConstants";
 
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
@@ -418,6 +419,7 @@ export const Basic: Story = {
     closable: { control: "boolean" },
     expanded: { control: "boolean" },
     enablefullscreen: { control: "boolean" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
   }
 };
 
@@ -546,6 +548,7 @@ export const Standard: Story = {
       control: { type: "select" },
       options: ["default", "success", "primary", "info", "warning", "danger"],
     },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
     "data-design-token-target": { control: false }
   },
   parameters: {

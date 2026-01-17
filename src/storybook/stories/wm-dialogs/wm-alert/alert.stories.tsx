@@ -11,7 +11,9 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
-import modalDialogTokensData from "../../../../designTokens/components/modal-dialog/modal-dialog.json";
+import { iconClassNames } from "../../constants/iconClassConstants";
+
+// import modalDialogTokensData from "../../../../designTokens/components/modal-dialog/modal-dialog.json";
 
 const mockListener = {
   appLocale: {},
@@ -230,7 +232,7 @@ export const Basic: Story = {
       control: { type: "select" },
       options: ["error", "warning", "info", "success"],
     },
-    iconclass: { control: "select", options: ["fa fa-warning", "fa fa-check-circle"] },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
   },
 };
 

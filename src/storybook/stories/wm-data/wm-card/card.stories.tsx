@@ -7,6 +7,7 @@ import WmCardActions from "../../../../components/data/card/card-actions";
 import WmCardFooter from "../../../../components/data/card/card-footer";
 
 import { animationNames } from "../../constants/animationsConstants";
+import { iconClassNames } from "../../constants/iconClassConstants";
 
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
@@ -300,13 +301,7 @@ export const Basic: Story = {
   argTypes: {
     title: { control: "text" },
     subheading: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user", "wi wi-dashboard"],
-    },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
     iconurl: { control: "text" },
     picturesource: { control: "text" },
     picturetitle: { control: "text" },
@@ -393,23 +388,7 @@ export const Standard: Story = {
   argTypes: {
     title: { control: "text" },
     subheading: { control: "text" },
-    iconclass: {
-      control: { type: "select" },
-      options: [
-        "fa fa-adjust",
-        "fa fa-anchor",
-        "fa fa-archive",
-        "fa fa-area-chart",
-        "fa fa-asterisk",
-        "fa fa-at",
-        "fa fa-automobile",
-        "fa fa-balance-scale",
-        "fa fa-bank",
-        "fa fa-bar-chart",
-        "fa fa-user",
-        "wi wi-dashboard",
-      ],
-    },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
     width: { control: "text" },
     height: { control: "text" },
     "data-design-token-target": { control: false },

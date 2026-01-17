@@ -168,7 +168,7 @@ export const Basic: Story = {
       control:{
         type:"select"
       },
-      options:["fa fa-spinner fa-spin", "fa fa-cog fa-spin", "fa fa-refresh fa-spin",],
+      options:["wi wi-spinner", "fa fa-spinner fa-spin", "fa fa-cog fa-spin", "fa fa-refresh fa-spin",],
     },
     iconsize: { control: "text" },
     image: { control: "text" },

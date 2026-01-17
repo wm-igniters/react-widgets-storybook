@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Box, Stack, Typography, Avatar, Chip, Button } from "@mui/material";
 import WmList from "../../../../components/data/list";
 
+import { iconClassNames } from "../../constants/iconClassConstants";
+
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
@@ -435,13 +437,7 @@ export const Basic: Story = {
   argTypes: {
     title: { control: "text" },
     subheading: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart",
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
-    },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
     navigation: {
       control: "select",
       options: ["None", "Basic", "Pager", "Classic", "Advanced", "Inline", "On-Demand", "Scroll"]

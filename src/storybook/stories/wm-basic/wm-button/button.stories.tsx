@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box, Stack, Typography } from "@mui/material";
+
 import ButtonDefaultExport from "../../../../components/form/button/index";
+import { iconClassNames } from "../../constants/iconClassConstants";
 
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
@@ -495,13 +497,7 @@ export const Basic: Story = {
     iconheight: { control: "text" },
     iconmargin: { control: "text" },
     badgevalue: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-github"],
-    },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
     className: {
   control: "select",
   options: [

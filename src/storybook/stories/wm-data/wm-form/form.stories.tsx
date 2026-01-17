@@ -15,6 +15,8 @@ import WmCheckboxset from "../../../../components/input/default/checkboxset";
 import WmComposite from "../../../../components/input/composite";
 import WmLabel from "../../../../components/basic/label";
 
+import { iconClassNames } from "../../constants/iconClassConstants";
+
 
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
@@ -542,13 +544,7 @@ export const Basic: Story = {
   argTypes: {
     title: { control: "text" },
     subheading: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
-    },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
     collapsible: { control: "boolean" },
     expanded: { control: "boolean" },
     captionposition: {

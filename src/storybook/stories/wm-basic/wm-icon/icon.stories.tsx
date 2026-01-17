@@ -4,9 +4,9 @@ import { Box, Stack, Typography, TextField, InputAdornment } from "@mui/material
 import SearchIcon from "@mui/icons-material/Search";
 
 import IconDefaultExport from "../../../../components/basic/icon/index";
-import {
-  fontAwesomeIcons,
-} from "../../constants/fontAwesomeIconConstants";
+import { fontAwesomeIcons } from "../../constants/fontAwesomeIconConstants";
+import { waveIcons } from "../../constants/wavIconConstants";
+import { iconClassNames } from "../../constants/iconClassConstants";
 
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
@@ -150,6 +150,32 @@ export const Showcase: Story = {
   },
 };
 
+// WaveIcon Library Story
+export const WaviconLibrary: Story = {
+  parameters: {
+    layout: "fullscreen",
+  },
+  render: () => {
+    const icons = waveIcons.map((icon) => ({
+      name: `wi-${icon}`,
+      iconclass: `wi wi-${icon}`,
+      iconsize: "24px",
+    }));
+
+    return (
+      <IconLibrary
+        title="Wavicon Library"
+        icons={icons}
+        iconClassPrefix="wi wi-"
+      />
+    );
+  },
+  args:{
+    name:"waveiconLibrary",
+    listener:mockListener
+  }
+};
+
 // Font Awesome Library Story
 export const FontAwesomeLibrary: Story = {
   parameters: {
@@ -186,13 +212,7 @@ export const Basic: Story = {
   },
   argTypes: {
     caption: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:[ "fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
-    },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
     iconurl: { control: "text" },
     iconposition: {
       control: { type: "select" },
@@ -222,13 +242,7 @@ export const Standard: Story = {
   },
   argTypes: {
     // caption: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:[ "fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
-    },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
     iconurl: { control: "text" },
     // iconposition: {
     //   control: { type: "select" },

@@ -10,6 +10,8 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import { iconClassNames } from "../../constants/iconClassConstants";
+
 import dropdownMenuTokensData from "../../../../designTokens/components/dropdown-menu/dropdown-menu.json";
 
 
@@ -55,10 +57,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const menuItems = [
-  { label: "Home", icon: "fa-thin fa-link" },
-  { label: "Profile", icon: "fa fa-user" },
-  { label: "Settings", icon: "fa fa-settings" },
-  { label: "Logout", icon: "wi wi-power-settings-new" },
+  { label: "Home", icon: "wi wi-home" },
+  { label: "Profile", icon: "wi wi-person" },
+  { label: "Settings", icon: "wi wi-settings" },
+  { label: "Logout", icon: "wi wi-sign-out" },
 ];
 
 export const Docs: Story = {
@@ -142,7 +144,7 @@ export const Showcase: Story = {
                 caption="Menu"
                 width="200px"
                 iconposition="left"
-                iconclass="fa fa-bars"
+                iconclass="wi wi-menu"
                 menualign="left"
                 dataset={menuItems}
                 listener={mockListener}
@@ -184,7 +186,7 @@ export const Basic: Story = {
     height: { control: "text" },
     width: { control: "text" },
     iconposition: { control: "select", options: ["left", "center", "right"] },
-    iconclass: { control: "text" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
     disableMenuContext: { control: "boolean" },
     menulayout: { control: "select", options: ["vertical", "horizontal"] },
     menuposition: { control: "select", options: ["down,left", "down,right", "up,left", "up,right"] },

@@ -11,6 +11,8 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import { iconClassNames } from "../../constants/iconClassConstants";
+
 const mockListener = {
   appLocale: {},
   Widgets: {},
@@ -226,7 +228,7 @@ export const Basic: Story = {
     message: { control: "text" },
     oktext: { control: "text" },
     canceltext: { control: "text" },
-    iconclass: { control: "select", options: ["fa fa-circle-check", "fa fa-trash", "fa fa-save"] },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
   },
 };
 
