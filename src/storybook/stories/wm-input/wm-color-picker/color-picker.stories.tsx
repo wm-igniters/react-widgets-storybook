@@ -10,26 +10,29 @@ import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
+import token from "./docs/token.md?raw";
+
+import colorPickerTokensData from "../../../../designTokens/components/color-picker/color-picker.json";
 
 const meta: Meta<typeof ColorPickerDefaultExport> = {
   title: "Input/ColorPicker",
   component: ColorPickerDefaultExport,
-  argTypes: {
-    autoclose: {
-      control: { type: "select" },
-      options: ["always", "outsideClick", "disabled"],
-    },
-    datavalue: { control: "text" },
-    placeholder: { control: "text" },
-    readonly: { control: "boolean" },
-    disabled: { control: "boolean" },
-    // required: { control: "boolean" },
-    show: { control: "boolean" },
-    // tabindex: { control: "number" },
-    // className: { control: "text" },
-    // shortcutkey: { control: "text" },
-    // arialabel: { control: "text" },
-  },
+  // argTypes: {
+  //   autoclose: {
+  //     control: { type: "select" },
+  //     options: ["always", "outsideClick", "disabled"],
+  //   },
+  //   datavalue: { control: "text" },
+  //   placeholder: { control: "text" },
+  //   readonly: { control: "boolean" },
+  //   disabled: { control: "boolean" },
+  //   // required: { control: "boolean" },
+  //   show: { control: "boolean" },
+  //   // tabindex: { control: "number" },
+  //   // className: { control: "text" },
+  //   // shortcutkey: { control: "text" },
+  //   // arialabel: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -57,9 +60,14 @@ export const Docs: Story = {
       properties={props}
       events={events}
       methods={methods}
-      styling={styling}
+      // styling={styling}
+      token={token}
     />
   ),
+  args:{
+    name: "docsColorPicker",
+    listener: mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -119,6 +127,9 @@ export const Showcase: Story = {
     name: "showcaseColorPicker",
     listener: mockListener,
   },
+  parameters: {
+    layout: 'fullscreen',
+  },
 };
 
 export const Basic: Story = {
@@ -130,6 +141,20 @@ export const Basic: Story = {
     placeholder: "Select a color",
     datavalue: "",
     autoclose: "always",
+  },
+  argTypes: {
+    autoclose: {
+      control: { type: "select" },
+      options: ["always", "outsideClick", "disabled"],
+    },
+    datavalue: { control: "text" },
+    placeholder: { control: "text" },
+    readonly: { control: "boolean" },
+    disabled: { control: "boolean" },
+    show: { control: "boolean" },
+  },
+  parameters: {
+    layout: 'padded',
   },
 };
 
@@ -143,6 +168,54 @@ export const AutocloseOutsideClick: Story = {
     datavalue: "#2ECC71",
     autoclose: "outsideClick",
   },
+  argTypes: {
+    autoclose: {
+      control: { type: "select" },
+      options: ["always", "outsideClick", "disabled"],
+    },
+    datavalue: { control: "text" },
+    placeholder: { control: "text" },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+      //component can't spread data-design-token-target, so we apply it to a wrapper
+      const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+
+      return (
+        <Box className="wm-app" style={{ padding: 16, minHeight: "400px" }} data-design-token-target={dataAttr}>
+          <ColorPickerDefaultExport {...componentArgs} listener={mockListener} />
+        </Box>
+      );
+    },
+  args: {
+    name: "standardColorPicker",
+    listener: mockListener,
+    placeholder: "Select a color",
+    datavalue: "",
+    autoclose: "always",
+    "data-design-token-target": true
+  },
+  argTypes: {
+    autoclose: {
+      control: { type: "select" },
+      options: ["always", "outsideClick", "disabled"],
+    },
+    datavalue: { control: "text" },
+    placeholder: { control: "text" },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: colorPickerTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "color-picker",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
 };
 
 // export const WithHexColor: Story = {

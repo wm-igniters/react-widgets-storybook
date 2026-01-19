@@ -10,22 +10,25 @@ import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
+import token from "./docs/token.md?raw";
+
+import richTextEditTokensData from "../../../../designTokens/components/richtext-editor/richtext-editor.json";
 
 const meta: Meta<typeof RichTextEditorDefaultExport> = {
   title: "Basic/RichTextEditor",
   component: RichTextEditorDefaultExport,
-  argTypes: {
-    placeholder: { control: "text" },
-    datavalue: { control: "text" },
-    readonly: { control: "boolean" },
-    disabled: { control: "boolean" },
-    showpreview: { control: "boolean" },
-    width: { control: "text" },
-    height: { control: "text" },
-    // tabindex: { control: "number" },
-    // hint: { control: "text" },
-    // arialabel: { control: "text" },
-  },
+  // argTypes: {
+  //   placeholder: { control: "text" },
+  //   datavalue: { control: "text" },
+  //   readonly: { control: "boolean" },
+  //   disabled: { control: "boolean" },
+  //   showpreview: { control: "boolean" },
+  //   width: { control: "text" },
+  //   height: { control: "text" },
+  //   // tabindex: { control: "number" },
+  //   // hint: { control: "text" },
+  //   // arialabel: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -53,9 +56,14 @@ export const Docs: Story = {
       properties={props}
       events={events}
       methods={methods}
-      styling={styling}
+      // styling={styling}
+      token={token}
     />
   ),
+  args:{
+    name:"docsRichTextEditor",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -200,6 +208,49 @@ export const Basic: Story = {
     disabled: false,
     showpreview: false,
   },
+  argTypes: {
+    placeholder: { control: "text" },
+    datavalue: { control: "text" },
+    readonly: { control: "boolean" },
+    disabled: { control: "boolean" },
+    showpreview: { control: "boolean" },
+    width: { control: "text" },
+    height: { control: "text" },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+      // component can't spread data-design-token-target, so we apply it to a wrapper
+      const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+  
+      return (
+        <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+          <RichTextEditorDefaultExport {...componentArgs} listener={mockListener} />
+        </Box>
+      );
+    },
+  args: {
+    name: "standardRichTextEditor",
+    listener: mockListener,
+    placeholder: "Start typing...",
+    "data-design-token-target": true,
+  },
+  argTypes: {
+    placeholder: { control: "text" },
+    datavalue: { control: "text" },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: richTextEditTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "note",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
 };
 
 // export const RichFormattedContent: Story = {

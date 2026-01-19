@@ -6,6 +6,8 @@ import { WmButton } from "@wavemaker/react-runtime/components/form/button";
 import { WmDialogFooter } from "@wavemaker/react-runtime/components/dialogs/dialog-actions";
 import WmText from "../../../../components/input/text";
 
+import { iconClassNames } from "../../constants/iconClassConstants";
+
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
@@ -21,17 +23,17 @@ const mockListener = {
 const meta = {
   title: "Dialogs/Dialog",
   component: DialogDefaultExport,
-  argTypes: {
-    title: { control: "text" },
-    iconclass: { control: "select", options: ["fa fa-circle-check", "fa fa-trash", "fa fa-save", "fa fa-file", "fa-fa-user"] },
-    dialogtype: {
-      control: { type: "select" },
-      options: ["design-dialog", "custom"],
-    },
-    showheader: { control: "boolean" },
-    closable: { control: "boolean" },
-    modal: { control: "boolean" },
-  },
+  // argTypes: {
+  //   title: { control: "text" },
+  //   iconclass: { control: "select", options: ["fa fa-circle-check", "fa fa-trash", "fa fa-save", "fa fa-file", "fa-fa-user"] },
+  //   dialogtype: {
+  //     control: { type: "select" },
+  //     options: ["design-dialog", "custom"],
+  //   },
+  //   showheader: { control: "boolean" },
+  //   closable: { control: "boolean" },
+  //   modal: { control: "boolean" },
+  // },
 } satisfies Meta<typeof DialogDefaultExport>;
 
 export default meta;
@@ -311,6 +313,17 @@ export const Basic: Story = {
     modal: true,
     iconclass: "fa fa-file",
     listener: mockListener,
+  },
+  argTypes: {
+    title: { control: "text" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    dialogtype: {
+      control: { type: "select" },
+      options: ["design-dialog", "custom"],
+    },
+    showheader: { control: "boolean" },
+    closable: { control: "boolean" },
+    modal: { control: "boolean" },
   },
 };
 

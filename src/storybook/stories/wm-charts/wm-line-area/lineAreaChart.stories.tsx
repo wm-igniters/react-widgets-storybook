@@ -22,26 +22,26 @@ const mockData = [
 const meta = {
   title: "Charts/Line Area Chart",
   component: LineAreaChart,
-  argTypes: {
-    type: {
-      control: { type: "select" },
-      options: ["Line", "Area"],
-    },
-    interpolation: {
-      control: { type: "select" },
-      options: ["linear", "cardinal", "step"],
-    },
-    areaViewType: {
-      control: { type: "select" },
-      options: ["none", "expand", "silhouette", "wiggle"],
-    },
-    tooltips: { control: "boolean" },
-    showLegend: { control: "boolean" },
-    strokeWidth: { control: "number" },
-    pointSize: { control: "number" },
-  },
+  // argTypes: {
+  //   type: {
+  //     control: { type: "select" },
+  //     options: ["Line", "Area"],
+  //   },
+  //   interpolation: {
+  //     control: { type: "select" },
+  //     options: ["linear", "cardinal", "step"],
+  //   },
+  //   areaViewType: {
+  //     control: { type: "select" },
+  //     options: ["none", "expand", "silhouette", "wiggle"],
+  //   },
+  //   tooltips: { control: "boolean" },
+  //   showLegend: { control: "boolean" },
+  //   strokeWidth: { control: "number" },
+  //   pointSize: { control: "number" },
+  // },
   parameters: {
-    layout: "padded",
+    layout: "fullscreen",
   },
 } satisfies Meta<typeof LineAreaChart>;
 
@@ -239,6 +239,9 @@ export const Showcase: StoryObj = {
         </Stack>
       </Box>
     );
+  },
+  args:{
+    name:"showcaseLineAreaChart"
   }
 };
 
@@ -263,6 +266,24 @@ export const Basic: Story = {
     onChartClick: (data: any, event: any) => console.log("Chart clicked:", data),
     tooltips: true,
     legendtype: "classic",
+  },
+  argTypes: {
+    type: {
+      control: { type: "select" },
+      options: ["Line", "Area"],
+    },
+    interpolation: {
+      control: { type: "select" },
+      options: ["linear", "cardinal", "step"],
+    },
+    areaViewType: {
+      control: { type: "select" },
+      options: ["none", "expand", "silhouette", "wiggle"],
+    },
+    tooltips: { control: "boolean" },
+    showLegend: { control: "boolean" },
+    strokeWidth: { control: "number" },
+    pointSize: { control: "number" },
   },
 };
 

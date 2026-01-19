@@ -21,25 +21,25 @@ const mockData = [
 const meta = {
   title: "Charts/Pie Donut Chart",
   component: PieDonutChart,
-  argTypes: {
-    type: {
-      control: { type: "select" },
-      options: ["Pie", "Donut"],
-    },
-    showlabels: {
-      control: { type: "select" },
-      options: ["outside", "inside", "hide"],
-    },
-    labeltype: {
-      control: { type: "select" },
-      options: ["key", "value", "percent", "key-value"],
-    },
-    donutratio: { control: "number" },
-    tooltips: { control: "boolean" },
-    showLegend: { control: "boolean" },
-  },
+  // argTypes: {
+  //   type: {
+  //     control: { type: "select" },
+  //     options: ["Pie", "Donut"],
+  //   },
+  //   showlabels: {
+  //     control: { type: "select" },
+  //     options: ["outside", "inside", "hide"],
+  //   },
+  //   labeltype: {
+  //     control: { type: "select" },
+  //     options: ["key", "value", "percent", "key-value"],
+  //   },
+  //   donutratio: { control: "number" },
+  //   tooltips: { control: "boolean" },
+  //   showLegend: { control: "boolean" },
+  // },
   parameters: {
-    layout: "padded",
+    layout: "fullscreen",
   },
 } satisfies Meta<typeof PieDonutChart>;
 
@@ -262,6 +262,23 @@ export const Basic: Story = {
     ynumberformat: "0,0",
     legendtype: "classic",
   },
+  argTypes: {
+    type: {
+      control: { type: "select" },
+      options: ["Pie", "Donut"],
+    },
+    showlabels: {
+      control: { type: "select" },
+      options: ["outside", "inside", "hide"],
+    },
+    labeltype: {
+      control: { type: "select" },
+      options: ["key", "value", "percent", "key-value"],
+    },
+    donutratio: { control: "number" },
+    tooltips: { control: "boolean" },
+    showLegend: { control: "boolean" },
+  }
 };
 
 

@@ -23,117 +23,52 @@
  */
 
 /**
- * Token reference to CSS variable name mapping
+ * Dynamically converts a token reference to its CSS variable name
  *
- * Maps design token references (from JSON) to their corresponding
- * CSS variable names in the foundation.css file.
+ * This function transforms token references from JSON format to CSS variable names
+ * following the foundation.css naming convention.
  *
- * Format:
- * - Token Reference: "{category.subcategory.property.value}"
- * - CSS Variable: "--wm-category-subcategory-property"
+ * Conversion Rules:
+ * 1. Remove curly braces { }
+ * 2. Remove .value suffix
+ * 3. Replace @ placeholder with empty string
+ * 4. Replace dots (.) with hyphens (-)
+ * 5. Add --wm- prefix
  *
  * Examples:
  * - "{color.primary.@.value}" → "--wm-color-primary"
+ * - "{h6.font-size.value}" → "--wm-h6-font-size"
+ * - "{border.width.base.value}" → "--wm-border-width-base"
  * - "{space.6.value}" → "--wm-space-6"
- * - "{label.large.font-size.value}" → "--wm-label-large-font-size"
- * - "{opacity.hover.value}" → "--wm-opacity-hover"
+ * - "{border.style.base.value}" → "--wm-border-style-base"
+ * - "{color.surface.container.highest.@.value}" → "--wm-color-surface-container-highest"
+ *
+ * @param tokenReference - Token reference string from JSON (e.g., "{color.primary.@.value}")
+ * @returns CSS variable name (e.g., "--wm-color-primary")
  */
-const TOKEN_TO_CSS_VAR_MAP: Record<string, string> = {
-  // Colors - Primary/Secondary/Tertiary
-  "{color.primary.@.value}": "--wm-color-primary",
-  "{color.secondary.@.value}": "--wm-color-secondary",
-  "{color.tertiary.@.value}": "--wm-color-tertiary",
-  "{color.on-primary.@.value}": "--wm-color-on-primary",
-  "{color.on-secondary.@.value}": "--wm-color-on-secondary",
-  "{color.on-tertiary.@.value}": "--wm-color-on-tertiary",
+export function tokenReferenceToCSSVariable(tokenReference: string): string {
+  if (!tokenReference || typeof tokenReference !== 'string') {
+    return tokenReference;
+  }
 
-  // Colors - Semantic
-  "{color.success.@.value}": "--wm-color-success",
-  "{color.error.@.value}": "--wm-color-error",
-  "{color.warning.@.value}": "--wm-color-warning",
-  "{color.info.@.value}": "--wm-color-info",
-  "{color.on-success.@.value}": "--wm-color-on-success",
-  "{color.on-error.@.value}": "--wm-color-on-error",
-  "{color.on-warning.@.value}": "--wm-color-on-warning",
-  "{color.on-info.@.value}": "--wm-color-on-info",
+  // Remove curly braces and .value suffix
+  let cssVarName = tokenReference
+    .replace(/^\{/, '')      // Remove leading {
+    .replace(/\}$/, '')      // Remove trailing }
+    .replace(/\.value$/, ''); // Remove .value suffix
 
-  // Colors - Surface
-  "{color.surface.@.value}": "--wm-color-surface",
-  "{color.on-surface.@.value}": "--wm-color-on-surface",
-  "{color.on-surface.variant.@.value}": "--wm-color-on-surface-variant",
-  "{color.surface.container.highest.@.value}": "--wm-color-surface-container-highest",
-  "{color.background.@.value}": "--wm-color-background",
-  "{color.on-background.@.value}": "--wm-color-on-background",
+  // Replace @ placeholder with empty string
+  // The @ is used in token references like {color.primary.@.value} to indicate theme variant
+  cssVarName = cssVarName.replace('.@', '');
 
-  // Colors - Special
-  "{color.transparent.value}": "--wm-color-transparent",
-  "{color.white.value}": "--wm-color-white",
-  "{color.black.value}": "--wm-color-black",
-  "{color.inherit.value}": "--wm-color-inherit",
+  // Replace dots with hyphens
+  cssVarName = cssVarName.replace(/\./g, '-');
 
-  // Spacing
-  "{space.0.value}": "--wm-space-0",
-  "{space.1.value}": "--wm-space-1",
-  "{space.2.value}": "--wm-space-2",
-  "{space.3.value}": "--wm-space-3",
-  "{space.4.value}": "--wm-space-4",
-  "{space.5.value}": "--wm-space-5",
-  "{space.6.value}": "--wm-space-6",
-  "{space.7.value}": "--wm-space-7",
-  "{space.8.value}": "--wm-space-8",
-  "{space.9.value}": "--wm-space-9",
-  "{space.10.value}": "--wm-space-10",
-  "{space.11.value}": "--wm-space-11",
-  "{space.12.value}": "--wm-space-12",
+  // Add --wm- prefix
+  cssVarName = `--wm-${cssVarName}`;
 
-  // Radius
-  "{radius.none.value}": "--wm-radius-none",
-  "{radius.sm.value}": "--wm-radius-sm",
-  "{radius.md.value}": "--wm-radius-md",
-  "{radius.lg.value}": "--wm-radius-lg",
-  "{radius.xl.value}": "--wm-radius-xl",
-  "{radius.pill.value}": "--wm-radius-pill",
-  "{radius.circle.value}": "--wm-radius-circle",
-
-  // Icons
-  "{icon.size.xs.value}": "--wm-icon-size-xs",
-  "{icon.size.sm.value}": "--wm-icon-size-sm",
-  "{icon.size.md.value}": "--wm-icon-size-md",
-  "{icon.size.lg.value}": "--wm-icon-size-lg",
-
-  // Typography - Label Large
-  "{label.large.font-size.value}": "--wm-label-large-font-size",
-  "{label.large.font-family.value}": "--wm-label-large-font-family",
-  "{label.large.font-weight.value}": "--wm-label-large-font-weight",
-  "{label.large.line-height.value}": "--wm-label-large-line-height",
-  "{label.large.letter-spacing.value}": "--wm-label-large-letter-spacing",
-
-  // Typography - Label Medium
-  "{label.medium.font-size.value}": "--wm-label-medium-font-size",
-  "{label.medium.font-family.value}": "--wm-label-medium-font-family",
-  "{label.medium.font-weight.value}": "--wm-label-medium-font-weight",
-  "{label.medium.line-height.value}": "--wm-label-medium-line-height",
-  "{label.medium.letter-spacing.value}": "--wm-label-medium-letter-spacing",
-
-  // Typography - Label Small
-  "{label.small.font-size.value}": "--wm-label-small-font-size",
-  "{label.small.font-family.value}": "--wm-label-small-font-family",
-  "{label.small.font-weight.value}": "--wm-label-small-font-weight",
-  "{label.small.line-height.value}": "--wm-label-small-line-height",
-  "{label.small.letter-spacing.value}": "--wm-label-small-letter-spacing",
-
-  // Opacity
-  "{opacity.hover.value}": "--wm-opacity-hover",
-  "{opacity.focus.value}": "--wm-opacity-focus",
-  "{opacity.active.value}": "--wm-opacity-active",
-
-  // Border
-  "{border.width.base.value}": "--wm-border-width-base",
-  "{border.style.solid.value}": "--wm-border-style-solid",
-  "{border.style.dashed.value}": "--wm-border-style-dashed",
-  "{border.style.dotted.value}": "--wm-border-style-dotted",
-  "{border.style.none.value}": "--wm-border-style-none",
-};
+  return cssVarName;
+}
 
 // Cache for extracted CSS variables to avoid repeated DOM queries
 let cssVariableCache: Map<string, string> | null = null;
@@ -235,19 +170,17 @@ export function extractCSSVariables(iframe: HTMLIFrameElement): Map<string, stri
 /**
  * Builds a token reference map for resolving {token.path} references
  *
- * Converts CSS variable values into a format that can resolve token references.
- * Uses the TOKEN_TO_CSS_VAR_MAP to map token references to CSS variable names,
- * then looks up the computed values.
+ * This function now simply returns the CSS variables map directly.
+ * Token reference resolution is handled dynamically in resolveTokenReference().
  *
  * @param cssVariables - Map of CSS variables from extractCSSVariables()
- * @returns Map of token references to their resolved CSS values
+ * @returns Map that can be used to resolve token references (same as input for compatibility)
  *
  * @example
  * ```typescript
  * const cssVars = extractCSSVariables(iframe);
  * const tokenMap = buildTokenReferenceMap(cssVars);
- * console.log(tokenMap.get("{color.primary.@.value}")); // "rgb(255, 114, 80)"
- * console.log(tokenMap.get("{space.6.value}")); // "24px"
+ * // tokenMap can now be used with resolveTokenReference()
  * ```
  */
 export function buildTokenReferenceMap(cssVariables: Map<string, string>): Map<string, string> {
@@ -256,24 +189,13 @@ export function buildTokenReferenceMap(cssVariables: Map<string, string>): Map<s
     return tokenReferenceCache;
   }
 
-  const referenceMap = new Map<string, string>();
+  // The token reference map is now just the CSS variables map
+  // Resolution happens dynamically in resolveTokenReference()
+  tokenReferenceCache = cssVariables;
 
-  // Map each token reference to its CSS variable value
-  Object.entries(TOKEN_TO_CSS_VAR_MAP).forEach(([tokenRef, cssVarName]) => {
-    const cssValue = cssVariables.get(cssVarName);
-    if (cssValue) {
-      referenceMap.set(tokenRef, cssValue);
-    } else {
-      // console.warn(`[CSS Extractor] CSS variable not found: ${cssVarName} for token ${tokenRef}`);
-    }
-  });
+  // console.log(`[CSS Extractor] Built token reference map with ${cssVariables.size} entries`);
 
-  // console.log(`[CSS Extractor] Built token reference map with ${referenceMap.size} entries`);
-
-  // Cache the results
-  tokenReferenceCache = referenceMap;
-
-  return referenceMap;
+  return tokenReferenceCache;
 }
 
 /**
@@ -282,17 +204,23 @@ export function buildTokenReferenceMap(cssVariables: Map<string, string>): Map<s
  * Replaces token references like "{color.primary.@.value}" with their
  * actual computed CSS values from the foundation CSS.
  *
+ * This function now dynamically converts token references to CSS variable names
+ * and looks them up in the CSS variables map. This makes it work with ANY
+ * token reference without requiring hardcoded mappings.
+ *
  * Supports:
  * - Single token references: "{color.primary.@.value}"
  * - Multiple token references: "{space.0.value} {space.6.value}"
  * - Mixed content: "1px solid {color.primary.@.value}"
+ * - New token references not in hardcoded map: "{h6.font-size.value}", "{border.style.base.value}"
  *
  * @param tokenReference - Token reference string from JSON
- * @param referenceMap - Map from buildTokenReferenceMap()
+ * @param cssVariablesMap - Map of CSS variables from extractCSSVariables()
  * @returns Resolved CSS value
  *
  * @example
  * ```typescript
+ * const cssVars = extractCSSVariables(iframe);
  * const tokenMap = buildTokenReferenceMap(cssVars);
  *
  * // Single reference
@@ -306,11 +234,15 @@ export function buildTokenReferenceMap(cssVariables: Map<string, string>): Map<s
  * // Mixed content (e.g., border)
  * resolveTokenReference("1px solid {color.primary.@.value}", tokenMap);
  * // Returns: "1px solid rgb(255, 114, 80)"
+ *
+ * // New token references (not in old hardcoded map)
+ * resolveTokenReference("{h6.font-size.value}", tokenMap);
+ * // Returns: "14px"
  * ```
  */
 export function resolveTokenReference(
   tokenReference: string,
-  referenceMap: Map<string, string>
+  cssVariablesMap: Map<string, string>
 ): string {
   if (!tokenReference) {
     return tokenReference;
@@ -325,11 +257,16 @@ export function resolveTokenReference(
 
   if (matches) {
     matches.forEach((match) => {
-      const cssValue = referenceMap.get(match);
+      // Dynamically convert token reference to CSS variable name
+      const cssVarName = tokenReferenceToCSSVariable(match);
+
+      // Look up the CSS variable value
+      const cssValue = cssVariablesMap.get(cssVarName);
+
       if (cssValue) {
         resolvedValue = resolvedValue.replace(match, cssValue);
       } else {
-        // console.warn(`[CSS Extractor] Token reference not found: ${match}`);
+        // console.warn(`[CSS Extractor] CSS variable not found for token reference: ${match} → ${cssVarName}`);
         // Keep the original reference if not found
       }
     });

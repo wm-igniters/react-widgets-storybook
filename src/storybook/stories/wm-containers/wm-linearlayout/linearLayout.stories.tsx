@@ -33,23 +33,23 @@ const SampleBox = ({ label, color }: { label: string; color?: string }) => (
 const meta = {
   title: "Containers/Linear Layout",
   component: WmLinearLayout,
-  argTypes: {
-    direction: {
-      control: { type: "select" },
-      options: ["row", "row-reverse", "column", "column-reverse"],
-    },
-    horizontalalign: {
-      control: { type: "select" },
-      options: ["left", "right", "center"],
-    },
-    verticalalign: {
-      control: { type: "select" },
-      options: ["top", "bottom", "center"],
-    },
-    // spacing: { control: "text" },
-  },
+  // argTypes: {
+  //   direction: {
+  //     control: { type: "select" },
+  //     options: ["row", "row-reverse", "column", "column-reverse"],
+  //   },
+  //   horizontalalign: {
+  //     control: { type: "select" },
+  //     options: ["left", "right", "center"],
+  //   },
+  //   verticalalign: {
+  //     control: { type: "select" },
+  //     options: ["top", "bottom", "center"],
+  //   },
+  //   // spacing: { control: "text" },
+  // },
   parameters: {
-    layout: "padded",
+    layout: "fullscreen",
   },
 } satisfies Meta<typeof WmLinearLayout>;
 
@@ -66,6 +66,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsLinearLayout",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -217,6 +221,21 @@ export const Basic: Story = {
       </>
     ),
   },
+  argTypes: {
+    direction: {
+      control: { type: "select" },
+      options: ["row", "row-reverse", "column", "column-reverse"],
+    },
+    horizontalalign: {
+      control: { type: "select" },
+      options: ["left", "right", "center"],
+    },
+    verticalalign: {
+      control: { type: "select" },
+      options: ["top", "bottom", "center"],
+    },
+    // spacing: { control: "text" },
+  }
 };
 
 

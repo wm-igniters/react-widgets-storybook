@@ -14,47 +14,47 @@ import styling from "./docs/styling.md?raw";
 const meta: Meta<typeof TextDefaultExport> = {
   title: "Input/Text",
   component: TextDefaultExport,
-  argTypes: {
-    datavalue: { control: "text" },
-    placeholder: { control: "text" },
-    type: {
-      control: { type: "select" },
-      options: ["text", "email", "number", "password", "tel", "url"]
-    },
-    // floatinglabel: { control: "boolean" },
-    // autocomplete: { control: "text" },
-    autofocus: { control: "boolean" },
-    autotrim: { control: "boolean" },
-    disabled: { control: "boolean" },
-    readonly: { control: "boolean" },
-    required: { control: "boolean" },
-    maxchars: { control: "number" },
-    minvalue: { control: "number" },
-    maxvalue: { control: "number" },
-    step: { control: "number" },
-    displayformat: { control: "text" },
-    showdisplayformaton: {
-      control: { type: "select" },
-      options: ["keypress", "blur"]
-    },
-    // updateon: {
-    //   control: { type: "select" },
-    //   options: ["keypress", "blur"]
-    // },
-    // updatedelay: { control: "text" },
-    regexp: { control: "text" },
-    // arialabel: { control: "text" },
-    // tabindex: { control: "number" },
-    // shortcutkey: { control: "text" },
-    autocapitalize: {
-      control: { type: "select" },
-      options: ["none", "sentence", "words"]
-    },
-    // hint: { control: "text" },
-    // width: { control: "text" },
-    // height: { control: "text" },
-    // className: { control: "text" },
-  },
+  // argTypes: {
+  //   datavalue: { control: "text" },
+  //   placeholder: { control: "text" },
+  //   type: {
+  //     control: { type: "select" },
+  //     options: ["text", "email", "number", "password", "tel", "url"]
+  //   },
+  //   // floatinglabel: { control: "boolean" },
+  //   // autocomplete: { control: "text" },
+  //   autofocus: { control: "boolean" },
+  //   autotrim: { control: "boolean" },
+  //   disabled: { control: "boolean" },
+  //   readonly: { control: "boolean" },
+  //   required: { control: "boolean" },
+  //   maxchars: { control: "number" },
+  //   minvalue: { control: "number" },
+  //   maxvalue: { control: "number" },
+  //   step: { control: "number" },
+  //   displayformat: { control: "text" },
+  //   showdisplayformaton: {
+  //     control: { type: "select" },
+  //     options: ["keypress", "blur"]
+  //   },
+  //   // updateon: {
+  //   //   control: { type: "select" },
+  //   //   options: ["keypress", "blur"]
+  //   // },
+  //   // updatedelay: { control: "text" },
+  //   regexp: { control: "text" },
+  //   // arialabel: { control: "text" },
+  //   // tabindex: { control: "number" },
+  //   // shortcutkey: { control: "text" },
+  //   autocapitalize: {
+  //     control: { type: "select" },
+  //     options: ["none", "sentence", "words"]
+  //   },
+  //   // hint: { control: "text" },
+  //   // width: { control: "text" },
+  //   // height: { control: "text" },
+  //   // className: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -85,6 +85,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsText",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -214,6 +218,35 @@ export const Basic: Story = {
     autotrim: true,
     autofocus: false,
     required: false,
+  },
+  argTypes: {
+    datavalue: { control: "text" },
+    placeholder: { control: "text" },
+    type: {
+      control: { type: "select" },
+      options: ["text", "email", "number", "password", "tel", "url"]
+    },
+    // floatinglabel: { control: "boolean" },
+    autocomplete: { control: "boolean" },
+    autofocus: { control: "boolean" },
+    autotrim: { control: "boolean" },
+    disabled: { control: "boolean" },
+    readonly: { control: "boolean" },
+    required: { control: "boolean" },
+    maxchars: { control: "number" },
+    minvalue: { control: "number" },
+    maxvalue: { control: "number" },
+    step: { control: "number" },
+    displayformat: { control: "text" },
+    showdisplayformaton: {
+      control: { type: "select" },
+      options: ["keypress", "blur"]
+    },
+    regexp: { control: "text" },
+    autocapitalize: {
+      control: { type: "select" },
+      options: ["none", "sentence", "words"]
+    },
   },
 };
 

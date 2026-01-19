@@ -10,21 +10,22 @@ import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
+import { mock } from "node:test";
 
 const meta: Meta<typeof HtmlDefaultExport> = {
   title: "Basic/Html",
   component: HtmlDefaultExport,
-  argTypes: {
-    horizontalalign: {
-      control: { type: "select" },
-      options: ["left", "center", "right"],
-    },
-    height: { control: "text" },
-    width: { control: "text" },
-    show: { control: "boolean" },
-    // hint: { control: "text" },
-    // arialabel: { control: "text" },
-  },
+  // argTypes: {
+  //   horizontalalign: {
+  //     control: { type: "select" },
+  //     options: ["left", "center", "right"],
+  //   },
+  //   height: { control: "text" },
+  //   width: { control: "text" },
+  //   show: { control: "boolean" },
+  //   // hint: { control: "text" },
+  //   // arialabel: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -56,6 +57,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsHtml",
+    listener: mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -138,6 +143,10 @@ export const Showcase: Story = {
       </Stack>
     </Box>
   ),
+  args:{
+    name:"showcaseHtml",
+    listener: mockListener
+  }
 };
 
 export const Basic: Story = {
@@ -154,6 +163,15 @@ export const Basic: Story = {
         <p>This is basic HTML content rendered inside the HTML component.</p>
       </div>
     ),
+  },
+  argTypes: {
+    horizontalalign: {
+      control: { type: "select" },
+      options: ["left", "center", "right"],
+    },
+    height: { control: "text" },
+    width: { control: "text" },
+    show: { control: "boolean" },
   },
 };
 

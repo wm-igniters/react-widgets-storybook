@@ -4,6 +4,8 @@ import { Box, Stack, Typography } from "@mui/material";
 import IframeDialogDefaultExport from "../../../../components/dialogs/iframe-dialog/index";
 import { WmButton } from "@wavemaker/react-runtime/components/form/button";
 
+import { iconClassNames } from "../../constants/iconClassConstants";
+
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
@@ -19,23 +21,23 @@ const mockListener = {
 const meta = {
   title: "Dialogs/Iframe Dialog",
   component: IframeDialogDefaultExport,
-  argTypes: {
-    title: { control: "text" },
-    url: { control: "text" },
-    iconclass: { control: "select", options: ["fa fa-circle-check", "fa fa-trash", "fa fa-save", "fa fa-file", "fa-fa-user"] },
-    oktext: { control: "text" },
-    showheader: { control: "boolean" },
-    showactions: { control: "boolean" },
-    closable: { control: "boolean" },
-    encodeurl: { control: "boolean" },
-    width: { control: "text" },
-    height: { control: "text" },
-    headinglevel: {control: "select", options:["h1", "h2", "h4"]},
-    iconurl: { control: "text" },
-    iconwidth: { control: "text" },
-    iconheight: { control: "text" },
-    iconmargin: { control: "text" }
-  },
+  // argTypes: {
+  //   title: { control: "text" },
+  //   url: { control: "text" },
+  //   iconclass: { control: "select", options: ["fa fa-circle-check", "fa fa-trash", "fa fa-save", "fa fa-file", "fa-fa-user"] },
+  //   oktext: { control: "text" },
+  //   showheader: { control: "boolean" },
+  //   showactions: { control: "boolean" },
+  //   closable: { control: "boolean" },
+  //   encodeurl: { control: "boolean" },
+  //   width: { control: "text" },
+  //   height: { control: "text" },
+  //   headinglevel: {control: "select", options:["h1", "h2", "h4"]},
+  //   iconurl: { control: "text" },
+  //   iconwidth: { control: "text" },
+  //   iconheight: { control: "text" },
+  //   iconmargin: { control: "text" }
+  // },
 } satisfies Meta<typeof IframeDialogDefaultExport>;
 
 export default meta;
@@ -84,6 +86,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsIframeDialog",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -234,6 +240,23 @@ export const Basic: Story = {
     closable: true,
     listener: mockListener,
     headinglevel:"h4"
+  },
+  argTypes: {
+    title: { control: "text" },
+    url: { control: "text" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    oktext: { control: "text" },
+    showheader: { control: "boolean" },
+    showactions: { control: "boolean" },
+    closable: { control: "boolean" },
+    // encodeurl: { control: "boolean" },
+    width: { control: "text" },
+    height: { control: "text" },
+    headinglevel: {control: "select", options:["h1", "h2", "h4"]},
+    iconurl: { control: "text" },
+    iconwidth: { control: "text" },
+    iconheight: { control: "text" },
+    iconmargin: { control: "text" }
   },
 };
 

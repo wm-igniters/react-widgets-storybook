@@ -14,29 +14,29 @@ import styling from "./docs/styling.md?raw";
 const meta: Meta<typeof SelectDefaultExport> = {
   title: "Input/Select",
   component: SelectDefaultExport,
-  argTypes: {
-    autofocus: { control: "boolean" },
-    datafield: { control: "text" },
-    dataset: { control: "object" },
-    // dataPath: { control: "text" },
-    datavalue: { control: "text" },
-    displayExpression: { control: "text" },
-    displayfield: { control: "text" },
-    groupby: { control: "text" },
-    // match: { control: "text" },
-    // arialabel: { control: "text" },
-    multiple: { control: "boolean" },
-    orderby: { control: "text" },
-    placeholder: { control: "text" },
-    readonly: { control: "boolean" },
-    // required: { control: "boolean" },
-    // shortcutkey: { control: "text" },
-    // hint: { control: "text" },
-    disabled: { control: "boolean" },
-    // width: { control: "text" },
-    // height: { control: "text" },
-    // className: { control: "text" },
-  },
+  // argTypes: {
+  //   autofocus: { control: "boolean" },
+  //   datafield: { control: "text" },
+  //   dataset: { control: "object" },
+  //   // dataPath: { control: "text" },
+  //   datavalue: { control: "text" },
+  //   displayExpression: { control: "text" },
+  //   displayfield: { control: "text" },
+  //   groupby: { control: "text" },
+  //   // match: { control: "text" },
+  //   // arialabel: { control: "text" },
+  //   multiple: { control: "boolean" },
+  //   orderby: { control: "text" },
+  //   placeholder: { control: "text" },
+  //   readonly: { control: "boolean" },
+  //   // required: { control: "boolean" },
+  //   // shortcutkey: { control: "text" },
+  //   // hint: { control: "text" },
+  //   disabled: { control: "boolean" },
+  //   // width: { control: "text" },
+  //   // height: { control: "text" },
+  //   // className: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -67,6 +67,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsSelect",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -143,6 +147,10 @@ export const Showcase: Story = {
       </Stack>
     );
   },
+  args:{
+    name:"showcaseSelect",
+    listener:mockListener
+  }
 };
 
 // Basic Examples
@@ -156,6 +164,20 @@ export const Basic: Story = {
     listener: mockListener,
     disabled: false,
     readonly: false,
+  },
+  argTypes: {
+    autofocus: { control: "boolean" },
+    datafield: { control: "text" },
+    dataset: { control: "object" },
+    datavalue: { control: "text" },
+    displayExpression: { control: "text" },
+    displayfield: { control: "text" },
+    groupby: { control: "text" },
+    multiple: { control: "boolean" },
+    orderby: { control: "text" },
+    placeholder: { control: "text" },
+    readonly: { control: "boolean" },
+    disabled: { control: "boolean" },
   },
 };
 
@@ -174,6 +196,20 @@ export const ObjectDataset: Story = {
     datafield: "id",
     displayfield: "name",
     listener: mockListener,
+  },
+  argTypes: {
+    autofocus: { control: "boolean" },
+    datafield: { control: "text" },
+    dataset: { control: "object" },
+    datavalue: { control: "text" },
+    displayExpression: { control: "text" },
+    displayfield: { control: "text" },
+    groupby: { control: "text" },
+    multiple: { control: "boolean" },
+    orderby: { control: "text" },
+    placeholder: { control: "text" },
+    readonly: { control: "boolean" },
+    disabled: { control: "boolean" },
   },
 };
 

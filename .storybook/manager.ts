@@ -7,7 +7,7 @@ import "./addons/design-tokens/register";
 const customTheme = create({
   base: "light", // or 'dark'
   brandUrl: "https://wavemaker.com",
-  brandImage: "./Logo.png", // Replace with your logo URL
+  brandImage: "./react-logo-new.svg", // Replace with your logo URL
   brandTarget: "_blank", // Open brandUrl in a new tab
 
   fontBase: "neurial-grotesk-regular",
@@ -43,6 +43,8 @@ const customTheme = create({
 
 addons.setConfig({
   theme: customTheme,
+  panelPosition: 'right', // Set panel to display on the right side by default
+  initialActive: 'storybook/controls/panel', // Set Controls panel as default active
   // layoutCustomisations: {
   //   showPanel(state: State) {
   //     const tags = state.storyId && state.index ? state.index[state.storyId]?.tags : [];

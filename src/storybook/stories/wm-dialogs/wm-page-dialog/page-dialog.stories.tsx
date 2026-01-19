@@ -4,6 +4,8 @@ import { Box, Stack, Typography } from "@mui/material";
 import PageDialogDefaultExport from "../../../../components/dialogs/page-dialog/index";
 import { WmButton } from "@wavemaker/react-runtime/components/form/button";
 
+import { iconClassNames } from "../../constants/iconClassConstants";
+
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
@@ -19,14 +21,14 @@ const mockListener = {
 const meta = {
   title: "Dialogs/Page Dialog",
   component: PageDialogDefaultExport,
-  argTypes: {
-    title: { control: "text" },
-    iconclass: { control: "select", options: ["fa fa-circle-check", "fa fa-trash", "fa fa-save", "fa fa-file", "fa-fa-user"] },
-    oktext: { control: "text" },
-    showactions: { control: "boolean" },
-    closable: { control: "boolean" },
-    content: { control: "text" },
-  },
+  // argTypes: {
+  //   title: { control: "text" },
+  //   iconclass: { control: "select", options: ["fa fa-circle-check", "fa fa-trash", "fa fa-save", "fa fa-file", "fa-fa-user"] },
+  //   oktext: { control: "text" },
+  //   showactions: { control: "boolean" },
+  //   closable: { control: "boolean" },
+  //   content: { control: "text" },
+  // },
 } satisfies Meta<typeof PageDialogDefaultExport>;
 
 export default meta;
@@ -75,6 +77,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsPageDialog",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -93,6 +99,14 @@ export const Basic: Story = {
     content: "Main",
     listener: mockListener
   },
+  argTypes: {
+    title: { control: "text" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    oktext: { control: "text" },
+    showactions: { control: "boolean" },
+    closable: { control: "boolean" },
+    content: { control: "text" },
+  }
 };
 
 // export const WithCustomTitle: Story = {

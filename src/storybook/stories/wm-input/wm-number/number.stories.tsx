@@ -14,34 +14,34 @@ import styling from "./docs/styling.md?raw";
 const meta: Meta<typeof NumberDefaultExport> = {
   title: "Input/Number",
   component: NumberDefaultExport,
-  argTypes: {
-    placeholder: { control: "text" },
-    // hint: { control: "text" },
-    // arialabel: { control: "text" },
-    // tabindex: { control: "number" },
-    // shortcutkey: { control: "text" },
-    datavalue: { control: "number" },
-    step: { control: "number" },
-    minvalue: { control: "number" },
-    maxvalue: { control: "number" },
-    decimalplaces: { control: "number" },
-    required: { control: "boolean" },
-    disabled: { control: "boolean" },
-    readonly: { control: "boolean" },
-    autofocus: { control: "boolean" },
-    trailingzero: { control: "boolean" },
-    regexp: { control: "text" },
-    inputmode: {
-      control: { type: "select" },
-      options: ["natural", "financial"],
-    },
-    // updateon: {
-    //   control: { type: "select" },
-    //   options: ["blur", "keypress"],
-    // },
-    // updatedelay: { control: "text" },
-    // className: { control: "text" },
-  },
+  // argTypes: {
+  //   placeholder: { control: "text" },
+  //   // hint: { control: "text" },
+  //   // arialabel: { control: "text" },
+  //   // tabindex: { control: "number" },
+  //   // shortcutkey: { control: "text" },
+  //   datavalue: { control: "number" },
+  //   step: { control: "number" },
+  //   minvalue: { control: "number" },
+  //   maxvalue: { control: "number" },
+  //   decimalplaces: { control: "number" },
+  //   required: { control: "boolean" },
+  //   disabled: { control: "boolean" },
+  //   readonly: { control: "boolean" },
+  //   autofocus: { control: "boolean" },
+  //   trailingzero: { control: "boolean" },
+  //   regexp: { control: "text" },
+  //   inputmode: {
+  //     control: { type: "select" },
+  //     options: ["natural", "financial"],
+  //   },
+  //   // updateon: {
+  //   //   control: { type: "select" },
+  //   //   options: ["blur", "keypress"],
+  //   // },
+  //   // updatedelay: { control: "text" },
+  //   // className: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -72,6 +72,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsNumber",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -161,7 +165,8 @@ export const Showcase: Story = {
     );
   },
   args: {
-    name: "showcaseNumber"
+    name: "showcaseNumber",
+    listener:mockListener
   },
 };
 
@@ -175,6 +180,23 @@ export const Basic: Story = {
     disabled: false,
     readonly: false,
     inputmode: "natural",
+  },
+  argTypes: {
+    placeholder: { control: "text" },
+    datavalue: { control: "number" },
+    step: { control: "number" },
+    minvalue: { control: "number" },
+    maxvalue: { control: "number" },
+    decimalplaces: { control: "number" },
+    disabled: { control: "boolean" },
+    readonly: { control: "boolean" },
+    autofocus: { control: "boolean" },
+    trailingzero: { control: "boolean" },
+    regexp: { control: "text" },
+    inputmode: {
+      control: { type: "select" },
+      options: ["natural", "financial"],
+    },
   },
 };
 

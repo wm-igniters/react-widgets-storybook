@@ -22,25 +22,25 @@ const mockData = [
 const meta = {
   title: "Charts/Bar Column Chart",
   component: BarColumnChart,
-  argTypes: {
-    type: {
-      control: { type: "select" },
-      options: ["Bar", "Column"],
-    },
-    viewtype: {
-      control: { type: "select" },
-      options: ["Grouped", "Stacked"],
-    },
-    showValues: { control: "boolean" },
-    tooltips: { control: "boolean" },
-    showlegend: { control: "boolean" },
-    barSpacing: {
-      control: { type: "select" },
-      options: ["small", "medium", "large"],
-    },
-  },
+  // argTypes: {
+  //   type: {
+  //     control: { type: "select" },
+  //     options: ["Bar", "Column"],
+  //   },
+  //   viewtype: {
+  //     control: { type: "select" },
+  //     options: ["Grouped", "Stacked"],
+  //   },
+  //   showValues: { control: "boolean" },
+  //   tooltips: { control: "boolean" },
+  //   showlegend: { control: "boolean" },
+  //   barSpacing: {
+  //     control: { type: "select" },
+  //     options: ["small", "medium", "large"],
+  //   },
+  // },
   parameters: {
-    layout: "padded",
+    layout: "fullscreen",
   },
 } satisfies Meta<typeof BarColumnChart>;
 
@@ -235,6 +235,9 @@ export const Showcase: StoryObj = {
       </Stack>
     </Box>
   ),
+  args:{
+    name:"showcaseBarColumnChart",
+  }
 };
 
 export const Basic: Story = {
@@ -258,6 +261,23 @@ export const Basic: Story = {
     showlegend: true,
     viewtype: "Grouped",
     legendtype: "classic",
+  },
+  argTypes: {
+    type: {
+      control: { type: "select" },
+      options: ["Bar", "Column"],
+    },
+    viewtype: {
+      control: { type: "select" },
+      options: ["Grouped", "Stacked"],
+    },
+    showValues: { control: "boolean" },
+    tooltips: { control: "boolean" },
+    showlegend: { control: "boolean" },
+    barSpacing: {
+      control: { type: "select" },
+      options: ["small", "medium", "large"],
+    },
   },
 };
 

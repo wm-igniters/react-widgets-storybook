@@ -14,20 +14,20 @@ import styling from "./docs/styling.md?raw";
 const meta: Meta<typeof SliderDefaultExport> = {
   title: "Input/Slider",
   component: SliderDefaultExport,
-  argTypes: {
-    datavalue: { control: "number" },
-    minvalue: { control: "number" },
-    maxvalue: { control: "number" },
-    step: { control: "number" },
-    disabled: { control: "boolean" },
-    readonly: { control: "boolean" },
-    // hint: { control: "text" },
-    // shortcutkey: { control: "text" },
-    // tabindex: { control: "number" },
-    // width: { control: "text" },
-    // height: { control: "text" },
-    // className: { control: "text" },
-  },
+  // argTypes: {
+  //   datavalue: { control: "number" },
+  //   minvalue: { control: "number" },
+  //   maxvalue: { control: "number" },
+  //   step: { control: "number" },
+  //   disabled: { control: "boolean" },
+  //   readonly: { control: "boolean" },
+  //   // hint: { control: "text" },
+  //   // shortcutkey: { control: "text" },
+  //   // tabindex: { control: "number" },
+  //   // width: { control: "text" },
+  //   // height: { control: "text" },
+  //   // className: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -58,6 +58,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsSlider",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -154,6 +158,10 @@ export const Showcase: Story = {
       </Box>
     </Stack>
   ),
+  args:{
+    name:"showcaseSlider",
+    listener:mockListener
+  }
 };
 
 // Basic Examples
@@ -169,6 +177,14 @@ export const Basic: Story = {
     listener: mockListener,
     disabled: false,
     readonly: false,
+  },
+  argTypes: {
+    datavalue: { control: "number" },
+    minvalue: { control: "number" },
+    maxvalue: { control: "number" },
+    step: { control: "number" },
+    disabled: { control: "boolean" },
+    readonly: { control: "boolean" },
   },
 };
 

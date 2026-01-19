@@ -106,3 +106,25 @@ body.sb-show-main {
 .app-dialog .app-dialog-header .app-dialog-title i.fa + .dialog-heading, .app-dialog .app-dialog-header .app-dialog-title i.wi + .dialog-heading{
   margin-left: 16px;
 }
+
+/* Anchor Showcase story */
+.wm-app .app-anchor[name='anchorWithIconRight']{
+  justify-content: left !important;
+}
+
+/* custom - foundation css not getting reflected for alert dialog */
+.app-dialog-message.text-info{
+  color: var(--wm-color-info) !important;
+}
+
+.app-dialog-message.text-error{
+  color: var(--wm-color-error) !important;
+}
+
+.app-dialog-message.text-warning{
+  color: var(--wm-color-warning) !important;
+}
+
+.app-dialog-message.text-success{
+  color: var(--wm-color-success) !important;
+}

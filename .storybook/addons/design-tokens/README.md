@@ -1,6 +1,12 @@
 # Design Tokens Addon
 
-A **generic, reusable Design Token system** for Storybook that works with any component. Automatically extracts values from foundation.css at runtime.
+A **fully generic, dynamic Design Token system** for Storybook that works with ANY component automatically. Features:
+- 🎛️ **State dropdown** - Dynamic state selector (default, hover, focus, active, disabled, checked, etc.) with intelligent token filtering
+- 🎨 **Clean white tooltips** with hover-based help icons
+- 🏷️ **Smart label generation** from CSS variable names (e.g., `border.color` from `--wm-btn-border-color`)
+- 📂 **Simplified categories** - Color, Text, Size, Style (type-based categorization)
+- 🔍 **Variable name tooltips** - Hover labels to see CSS variable names
+- 🎯 **No hardcoded mappings** - fully dynamic token resolution
 
 ---
 
@@ -61,30 +67,50 @@ export const Filled: Story = {
 ```
 
 ### 3. Done!
-Open story → Design Tokens tab appears → Modify tokens → See instant changes ✅
+Open story → **Controls tab is default** → Click Design Tokens tab → **Hover labels** to see help icon → Click help icon for CSS variable name → Modify tokens → See instant changes ✅
 
 ---
 
 ## How It Works
 
-### Runtime CSS Extraction Flow
+### Dynamic Token Resolution + Runtime CSS Extraction Flow
 
 ```
 Story loads with extractCSSVariablesAtRuntime: true
   ↓
-extractCSSVariables() runs
+Controls tab is shown by default (no performance impact)
+  ↓
+User clicks Design Tokens tab (panel becomes active)
+  ↓
+extractCSSVariables() runs (ONLY when panel is active)
   ↓
 Reads iframe's foundation.css :root styles
   ↓
 Extracts all --wm-* CSS variables (1306+ variables)
   ↓
-Builds token reference map: {color.primary.@.value} → "rgb(255, 114, 80)"
+Token reference detected: "{color.primary.@.value}"
   ↓
-parseDesignTokens() resolves references using extracted values
+tokenReferenceToCSSVariable() dynamically converts it to "--wm-color-primary"
   ↓
-Design Tokens panel displays with real foundation.css values
+Looks up "--wm-color-primary" in extracted CSS variables → "rgb(255, 114, 80)"
+  ↓
+parseDesignTokens() resolves ALL references dynamically (no hardcoded mappings!)
+  ↓
+Label generation: --wm-btn-border-color → "border.color" (extracted from CSS variable name)
+  ↓
+Categorization: token.type → "color" → "Color" category (simplified 4-category system)
+  ↓
+Design Tokens panel displays with clean labels and organized categories
+  ↓
+Polling monitors className changes every 300ms (when panel is active)
+  ↓
+User hovers label → Help icon appears → Click for tooltip with CSS variable name
+  ↓
+User changes className in Controls → Detected by polling → Tokens refresh automatically
   ↓
 User changes token → CSS regenerated → Injected into iframe → Instant update
+  ↓
+User switches story → Previous tokens cleared → Clean slate for new story
 ```
 
 ### Example
@@ -117,32 +143,375 @@ User changes token → CSS regenerated → Injected into iframe → Instant upda
 - `{color.primary.@.value}` → `"rgb(255, 114, 80)"` (computed from foundation.css)
 - `{opacity.hover.value}` → `"8%"` (from foundation.css)
 
-**Displayed in panel:**
-- Background: rgb(255, 114, 80) [color picker]
-- Hover opacity: 0.08 [number input] (auto-converted from 8%)
+**Label generation from CSS variables:**
+- `--wm-btn-background` → `"background"`
+- `--wm-btn-border-color` → `"border.color"`
+- `--wm-btn-states-disabled-background` → `"disabled.background"` (states prefix removed)
+- `--wm-btn-states-hover-state-layer-opacity` → `"hover.state.layer.opacity"`
+
+**Displayed in panel (organized by type-based categories):**
+- **Color** category: background: rgb(255, 114, 80) [color picker]
+- **Style** category: hover.state.layer.opacity: 0.08 [number input] (auto-converted from 8%)
+- Hover any label → See help icon (?) → Click for tooltip showing "Variable name: --wm-btn-background"
+
+---
+
+## State Dropdown Feature
+
+### Overview
+
+Components with multiple interaction states (hover, focus, active, disabled, checked, selected, error, etc.) automatically display a **State dropdown** at the top of the Design Token panel. This feature enables you to:
+
+- View and edit tokens specific to each state
+- See base tokens combined with state-specific tokens
+- Understand which tokens are active in each state
+- Test state-specific styling without manual interaction
+
+### Key Features
+
+**✅ Dynamic State Detection**
+- Automatically discovers states from JSON `mapping.states` structure
+- Works with any state name (hover, focus, active, disabled, checked, selected, error, etc.)
+- No hardcoded state lists - fully generic
+
+**✅ Intelligent Token Filtering**
+- **Default state**: Shows all base tokens, hides state-specific tokens
+- **Other states**: Shows base tokens + selected state tokens together
+- **Duplicate prevention**: Hides base tokens when state-specific version exists
+- **Overlay state handling**: Hides main background in hover/focus/active (uses state-layer)
+
+**✅ Clean Label Simplification**
+- Removes state prefix from labels when that state is selected
+- Example: State "checked" → `--wm-checkbox-states-checked-background` displays as `"background"` (not "checked.background")
+- Reduces redundancy since dropdown already indicates the selected state
+
+**✅ Responsive Layout**
+- Matches token input styling (2-column right panel, 3-column bottom panel)
+- Clean, intuitive UI that fits naturally with other controls
+
+### How It Works
+
+#### State Detection (`tokenParser.ts`)
+
+```typescript
+export function detectAvailableStates(
+  tokenData: any,
+  componentKey: string
+): string[] {
+  const componentData = tokenData[componentKey];
+  if (!componentData) return ["default"];
+
+  const states: string[] = ["default"];
+
+  // Look for states in mapping.states
+  if (componentData.mapping && componentData.mapping.states) {
+    const statesObj = componentData.mapping.states;
+    for (const stateName of Object.keys(statesObj)) {
+      if (stateName !== "attributes" && !states.includes(stateName)) {
+        states.push(stateName);
+      }
+    }
+  }
+
+  return states;
+}
+```
+
+#### Label Simplification (`tokenParser.ts`)
+
+```typescript
+export function extractLabelFromCSSVariable(
+  cssVarName: string,
+  componentKey: string,
+  selectedState: string = "default"
+): string {
+  const prefix = `--wm-${componentKey}-`;
+  if (!cssVarName.startsWith(prefix)) {
+    return cssVarName.replace(/^--/, '');
+  }
+
+  let tokenPath = cssVarName.substring(prefix.length);
+
+  // Remove state prefix for ALL states when that state is selected
+  if (selectedState !== "default" && tokenPath.startsWith('states-')) {
+    const statePrefix = `states-${selectedState}-`;
+    if (tokenPath.startsWith(statePrefix)) {
+      tokenPath = tokenPath.substring(statePrefix.length);
+    }
+  }
+
+  return tokenPath.replace(/-/g, '.');
+}
+```
+
+#### Token Filtering (`DesignTokenPanel.tsx`)
+
+```typescript
+const filterTokensByState = (tokens: TokenDefinition[], state: string): TokenDefinition[] => {
+  // Helper: Check if there's a state-specific version of this token
+  const hasStateSpecificVersion = (tokenName: string, targetState: string): boolean => {
+    if (tokenName.includes('-states-')) return false;
+    const propertyName = getPropertyName(tokenName);
+    const stateSpecificName = `--wm-${componentKey}-states-${targetState}-${propertyName}`;
+    return tokens.some(t => t.name === stateSpecificName);
+  };
+
+  // Helper: Check if this state uses overlay (hover/focus/active)
+  const isOverlayState = (stateName: string): boolean => {
+    return ['hover', 'focus', 'active'].includes(stateName);
+  };
+
+  return tokens.filter((token) => {
+    const tokenName = token.name;
+    const isBase = !tokenName.includes('-states-');
+    const isMainBackground = tokenName === `--wm-${componentKey}-background`;
+    const tokenState = getTokenState(tokenName);
+
+    // Default state: show only base tokens
+    if (state === 'default') {
+      return isBase && tokenState === null;
+    }
+
+    // Other states: show state-specific + base tokens
+    if (tokenState === state) return true; // Show state-specific
+
+    if (isBase) {
+      // Hide main background in overlay states (uses state-layer)
+      if (isMainBackground && isOverlayState(state)) return false;
+
+      // Hide base token if state-specific version exists
+      if (hasStateSpecificVersion(tokenName, state)) return false;
+
+      return true; // Show base token
+    }
+
+    return false;
+  });
+};
+```
+
+### UI Components
+
+**State Dropdown** (styled to match token inputs):
+```typescript
+const StateDropdownContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  @container (min-width: 800px) {
+    grid-template-columns: 1fr 1fr 1fr; // 3-column for bottom panel
+  }
+`;
+```
+
+### Examples
+
+#### Button with States
+
+**JSON Structure:**
+```json
+{
+  "btn": {
+    "mapping": {
+      "background": { "value": "{color.primary.@.value}" },
+      "color": { "value": "{color.on-primary.@.value}" },
+      "state-layer-color": { "value": "{color.on-primary.@.value}" },
+      "states": {
+        "hover": {
+          "state-layer-opacity": { "value": "{opacity.hover.value}" }
+        },
+        "focus": {
+          "state-layer-opacity": { "value": "{opacity.focus.value}" }
+        },
+        "disabled": {
+          "background": { "value": "{color.surface.container.@.value}" },
+          "color": { "value": "{color.on-surface.opacity-38.value}" }
+        }
+      }
+    }
+  }
+}
+```
+
+**Design Token Panel Behavior:**
+
+| State Selected | Tokens Displayed | Notes |
+|---------------|------------------|-------|
+| **default** | `background`, `color`, `state-layer-color` | Only base tokens shown |
+| **hover** | `background`, `color`, `state-layer-color`, `state.layer.opacity` | Base + hover tokens, background hidden (uses overlay) |
+| **disabled** | `background`, `color` (disabled versions) | Base tokens with disabled overrides, duplicates prevented |
+
+#### Checkbox with Checked State
+
+**JSON Structure:**
+```json
+{
+  "checkbox": {
+    "mapping": {
+      "background": { "value": "transparent" },
+      "border": { "color": { "value": "{color.outline.@.value}" } },
+      "states": {
+        "checked": {
+          "background": { "value": "{color.primary.@.value}" },
+          "border": { "color": { "value": "{color.primary.@.value}" } }
+        }
+      }
+    }
+  }
+}
+```
+
+**Label Simplification:**
+
+| State | Token | Label Displayed |
+|-------|-------|-----------------|
+| default | `--wm-checkbox-background` | `background` |
+| default | `--wm-checkbox-border-color` | `border.color` |
+| checked | `--wm-checkbox-background` | `background` (base, hidden due to duplicate) |
+| checked | `--wm-checkbox-states-checked-background` | `background` (not "checked.background") |
+| checked | `--wm-checkbox-states-checked-border-color` | `border.color` (state prefix removed) |
+
+### Supported States
+
+The system dynamically supports ANY state defined in your JSON:
+
+**Common States:**
+- `hover` - Hover interaction
+- `focus` - Focus state
+- `active` - Active/pressed state
+- `disabled` - Disabled state
+- `checked` - Checked state (checkboxes, radios, toggles)
+- `selected` - Selected state (switches, tabs)
+- `error` - Error state
+- `error-focus` - Error + focus combination
+
+**No hardcoding required** - just add states to your JSON `mapping.states` and they'll appear automatically!
+
+### Benefits
+
+✅ **Test state styling without interaction** - No need to hover/click to see state tokens
+✅ **Clear state visibility** - Understand which tokens are active in each state
+✅ **Prevent duplicate tokens** - Intelligent filtering shows only relevant tokens
+✅ **Clean labels** - State prefix removed for better readability
+✅ **Fully dynamic** - Works with any component and any state names
+✅ **Responsive design** - Matches existing token input layouts
+
+---
+
+## Label Generation & Categorization
+
+### Smart Label Extraction from CSS Variables
+
+Labels are automatically extracted from CSS variable names, making them intuitive and directly related to the CSS:
+
+**Conversion Rules:**
+1. Remove component prefix (e.g., `--wm-btn-`)
+2. Remove "states-" prefix if present
+3. Convert hyphens to dots for nested properties
+
+**Examples:**
+```
+--wm-btn-background → "background"
+--wm-btn-border-color → "border.color"
+--wm-btn-border-width → "border.width"
+--wm-btn-states-disabled-background → "disabled.background"
+--wm-btn-states-hover-state-layer-opacity → "hover.state.layer.opacity"
+--wm-editor-blockquote-color-reset-background → "blockquote.color.reset.background"
+```
+
+### Type-Based Categorization
+
+Tokens are organized into 4 simple categories based on their `type` field:
+
+| Token Type | Category Name | Example Tokens |
+|------------|---------------|----------------|
+| `color` | **Color** | background, color, border-color |
+| `font` | **Text** | font-size, font-weight, font-family |
+| `space` | **Size** | padding, margin, gap, width, height |
+| `others` | **Style** | opacity, border-radius, box-shadow |
+
+**Benefits:**
+- Simpler organization (4 categories instead of 14)
+- Consistent across all components
+- Easy to find tokens by their purpose
+
+### Hover-Based Help Icons & Tooltips
+
+**Help Icon Behavior:**
+- Hidden by default to reduce visual clutter
+- Appears (fades in) when hovering over any label
+- Click to show tooltip with detailed information
+
+**Tooltip Content:**
+- **Variable name:** Displays the CSS variable (e.g., `--wm-btn-background`)
+- **Description:** Shows the token description if available
+- **White theme:** Clean white background (#fff) with black text (#000)
+- **Smart positioning:** Automatically positions above/below based on available space
+- **Portal rendering:** Renders at document.body level to escape overflow constraints
+
+**Example:**
+```
+Hover "background" label → Help icon (?) appears
+Click help icon → Tooltip shows:
+  ┌─────────────────────────────────────────┐
+  │ Variable name: --wm-btn-background      │
+  │ Sets the background color of the button │
+  └─────────────────────────────────────────┘
+```
 
 ---
 
 ## Key Features
 
+### UI/UX Features
+✅ **State dropdown** - Dynamic state selector (default, hover, focus, active, disabled, checked, etc.) with intelligent token filtering and label simplification
+✅ **Smart label generation** - Labels extracted from CSS variable names (e.g., `border.color` from `--wm-btn-border-color`)
+✅ **Simplified categories** - Only 4 categories based on token type: Color, Text, Size, Style
+✅ **Hover-based help icons** - Help icons (?) only appear when hovering over labels
+✅ **Clean white tooltips** - White background (#fff) with black text for better readability
+✅ **Variable name display** - Tooltips show "Variable name: --wm-btn-background" as prefix
+✅ **Text wrapping** - Long labels wrap properly with word-break support
+✅ **Portal-based tooltips** - Tooltips render at document.body level to escape overflow constraints
+✅ **No state badges** - Clean UI without redundant DISABLED/HOVER/FOCUS badges
+
+### Core Features
+✅ **Dynamic state management** - Auto-detects states from JSON, filters tokens intelligently, prevents duplicates
+✅ **Generic className parsing** - Automatically works with ANY component className pattern (button, label, pagination, etc.)
+✅ **Type prop support (propToVariantMap)** - Works with components using type/variant props instead of className (message, progress-bar, accordion, etc.)
+✅ **Dynamic selector lookup** - Reads selectors from JSON and matches variants automatically
+✅ **Automatic wrapper detection** - Intelligently handles components that can't spread attributes
+✅ **Dynamic token resolution** - Automatically converts ANY token reference to CSS variable name
 ✅ **Runtime extraction** - Reads actual values from foundation.css (no hardcoding)
-✅ **Generic** - Works for any component (button, input, anchor, card, etc.)
-✅ **Variant-aware** - Different tokens for different className variants
+✅ **Zero manual mapping** - Works with ALL foundation CSS variables automatically
+✅ **Fully generic** - Works for ANY component with ANY JSON structure
+✅ **Multiple JSON structures** - Supports appearances at root/meta, with/without variantGroups
+✅ **Variant-aware** - Different tokens for different className/type variants
+✅ **State-aware** - Different tokens for different states (hover, focus, active, disabled, checked, selected, error, etc.)
 ✅ **Real-time updates** - Changes apply instantly without reload
 ✅ **Smart controls** - Color pickers, dropdowns, number inputs based on token type
 ✅ **Automatic conversion** - Handles percentages (8% ↔ 0.08) for opacity values
 ✅ **Fallback support** - Uses hardcoded values if extraction fails
 ✅ **Reset button** - Restore default values anytime
+✅ **Default Controls tab** - No performance impact on story load, CSS extraction only when panel active
+✅ **Polling-based detection** - Reliably detects className/type changes (300ms polling when active)
+✅ **Story isolation** - Automatic cleanup when switching stories prevents glitches
+✅ **Icon size support** - Works with .app-icon, Font Awesome, and all icon classes automatically
+✅ **Performance optimized** - Reduced delays (50-100ms) and minimal re-renders
 
 ---
 
 ## Adding New Components
 
-To add design tokens for anchor, card, input, list, etc.:
+The Design Token system supports two types of components based on how they handle styling:
+
+### Standard Components (with className prop)
+
+To add design tokens for components that accept a className prop and can spread `data-design-token-target` attribute (anchor, button, label, checkbox, etc.):
 
 ### 1. Create JSON file
 ```json
-// /src/designTokens/wm-anchor.json
+// /src/designTokens/components/anchor/anchor.json
 {
   "anchor": {
     "meta": {
@@ -157,6 +526,14 @@ To add design tokens for anchor, card, input, list, etc.:
         "attributes": {
           "subtype": "color",
           "description": "Link text color"
+        }
+      },
+      "font-size": {
+        "value": "{h6.font-size.value}",  // ← Can reference ANY foundation token!
+        "type": "font",
+        "attributes": {
+          "subtype": "font-size",
+          "description": "Link font size"
         }
       }
     },
@@ -174,12 +551,22 @@ To add design tokens for anchor, card, input, list, etc.:
 }
 ```
 
+**Supported JSON Structures:**
+- **With variantGroups** (like buttons): `appearances.filled.variantGroups.status.primary`
+- **Without variantGroups** (like pagination): `meta.appearances.basic.mapping`
+- **No appearances** (like tabs): Just base `mapping` tokens
+
 ### 2. Add to story
 ```typescript
-import anchorTokensData from "../../../../designTokens/wm-anchor.json";
+import anchorTokensData from "../../../../designTokens/components/anchor/anchor.json";
 
 export const DesignToken: Story = {
-  render: (args) => <AnchorComponent className={args.className} />,
+  render: (args) => (
+    <AnchorComponent
+      className={args.className}
+      data-design-token-target="true"  // REQUIRED for scoping
+    />
+  ),
   args: { className: "anchor-primary" },
   parameters: {
     designTokens: {
@@ -192,18 +579,201 @@ export const DesignToken: Story = {
 };
 ```
 
-### 3. Add token references (if new foundation tokens)
-If your JSON uses new foundation.css tokens, add them to `cssVariableExtractor.ts`:
+### 3. Done! ✅
+
+**That's it!** No manual mapping needed. The system:
+- Automatically converts `{any.token.reference.value}` to `--wm-any-token-reference`
+- Looks it up in foundation.css at runtime
+- Works with ALL foundation CSS variables automatically
+- Supports ANY JSON structure variation
+
+**Can use ANY foundation token:**
+- `{h6.font-size.value}` → `--wm-h6-font-size`
+- `{border.style.base.value}` → `--wm-border-style-base`
+- `{elevation.shadow-3.value}` → `--wm-elevation-shadow-3`
+- `{any.new.token.value}` → `--wm-any-new-token` (works automatically!)
+
+---
+
+### Components with Type Prop (without className)
+
+Some components use a `type` or similar prop that internally maps to specific CSS classes, rather than accepting a `className` prop directly. Examples include:
+- **Message**: `type="success"` → CSS class `"alert-success"`
+- **Progress Bar**: `type="success"` → CSS class `"progress-bar-success"`
+- **Accordion**: `type="primary"` → CSS class `"panel-primary"`
+
+For these components, use the **propToVariantMap** configuration to map prop values to CSS class names.
+
+### 1. JSON file structure remains the same
+
+```json
+// /src/designTokens/components/message/message.json
+{
+  "message": {
+    "meta": {
+      "mapping": {
+        "selector": { "web": ".app-message" }
+      },
+      "appearances": {
+        "filled": {
+          "mapping": {
+            "selector": { "web": ".app-message" }
+          },
+          "variantGroups": {
+            "status": {
+              "success": {
+                "selector": { "web": ".alert-success" }  // CSS class
+              },
+              "danger": {
+                "selector": { "web": ".alert-danger" }
+              },
+              "warning": {
+                "selector": { "web": ".alert-warning" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping": {
+      "background": {
+        "value": "{color.surface.@.value}",
+        "type": "color",
+        "attributes": {
+          "subtype": "color",
+          "description": "Message background color"
+        }
+      }
+    },
+    "appearances": {
+      "filled": {
+        "variantGroups": {
+          "status": {
+            "success": {
+              "container": {
+                "background": { "value": "{color.success.@.value}", ... }
+              }
+            },
+            "danger": {
+              "container": {
+                "background": { "value": "{color.danger.@.value}", ... }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Key Point**: The `meta.appearances.{appearance}.variantGroups.{group}.{variant}.selector.web` must match the CSS class name that the component renders in the DOM.
+
+### 2. Configure Story with propToVariantMap
 
 ```typescript
-const TOKEN_TO_CSS_VAR_MAP: Record<string, string> = {
-  // ... existing mappings ...
+import messageTokensData from "../../../../designTokens/components/message/message.json";
 
-  // New mappings:
-  "{elevation.sm.value}": "--wm-elevation-sm",
-  "{transition.duration.fast.value}": "--wm-transition-duration-fast",
+export const DesignToken: Story = {
+  render: (args) => {
+    // Message component can't spread data-design-token-target, so we apply it to a wrapper
+    const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+
+    return (
+      <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+        <MessageComponent {...componentArgs} listener={mockListener} />
+      </Box>
+    );
+  },
+  args: {
+    name: "designTokenMessage",
+    listener: mockListener,
+    caption: "Operation completed successfully!",
+    type: "success",  // This is the prop we're watching
+    "data-design-token-target": true,  // Applied to wrapper
+  },
+  argTypes: {
+    caption: { control: "text" },
+    type: {
+      control: { type: "select" },
+      options: ["success", "error", "warning", "info", "loading"],
+    }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: messageTokensData,  // Pass raw JSON data
+      componentKey: "message",  // Component identifier
+      extractCSSVariablesAtRuntime: true,
+      // NEW: Map the "type" prop to CSS class names
+      propToVariantMap: {
+        propName: "type",  // Watch the "type" prop instead of className
+        mapping: {
+          success: "alert-success",   // Prop value → CSS class (NOT variant key!)
+          error: "alert-danger",
+          warning: "alert-warning",
+          info: "alert-info",
+          loading: "alert-loading"
+        }
+      }
+    },
+    layout: 'fullscreen',
+  },
 };
 ```
+
+### 3. How It Works
+
+```
+User changes type="warning" in Controls tab
+  ↓
+propToVariantMap maps "warning" → CSS class "alert-warning"
+  ↓
+Parser reads JSON: meta.appearances.filled.variantGroups.status.warning.selector.web = ".alert-warning"
+  ↓
+Parser matches ".alert-warning" to find variant key "filled-warning"
+  ↓
+Tokens load for "filled-warning" variant from appearances
+  ↓
+CSS generates: [data-design-token-target="true"] .app-message.alert-warning { ... }
+  ↓
+Tokens update in real-time! ✅
+```
+
+### 4. Important Notes
+
+**Wrapper Pattern**:
+- Components that can't spread `data-design-token-target` need a wrapper element
+- The wrapper (usually a Box) gets the `data-design-token-target` attribute
+- CSS targets child elements: `[data-design-token-target="true"] .app-message`
+
+**CSS Class vs Variant Key**:
+- Mapping must use **CSS class names** (what's in the DOM), NOT variant keys
+- Example: `success: "alert-success"` ✅ (CSS class in DOM)
+- Example: `success: "filled-success"` ❌ (variant key from JSON)
+
+**Automatic Variant Detection**:
+- System automatically detects wrapper pattern when `propToVariantMap` is present
+- No manual configuration needed for wrapper behavior
+
+### 5. Compatible Components
+
+This approach works with ANY component that follows the pattern `type/variant prop → CSS class`. No code changes needed, just configure your story:
+
+✅ **Message** (`type="success"` → `.alert-success`)
+✅ **Progress Bar** (`type="success"` → `.progress-bar-success`)
+✅ **Progress Circle** (`type="success"` → similar pattern)
+✅ **Accordion** (`type="primary"` → `.panel-primary`)
+✅ **Any future component** following the same pattern
+
+### 6. Done! ✅
+
+The system now:
+- Watches the specified prop (e.g., `type`) instead of `className`
+- Maps prop values to CSS class names dynamically
+- Looks up variant keys from JSON selectors automatically
+- Updates tokens in real-time when prop changes
+- Works with ANY component following this pattern
 
 ---
 
@@ -287,20 +857,50 @@ If empty, check console for extraction errors.
 - Number input expects: `0.08` (decimal between 0-1)
 - System converts: `8%` ↔ `0.08` automatically
 
+### Q: Tokens not refreshing when I change className in Controls tab?
+
+**A:** The system uses **polling** to detect className changes reliably:
+1. Change className in Controls tab → UI updates visually
+2. If Design Tokens tab is active → Tokens refresh within 300ms automatically
+3. If Design Tokens tab is inactive → Tokens refresh when you switch to the tab
+4. Polling only runs when the panel is active (no performance impact on Controls tab)
+
+**Why polling?** Storybook's `argsUpdated` event is unreliable. Polling every 300ms ensures className changes are always detected.
+
 ### Q: Token changes not applying?
 
 **Check:**
-1. **Console logs** - Look for `[Design Tokens] ✓ Tokens Applied`
-2. **data-design-token-target** - Buttons must have this attribute
-3. **tokenData + componentKey** - Both must be provided in parameters
-4. **Iframe ready** - Extraction waits up to 10 retries
+1. **data-design-token-target** - Components must have this attribute
+2. **tokenData + componentKey** - Both must be provided in parameters
+3. **Panel is active** - CSS extraction and polling only run when Design Tokens tab is active
+4. **Iframe ready** - Extraction waits up to 6 retries with 100ms intervals
+5. **Browser DevTools** - Check for CSS in iframe's `<style id="design-tokens-{component}">`
 
 ### Q: Values not matching foundation.css?
 
 **Check:**
-1. **Extraction success** - Console should show "✓ CSS extraction successful"
+1. **Panel is active** - CSS extraction only runs when Design Tokens panel is active
 2. **Fallback values** - If using fallback, values in tokenParser.ts must match foundation.css
-3. **Token reference map** - Check TOKEN_TO_CSS_VAR_MAP in cssVariableExtractor.ts
+3. **Token reference conversion** - Verify tokenReferenceToCSSVariable() converts correctly
+4. **CSS variable exists** - Check foundation.css has the expected `--wm-*` variable
+5. **Cache cleared** - Cache is automatically cleared when switching stories
+
+### Q: Can I use custom/new foundation tokens?
+
+**A:** YES! The system works with ALL foundation CSS variables automatically:
+```json
+{
+  "custom-property": {
+    "value": "{my.new.custom.token.value}"
+  }
+}
+```
+Will automatically:
+1. Convert to `--wm-my-new-custom-token`
+2. Look it up in foundation.css
+3. Use the value if found
+
+No code changes needed!
 
 ---
 
@@ -379,46 +979,84 @@ button[data-design-token-target="true"]:hover:not(:disabled)::before {
 
 ## Token Naming Convention
 
-### CSS Variable Names
+### CSS Variable Names (Component-specific)
 Pattern: `--wm-{componentKey}-{path}-{property}`
 
 Examples:
 ```
 JSON: btn → mapping → background
 CSS:  --wm-btn-background
+Label: "background"
 
 JSON: btn → mapping → border → color
 CSS:  --wm-btn-border-color
+Label: "border.color"
 
 JSON: btn → mapping → states → hover → state → layer → opacity
 CSS:  --wm-btn-states-hover-state-layer-opacity
+Label: "hover.state.layer.opacity" (states prefix removed)
 ```
 
-### Token References
-Map to foundation.css variables:
+**Label Generation Logic:**
+- Extracts from CSS variable name (not JSON path)
+- Removes component prefix (`--wm-btn-`)
+- Removes "states-" prefix for cleaner labels
+- Converts hyphens to dots for nested structure
+
+### Token References (Dynamic Conversion)
+**NO MANUAL MAPPING NEEDED!** The system automatically converts token references:
 
 ```typescript
 // In JSON:
 "value": "{color.primary.@.value}"
+"value": "{h6.font-size.value}"
+"value": "{border.style.base.value}"
 
-// Maps to:
-"--wm-color-primary" (in foundation.css)
+// Automatically converted by tokenReferenceToCSSVariable():
+"{color.primary.@.value}" → "--wm-color-primary"
+"{h6.font-size.value}" → "--wm-h6-font-size"
+"{border.style.base.value}" → "--wm-border-style-base"
 
-// Defined in cssVariableExtractor.ts:
-"{color.primary.@.value}": "--wm-color-primary"
+// Then looked up in foundation.css:
+"--wm-color-primary" → "rgb(255, 114, 80)"
+"--wm-h6-font-size" → "14px"
+"--wm-border-style-base" → "solid"
 ```
+
+**Conversion Rules:**
+1. Remove curly braces `{ }`
+2. Remove `.value` suffix
+3. Replace `@` placeholder with empty string
+4. Replace dots `.` with hyphens `-`
+5. Add `--wm-` prefix
+
+**Works with ANY foundation token automatically!**
 
 ---
 
 ## Architecture Benefits
 
-1. **No manual CSS files** - CSS generated dynamically from JSON
-2. **Single source of truth** - All design decisions in JSON
-3. **Type-safe** - Full TypeScript support
-4. **Scalable** - Add unlimited components without code changes
-5. **Designer-friendly** - Designers can edit JSON without touching code
-6. **Runtime sync** - Always uses actual foundation.css values
-7. **Graceful fallback** - Works even if extraction fails
+### Technical Benefits
+1. **Zero manual mapping** - Token references converted dynamically, no hardcoded maps
+2. **Fully generic** - Works with ANY component and ANY JSON structure automatically
+3. **Future-proof** - New foundation CSS variables work without code changes
+4. **No manual CSS files** - CSS generated dynamically from JSON
+5. **Single source of truth** - All design decisions in JSON
+6. **Type-safe** - Full TypeScript support
+7. **Scalable** - Add unlimited components without code changes
+8. **Runtime sync** - Always uses actual foundation.css values
+9. **Graceful fallback** - Works even if extraction fails
+10. **Multiple structure support** - Handles variantGroups, meta.appearances, or no appearances
+
+### UI/UX Benefits
+1. **Intuitive labels** - Extracted from CSS variables, directly reflect CSS structure
+2. **Simplified organization** - 4 categories instead of 14, easier navigation
+3. **Clean interface** - No redundant state badges, hover-based help icons
+4. **Better readability** - White tooltips with proper contrast ratios
+5. **Accessible help** - Always available on hover, never obtrusive
+6. **Designer-friendly** - Clear labels match CSS mental model
+7. **No clipping issues** - Portal-based tooltips work in any panel position
+8. **Text wrapping** - Long nested properties display properly
 
 ---
 
@@ -429,49 +1067,94 @@ npm run storybook
 ```
 
 1. Navigate to "Basic/Button" → "Filled"
-2. Open "Design Tokens" tab (bottom panel)
-3. Scroll to see all token categories:
-   - Colors (Background, Text, Border)
-   - Typography (Font Size, Weight, Family)
-   - Spacing (Padding, Gap, Height)
-   - Border (Width, Style, Radius)
-   - States (Hover/Focus/Active/Disabled)
-   - Effects (Shadow, Cursor)
-4. Change "Background" to #FF0000
-5. Button instantly turns red ✅
-6. Scroll to "States" → Change "Hover opacity" to 0.5
-7. Hover button → See strong overlay ✅
-8. Click "Reset to Defaults" → Restores original values ✅
+2. Open "Design Tokens" tab (bottom or right panel)
+3. See tokens organized in 4 categories:
+   - **Color** (background, color, border.color)
+   - **Text** (font.size, font.weight, font.family)
+   - **Size** (padding, gap, height)
+   - **Style** (border.radius, hover.state.layer.opacity, box.shadow)
+4. **Hover over any label** → See help icon (?) appear
+5. **Click help icon** → Tooltip shows "Variable name: --wm-btn-background"
+6. Change "background" to #FF0000
+7. Button instantly turns red ✅
+8. Scroll to "Style" → Change "hover.state.layer.opacity" to 0.5
+9. Hover button → See strong overlay ✅
+10. Click "Reset to Defaults" → Restores original values ✅
+
+**UI Features to Notice:**
+- Clean white tooltips with black text
+- Labels extracted from CSS variables (e.g., "border.color" not "Border Color")
+- Help icons only appear on hover (reduced clutter)
+- Long labels wrap properly (e.g., "blockquote.color.reset.background")
+- Tooltips work correctly in both bottom and right-aligned panels
 
 ---
 
-## Debug Mode
+## Performance & Architecture
 
-All console statements are commented out for production. To enable debugging:
+### Optimizations Applied:
+- **Lazy CSS extraction**: Only runs when Design Tokens panel is active (prevents blocking Controls tab)
+- **Polling mechanism**: Detects className changes every 300ms (only when panel active)
+- **Reduced delays**: 50-100ms timeouts instead of 150-200ms for faster responsiveness
+- **Story isolation**: Automatic cleanup on story switch prevents interference
+- **Minimal re-renders**: Effects optimized with proper dependencies
+- **Cache management**: CSS variables cached per story, cleared on story change
 
-1. Open the file you want to debug:
-   - `DesignTokenPanel.tsx` - UI and token application
-   - `tokenParser.ts` - JSON parsing and resolution
-   - `cssVariableExtractor.ts` - CSS variable extraction
+### Icon Size Handling:
+The system automatically targets icons using default selectors:
+```css
+.app-icon, i[class*="fa-"], i[class*="wi-"], i[class*="icon-"]
+```
 
-2. Uncomment console statements:
-   ```typescript
-   // console.log("Debug message");
-   console.log("Debug message");  // Uncommented
-   ```
+When you change `--wm-btn-icon-size`, it applies:
+```css
+font-size: 32px !important;
+width: 32px !important;
+height: 32px !important;
+min-width: 32px !important;
+min-height: 32px !important;
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+```
 
-3. Reload Storybook and check browser console
+This ensures icons resize properly regardless of icon library used.
+
+### Story Switch Behavior:
+When switching stories, the system:
+1. Clears all token state (tokens, defaultTokens, cssVariableMap)
+2. Removes injected `<style id="design-tokens-*">` tags from iframe
+3. Resets all refs and parameters
+4. Clears CSS variable cache
+5. Ensures Controls tab is default (no performance impact)
+
+This prevents glitches and ensures a clean slate for each story.
 
 ---
 
-## Future Components
+## All Components Supported
 
-The system is ready for:
+The system is **fully generic** and works with:
 - ✅ wm-button.json (completed)
-- ⏳ wm-anchor.json
-- ⏳ wm-card.json
-- ⏳ wm-input.json
-- ⏳ wm-list.json
-- ⏳ Any component with design tokens
+- ✅ Any component in `/src/designTokens/components/*/*.json`
+- ✅ Components with className prop (button, anchor, label, checkbox, etc.)
+- ✅ Components with type prop (message, progress-bar, accordion, etc.)
+- ✅ tabs, pagination, radioset, progress-circle, fileupload, etc.
+- ✅ Components with variantGroups (buttons)
+- ✅ Components without variantGroups (pagination)
+- ✅ Components with nested tokens (tabs)
+- ✅ ANY future component
 
-Just follow the JSON structure and it works automatically!
+**Just create the JSON file and add to story - it works automatically!**
+
+No code changes needed. No manual mapping required. **Zero configuration.**
+
+### Component Categories
+
+**Standard Components (className prop)**:
+- Button, Anchor, Label, Checkbox, Radio, Cards, Chips, etc.
+- Configuration: Standard story setup with `className` in args
+
+**Type Prop Components (propToVariantMap)**:
+- Message, Progress Bar, Progress Circle, Accordion, etc.
+- Configuration: Use `propToVariantMap` with wrapper pattern

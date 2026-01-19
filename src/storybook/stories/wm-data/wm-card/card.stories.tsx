@@ -7,6 +7,7 @@ import WmCardActions from "../../../../components/data/card/card-actions";
 import WmCardFooter from "../../../../components/data/card/card-footer";
 
 import { animationNames } from "../../constants/animationsConstants";
+import { iconClassNames } from "../../constants/iconClassConstants";
 
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
@@ -14,6 +15,8 @@ import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
+
+import cardsTokensData from "../../../../designTokens/components/cards/cards.json";
 
 const mockListener = {
   appLocale: {},
@@ -24,25 +27,25 @@ const mockListener = {
 const meta = {
   title: "Data/Card",
   component: WmCard,
-  argTypes: {
-    title: { control: "text" },
-    subheading: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user", "wi wi-dashboard"],
-    },
-    iconurl: { control: "text" },
-    picturesource: { control: "text" },
-    picturetitle: { control: "text" },
-    imageheight: { control: "text" },
-    width: { control: "text" },
-    height: { control: "text" },
-    animation: { control: "select", options: animationNames },
-    actions: { control: "text" },
-  },
+  // argTypes: {
+  //   title: { control: "text" },
+  //   subheading: { control: "text" },
+  //   iconclass:{
+  //     control:{
+  //       type:"select"
+  //     },
+  //     options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
+  //       "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user", "wi wi-dashboard"],
+  //   },
+  //   iconurl: { control: "text" },
+  //   picturesource: { control: "text" },
+  //   picturetitle: { control: "text" },
+  //   imageheight: { control: "text" },
+  //   width: { control: "text" },
+  //   height: { control: "text" },
+  //   animation: { control: "select", options: animationNames },
+  //   actions: { control: "text" },
+  // },
   parameters: {
     layout: "fullscreen",
   },
@@ -80,7 +83,7 @@ export const Showcase: Story = {
         team: "Engineering",
         location: "San Francisco",
         phone: "+1 923-33-56",
-        avatar: "https://i.pravatar.cc/150?img=32",
+        avatar: "/personIcon.svg",
       },
       {
         id: 2,
@@ -89,7 +92,7 @@ export const Showcase: Story = {
         team: "Marketing",
         location: "New York",
         phone: "+1 821-44-90",
-        avatar: "https://i.pravatar.cc/150?img=47",
+        avatar: "/personIcon.svg",
       },
     ];
 
@@ -99,7 +102,7 @@ export const Showcase: Story = {
         author: "Brad Tucker",
         published: "May 13 · 4 mins read",
         headline: "Design systems at scale",
-        image: "https://picsum.photos/600/300?random=21",
+        image: "/showcaseImage.png",
         description:
           "Design systems help teams build consistent experiences faster across products.",
         likes: 75,
@@ -110,7 +113,7 @@ export const Showcase: Story = {
         author: "Olivia Martin",
         published: "Jun 02 · 6 mins read",
         headline: "Why component reuse matters",
-        image: "https://picsum.photos/600/300?random=22",
+        image: "showcaseImage.png",
         description:
           "Reusable components reduce development time and improve maintainability.",
         likes: 112,
@@ -285,7 +288,7 @@ export const Basic: Story = {
     width: "500px",
     listener: mockListener,
     children: (
-      <WmCardContent name="cardContent">
+      <WmCardContent name="cardContent" listener={mockListener}>
         <Box sx={{ padding: 2 }}>
           <Typography variant="body1">
             This card has a menu with multiple actions. Click the menu icon in the header to see
@@ -294,6 +297,111 @@ export const Basic: Story = {
         </Box>
       </WmCardContent>
     ),
+  },
+  argTypes: {
+    title: { control: "text" },
+    subheading: { control: "text" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    iconurl: { control: "text" },
+    picturesource: { control: "text" },
+    picturetitle: { control: "text" },
+    imageheight: { control: "text" },
+    width: { control: "text" },
+    height: { control: "text" },
+    animation: { control: "select", options: animationNames },
+    actions: { control: "text" },
+  },
+};
+
+export const Standard: Story = {
+  tags: ["show-panel"],
+  render: (args) => {
+    // component can't spread data-design-token-target, so we apply it to a wrapper
+    const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+
+    return (
+      <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+        <WmCard {...componentArgs} listener={mockListener}>
+          {componentArgs.children}
+        </WmCard>
+      </Box>
+    );
+  },
+  args: {
+    name: "standardCard",
+    title: "User Overview",
+    subheading: "Summary and recent activity",
+    iconclass: "fa fa-user",
+    width: "500px",
+    // height: "500px",
+    listener: mockListener,
+    children: [
+      <WmCardContent name="cardContent" listener={mockListener} key="content">
+        <Box sx={{ p: 2 }}>
+          <Typography variant="body1" fontWeight={500} gutterBottom>
+            Account details
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            This section provides a quick overview of the user profile and
+            current system status.
+          </Typography>
+
+          <Stack spacing={0.5}>
+            <Typography variant="body2">
+              <strong>Name:</strong> Alex Johnson
+            </Typography>
+            <Typography variant="body2">
+              <strong>Role:</strong> Project Administrator
+            </Typography>
+            <Typography variant="body2">
+              <strong>Status:</strong> Active
+            </Typography>
+          </Stack>
+        </Box>
+      </WmCardContent>,
+
+      <WmCardFooter name="cardFooter" listener={mockListener} key="footer">
+        <Box
+          sx={{
+            px: 2,
+            py: 1,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="caption" color="text.secondary">
+            Last updated: 2 hours ago
+          </Typography>
+
+          <Typography variant="caption" color="text.secondary">
+            Activity score: 82%
+          </Typography>
+        </Box>
+      </WmCardFooter>,
+    ],
+
+    "data-design-token-target": "true",
+  },
+
+  argTypes: {
+    title: { control: "text" },
+    subheading: { control: "text" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    width: { control: "text" },
+    height: { control: "text" },
+    "data-design-token-target": { control: false },
+  },
+
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: cardsTokensData,
+      componentKey: "card",
+      extractCSSVariablesAtRuntime: true,
+    },
+    layout: "fullscreen",
   },
 };
 

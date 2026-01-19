@@ -10,32 +10,36 @@ import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
+import style from "./docs/style.md?raw";
+import token from "./docs/token.md?raw";
+
+import pictureTokensData from "../../../../designTokens/components/picture/picture.json";
 
 const meta: Meta<typeof PictureDefaultExport> = {
   title: "Basic/Picture",
   component: PictureDefaultExport,
-  argTypes: {
-    picturesource: { control: "text" },
-    // pictureplaceholder: { control: "text" },
-    alttext: { control: "text" },
-    pictureaspect: {
-      control: { type: "select" },
-      options: ["None", "H", "V", "Both"],
-    },
-    shape:{
-      control:"select",
-      options:['circle',"rounded","thumbnail"]
-    },
-    resizemode: {
-      control: { type: "select" },
-      options: ["fill", "cover", "contain", "none", "scale-down"],
-    },
-    width: { control: "text" },
-    height: { control: "text" },
-    // encodeurl: { control: "boolean" },
-    // arialabel: { control: "text" },
-    // tabindex: { control: "number" },
-  },
+  // argTypes: {
+  //   picturesource: { control: "text" },
+  //   // pictureplaceholder: { control: "text" },
+  //   alttext: { control: "text" },
+  //   pictureaspect: {
+  //     control: { type: "select" },
+  //     options: ["None", "H", "V", "Both"],
+  //   },
+  //   shape:{
+  //     control:"select",
+  //     options:['circle',"rounded","thumbnail"]
+  //   },
+  //   resizemode: {
+  //     control: { type: "select" },
+  //     options: ["fill", "cover", "contain", "none", "scale-down"],
+  //   },
+  //   width: { control: "text" },
+  //   height: { control: "text" },
+  //   // encodeurl: { control: "boolean" },
+  //   // arialabel: { control: "text" },
+  //   // tabindex: { control: "number" },
+  // },
 };
 
 export default meta;
@@ -62,9 +66,15 @@ export const Docs: Story = {
       properties={props}
       events={events}
       methods={methods}
-      styling={styling}
+      // styling={styling}
+      style={style}
+      token={token}
     />
   ),
+  args:{
+    name:"docsPicture",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -83,7 +93,7 @@ export const Showcase: Story = {
               </Typography>
               <PictureDefaultExport
                 name="shapeDefault"
-                picturesource="https://picsum.photos/200"
+                picturesource="/showcaseImage.png"
                 alttext="Default shape"
                 width="150px"
                 height="150px"
@@ -96,7 +106,7 @@ export const Showcase: Story = {
               </Typography>
               <PictureDefaultExport
                 name="shapeCircle"
-                picturesource="https://picsum.photos/200"
+                picturesource="/showcaseImage.png"
                 alttext="Circle shape"
                 width="150px"
                 height="150px"
@@ -110,7 +120,7 @@ export const Showcase: Story = {
               </Typography>
               <PictureDefaultExport
                 name="shapeRounded"
-                picturesource="https://picsum.photos/200"
+                picturesource="/showcaseImage.png"
                 alttext="Rounded shape"
                 width="150px"
                 height="150px"
@@ -125,7 +135,7 @@ export const Showcase: Story = {
               </Typography>
               <PictureDefaultExport
                 name="shapeThumbnail"
-                picturesource="https://picsum.photos/200"
+                picturesource="/showcaseImage.png"
                 alttext="Thumbnail shape"
                 width="150px"
                 height="150px"
@@ -146,17 +156,75 @@ export const Showcase: Story = {
 
 export const Basic: Story = {
   tags: ['show-panel'],
-  render: Template,
+  render: (args) => {
+      const { resizemode, shape, pictureaspect } = args;
+      const renderKey = `${shape}-${resizemode}-${pictureaspect}`;
+  
+      return (
+        <Box style={{ padding: 16 }} key={renderKey}>
+          <PictureDefaultExport
+            key={renderKey}
+            {...args}
+            listener={mockListener}
+          />
+        </Box>
+      );
+    },
   args: {
     name: "basicPicture",
     listener: mockListener,
-    picturesource: "https://picsum.photos/200",
+    picturesource: "/showcaseImage.png",
     alttext: "Placeholder image",
     width: "200px",
     height: "200px",
-    resizemode: "stretch",
+    resizemode: "cover",
     shape: "thumbnail"
   },
+  argTypes: {
+    picturesource: { control: "text" },
+    // pictureplaceholder: { control: "text" },
+    alttext: { control: "text" },
+    pictureaspect: {
+      control: { type: "select" },
+      options: ["None", "H", "V", "Both"],
+    },
+    shape:{
+      control:"select",
+      options:['circle',"rounded","thumbnail"]
+    },
+    resizemode: {
+      control: { type: "select" },
+      options: ["fill", "cover", "contain", "none", "scale-down"],
+    },
+    width: { control: "text" },
+    height: { control: "text" },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "standardPicture",
+    listener: mockListener,
+    picturesource: "/showcaseImage.png",
+    alttext: "Placeholder image",
+    "data-design-token-target":"true"
+  },
+  argTypes: {
+    picturesource: { control: "text" },
+    alttext: { control: "text" },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: pictureTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "picture",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
 };
 
 // export const Default: Story = {

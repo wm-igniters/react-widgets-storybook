@@ -10,34 +10,37 @@ import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
+import token from "./docs/token.md?raw";
+
+import switchTokensData from "../../../../designTokens/components/switch/switch.json";
 
 const meta: Meta<typeof SwitchDefaultExport> = {
   title: "Input/Switch",
   component: SwitchDefaultExport,
-  argTypes: {
-    dataset: { control: "object" },
-    datafield: { control: "text" },
-    datavalue: { control: "text" },
-    // displayExpression: { control: "text" },
-    displayfield: { control: "text" },
-    displaylabel: { control: "text" },
-    // displayimagesrc: { control: "text" },
-    // orderby: { control: "text" },
-    // groupby: { control: "text" },
-    // compareby: { control: "text" },
-    // usekeys: { control: "boolean" },
-    // allowempty: { control: "boolean" },
-    // acceptsArray: { control: "boolean" },
-    multiple: { control: "boolean" },
-    disabled: { control: "boolean" },
-    // required: { control: "boolean" },
-    // hint: { control: "text" },
-    // iconclass: { control: "text" },
-    checkediconclass: { control: "select", options:["fa fa-check", "fa fa-circle-check"] },
-    // tabindex: { control: "number" },
-    // arialabel: { control: "text" },
-    // className: { control: "text" },
-  },
+  // argTypes: {
+  //   dataset: { control: "object" },
+  //   datafield: { control: "text" },
+  //   datavalue: { control: "text" },
+  //   // displayExpression: { control: "text" },
+  //   displayfield: { control: "text" },
+  //   displaylabel: { control: "text" },
+  //   // displayimagesrc: { control: "text" },
+  //   // orderby: { control: "text" },
+  //   // groupby: { control: "text" },
+  //   // compareby: { control: "text" },
+  //   // usekeys: { control: "boolean" },
+  //   // allowempty: { control: "boolean" },
+  //   // acceptsArray: { control: "boolean" },
+  //   multiple: { control: "boolean" },
+  //   disabled: { control: "boolean" },
+  //   // required: { control: "boolean" },
+  //   // hint: { control: "text" },
+  //   // iconclass: { control: "text" },
+  //   checkediconclass: { control: "select", options:["fa fa-check", "fa fa-circle-check"] },
+  //   // tabindex: { control: "number" },
+  //   // arialabel: { control: "text" },
+  //   // className: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -65,9 +68,14 @@ export const Docs: Story = {
       properties={props}
       events={events}
       methods={methods}
-      styling={styling}
+      // styling={styling}
+      token={token}
     />
   ),
+  args:{
+    name:"docsSwitch",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -157,6 +165,10 @@ export const Showcase: Story = {
       </Box>
     );
   },
+  args:{
+    name:"showcaseSwitch",
+    listener:mockListener
+  }
 };
 
 export const Basic: Story = {
@@ -170,6 +182,16 @@ export const Basic: Story = {
     disabled: false,
     multiple: false,
     displaylabel: "Basic Switch",
+  },
+  argTypes: {
+    dataset: { control: "object" },
+    datafield: { control: "text" },
+    datavalue: { control: "text" },
+    displayfield: { control: "text" },
+    displaylabel: { control: "text" },
+    multiple: { control: "boolean" },
+    disabled: { control: "boolean" },
+    checkediconclass: { control: "select", options:["fa fa-check", "fa fa-circle-check"] },
   },
 };
 
@@ -191,6 +213,61 @@ export const ObjectDataset: Story = {
     multiple: false,
     displaylabel: "Object Dataset Switch",
   },
+  argTypes: {
+    dataset: { control: "object" },
+    datafield: { control: "text" },
+    datavalue: { control: "text" },
+    displayExpression: { control: "text" },
+    displayfield: { control: "text" },
+    displaylabel: { control: "text" },
+    multiple: { control: "boolean" },
+    disabled: { control: "boolean" },
+    checkediconclass: { control: "select", options:["fa fa-check", "fa fa-circle-check"] },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+      //component can't spread data-design-token-target, so we apply it to a wrapper
+      const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+  
+      return (
+        <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+          <SwitchDefaultExport {...componentArgs} listener={mockListener} />
+        </Box>
+      );
+    },
+  args: {
+    name: "standardSwitch",
+    dataset: ["yes", "no", "maybe"],
+    datavalue: "yes",
+    listener: mockListener,
+    disabled: false,
+    multiple: false,
+    displaylabel: "Basic Switch",
+    "data-design-token-target":"true",
+  },
+  argTypes: {
+    dataset: { control: "object" },
+    datafield: { control: "text" },
+    datavalue: { control: "text" },
+    displayfield: { control: "text" },
+    displaylabel: { control: "text" },
+    multiple: { control: "boolean" },
+    disabled: { control: "boolean" },
+    checkediconclass: { control: "select", options:["fa fa-check", "fa fa-circle-check"] },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: switchTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "switch",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
 };
 
 // export const MultipleWithPreselection: Story = {

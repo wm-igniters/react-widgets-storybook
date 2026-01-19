@@ -11,19 +11,23 @@ import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
+import style from "./docs/style.md?raw";
+import token from "./docs/token.md?raw";
+
+import messageTokensData from "../../../../designTokens/components/message/message.json";
 
 const meta: Meta<typeof MessageDefaultExport> = {
   title: "Basic/Message",
   component: MessageDefaultExport,
-  argTypes: {
-    caption: { control: "text" },
-    type: {
-      control: { type: "select" },
-      options: ["success", "error", "warning", "info", "loading"],
-    },
-    hideclose: { control: "boolean" },
-    animation: { control: "select", options: animationNames },
-  },
+  // argTypes: {
+  //   caption: { control: "text" },
+  //   type: {
+  //     control: { type: "select" },
+  //     options: ["success", "error", "warning", "info", "loading"],
+  //   },
+  //   hideclose: { control: "boolean" },
+  //   animation: { control: "select", options: animationNames },
+  // },
 };
 
 export default meta;
@@ -50,9 +54,15 @@ export const Docs: Story = {
       properties={props}
       events={events}
       methods={methods}
-      styling={styling}
+      // styling={styling}
+      style={style}
+      token={token}
     />
   ),
+  args:{
+    name:"docsMessage",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -121,6 +131,14 @@ export const Basic: Story = {
     type: "success",
     hideclose: false,
   },
+  argTypes: {
+    caption: { control: "text" },
+    type: {
+      control: { type: "select" },
+      options: ["success", "error", "warning", "info", "loading"],
+    },
+    hideclose: { control: "boolean" }
+  },
 };
 
 export const Animation: Story = {
@@ -132,7 +150,67 @@ export const Animation: Story = {
     caption: "This message has an animation applied",
     type: "success",
     hideclose: false,
-    animation: "fadeIn",
+    animation: "tada",
+  },
+  argTypes: {
+    caption: { control: "text" },
+    type: {
+      control: { type: "select" },
+      options: ["success", "error", "warning", "info", "loading"],
+    },
+    hideclose: { control: "boolean" },
+    animation: { control: "select", options: animationNames },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) =>{
+     // Message component can't spread data-design-token-target, so we apply it to a wrapper
+        const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+
+        return (
+          <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+            <MessageDefaultExport {...componentArgs} listener={mockListener} />
+          </Box>
+        );
+  },
+  args: {
+    name: "standardMessage",
+    listener: mockListener,
+    caption: "Operation completed successfully!",
+    type: "success",
+    // Add data-design-token-target attribute
+    "data-design-token-target": true,
+  },
+  argTypes: {
+    caption: { control: "text" },
+    type: {
+      control: { type: "select" },
+      options: ["success", "error", "warning", "info", "loading"],
+    },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: messageTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "message",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+      // Map the "type" prop to CSS class names (what's in the DOM)
+      // The parser will use selector lookup to find the variant key
+      propToVariantMap: {
+        propName: "type",  // Watch the "type" prop instead of className
+        mapping: {
+          success: "alert-success",   // type="success" → CSS class "alert-success" → variant key "filled-success"
+          error: "alert-danger",      // type="error" → CSS class "alert-danger" → variant key "filled-danger"
+          warning: "alert-warning",   // type="warning" → CSS class "alert-warning" → variant key "filled-warning"
+          info: "alert-info",         // type="info" → CSS class "alert-info" → variant key "filled-info"
+          loading: "alert-loading"    // type="loading" → CSS class "alert-loading" → variant key "filled-loading"
+        }
+      }
+    },
+    layout: 'fullscreen',
   },
 };
 

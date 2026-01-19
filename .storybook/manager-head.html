@@ -4,10 +4,15 @@
 />
 <meta
   name="description"
-  content="Wavemaker React components"
+  content="Wavemaker ReactNative components"
   key="desc"
 />
 <style>
+  body {
+    * {
+      outline: none;
+    }
+  }
   @font-face {
     font-family: "neurial-grotesk-bold";
     src: url("fonts/neurialgrotesk-bold-webfont.woff2") format("woff2");
@@ -38,28 +43,25 @@
 
   /* Version Switcher Styles */
   .wm-version-switcher {
-    padding: 10px 16px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    background: linear-gradient(135deg, rgba(41, 109, 246, 0.03) 0%, rgba(41, 109, 246, 0.08) 100%);
-    order: 2 !important;
-    /* Position between logo (1) and search (3) */
+    padding: 10px 0px;
+    margin: 4px 0 !important;
   }
 
   /* Make sidebar header use flexbox for ordering */
-  .sidebar-container>div:first-child {
+  .sidebar-container > div:first-child {
     display: flex !important;
     flex-direction: column !important;
   }
 
   /* Logo/branding area comes first */
-  .sidebar-container>div:first-child>a:first-child,
-  .sidebar-container>div:first-child>div:first-child {
+  .sidebar-container > div:first-child > a:first-child,
+  .sidebar-container > div:first-child > div:first-child {
     order: 1 !important;
   }
 
   /* Search bar comes after version switcher */
-  .sidebar-container>div:first-child>form,
-  .sidebar-container>div:first-child>div:has(form) {
+  .sidebar-container > div:first-child > form,
+  .sidebar-container > div:first-child > div:has(form) {
     order: 3 !important;
   }
 
@@ -68,6 +70,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+    padding-right: 7px;
   }
 
   .wm-framework-badge {
@@ -88,11 +91,11 @@
 
   .wm-version-select {
     padding: 4px 24px 4px 8px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 5px;
+    border-radius: 2px;
     background: white;
     font-size: 12px;
     color: rgba(48, 48, 48, 1);
+    border: none;
     cursor: pointer;
     appearance: none;
     outline: none;
@@ -112,19 +115,80 @@
     /* border-color: #296df6; */
     box-shadow: 0 0 0 2px rgba(41, 109, 246, 0.15);
   }
+  button[aria-label="Settings"] {
+    order: 2;
+  }
+  button[aria-label="Tag filters"] {
+    display: none;
+  }
+  .search-field + button {
+    display: none;
+  }
+
+  a[href="#storybook-preview-wrapper"] {
+    display: none;
+  }
+
+  button.wm-design-token-export {
+    cursor: pointer;
+    display: inline-flex;
+    gap: 6px;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 4px;
+    border: 1px solid transparent;
+    height: 26px;
+    width: 26px;
+    text-align: center;
+    text-decoration: none;
+    transition-property: background, box-shadow;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+    vertical-align: top;
+    white-space: nowrap;
+    user-select: none;
+    opacity: 1;
+    margin-right: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    background: transparent;
+    color: rgb(115, 130, 140);
+    box-shadow: none;
+    border-radius: 4px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: visible;
+    z-index: 1;
+  }
+  button.wm-design-token-export:hover {
+    background: rgba(41, 109, 246, 0.14);
+    cursor: pointer;
+    color: rgb(41, 109, 246);
+    border-color: transparent;
+  }
+  button.wm-design-token-export span {
+    font-size: 13px;
+  }
 </style>
 
 <script type="text/javascript" ;>
+  // Version configuration - update URLs when deploying
   const versionsConfig = {
-        frameworkLabel: "React",
-        frameworkIcon: `<svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><ellipse cx="16" cy="16" rx="14" ry="5.5" fill="none" stroke="currentColor" stroke-width="2"/><ellipse cx="16" cy="16" rx="14" ry="5.5" fill="none" stroke="currentColor" stroke-width="2" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="14" ry="5.5" fill="none" stroke="currentColor" stroke-width="2" transform="rotate(120 16 16)"/><circle cx="16" cy="16" r="3" fill="currentColor"/></svg>`,
-        versions: [
-          { label: "11.01", url: "https://react-components.onwavemaker.com", current: true },
-          { label: "11.2", url: "https://react-components.onwavemaker.com" },
-          // { label: "11.11", url: "https://dev-rn-components.onwavemaker.com" },
-        ]
+    frameworkLabel: "React",
+    frameworkIcon: `<svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><ellipse cx="16" cy="16" rx="14" ry="5.5" fill="none" stroke="currentColor" stroke-width="2"/><ellipse cx="16" cy="16" rx="14" ry="5.5" fill="none" stroke="currentColor" stroke-width="2" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="14" ry="5.5" fill="none" stroke="currentColor" stroke-width="2" transform="rotate(120 16 16)"/><circle cx="16" cy="16" r="3" fill="currentColor"/></svg>`,
+    versions: [
+      {
+        label: "11.01",
+        url: "https://react-components.onwavemaker.com",
+        current: true,
+      },
+      { label: "11.2", url: "https://react-components.onwavemaker.com" },
+      // { label: "11.11", url: "https://dev-rn-components.onwavemaker.com" },
+    ],
   };
-
   const componentIcons = {
     accordion: "fa-thin fa-bars-staggered",
     anchor: "fa-thin fa-link",
@@ -193,14 +257,116 @@
     donutchart: "fa fa-circle-notch",
     linechart: "fa fa-chart-line",
     piechart: "fa fa-pie-chart",
-    bottomsheet:'fa-thin fa-file'
+    bottomsheet: "fa-thin fa-file",
   };
 
   document.addEventListener("DOMContentLoaded", () => {
+    const injectVersionSwitcher = () => {
+      // Check if already injected
+      if (document.querySelector(".wm-version-switcher")) return;
+
+      // Try multiple selectors to find the right insertion point
+      let insertTarget = null;
+      let insertPosition = "afterend";
+
+      // Try 1: Find the search input container
+      const searchForm = document.querySelector(".sidebar-header");
+      if (searchForm) {
+        insertTarget = searchForm.closest("div") || searchForm;
+      }
+
+      // Try 3: Just get the sidebar container itself
+      if (!insertTarget) {
+        const sidebar =
+          document.querySelector(".sidebar-container") ||
+          document.querySelector('[class*="Sidebar"]') ||
+          document.querySelector("nav");
+        if (sidebar && sidebar.firstChild) {
+          insertTarget = sidebar.firstChild;
+        }
+      }
+
+      if (!insertTarget) {
+        console.log("WM Version Switcher: Could not find sidebar element");
+        return;
+      }
+
+      // Create version switcher element
+      const switcher = document.createElement("div");
+      switcher.className = "wm-version-switcher";
+
+      // Build version options HTML
+      const optionsHtml = versionsConfig.versions
+        .map(
+          (v) =>
+            `<option value="${v.url}"${v.current ? " selected" : ""}>${
+              v.label
+            }${v.current ? "" : ""}</option>`,
+        )
+        .join("");
+
+      switcher.innerHTML = `
+        <div class="wm-version-switcher-header">
+          <div class="wm-framework-badge">
+             ${versionsConfig.frameworkIcon}
+            <span>${versionsConfig.frameworkLabel}</span>
+          </div>
+          <select name="version-slect" class="wm-version-select" title="Switch version">
+            ${optionsHtml}
+          </select>
+        </div>
+      `;
+
+      // Add change handler
+      const select = switcher.querySelector(".wm-version-select");
+      select.addEventListener("change", (e) => {
+        const url = e.target.value;
+        if (url && url !== "#") {
+          window.location.href = url;
+        }
+      });
+
+      // Insert BEFORE the target element (above the search bar)
+      insertTarget.insertAdjacentElement(insertPosition, switcher);
+      console.log("WM Version Switcher: Injected above search bar");
+    };
+
+    const injectDesginTokenExpButton = () => {
+      // Check if already injected
+      if (document.querySelector(".wm-design-token-export")) return;
+
+      // Try multiple selectors to find the right insertion point
+      let insertTargetHeader = null;
+      insertTargetHeader = document.querySelector(".sidebar-header");
+      if (insertTargetHeader) {
+        insertTargetHeader =
+          insertTargetHeader.closest("div") || insertTargetHeader;
+      }
+
+      if (!insertTargetHeader) {
+        console.log("WM Design Token Expander: Could not find header element");
+        return;
+      }
+
+      // Create design token expander button
+      const buttonExportds = document.createElement("button");
+      buttonExportds.className = "wm-design-token-export";
+      buttonExportds.innerHTML = `<span class="fa fa-cloud-arrow-up"></span>`;
+
+      // Add click handler
+      buttonExportds.addEventListener("click", () => {
+        console.log("Design Tokens Export clicked");
+      });
+
+      // Insert at the end of the sidebar
+      insertTargetHeader.insertAdjacentElement("beforeend", buttonExportds);
+      console.log("WM Design Token Expander: Injected at the end of sidebar");
+    };
+
     // Function to replace SVGs with FontAwesome icons
     const replaceSVGs = () => {
       const sidebarItems = document.querySelectorAll(
-        '[data-nodetype="component"]:not(.icon-replaced)'
+        '[data-nodetype="component"]:not(.icon-replaced)',
       );
 
       sidebarItems.forEach((sidebarItem) => {
@@ -227,7 +393,7 @@
     // Function to handle auto-collapse logic
     const setupAutoCollapse = () => {
       const sidebarItems = document.querySelectorAll(
-        '[data-nodetype="component"]:not(.listener-added)'
+        '[data-nodetype="component"]:not(.listener-added)',
       );
 
       // Keep track of the currently open item
@@ -266,90 +432,16 @@
       });
     };
 
-    const injectVersionSwitcher = () => {
-      // Check if already injected
-      if (document.querySelector('.wm-version-switcher')) return;
-
-      // Try multiple selectors to find the right insertion point
-      let insertTarget = null;
-      let insertPosition = 'afterend';
-
-      // Try 1: Find the search input container
-      const searchForm = document.querySelector('form[role="search"]') ||
-        document.querySelector('[role="search"]') ||
-        document.querySelector('.sidebar-container form');
-      if (searchForm) {
-        insertTarget = searchForm.closest('div') || searchForm;
-      }
-
-      // Try 2: Find sidebar header/branding area
-      if (!insertTarget) {
-        const sidebarHeader = document.querySelector('.sidebar-container > div:first-child') ||
-          document.querySelector('[class*="sidebar"] > div:first-child');
-        if (sidebarHeader) {
-          insertTarget = sidebarHeader;
-        }
-      }
-
-      // Try 3: Just get the sidebar container itself
-      if (!insertTarget) {
-        const sidebar = document.querySelector('.sidebar-container') ||
-          document.querySelector('[class*="Sidebar"]') ||
-          document.querySelector('nav');
-        if (sidebar && sidebar.firstChild) {
-          insertTarget = sidebar.firstChild;
-        }
-      }
-
-      if (!insertTarget) {
-        console.log('WM Version Switcher: Could not find sidebar element');
-        return;
-      }
-
-      // Create version switcher element
-      const switcher = document.createElement('div');
-      switcher.className = 'wm-version-switcher';
-
-      // Build version options HTML
-      const optionsHtml = versionsConfig.versions.map(v =>
-        `<option value="${v.url}"${v.current ? ' selected' : ''}>${v.label}${v.current ? ' ✓' : ''}</option>`
-      ).join('');
-
-      switcher.innerHTML = `
-        <div class="wm-version-switcher-header">
-          <div class="wm-framework-badge">
-            <span>${versionsConfig.frameworkIcon}</span>
-            <span>${versionsConfig.frameworkLabel}</span>
-          </div>
-          <select class="wm-version-select" title="Switch version">
-            ${optionsHtml}
-          </select>
-        </div>
-      `;
-
-      // Add change handler
-      const select = switcher.querySelector('.wm-version-select');
-      select.addEventListener('change', (e) => {
-        const url = e.target.value;
-        if (url && url !== '#') {
-          window.location.href = url;
-        }
-      });
-
-      // Insert BEFORE the target element (above the search bar)
-      insertTarget.insertAdjacentElement('beforebegin', switcher);
-      console.log('WM Version Switcher: Injected above search bar');
-    };
-
     // MutationObserver to monitor when the sidebar is added/updated
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
         if (mutation.type === "childList") {
           const sidebar = document.querySelector(".sidebar-container");
           if (sidebar) {
+            injectVersionSwitcher(); // Inject version switcher
+            injectDesginTokenExpButton();
             replaceSVGs(); // Replace SVGs
             setupAutoCollapse(); // Setup auto-collapse logic
-            injectVersionSwitcher(); // Inject version switcher
           }
         }
       }
@@ -357,8 +449,5 @@
 
     // Start observing the DOM for sidebar injection
     observer.observe(document.body, { childList: true, subtree: true });
-
-    // Try to inject immediately in case sidebar is already present
-    injectVersionSwitcher();
   });
 </script>

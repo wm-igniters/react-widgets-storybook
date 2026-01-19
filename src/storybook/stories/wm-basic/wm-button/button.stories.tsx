@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box, Stack, Typography } from "@mui/material";
+
 import ButtonDefaultExport from "../../../../components/form/button/index";
+import { iconClassNames } from "../../constants/iconClassConstants";
 
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
@@ -18,7 +20,7 @@ import token from "./docs/token.md?raw";
 // - Appearances (filled, outlined, text, transparent)
 // - Variants (primary, secondary, tertiary, default)
 // - States (hover, focus, active, disabled)
-import buttonTokensData from "../../../../designTokens/wm-button.json";
+import buttonTokensData from "../../../../designTokens/components/button/button.json";
 
 const mockListener = {
   appLocale: {
@@ -30,63 +32,63 @@ const mockListener = {
 const meta = {
   title: "Basic/Button",
   component: ButtonDefaultExport,
-  argTypes: {
-    caption: { control: "text" },
-    disabled: { control: "boolean" },
-    type: {
-      control: { type: "select" },
-      options: ["button", "submit", "reset"],
-    },
-    iconposition: {
-      control: { type: "select" },
-      options: ["left", "right"],
-    },
-    iconwidth: { control: "text" },
-    iconheight: { control: "text" },
-    iconmargin: { control: "text" },
-    badgevalue: { control: "text" },
-    shortcutkey: { control: "text" },
-    arialabel: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-github"],
-    },
-    className: {
-  control: "select",
-  options: [
-    // Filled
-    "btn-filled btn-primary",
-    "btn-filled btn-secondary",
-    "btn-filled btn-success",
-    "btn-filled btn-danger",
-    "btn-filled btn-warning",
-    "btn-filled btn-info",
-    "btn-filled btn-default",
+//   argTypes: {
+//     caption: { control: "text" },
+//     disabled: { control: "boolean" },
+//     type: {
+//       control: { type: "select" },
+//       options: ["button", "submit", "reset"],
+//     },
+//     iconposition: {
+//       control: { type: "select" },
+//       options: ["left", "right"],
+//     },
+//     iconwidth: { control: "text" },
+//     iconheight: { control: "text" },
+//     iconmargin: { control: "text" },
+//     badgevalue: { control: "text" },
+//     shortcutkey: { control: "text" },
+//     arialabel: { control: "text" },
+//     iconclass:{
+//       control:{
+//         type:"select"
+//       },
+//       options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
+//         "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-github"],
+//     },
+//     className: {
+//   control: "select",
+//   options: [
+//     // Filled
+//     "btn-filled btn-primary",
+//     "btn-filled btn-secondary",
+//     "btn-filled btn-success",
+//     "btn-filled btn-danger",
+//     "btn-filled btn-warning",
+//     "btn-filled btn-info",
+//     "btn-filled btn-default",
 
-    // Outlined
-    "btn-outlined btn-primary",
-    "btn-outlined btn-secondary",
-    "btn-outlined btn-success",
-    "btn-outlined btn-danger",
-    "btn-outlined btn-warning",
-    "btn-outlined btn-info",
-    "btn-outlined btn-default",
+//     // Outlined
+//     "btn-outlined btn-primary",
+//     "btn-outlined btn-secondary",
+//     "btn-outlined btn-success",
+//     "btn-outlined btn-danger",
+//     "btn-outlined btn-warning",
+//     "btn-outlined btn-info",
+//     "btn-outlined btn-default",
 
-    // Special
-    "btn-link",
-    "btn-transparent",
-    "no-border",
+//     // Special
+//     "btn-link",
+//     "btn-transparent",
+//     "no-border",
 
-    // Sizes (example with primary)
-    "btn-filled btn-primary btn-sm",
-    "btn-filled btn-primary btn-lg",
-    "btn-filled btn-primary btn-xs",
-  ],
-}
-  }
+//     // Sizes (example with primary)
+//     "btn-filled btn-primary btn-sm",
+//     "btn-filled btn-primary btn-lg",
+//     "btn-filled btn-primary btn-xs",
+//   ],
+// }
+//   }
 } satisfies Meta<typeof ButtonDefaultExport>;
 
 export default meta;
@@ -110,6 +112,10 @@ export const Docs: Story = {
       token={token}
     />
   ),
+  args:{
+    name:"docsButton",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -219,6 +225,13 @@ export const Showcase: Story = {
                 listener={mockListener}
               />
               <ButtonDefaultExport
+                name="filledTertiary"
+                caption="Tertiary"
+                type="button"
+                className="btn-filled btn-tertiary"
+                listener={mockListener}
+              />
+              {/* <ButtonDefaultExport
                 name="filledSuccess"
                 caption="Success"
                 type="button"
@@ -245,7 +258,7 @@ export const Showcase: Story = {
                 type="button"
                 className="btn-filled btn-info"
                 listener={mockListener}
-              />
+              /> */}
             </Box>
           </Stack>
 
@@ -278,6 +291,13 @@ export const Showcase: Story = {
                 listener={mockListener}
               />
               <ButtonDefaultExport
+                name="outlinedTertiary"
+                caption="Tertiary"
+                type="button"
+                className="btn-outlined btn-tertiary"
+                listener={mockListener}
+              />
+              {/* <ButtonDefaultExport
                 name="outlinedSuccess"
                 caption="Success"
                 type="button"
@@ -304,12 +324,102 @@ export const Showcase: Story = {
                 type="button"
                 className="btn-outlined btn-info"
                 listener={mockListener}
+              /> */}
+            </Box>
+          </Stack>
+
+          {/* Row 3: Text Variants */}
+          <Stack spacing={1.5}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Text Variants
+            </Typography>
+
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gap: 3,
+                maxWidth: 900,
+              }}
+            >
+              <ButtonDefaultExport
+                name="textPrimary"
+                caption="Primary"
+                type="button"
+                className="btn-text btn-primary"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="textSecondary"
+                caption="Secondary"
+                type="button"
+                className="btn-text btn-secondary"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="textTertiary"
+                caption="Tertiary"
+                type="button"
+                className="btn-text btn-tertiary"
+                listener={mockListener}
+              />
+              {/* <ButtonDefaultExport
+                name="textSuccess"
+                caption="Success"
+                type="button"
+                className="btn-text btn-success"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="textDanger"
+                caption="Danger"
+                type="button"
+                className="btn-text btn-danger"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="textWarning"
+                caption="Warning"
+                type="button"
+                className="btn-text btn-warning"
+                listener={mockListener}
+              />
+              <ButtonDefaultExport
+                name="textInfo"
+                caption="Info"
+                type="button"
+                className="btn-text btn-info"
+                listener={mockListener}
+              /> */}
+            </Box>
+          </Stack>
+
+          {/* Row 3: Outlined Variants */}
+          <Stack spacing={1.5}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Transparent Variants
+            </Typography>
+
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gap: 3,
+                maxWidth: 900,
+              }}
+            >
+              <ButtonDefaultExport
+                name="buttonTransparent"
+                caption="Button"
+                type="button"
+                className="btn-transparent"
+                listener={mockListener}
               />
             </Box>
           </Stack>
 
           {/* Row 4: Size Variants */}
-          <Stack spacing={1.5}>
+          {/* <Stack spacing={1.5}>
             <Typography variant="subtitle2" color="text.secondary">
               Size Variants
             </Typography>
@@ -337,7 +447,7 @@ export const Showcase: Story = {
                 listener={mockListener}
               />
             </Stack>
-          </Stack>
+          </Stack> */}
         </Stack>
       </Box>
     );
@@ -348,17 +458,153 @@ export const Showcase: Story = {
   },
 };
 
-// export const Basic: Story = {
+export const Basic: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+    const { className } = args;
+
+    return (
+      <Box style={{ padding: 16 }} key={className}>
+        <ButtonDefaultExport
+          key={className}
+          className={className}
+          {...args}
+          listener={mockListener}
+        />
+      </Box>
+    );
+  },
+  args: {
+    name: "basicButton",
+    caption: "Click Me",
+    disabled: false,
+    type: "button",
+    className: "btn-filled btn-default"
+  },
+  argTypes: {
+    caption: { control: "text" },
+    disabled: { control: "boolean" },
+    type: {
+      control: { type: "select" },
+      options: ["button", "submit", "reset"],
+    },
+    iconposition: {
+      control: { type: "select" },
+      options: ["left", "right"],
+    },
+    iconurl: {control: "text"},
+    iconwidth: { control: "text" },
+    iconheight: { control: "text" },
+    iconmargin: { control: "text" },
+    badgevalue: { control: "text" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    className: {
+  control: "select",
+  options: [
+    // Filled
+    "btn-filled btn-primary",
+    "btn-filled btn-secondary",
+    "btn-filled btn-tertiary",
+    "btn-filled btn-default",
+
+    // Outlined
+    "btn-outlined btn-primary",
+    "btn-outlined btn-secondary",
+    "btn-outlined btn-tertiary",
+    "btn-outlined btn-default",
+
+    //text
+    "btn-text btn-primary",
+    "btn-text btn-secondary",
+    "btn-text btn-tertiary",
+    "btn-text btn-default",
+
+    // Special
+    "btn-transparent",
+
+    // Sizes (example with primary)
+    // "btn-filled btn-primary btn-sm",
+    // "btn-filled btn-primary btn-lg",
+    // "btn-filled btn-primary btn-xs",
+      ]
+    }
+  }
+};
+
+
+// export const DesignToken: Story = {
 //   tags: ['show-panel'],
 //   render: Template,
 //   args: {
-//     name: "basicButton",
+//     name: "designTokenButton",
 //     caption: "Click Me",
 //     disabled: false,
 //     type: "button",
-//     className: "btn-default btn-filled"
+//     className: "btn-filled btn-primary",
+//     iconclass:"fa fa-github",
+//     iconposition:"left",
+//     "data-design-token-target":"true"
+//   },
+//   argTypes: {
+//     caption: { control: "text" },
+//     disabled: { control: "boolean" },
+//     iconposition: {
+//       control: { type: "select" },
+//       options: ["left", "right"],
+//     },
+//     badgevalue: { control: "text" },
+//     iconclass:{
+//       control:{
+//         type:"select"
+//       },
+//       options:["fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
+//         "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-github"],
+//     },
+//     className: {
+//   control: "select",
+//   options: [
+//     // Filled
+//     "btn-filled btn-primary",
+//     "btn-filled btn-secondary",
+//     "btn-filled btn-success",
+//     "btn-filled btn-danger",
+//     "btn-filled btn-warning",
+//     "btn-filled btn-info",
+//     "btn-filled btn-default",
+
+//     // Outlined
+//     "btn-outlined btn-primary",
+//     "btn-outlined btn-secondary",
+//     "btn-outlined btn-success",
+//     "btn-outlined btn-danger",
+//     "btn-outlined btn-warning",
+//     "btn-outlined btn-info",
+//     "btn-outlined btn-default",
+
+//     // Special
+//     "btn-link",
+//     "btn-transparent",
+//     "no-border",
+
+//     // Sizes (example with primary)
+//     "btn-filled btn-primary btn-sm",
+//     "btn-filled btn-primary btn-lg",
+//     "btn-filled btn-primary btn-xs",
+//       ]
+//     },
+//     "data-design-token-target": { control: false }
+//   },
+//   parameters: {
+//     designTokens: {
+//       enabled: true,
+//       tokenData: buttonTokensData,  // Pass raw JSON data instead of pre-parsed config
+//       componentKey: "btn",  // Component identifier for parsing
+//       extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+//     },
+//     layout: 'fullscreen',
 //   },
 // };
+
 
 // ============================================================================
 // DESIGN TOKEN STORY
@@ -407,6 +653,7 @@ export const Filled: Story = {
               className={className}
               listener={mockListener}
               data-design-token-target="true"
+              disabled={false}
             />
             <ButtonDefaultExport
               name={`filled${variantLabel}IconOnly`}
@@ -418,6 +665,7 @@ export const Filled: Story = {
               iconheight="16px"
               listener={mockListener}
               data-design-token-target="true"
+              disabled={false}
             />
             <ButtonDefaultExport
               name={`filled${variantLabel}IconText`}
@@ -431,6 +679,7 @@ export const Filled: Story = {
               iconmargin="0 8px 0 0"
               listener={mockListener}
               data-design-token-target="true"
+              disabled={false}
             />
           </Stack>
         </Stack>
@@ -464,7 +713,7 @@ export const Filled: Story = {
       componentKey: "btn",  // Component identifier for parsing
       extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
     },
-    layout: 'padded',
+    layout: 'fullscreen',
   },
 };
 
@@ -547,7 +796,7 @@ export const Outlined: Story = {
       componentKey: "btn",  // Component identifier for parsing
       extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
     },
-    layout: 'padded',
+    layout: 'fullscreen',
   },
 };
 
@@ -630,7 +879,7 @@ export const Text: Story = {
       componentKey: "btn",  // Component identifier for parsing
       extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
     },
-    layout: 'padded',
+    layout: 'fullscreen',
   },
 };
 
@@ -708,7 +957,7 @@ export const Transparent: Story = {
       componentKey: "btn",  // Component identifier for parsing
       extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
     },
-    layout: 'padded',
+    layout: 'fullscreen',
   },
 };
 

@@ -10,44 +10,47 @@ import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
+import token from "./docs/token.md?raw";
+
+import searchTokensData from "../../../../designTokens/components/search/search.json";
 
 const meta: Meta<typeof SearchDefaultExport> = {
   title: "Basic/Search",
   component: SearchDefaultExport,
-  argTypes: {
-    type: {
-      control: { type: "select" },
-      options: ["search", "autocomplete"],
-    },
-    searchon: {
-      control: { type: "select" },
-      options: ["typing", "onsearchiconclick"],
-    },
-    matchmode: {
-      control: { type: "select" },
-      options: ["contains", "start", "end", "exact"],
-    },
-    searchkey:{
-     control:{ type:"text" },
-     table:{ disable:false, }
-    },
-    placeholder: { control: "text" },
-    showclear: { control: "boolean" },
-    showsearchicon: { control: "boolean" },
-    showbackbutton: { control: "boolean" },
-    // dropup: { control: "boolean" },
-    readonly: { control: "boolean" },
-    disabled: { control: "boolean" },
-    autofocus: { control: "boolean" },
-    // debouncetime: { control: "number" },
-    // minchars: { control: "number" },
-    // limit: { control: "number" },
-    // tabindex: { control: "number" },
-    datafield: { control: "text" },
-    displayfield: { control: "text" },
-    // hint: { control: "text" },
-    // arialabel: { control: "text" },
-  },
+  // argTypes: {
+  //   type: {
+  //     control: { type: "select" },
+  //     options: ["search", "autocomplete"],
+  //   },
+  //   searchon: {
+  //     control: { type: "select" },
+  //     options: ["typing", "onsearchiconclick"],
+  //   },
+  //   matchmode: {
+  //     control: { type: "select" },
+  //     options: ["contains", "start", "end", "exact"],
+  //   },
+  //   searchkey:{
+  //    control:{ type:"text" },
+  //    table:{ disable:false, }
+  //   },
+  //   placeholder: { control: "text" },
+  //   showclear: { control: "boolean" },
+  //   showsearchicon: { control: "boolean" },
+  //   showbackbutton: { control: "boolean" },
+  //   // dropup: { control: "boolean" },
+  //   readonly: { control: "boolean" },
+  //   disabled: { control: "boolean" },
+  //   autofocus: { control: "boolean" },
+  //   // debouncetime: { control: "number" },
+  //   // minchars: { control: "number" },
+  //   // limit: { control: "number" },
+  //   // tabindex: { control: "number" },
+  //   datafield: { control: "text" },
+  //   displayfield: { control: "text" },
+  //   // hint: { control: "text" },
+  //   // arialabel: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -102,9 +105,14 @@ export const Docs: Story = {
       properties={props}
       events={events}
       methods={methods}
-      styling={styling}
+      // styling={styling}
+      token={token}
     />
   ),
+  args:{
+    name:"docsSearch",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -202,8 +210,102 @@ export const Basic: Story = {
     readonly: false,
     autofocus: false,
   },
+  argTypes: {
+    type: {
+      control: { type: "select" },
+      options: ["search", "autocomplete"],
+    },
+    searchon: {
+      control: { type: "select" },
+      options: ["typing", "onsearchiconclick"],
+    },
+    matchmode: {
+      control: { type: "select" },
+      options: ["contains", "start", "end", "exact"],
+    },
+    searchkey:{
+     control:{ type:"text" },
+     table:{ disable:false, }
+    },
+    placeholder: { control: "text" },
+    showclear: { control: "boolean" },
+    showsearchicon: { control: "boolean" },
+    showbackbutton: { control: "boolean" },
+    // dropup: { control: "boolean" },
+    readonly: { control: "boolean" },
+    disabled: { control: "boolean" },
+    autofocus: { control: "boolean" },
+    // debouncetime: { control: "number" },
+    // minchars: { control: "number" },
+    // limit: { control: "number" },
+    datafield: { control: "text" },
+    displayfield: { control: "text" },
+  },
 };
 
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "standardSearch",
+    listener: mockListener,
+    type: "autocomplete",
+    placeholder: "Search...",
+    dataset: sampleDataset,
+    datafield: "name",
+    displayfield: "name",
+    searchon: "onsearchiconclick",
+    searchkey: "name",
+    showclear: true,
+    showsearchicon: true,
+    showbackbutton:false,
+    disabled: false,
+    readonly: false,
+    autofocus: false,
+    "data-design-token-target":"true",
+  },
+  argTypes: {
+    type: {
+      control: { type: "select" },
+      options: ["search", "autocomplete"],
+    },
+    searchon: {
+      control: { type: "select" },
+      options: ["typing", "onsearchiconclick"],
+    },
+    matchmode: {
+      control: { type: "select" },
+      options: ["contains", "start", "end", "exact"],
+    },
+    searchkey:{
+     control:{ type:"text" },
+     table:{ disable:false, }
+    },
+    placeholder: { control: "text" },
+    showclear: { control: "boolean" },
+    showsearchicon: { control: "boolean" },
+    showbackbutton: { control: "boolean" },
+    // dropup: { control: "boolean" },
+    readonly: { control: "boolean" },
+    disabled: { control: "boolean" },
+    autofocus: { control: "boolean" },
+    // debouncetime: { control: "number" },
+    // minchars: { control: "number" },
+    // limit: { control: "number" },
+    datafield: { control: "text" },
+    displayfield: { control: "text" },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: searchTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "search",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
+};
 
 // export const SearchDefault: Story = {
 //   render: Template,

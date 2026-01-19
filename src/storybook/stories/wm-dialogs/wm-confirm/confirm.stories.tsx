@@ -11,6 +11,8 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
 
+import { iconClassNames } from "../../constants/iconClassConstants";
+
 const mockListener = {
   appLocale: {},
   Widgets: {},
@@ -19,13 +21,13 @@ const mockListener = {
 const meta = {
   title: "Dialogs/Confirm Dialog",
   component: ConfirmDialogDefaultExport,
-  argTypes: {
-    title: { control: "text" },
-    message: { control: "text" },
-    oktext: { control: "text" },
-    canceltext: { control: "text" },
-    iconclass: { control: "select", options: ["fa fa-circle-check", "fa fa-trash", "fa fa-save"] },
-  },
+  // argTypes: {
+  //   title: { control: "text" },
+  //   message: { control: "text" },
+  //   oktext: { control: "text" },
+  //   canceltext: { control: "text" },
+  //   iconclass: { control: "select", options: ["fa fa-circle-check", "fa fa-trash", "fa fa-save"] },
+  // },
 } satisfies Meta<typeof ConfirmDialogDefaultExport>;
 
 export default meta;
@@ -76,6 +78,10 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{
+    name:"docsConfirmDialog",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -216,6 +222,13 @@ export const Basic: Story = {
     canceltext: "CANCEL",
     iconclass: "fa fa-circle-check",
     listener: mockListener,
+  },
+  argTypes: {
+    title: { control: "text" },
+    message: { control: "text" },
+    oktext: { control: "text" },
+    canceltext: { control: "text" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
   },
 };
 

@@ -10,18 +10,22 @@ import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
+import style from "./docs/style.md?raw";
+import token from "./docs/token.md?raw";
+
+import tileTokensData from "../../../../designTokens/components/tile/tile.json";
 
 const meta: Meta<typeof TileDefaultExport> = {
   title: "Basic/Tile",
   component: TileDefaultExport,
-  argTypes: {
-    className: {
-      control: {
-        type: "select",
-      },
-      options: ["bg-primary", "bg-success", "bg-danger", "bg-warning", "bg-info"],
-    },
-  },
+  // argTypes: {
+  //   className: {
+  //     control: {
+  //       type: "select",
+  //     },
+  //     options: ["bg-primary", "bg-success", "bg-danger", "bg-warning", "bg-info"],
+  //   },
+  // },
 };
 
 export default meta;
@@ -50,9 +54,15 @@ export const Docs: Story = {
       properties={props}
       events={events}
       methods={methods}
-      styling={styling}
+      // styling={styling}
+      style={style}
+      token={token}
     />
   ),
+  args:{
+    name:"docsTile",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -91,6 +101,7 @@ export const Showcase: Story = {
             spacing={3}
             justifyContent="space-between"
             flexWrap="wrap"
+            gap="24px"
           >
             {tilesHorizontal.map((tile, index) => (
               <TileDefaultExport
@@ -105,6 +116,7 @@ export const Showcase: Story = {
                   borderRadius: "12px",
                   boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                   textAlign: "center",
+                  margin: "0",
                 }}
               >
                 <Typography variant="h4" fontWeight="bold">
@@ -171,6 +183,53 @@ export const Basic: Story = {
     ),
     className: "bg-primary",
   },
+  argTypes: {
+    className: {
+      control: {
+        type: "select",
+      },
+      options: ["bg-primary", "bg-success", "bg-danger", "bg-warning", "bg-info"],
+    },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "standardTile",
+    listener: mockListener,
+    children: (
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Tile Title
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          This is a tile with structured content including a title and description text.
+        </Typography>
+      </Box>
+    ),
+    className: "bg-primary",
+    "data-design-token-target":"true"
+  },
+  argTypes: {
+    className: {
+      control: {
+        type: "select",
+      },
+      options: ["bg-primary", "bg-success", "bg-danger", "bg-warning", "bg-info"],
+    },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: tileTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "tile",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
 };
 
 

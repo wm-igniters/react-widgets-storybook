@@ -4,9 +4,9 @@ import { Box, Stack, Typography, TextField, InputAdornment } from "@mui/material
 import SearchIcon from "@mui/icons-material/Search";
 
 import IconDefaultExport from "../../../../components/basic/icon/index";
-import {
-  fontAwesomeIcons,
-} from "../../constants/fontAwesomeIconConstants";
+import { fontAwesomeIcons } from "../../constants/fontAwesomeIconConstants";
+import { waveIcons } from "../../constants/wavIconConstants";
+import { iconClassNames } from "../../constants/iconClassConstants";
 
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
@@ -14,29 +14,33 @@ import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 import styling from "./docs/styling.md?raw";
+import style from "./docs/style.md?raw";
+import token from "./docs/token.md?raw";
+
+import iconTokensData from "../../../../designTokens/components/icon/icon.json";
 
 const meta: Meta<typeof IconDefaultExport> = {
   title: "Basic/Icon",
   component: IconDefaultExport,
-  argTypes: {
-    caption: { control: "text" },
-    iconclass:{
-      control:{
-        type:"select"
-      },
-      options:[ "fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-        "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
-    },
-    iconurl: { control: "text" },
-    iconposition: {
-      control: { type: "select" },
-      options: ["left", "right"],
-    },
-    iconsize: { control: "text" },
-    // arialabel: { control: "text" },
-    // prefabName: { control: "text" },
-    // hint: { control: "text" },
-  },
+  // argTypes: {
+  //   caption: { control: "text" },
+  //   iconclass:{
+  //     control:{
+  //       type:"select"
+  //     },
+  //     options:[ "fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
+  //       "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
+  //   },
+  //   iconurl: { control: "text" },
+  //   iconposition: {
+  //     control: { type: "select" },
+  //     options: ["left", "right"],
+  //   },
+  //   iconsize: { control: "text" },
+  //   // arialabel: { control: "text" },
+  //   // prefabName: { control: "text" },
+  //   // hint: { control: "text" },
+  // },
 };
 
 export default meta;
@@ -63,9 +67,15 @@ export const Docs: Story = {
       properties={props}
       events={events}
       methods={methods}
-      styling={styling}
+      // styling={styling}
+      style={style}
+      token={token}
     />
   ),
+  args:{
+    name:"docsIcon",
+    listener:mockListener
+  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -144,6 +154,32 @@ export const Showcase: Story = {
   },
 };
 
+// WaveIcon Library Story
+export const WaviconLibrary: Story = {
+  parameters: {
+    layout: "fullscreen",
+  },
+  render: () => {
+    const icons = waveIcons.map((icon) => ({
+      name: `wi-${icon}`,
+      iconclass: `wi wi-${icon}`,
+      iconsize: "24px",
+    }));
+
+    return (
+      <IconLibrary
+        title="Wavicon Library"
+        icons={icons}
+        iconClassPrefix="wi wi-"
+      />
+    );
+  },
+  args:{
+    name:"waveiconLibrary",
+    listener:mockListener
+  }
+};
+
 // Font Awesome Library Story
 export const FontAwesomeLibrary: Story = {
   parameters: {
@@ -164,6 +200,10 @@ export const FontAwesomeLibrary: Story = {
       />
     );
   },
+  args:{
+    name:"fontAwesomeIconLibrary",
+    listener:mockListener
+  }
 };
 
 export const Basic: Story = {
@@ -172,9 +212,57 @@ export const Basic: Story = {
   args: {
     name: "basicIcon",
     listener: mockListener,
-    iconclass: "fa fa-adjust",
-    iconsize: "24px",
+    iconclass: "fa fa-bar-chart",
   },
+  argTypes: {
+    caption: { control: "text" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    iconurl: { control: "text" },
+    iconposition: {
+      control: { type: "select" },
+      options: ["left", "right"],
+    },
+    iconsize: { control: "text" },
+  },
+};
+
+export const Standard: Story = {
+  tags: ['show-panel'],
+  render: (args) => {
+    // Icon component can't spread data-design-token-target, so we apply it to a wrapper
+    const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+
+    return (
+      <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+        <IconDefaultExport {...componentArgs} listener={mockListener} />
+      </Box>
+    );
+  },
+  args: {
+    name: "standardIcon",
+    listener: mockListener,
+    iconclass: "fa fa-bar-chart",
+    "data-design-token-target":"true"
+  },
+  argTypes: {
+    // caption: { control: "text" },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    iconurl: { control: "text" },
+    // iconposition: {
+    //   control: { type: "select" },
+    //   options: ["left", "right"],
+    // },
+    "data-design-token-target": { control: false }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: iconTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "icon",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  }, 
 };
 
 
