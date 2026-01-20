@@ -9,6 +9,10 @@ interface DocumentationProps {
   styling?: string;
   style?: string;
   token?: string;
+  externalLink?: {
+    href: string;
+    label?: string;
+  };
 }
 
 // Wrapper component to provide Storybook docs context
@@ -52,6 +56,7 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
   styling,
   style,
   token,
+  externalLink,
 }) => {
   const [activeTab, setActiveTab] = useState("overview");
   const activeColor = "#296df6"; // Blue theme
@@ -254,7 +259,53 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           margin: 20px 0 40px;
         }
 
+        .external-link-container{
+          display: flex;
+          justify-content: flex-end;
+          margin-bottom: 16px;
+        }
+
+        a.external-link{
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          color: var(--primary-blue);
+          text-decoration: none;
+          font-size: 14px;
+          font-weight: 500;
+          padding: 8px 12px;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+        }
+
+        a.external-link:hover{
+          // background-color: rgba(41, 109, 246, 0.08);
+          text-decoration: underline;
+        }
+
+        .external-link img{
+          width: 12px;
+          height: 14px;
+        }
+
       `}</style>
+
+      {externalLink && (
+        <div className="external-link-container">
+          <a
+            href={externalLink.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="external-link"
+          >
+            <img
+              src="/figmaLogo.png"
+              alt="Figma"
+            />
+            {externalLink.label || "View in Figma"}
+          </a>
+        </div>
+      )}
 
       <div
         style={{
