@@ -273,7 +273,7 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           text-decoration: none;
           font-size: 14px;
           font-weight: 500;
-          padding: 8px 12px;
+          padding: 2px;
           border-radius: 6px;
           transition: all 0.2s ease;
         }
