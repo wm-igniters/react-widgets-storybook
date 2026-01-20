@@ -59,12 +59,54 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args: {
+    data: mockData,
+    dataKeys: [],
+    selectedRegions: [],
+    chartColors: [],
+    margin: { top: 0, right: 0, left: 0, bottom: 0 },
+    showLegend: false,
+    legendPosition: "top" as const,
+    xAxisConfig: {},
+    yAxisConfig: {},
+    numberFormat: "",
+    xDataKeyArr: [],
+    onChartClick: () => {},
+    tooltips: false,
+    shape: "circle" as const,
+    onLegendClick: () => {},
+    shouldShowLegend: false,
+    availableRegions: [],
+  },
+  argTypes: {
+    data: { table: { disable: true } },
+    dataKeys: { table: { disable: true } },
+    selectedRegions: { table: { disable: true } },
+    chartColors: { table: { disable: true } },
+    margin: { table: { disable: true } },
+    showLegend: { table: { disable: true } },
+    legendPosition: { table: { disable: true } },
+    xAxisConfig: { table: { disable: true } },
+    yAxisConfig: { table: { disable: true } },
+    numberFormat: { table: { disable: true } },
+    xDataKeyArr: { table: { disable: true } },
+    onChartClick: { table: { disable: true } },
+    tooltips: { table: { disable: true } },
+    shape: { table: { disable: true } },
+    onLegendClick: { table: { disable: true } },
+    shouldShowLegend: { table: { disable: true } },
+    availableRegions: { table: { disable: true } },
+    offsettop: { table: { disable: true } },
+    offsetleft: { table: { disable: true } },
+    offsetbottom  : { table: { disable: true } },
+    offsetright: { table: { disable: true } },
+  },
   parameters: {
     layout: 'fullscreen',
   },
 };
 
-export const Showcase: StoryObj = {
+export const Showcase: Story = {
   render: () => {
     const singleSeriesData = mockData;
     const multiSeriesData = [
@@ -191,6 +233,48 @@ export const Showcase: StoryObj = {
         </Stack>
       </Box>
     );
+  },
+  args: {
+    data: mockData,
+    dataKeys: [],
+    selectedRegions: [],
+    chartColors: [],
+    margin: { top: 0, right: 0, left: 0, bottom: 0 },
+    showLegend: false,
+    legendPosition: "top" as const,
+    xAxisConfig: {},
+    yAxisConfig: {},
+    numberFormat: "",
+    xDataKeyArr: [],
+    onChartClick: () => {},
+    tooltips: false,
+    shape: "circle" as const,
+    onLegendClick: () => {},
+    shouldShowLegend: false,
+    availableRegions: [],
+  },
+  argTypes: {
+    data: { table: { disable: true } },
+    dataKeys: { table: { disable: true } },
+    selectedRegions: { table: { disable: true } },
+    chartColors: { table: { disable: true } },
+    margin: { table: { disable: true } },
+    showLegend: { table: { disable: true } },
+    legendPosition: { table: { disable: true } },
+    xAxisConfig: { table: { disable: true } },
+    yAxisConfig: { table: { disable: true } },
+    numberFormat: { table: { disable: true } },
+    xDataKeyArr: { table: { disable: true } },
+    onChartClick: { table: { disable: true } },
+    tooltips: { table: { disable: true } },
+    shape: { table: { disable: true } },
+    onLegendClick: { table: { disable: true } },
+    shouldShowLegend: { table: { disable: true } },
+    availableRegions: { table: { disable: true } },
+    offsettop: { table: { disable: true } },
+    offsetleft: { table: { disable: true } },
+    offsetbottom  : { table: { disable: true } },
+    offsetright: { table: { disable: true } },
   },
 };
 

@@ -62,12 +62,60 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args: {
+    type: "Pie" as const,
+    data: mockData,
+    dataKeys: [],
+    selectedRegions: [],
+    chartColors: [],
+    margin: { top: 0, right: 0, left: 0, bottom: 0 },
+    showlabels: "hide" as const,
+    labeltype: "key" as const,
+    tooltips: false,
+    legendPosition: "right" as const,
+    showLegend: false,
+    onLegendClick: () => {},
+    onChartClick: () => {},
+    shouldShowLegend: false,
+    availableRegions: [],
+    xDataKeyArr: [],
+    ynumberformat: "",
+    legendtype: "classic" as const,
+    numberFormat: "",
+  },
+  argTypes: {
+    type: { table: { disable: true } },
+    data: { table: { disable: true } },
+    dataKeys: { table: { disable: true } },
+    selectedRegions: { table: { disable: true } },
+    chartColors: { table: { disable: true } },
+    margin: { table: { disable: true } },
+    showlabels: { table: { disable: true } },
+    labeltype: { table: { disable: true } },
+    tooltips: { table: { disable: true } },
+    legendPosition: { table: { disable: true } },
+    showLegend: { table: { disable: true } },
+    onLegendClick: { table: { disable: true } },
+    onChartClick: { table: { disable: true } },
+    shouldShowLegend: { table: { disable: true } },
+    availableRegions: { table: { disable: true } },
+    xDataKeyArr: { table: { disable: true } },
+    ynumberformat: { table: { disable: true } },
+    legendtype: { table: { disable: true } },
+    numberFormat: { table: { disable: true } },
+    donutratio: { table: { disable: true } },
+    offsettop: { table: { disable: true } },
+    offsetbottom: { table: { disable: true } },
+    offsetleft: { table: { disable: true } },
+    offsetright: { table: { disable: true } },
+    centerlabel: { table: { disable: true } },
+  },
   parameters: {
     layout: 'fullscreen',
   },
 };
 
-export const Showcase: StoryObj = {
+export const Showcase: Story = {
   render: () => {
     const defaultData = mockData;
     const budgetData = [
@@ -223,7 +271,55 @@ export const Showcase: StoryObj = {
         </Stack>
       </Box>
     );
-  }
+  },
+  args: {
+    type: "Pie" as const,
+    data: mockData,
+    dataKeys: [],
+    selectedRegions: [],
+    chartColors: [],
+    margin: { top: 0, right: 0, left: 0, bottom: 0 },
+    showlabels: "hide" as const,
+    labeltype: "key" as const,
+    tooltips: false,
+    legendPosition: "right" as const,
+    showLegend: false,
+    onLegendClick: () => {},
+    onChartClick: () => {},
+    shouldShowLegend: false,
+    availableRegions: [],
+    xDataKeyArr: [],
+    ynumberformat: "",
+    legendtype: "classic" as const,
+    numberFormat: "",
+  },
+  argTypes: {
+    type: { table: { disable: true } },
+    data: { table: { disable: true } },
+    dataKeys: { table: { disable: true } },
+    selectedRegions: { table: { disable: true } },
+    chartColors: { table: { disable: true } },
+    margin: { table: { disable: true } },
+    showlabels: { table: { disable: true } },
+    labeltype: { table: { disable: true } },
+    tooltips: { table: { disable: true } },
+    legendPosition: { table: { disable: true } },
+    showLegend: { table: { disable: true } },
+    onLegendClick: { table: { disable: true } },
+    onChartClick: { table: { disable: true } },
+    shouldShowLegend: { table: { disable: true } },
+    availableRegions: { table: { disable: true } },
+    xDataKeyArr: { table: { disable: true } },
+    ynumberformat: { table: { disable: true } },
+    legendtype: { table: { disable: true } },
+    numberFormat: { table: { disable: true } },
+    donutratio: { table: { disable: true } },
+    offsettop: { table: { disable: true } },
+    offsetbottom: { table: { disable: true } },
+    offsetleft: { table: { disable: true } },
+    offsetright: { table: { disable: true } },
+    centerlabel: { table: { disable: true } },
+  },
 };
 
 export const Standard: Story = {
