@@ -163,3 +163,12 @@ div.sb-bar {
 [data-nodetype="document"] {
   transition: all 0.2s ease;
 }
+
+/* Need to hide the tab in panel, not able to hide from -> @.storybook -> preview.ts */
+div[data-key="storybook/interactions/panel"]{
+    display:none !important;
+}
+
+div[data-key="storybook/actions/panel"]{
+    display:none !important;
+}
