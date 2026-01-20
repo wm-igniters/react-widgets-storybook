@@ -13,34 +13,16 @@ import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
-import styling from "./docs/styling.md?raw";
+// import styling from "./docs/styling.md?raw";
 import style from "./docs/style.md?raw";
 import token from "./docs/token.md?raw";
 
 import iconTokensData from "../../../../designTokens/components/icon/icon.json";
+import { table } from "console";
 
 const meta: Meta<typeof IconDefaultExport> = {
   title: "Basic/Icon",
   component: IconDefaultExport,
-  // argTypes: {
-  //   caption: { control: "text" },
-  //   iconclass:{
-  //     control:{
-  //       type:"select"
-  //     },
-  //     options:[ "fa fa-adjust", "fa fa-anchor", "fa fa-archive", "fa fa-area-chart", 
-  //       "fa fa-asterisk", "fa fa-at", "fa fa-automobile", "fa fa-balance-scale", "fa fa-bank", "fa fa-bar-chart", "fa fa-user"],
-  //   },
-  //   iconurl: { control: "text" },
-  //   iconposition: {
-  //     control: { type: "select" },
-  //     options: ["left", "right"],
-  //   },
-  //   iconsize: { control: "text" },
-  //   // arialabel: { control: "text" },
-  //   // prefabName: { control: "text" },
-  //   // hint: { control: "text" },
-  // },
 };
 
 export default meta;
@@ -54,11 +36,16 @@ const mockListener = {
   Widgets: {},
 };
 
-const Template = (args: any) => (
-  <Box style={{ padding: 16 }}>
-    <IconDefaultExport {...args} listener={mockListener} />
-  </Box>
-);
+const Template = (args: any) => {
+  //component can't spread data-design-token-target, so we apply it to a wrapper
+    const { "data-design-token-target": dataAttr, ...componentArgs } = args;
+
+    return (
+      <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+        <IconDefaultExport {...componentArgs} listener={mockListener} />
+      </Box>
+    );
+  };
 
 export const Docs: Story = {
   render: () => (
@@ -70,11 +57,19 @@ export const Docs: Story = {
       // styling={styling}
       style={style}
       token={token}
+      externalLink={{
+        href: "https://www.figma.com/design/F6S1sF5vM38mn6aLNnGGon/WaveMaker-UI-Kit--Community-?node-id=55594-2483&p=f&t=2swT7qVNlhCONKHK-0",
+        label: "",
+      }}
     />
   ),
   args:{
     name:"docsIcon",
     listener:mockListener
+  },
+  argTypes:{
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
   },
   parameters: {
     layout: 'fullscreen',
@@ -152,6 +147,10 @@ export const Showcase: Story = {
     name: "iconShowcase",
     listener: mockListener,
   },
+  argTypes:{
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
+  },
 };
 
 // WaveIcon Library Story
@@ -177,7 +176,11 @@ export const WaviconLibrary: Story = {
   args:{
     name:"waveiconLibrary",
     listener:mockListener
-  }
+  },
+  argTypes:{
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
+  },
 };
 
 // Font Awesome Library Story
@@ -203,16 +206,21 @@ export const FontAwesomeLibrary: Story = {
   args:{
     name:"fontAwesomeIconLibrary",
     listener:mockListener
-  }
+  },
+  argTypes:{
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
+  },
 };
 
-export const Basic: Story = {
+export const Standard: Story = {
   tags: ['show-panel'],
   render: Template,
   args: {
-    name: "basicIcon",
+    name: "standardIcon",
     listener: mockListener,
     iconclass: "fa fa-bar-chart",
+    "data-design-token-target":"true",
   },
   argTypes: {
     caption: { control: "text" },
@@ -223,198 +231,20 @@ export const Basic: Story = {
       options: ["left", "right"],
     },
     iconsize: { control: "text" },
+    "data-design-token-target": {table: { disable: true } },
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
   },
-};
-
-export const Standard: Story = {
-  tags: ['show-panel'],
-  render: (args) => {
-    // Icon component can't spread data-design-token-target, so we apply it to a wrapper
-    const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
-
-    return (
-      <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
-        <IconDefaultExport {...componentArgs} listener={mockListener} />
-      </Box>
-    );
-  },
-  args: {
-    name: "standardIcon",
-    listener: mockListener,
-    iconclass: "fa fa-bar-chart",
-    "data-design-token-target":"true"
-  },
-  argTypes: {
-    // caption: { control: "text" },
-    iconclass:{ control:{ type:"select"}, options: iconClassNames },
-    iconurl: { control: "text" },
-    // iconposition: {
-    //   control: { type: "select" },
-    //   options: ["left", "right"],
-    // },
-    "data-design-token-target": { control: false }
-  },
-  parameters: {
+   parameters: {
     designTokens: {
       enabled: true,
-      tokenData: iconTokensData,  // Pass raw JSON data instead of pre-parsed config
-      componentKey: "icon",  // Component identifier for parsing
-      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+      tokenData: iconTokensData,
+      componentKey: "icon",
+      extractCSSVariablesAtRuntime: true,
     },
     layout: 'fullscreen',
-  }, 
+  },
 };
-
-
-// export const WithCaption: Story = {
-//   render: Template,
-//   args: {
-//     name: "iconWithCaption",
-//     listener: mockListener,
-//     caption: "User Profile",
-//     iconclass: "fa fa-user",
-//     iconsize: "24px",
-//     iconposition: "left",
-//   },
-// };
-
-// export const WithImageUrl: Story = {
-//   render: Template,
-//   args: {
-//     name: "imageIcon",
-//     listener: mockListener,
-//     caption: "Custom Image",
-//     iconurl: "https://picsum.photos/200",
-//     iconsize: "32px",
-//     iconposition: "left",
-//     styles: {
-//       display: "flex",
-//       alignItems: "center",
-//       gap: "8px",
-//     },
-//   },
-// };
-
-
-// export const CaptionRight: Story = {
-//   render: Template,
-//   args: {
-//     name: "captionRight",
-//     listener: mockListener,
-//     caption: "Settings",
-//     iconclass: "wm-sl-l sl-settings",
-//     iconsize: "24px",
-//     iconposition: "right",
-//     styles: {
-//       display: "flex",
-//       alignItems: "center",
-//       gap: "8px",
-//     },
-//   },
-// };
-
-// export const LargeIcon: Story = {
-//   render: Template,
-//   args: {
-//     name: "largeIcon",
-//     listener: mockListener,
-//     caption: "Large Star",
-//     iconclass: "wm-sl-l sl-star",
-//     iconsize: "48px",
-//     iconposition: "left",
-//     styles: {
-//       display: "flex",
-//       alignItems: "center",
-//       gap: "12px",
-//     },
-//   },
-// };
-
-// export const WithHint: Story = {
-//   render: Template,
-//   args: {
-//     name: "withHint",
-//     listener: mockListener,
-//     caption: "Help",
-//     iconclass: "wm-sl-l sl-help-circle",
-//     iconsize: "24px",
-//     hint: "Click for help information",
-//     arialabel: "Help icon",
-//     styles: {
-//       display: "flex",
-//       alignItems: "center",
-//       gap: "8px",
-//     },
-//   },
-// };
-
-// export const CustomStyles: Story = {
-//   render: Template,
-//   args: {
-//     name: "customStyles",
-//     listener: mockListener,
-//     caption: "Styled Icon",
-//     iconclass: "wm-sl-l sl-heart",
-//     iconsize: "32px",
-//     styles: {
-//       display: "flex",
-//       alignItems: "center",
-//       color: "#e74c3c",
-//       gap: "8px",
-//       fontWeight: "600",
-//     },
-//   },
-// };
-
-// export const DifferentSizes: Story = {
-//   render: () => {
-//     return (
-//       <Box style={{ padding: 16 }}>
-//         <Stack spacing={3}>
-//           <Typography variant="subtitle1">Icon Sizes:</Typography>
-//           <Stack direction="row" spacing={3} alignItems="center">
-//             <IconDefaultExport
-//               name="small"
-//               caption="Small"
-//               iconclass="wm-sl-l sl-star"
-//               iconsize="16px"
-//               listener={mockListener}
-//               styles={{ display: "flex", alignItems: "center", gap: "4px" }}
-//             />
-//             <IconDefaultExport
-//               name="medium"
-//               caption="Medium"
-//               iconclass="wm-sl-l sl-star"
-//               iconsize="24px"
-//               listener={mockListener}
-//               styles={{ display: "flex", alignItems: "center", gap: "6px" }}
-//             />
-//             <IconDefaultExport
-//               name="large"
-//               caption="Large"
-//               iconclass="wm-sl-l sl-star"
-//               iconsize="32px"
-//               listener={mockListener}
-//               styles={{ display: "flex", alignItems: "center", gap: "8px" }}
-//             />
-//             <IconDefaultExport
-//               name="xlarge"
-//               caption="X-Large"
-//               iconclass="wm-sl-l sl-star"
-//               iconsize="48px"
-//               listener={mockListener}
-//               styles={{ display: "flex", alignItems: "center", gap: "10px" }}
-//             />
-//           </Stack>
-//         </Stack>
-//       </Box>
-//     );
-//   },
-//   args: {
-//     name: "differentSizes",
-//     listener: mockListener,
-//   },
-// };
 
 // Icon Library Component for displaying icon collections
 interface IconLibraryProps {
@@ -554,69 +384,3 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ title, icons, iconClassPrefix
     </Box>
   );
 };
-
-// // Wavicon Library Story
-// export const WaviconLibrary: Story = {
-//   parameters: {
-//     layout: "fullscreen",
-//   },
-//   render: () => {
-//     const icons = Object.keys(waviconGlyphMap).map((icon) => ({
-//       name: `wavicon-${icon}`,
-//       iconclass: `wi wi-${icon}`,
-//       iconsize: "24px",
-//     }));
-
-//     return (
-//       <IconLibrary
-//         title="Wavicon Library"
-//         icons={icons}
-//         iconClassPrefix="wi wi-"
-//       />
-//     );
-//   },
-// };
-
-// // Streamline Light Library Story
-// export const StreamlineLightLibrary: Story = {
-//   parameters: {
-//     layout: "fullscreen",
-//   },
-//   render: () => {
-//     const icons = Object.keys(streamlineLightGlyphMap).map((icon) => ({
-//       name: `streamline-light-${icon}`,
-//       iconclass: `wm-sl-l sl-${icon}`,
-//       iconsize: "24px",
-//     }));
-
-//     return (
-//       <IconLibrary
-//         title="Streamline Light Library"
-//         icons={icons}
-//         iconClassPrefix="wm-sl-l sl-"
-//       />
-//     );
-//   },
-// };
-
-// // Streamline Regular Library Story
-// export const StreamlineRegularLibrary: Story = {
-//   parameters: {
-//     layout: "fullscreen",
-//   },
-//   render: () => {
-//     const icons = Object.keys(streamlineRegularGlyphMap).map((icon) => ({
-//       name: `streamline-regular-${icon}`,
-//       iconclass: `wm-sl-r sl-${icon}`,
-//       iconsize: "24px",
-//     }));
-
-//     return (
-//       <IconLibrary
-//         title="Streamline Regular Library"
-//         icons={icons}
-//         iconClassPrefix="wm-sl-r sl-"
-//       />
-//     );
-//   },
-// };
