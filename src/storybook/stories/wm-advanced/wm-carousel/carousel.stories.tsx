@@ -9,7 +9,7 @@ import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
-import styling from "./docs/styling.md?raw";
+// import styling from "./docs/styling.md?raw";
 import token from "./docs/token.md?raw";
 
 import carouselTokensData from "../../../../designTokens/components/carousel/carousel.json";
@@ -17,34 +17,6 @@ import carouselTokensData from "../../../../designTokens/components/carousel/car
 const meta: Meta<typeof CarouselDefaultExport> = {
   title: "Advanced/Carousel",
   component: CarouselDefaultExport,
-  // argTypes: {
-  //   animation: {
-  //     control: { type: "select" },
-  //     options: ["auto", "none"],
-  //     description: "Animation type for carousel transitions"
-  //   },
-  //   animationinterval: {
-  //     control: { type: "number", min: 1, max: 10, step: 0.5 },
-  //     description: "Interval in seconds for auto-play (when animation is 'auto')"
-  //   },
-  //   controls: {
-  //     control: { type: "select" },
-  //     options: ["navs", "indicators", "both", "none"],
-  //     description: "Type of navigation controls to display"
-  //   },
-  //   height: {
-  //     control: "text",
-  //     description: "Height of the carousel"
-  //   },
-  //   width: {
-  //     control: "text",
-  //     description: "Width of the carousel"
-  //   },
-  //   nodatamessage: {
-  //     control: "text",
-  //     description: "Message to display when there is no data"
-  //   },
-  // },
 };
 
 export default meta;
@@ -59,10 +31,17 @@ export const Docs: Story = {
       methods={methods}
       // styling={styling}
       token={token}
+      externalLink={{
+        href: "https://www.figma.com/design/F6S1sF5vM38mn6aLNnGGon/WaveMaker-UI-Kit--Community-?node-id=55141-14172&p=f&t=TmoXZ4j5uVxcseDO-0",
+        label: "",
+      }}
     />
   ),
   args:{
     name:"docsCarousel",
+  },
+  argTypes:{
+    name: {table:{disable:true}}
   },
   parameters: {
     layout: 'fullscreen',
@@ -189,11 +168,13 @@ export const Showcase: Story = {
   },
   args:{
     name:"showcaseCarousel"
-  }
+  },
+  argTypes:{
+    name: {table:{disable:true}}
+  },
 };
 
-// Basic Examples
-export const Basic: Story = {
+export const Standard: Story = {
   tags: ['show-panel'],
   render: (args) => (
     <Box style={{ padding: 16,  height: "500px", width: "800px" }}>
@@ -212,11 +193,12 @@ export const Basic: Story = {
   ),
   args: {
     name: "basicCarousel",
-    animation: "auto",
-    animationinterval: 2,
     controls: "both",
     height: "400px",
     width: "100%",
+    "data-design-token-target":true,
+    nodatamessage:"No data to display here",
+    animation: "auto",
   },
   argTypes: {
     animation: {
@@ -245,48 +227,8 @@ export const Basic: Story = {
       control: "text",
       description: "Message to display when there is no data"
     },
-  },
-};
-
-export const Standard: Story = {
-  tags: ['show-panel'],
-  render: (args) => (
-    <Box style={{ padding: 16,  height: "500px", width: "800px" }}>
-      <CarouselDefaultExport {...args}>
-        <Box sx={{ width: "100%", height: "100%", bgcolor: "#1976d2", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Typography variant="h3">Slide 1</Typography>
-        </Box>
-        <Box sx={{ width: "100%", height: "100%", bgcolor: "#2e7d32", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Typography variant="h3">Slide 2</Typography>
-        </Box>
-        <Box sx={{ width: "100%", height: "100%", bgcolor: "#ed6c02", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Typography variant="h3">Slide 3</Typography>
-        </Box>
-      </CarouselDefaultExport>
-    </Box>
-  ),
-  args: {
-    name: "basicCarousel",
-    controls: "both",
-    height: "400px",
-    width: "100%",
-    "data-design-token-target":"true",
-    nodatamessage:"No data to display here"
-  },
-  argTypes: {
-    controls: {
-      control: false
-    },
-    height: {
-      control: false,
-    },
-    width: {
-      control: false,
-    },
-    nodatamessage: {
-      control: false,
-    },
-    "data-design-token-target": { control: false }
+    "data-design-token-target": { table: {disable: true} },
+    name: {table: {disable: true}}
   },
   parameters: {
     designTokens: {
@@ -298,3 +240,59 @@ export const Standard: Story = {
     layout: 'fullscreen',
   }, 
 };
+
+// Basic Examples
+// export const Basic: Story = {
+//   tags: ['show-panel'],
+//   render: (args) => (
+//     <Box style={{ padding: 16,  height: "500px", width: "800px" }}>
+//       <CarouselDefaultExport {...args}>
+//         <Box sx={{ width: "100%", height: "100%", bgcolor: "#1976d2", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+//           <Typography variant="h3">Slide 1</Typography>
+//         </Box>
+//         <Box sx={{ width: "100%", height: "100%", bgcolor: "#2e7d32", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+//           <Typography variant="h3">Slide 2</Typography>
+//         </Box>
+//         <Box sx={{ width: "100%", height: "100%", bgcolor: "#ed6c02", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+//           <Typography variant="h3">Slide 3</Typography>
+//         </Box>
+//       </CarouselDefaultExport>
+//     </Box>
+//   ),
+//   args: {
+//     name: "basicCarousel",
+//     animation: "auto",
+//     animationinterval: 2,
+//     controls: "both",
+//     height: "400px",
+//     width: "100%",
+//   },
+//   argTypes: {
+//     animation: {
+//       control: { type: "select" },
+//       options: ["auto", "none"],
+//       description: "Animation type for carousel transitions"
+//     },
+//     animationinterval: {
+//       control: { type: "number", min: 1, max: 10, step: 0.5 },
+//       description: "Interval in seconds for auto-play (when animation is 'auto')"
+//     },
+//     controls: {
+//       control: { type: "select" },
+//       options: ["navs", "indicators", "both", "none"],
+//       description: "Type of navigation controls to display"
+//     },
+//     height: {
+//       control: "text",
+//       description: "Height of the carousel"
+//     },
+//     width: {
+//       control: "text",
+//       description: "Width of the carousel"
+//     },
+//     nodatamessage: {
+//       control: "text",
+//       description: "Message to display when there is no data"
+//     },
+//   },
+// };

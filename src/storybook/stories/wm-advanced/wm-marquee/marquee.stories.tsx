@@ -14,15 +14,6 @@ import styling from "./docs/styling.md?raw";
 const meta: Meta<typeof MarqueeDefaultExport> = {
   title: "Advanced/Marquee",
   component: MarqueeDefaultExport,
-  argTypes: {
-    direction: {
-      control: { type: "select" },
-      options: ["left", "right", "up", "down"]
-    },
-    scrollamount: { control: "number" },
-    scrolldelay: { control: "number" },
-    className: { control: "text" },
-  },
 };
 
 export default meta;
@@ -98,15 +89,25 @@ export const Showcase: Story = {
   ),
 };
 
-// Basic Examples
-export const Basic: Story = {
+
+export const Standard: Story = {
   tags: ['show-panel'],
   render: Template,
   args: {
-    name: "basicMarquee",
+    name: "standardMarquee",
     direction: "left",
     children: "This is a basic marquee scrolling",
     scrollamount: 6,
     scrolldelay: 85,
+  },
+  argTypes: {
+    direction: {
+      control: { type: "select" },
+      options: ["left", "right", "up", "down"]
+    },
+    scrollamount: { control: "number" },
+    scrolldelay: { control: "number" },
+    children: {table: {disable: true}},
+    name:{table:{disable: true}}
   },
 };

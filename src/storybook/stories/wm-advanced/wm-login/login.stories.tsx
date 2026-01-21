@@ -90,16 +90,21 @@ export const Docs: Story = {
       styling={styling}
     />
   ),
+  args:{} as any,
+  argTypes:{
+    show: {table: {disable: true}},
+    errormessage: {table: {disable: true}}
+  },
   parameters: {
     layout: 'fullscreen',
   },
 };
 
-export const Basic: Story = {
+export const Standard: Story = {
   tags: ['show-panel'],
   render: Template,
   args: {
-    name: "basicLogin",
+    name: "standardLogin",
     listener: mockListener,
     eventSource: mockEventSource,
     show: true,
@@ -140,4 +145,10 @@ export const Basic: Story = {
       </Card>
     ),
   },
+  argTypes:{
+    name: {table: {disable: true}},
+    listener: {table: {disable:true}},
+    children: {table: {disable: true}},
+    eventSource: {table: {disable: true}}
+  }
 };
