@@ -248,11 +248,11 @@ export const Showcase: Story = {
   }
 };
 
-export const Standard: Story = {
+export const Filled: Story = {
   tags: ['show-panel'],
   render: DesignTokenTemplate,
   args: {
-    name: "standardChips",
+    name: "filledChips",
     listener: mockListener,
     dataset: fruitDataset,
     datafield: "name",
@@ -264,7 +264,8 @@ export const Standard: Story = {
     inputwidth: "default",
     disabled: false,
     readonly: false,
-    "data-design-token-target":true
+    "data-design-token-target":true,
+    className:"primary"
   },
   argTypes: {
     type: {
@@ -312,6 +313,85 @@ export const Standard: Story = {
     "data-design-token-target": { table: { disable: true } },
     name: { table: { disable: true } },
     listener: { table: { disable: true } },
+    className:{control:"select", options:["primary", "secondary", "tertiary", "default"]}
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: chipsTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "chips",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  },
+};
+
+export const Elevated: Story = {
+  tags: ['show-panel'],
+  render: DesignTokenTemplate,
+  args: {
+    name: "elevatedChips",
+    listener: mockListener,
+    dataset: fruitDataset,
+    datafield: "name",
+    displayfield: "name",
+    placeholder: "Add a chip...",
+    datavalue: ["Apple"],
+    type: "autocomplete",
+    inputposition:"first",
+    inputwidth: "default",
+    disabled: false,
+    readonly: false,
+    "data-design-token-target":true,
+    className:"elevated"
+  },
+  argTypes: {
+    type: {
+      control: { type: "select" },
+      options: ["search", "autocomplete"],
+    },
+    inputposition: {
+      control: { type: "select" },
+      options: ["first", "last"],
+    },
+    inputwidth: {
+      control: { type: "select" },
+      options: ["default", "full"],
+    },
+    matchmode: {
+      control: { type: "select" },
+      options: ["contains", "start", "end", "exact"],
+    },
+    allowonlyselect: { control: "boolean" },
+    autofocus: { control: "boolean" },
+    disabled: { control: "boolean" },
+    readonly: { control: "boolean" },
+    enablereorder: { control: "boolean" },
+    showsearchicon: { control: "boolean" },
+    maxsize: { control: "number" },
+    // minchars: { control: "number" },
+    debouncetime: { control: "number" },
+    // tabindex: { control: "number" },
+    limit: { control: "number" },
+    placeholder: { control: "text" },
+    // chipclass: { control: "text" },
+    // className: { control: "text" },
+    datafield: { control: "text" },
+    displayfield: { control: "text" },
+    // displayimagesrc: { control: "text" },
+    // dateformat: { control: "text" },
+    // groupby: { control: "text" },
+    // orderby: { control: "text" },
+    // searchkey: { control: "text" },
+    match: { control: "text" },
+    datacompletemsg: { control: "text" },
+    // width: { control: "text" },
+    // height: { control: "text" },
+    // compareby: { control: "text" },
+    "data-design-token-target": { table: { disable: true } },
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
+    className:{control:"select", options:["elevated"]}
   },
   parameters: {
     designTokens: {

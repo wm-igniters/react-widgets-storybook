@@ -331,15 +331,15 @@ export const Showcase: Story = {
   },
 };
 
-export const Standard: Story = {
+export const Filled: Story = {
   tags: ['show-panel'],
   render: Template,
   args: {
-    name: "standardButton",
+    name: "filledButton",
     caption: "Button",
     disabled: false,
     type: "button",
-    className: "btn-filled btn-default",
+    className: "btn-filled btn-primary",
     "data-design-token-target": "true"
   },
   argTypes: {
@@ -367,26 +367,162 @@ export const Standard: Story = {
     "btn-filled btn-secondary",
     "btn-filled btn-tertiary",
     "btn-filled btn-default",
+      ]
+    },
+    "data-design-token-target": {table: { disable: true } },
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: buttonTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "btn",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  },
+};
 
+export const Outlined: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "outlinedButton",
+    caption: "Button",
+    disabled: false,
+    type: "button",
+    className: "btn-outlined btn-primary",
+    "data-design-token-target": "true"
+  },
+  argTypes: {
+    caption: { control: "text" },
+    disabled: { control: "boolean" },
+    type: {
+      control: { type: "select" },
+      options: ["button", "submit", "reset"],
+    },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    iconposition: {
+      control: { type: "select" },
+      options: ["left", "right"],
+    },
+    iconurl: {control: "text"},
+    iconwidth: { control: "text" },
+    iconheight: { control: "text" },
+    iconmargin: { control: "text" },
+    badgevalue: { control: "text" },
+    className: {
+  control: "select",
+  options: [
     // Outlined
     "btn-outlined btn-primary",
     "btn-outlined btn-secondary",
     "btn-outlined btn-tertiary",
     "btn-outlined btn-default",
+      ]
+    },
+    "data-design-token-target": {table: { disable: true } },
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: buttonTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "btn",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  },
+};
 
+export const Text: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "textButton",
+    caption: "Button",
+    disabled: false,
+    type: "button",
+    className: "btn-text btn-primary",
+    "data-design-token-target": "true"
+  },
+  argTypes: {
+    caption: { control: "text" },
+    disabled: { control: "boolean" },
+    type: {
+      control: { type: "select" },
+      options: ["button", "submit", "reset"],
+    },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    iconposition: {
+      control: { type: "select" },
+      options: ["left", "right"],
+    },
+    iconurl: {control: "text"},
+    iconwidth: { control: "text" },
+    iconheight: { control: "text" },
+    iconmargin: { control: "text" },
+    badgevalue: { control: "text" },
+    className: {
+  control: "select",
+  options: [
     //text
     "btn-text btn-primary",
     "btn-text btn-secondary",
     "btn-text btn-tertiary",
     "btn-text btn-default",
+      ]
+    },
+    "data-design-token-target": {table: { disable: true } },
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: buttonTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "btn",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  },
+};
 
+export const Transparent: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "transparentButton",
+    caption: "Button",
+    disabled: false,
+    type: "button",
+    className: "btn-transparent",
+    "data-design-token-target": "true"
+  },
+  argTypes: {
+    caption: { control: "text" },
+    disabled: { control: "boolean" },
+    type: {
+      control: { type: "select" },
+      options: ["button", "submit", "reset"],
+    },
+    iconclass:{ control:{ type:"select"}, options: iconClassNames },
+    iconposition: {
+      control: { type: "select" },
+      options: ["left", "right"],
+    },
+    iconurl: {control: "text"},
+    iconwidth: { control: "text" },
+    iconheight: { control: "text" },
+    iconmargin: { control: "text" },
+    badgevalue: { control: "text" },
+    className: {
+  control: "select",
+  options: [
     // Special
     "btn-transparent",
-
-    // Sizes (example with primary)
-    // "btn-filled btn-primary btn-sm",
-    // "btn-filled btn-primary btn-lg",
-    // "btn-filled btn-primary btn-xs",
       ]
     },
     "data-design-token-target": {table: { disable: true } },

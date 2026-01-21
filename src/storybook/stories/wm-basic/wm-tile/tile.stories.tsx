@@ -165,11 +165,11 @@ export const Showcase: Story = {
   },
 };
 
-export const Standard: Story = {
+export const Default: Story = {
   tags: ['show-panel'],
   render: Template,
   args: {
-    name: "standardTile",
+    name: "defaultTile",
     listener: mockListener,
     children: (
       <Box>
@@ -190,6 +190,47 @@ export const Standard: Story = {
         type: "select",
       },
       options: ["bg-primary", "bg-success", "bg-danger", "bg-warning", "bg-info"],
+    },
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
+    "data-design-token-target": { table: { disable: true } },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: tileTokensData,
+      componentKey: "tile",
+      extractCSSVariablesAtRuntime: true,
+    },
+    layout: 'fullscreen',
+  },
+};
+
+export const Filled: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "filledTile",
+    listener: mockListener,
+    children: (
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Tile Title
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          This is a tile with structured content including a title and description text.
+        </Typography>
+      </Box>
+    ),
+    className: "bg-primary-filled",
+    "data-design-token-target": true
+  },
+  argTypes: {
+    className: {
+      control: {
+        type: "select",
+      },
+      options: ["bg-primary-filled", "bg-success-filled", "bg-danger-filled", "bg-warning-filled", "bg-info-filled"],
     },
     name: { table: { disable: true } },
     listener: { table: { disable: true } },

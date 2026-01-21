@@ -70,13 +70,20 @@ const TokenGroup = styled.div`
   margin-bottom: 16px;
   position: relative;
   overflow: visible;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  gap: 12px;
 
-  /* Bottom panel: 3-column layout with empty third column */
+  /* Bottom panel: grid layout with multiple columns */
   @container (min-width: 800px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+
+  @container (min-width: 1000px) {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
@@ -95,6 +102,15 @@ const TokenLabel = styled.label`
   gap: 8px;
   margin-bottom: 0;
   position: relative;
+  min-width: 120px;
+  flex: 1;
+  text-align: left;
+
+  /* Bottom panel: reset flex and remove min-width */
+  @container (min-width: 800px) {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
 
   /* Show help icon on label hover */
   &:hover [data-help-icon] {
@@ -255,6 +271,7 @@ const TooltipDescription = styled.div`
 
 const TokenInput = styled.input`
   width: 100%;
+  max-width: 150px;
   padding: 8px 10px;
   font-size: 13px;
   border: 1px solid #d0d0d0;
@@ -263,6 +280,11 @@ const TokenInput = styled.input`
   transition: border-color 0.2s;
   background-color: #ffffff;
   color: #1c1b1f;
+
+  /* Bottom panel: remove max-width */
+  @container (min-width: 800px) {
+    max-width: none;
+  }
 
   &:focus {
     outline: none;
@@ -287,6 +309,7 @@ const TokenInput = styled.input`
 
 const TokenSelect = styled.select`
   width: 100%;
+  max-width: 150px;
   padding: 8px 10px;
   font-size: 13px;
   border: 1px solid #d0d0d0;
@@ -296,6 +319,11 @@ const TokenSelect = styled.select`
   color: #1c1b1f;
   cursor: pointer;
   transition: border-color 0.2s;
+
+  /* Bottom panel: remove max-width */
+  @container (min-width: 800px) {
+    max-width: none;
+  }
 
   &:focus {
     outline: none;
@@ -312,8 +340,16 @@ const TokenSelect = styled.select`
 const TokenInputContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: 100%;
+  justify-content: flex-end;
+  width: 150px;
+  flex-shrink: 0;
+
+  /* Bottom panel: auto width and left align */
+  @container (min-width: 800px) {
+    width: auto;
+    justify-content: flex-start;
+    flex-shrink: 1;
+  }
 `;
 
 const ColorInputWrapper = styled.div`
@@ -324,13 +360,21 @@ const ColorInputWrapper = styled.div`
 `;
 
 const ColorInput = styled(TokenInput)`
-  width: auto;
-  flex: 0 0 60px;
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  flex-shrink: 0;
 `;
 
 const ColorTextInput = styled(TokenInput)`
-  width: auto;
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 90px;
+
+  /* Bottom panel: remove max-width */
+  @container (min-width: 800px) {
+    max-width: none;
+  }
 `;
 
 const ButtonGroup = styled.div`
@@ -392,13 +436,18 @@ const StateDropdownContainer = styled.div`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: visible;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  gap: 12px;
 
-  /* Bottom panel: 3-column layout with empty third column */
+  /* Bottom panel: grid layout */
   @container (min-width: 800px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @container (min-width: 1000px) {
     grid-template-columns: 1fr 1fr 1fr;
   }
 `;
@@ -411,10 +460,21 @@ const StateDropdownLabel = styled.label`
   font-weight: 500;
   color: #333;
   margin-bottom: 0;
+  min-width: 120px;
+  flex: 1;
+  text-align: left;
+
+  /* Bottom panel: reset flex and remove min-width */
+  @container (min-width: 800px) {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
 `;
 
 const StateDropdown = styled.select`
-  width: 100%;
+  width: 150px;
+  max-width: 150px;
+  flex-shrink: 0;
   padding: 8px 10px;
   font-size: 13px;
   border: 1px solid #d0d0d0;
@@ -426,6 +486,13 @@ const StateDropdown = styled.select`
   transition: border-color 0.2s;
   pointer-events: none; /* Disabled */
   opacity: 0.6; /* Disabled */
+
+  /* Bottom panel: full width */
+  @container (min-width: 800px) {
+    width: 100%;
+    max-width: none;
+    flex-shrink: 1;
+  }
 
   &:focus {
     outline: none;
@@ -667,15 +734,17 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
           return;
         }
 
-        // Build token reference map
-        const referenceMap = buildTokenReferenceMap(extractedVars);
+        // Build token reference map (async to load form-controls.json)
+        buildTokenReferenceMap(extractedVars).then((referenceMap) => {
+          // Update state
+          setCssVariableMap(referenceMap);
 
-        // Update state
-        setCssVariableMap(referenceMap);
-
-        // console.log(`[Design Tokens] ✓ CSS extraction successful (attempt ${attempt})`);
-        // console.log(`  → Extracted ${extractedVars.size} CSS variables`);
-        // console.log(`  → Built ${referenceMap.size} token reference mappings`);
+          // console.log(`[Design Tokens] ✓ Token reference map built with ${referenceMap.size} entries`);
+        }).catch((error) => {
+          // console.error('[Design Tokens] Error building token reference map:', error);
+          // Fallback: use extractedVars directly if augmentation fails
+          setCssVariableMap(extractedVars);
+        });
       } catch (error) {
         // console.error('[Design Tokens] Error during CSS extraction:', error);
       }

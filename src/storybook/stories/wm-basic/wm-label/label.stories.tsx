@@ -170,11 +170,57 @@ export const Showcase: Story = {
   },
 };
 
-export const Standard: Story = {
+export const Default: Story = {
   tags: ['show-panel'],
   render: Template,
   args: {
-    name: "basicLabel",
+    name: "defaultLabel",
+    listener: mockListener,
+    caption: "Label",
+    type: "p",
+    className:"p",
+    hint:"This is a basic label",
+    textalign: "left",
+    "data-design-token-target": "true"
+  }, 
+  argTypes: {
+    caption: { control: "text" },
+    type: {
+      control: { type: "select" },
+      options: ["h1", "h2", "h3", "h4", "h5", "h6", "p"],
+    },
+     className: {
+      control: {
+        type: "select",
+      },
+      options: ["h1", "h2", "h3", "h4", "h5", "h6", "p"],
+    },
+    textalign:{
+      control:{
+        type:'select',
+      },
+      options:['left','center','right']
+    },
+    "data-design-token-target": { table: { disable: true } },
+    listener: { table: { disable: true } },
+    name: { table: { disable: true } },
+  }, 
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: labelTokensData,
+      componentKey: "label",
+      extractCSSVariablesAtRuntime: true,
+    },
+    layout: 'fullscreen',
+  },
+};
+
+export const Text: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "textLabel",
     listener: mockListener,
     caption: "Label",
     type: "p",
@@ -193,7 +239,53 @@ export const Standard: Story = {
       control: {
         type: "select",
       },
-      options: ["text-primary", "text-secondary", "text-success", "text-danger", "text-warning", "text-info","text-muted","h1", "h2", "h3", "h4", "h5", "h6", "p", "label-primary", "label-secondary", "label-success", "label-danger", "label-warning", "label-info"],
+      options: ["text-primary", "text-secondary", "text-success", "text-danger", "text-warning", "text-info","text-muted"],
+    },
+    textalign:{
+      control:{
+        type:'select',
+      },
+      options:['left','center','right']
+    },
+    "data-design-token-target": { table: { disable: true } },
+    listener: { table: { disable: true } },
+    name: { table: { disable: true } },
+  }, 
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: labelTokensData,
+      componentKey: "label",
+      extractCSSVariablesAtRuntime: true,
+    },
+    layout: 'fullscreen',
+  },
+};
+
+export const Label: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "labelLabel",
+    listener: mockListener,
+    caption: "Label",
+    type: "p",
+    className:"label-primary",
+    hint:"This is a basic label",
+    textalign: "left",
+    "data-design-token-target": "true"
+  }, 
+  argTypes: {
+    caption: { control: "text" },
+    type: {
+      control: { type: "select" },
+      options: ["h1", "h2", "h3", "h4", "h5", "h6", "p"],
+    },
+     className: {
+      control: {
+        type: "select",
+      },
+      options: ["label-primary", "label-secondary", "label-success", "label-danger", "label-warning", "label-info"],
     },
     textalign:{
       control:{

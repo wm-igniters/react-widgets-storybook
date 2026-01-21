@@ -171,24 +171,24 @@ export const Standard: Story = {
   },
 };
 
-export const AutocloseOutsideClick: Story = {
-  tags: ['show-panel'],
-  render: Template,
-  args: {
-    name: "autocloseOutside",
-    listener: mockListener,
-    placeholder: "Closes on outside click",
-    datavalue: "#2ECC71",
-    autoclose: "outsideClick",
-  },
-  argTypes: {
-    autoclose: {
-      control: { type: "select" },
-      options: ["always", "outsideClick", "disabled"],
-    },
-    datavalue: { control: "text" },
-    placeholder: { control: "text" },
-    name: { table: { disable: true } },
-    listener: { table: { disable: true } },
-  },
-};
+// export const AutocloseOutsideClick: Story = {
+//   tags: ['show-panel'],
+//   render: Template,
+//   args: {
+//     name: "autocloseOutside",
+//     listener: mockListener,
+//     placeholder: "Closes on outside click",
+//     datavalue: "#2ECC71",
+//     autoclose: "outsideClick",
+//   },
+//   argTypes: {
+//     autoclose: {
+//       control: { type: "select" },
+//       options: ["always", "outsideClick", "disabled"],
+//     },
+//     datavalue: { control: "text" },
+//     placeholder: { control: "text" },
+//     name: { table: { disable: true } },
+//     listener: { table: { disable: true } },
+//   },
+// };
