@@ -32,19 +32,38 @@ const mockListener = {
 };
 
 const Template = (args: any) => {
-      const { resizemode, shape, pictureaspect } = args;
-      const renderKey = `${shape}-${resizemode}-${pictureaspect}`;
-  
-      return (
-        <Box style={{ padding: 16 }} key={renderKey}>
-          <PictureDefaultExport
-            key={renderKey}
-            {...args}
-            listener={mockListener}
-          />
-        </Box>
-      );
-    }
+  return (
+    <Box style={{ padding: 16 }}>
+      <PictureDefaultExport
+        {...args}
+        listener={mockListener}
+      />
+    </Box>
+  );
+};
+
+const DesignTokenTemplate = (args: any) => {
+  // Component can't spread data-design-token-target, so we apply it to a wrapper
+  const { "data-design-token-target": dataAttr, shape, width, height, resizemode, pictureaspect, ...componentArgs } = args as any;
+
+  // Create a key that changes when critical props change to force re-render
+  // This is necessary because the Picture component's memo only checks picturesource
+  const renderKey = `picture-${shape}-${width}-${height}-${resizemode}-${pictureaspect}`;
+
+  return (
+    <Box style={{ padding: 16 }} data-design-token-target={dataAttr} key={renderKey}>
+      <PictureDefaultExport
+        {...componentArgs}
+        shape={shape}
+        width={width}
+        height={height}
+        resizemode={resizemode}
+        pictureaspect={pictureaspect}
+        listener={mockListener}
+      />
+    </Box>
+  );
+};
 
 export const Docs: Story = {
   render: () => (
@@ -149,19 +168,19 @@ export const Showcase: Story = {
   },
 };
 
-export const Standard: Story = {
+export const Default: Story = {
   tags: ['show-panel'],
-  render: Template,
+  render: DesignTokenTemplate,
   args: {
-    name: "standardPicture",
+    name: "defaultPicture",
     listener: mockListener,
     picturesource: "/showcaseImage.png",
     alttext: "Placeholder image",
     width: "200px",
     height: "200px",
-    resizemode: "cover",
-    shape: "thumbnail",
-    "data-design-token-target":"true"
+    resizemode: "none",
+    shape: "rounded",
+    "data-design-token-target": true
   },
   argTypes: {
     picturesource: { control: "text" },
@@ -173,7 +192,54 @@ export const Standard: Story = {
     },
     shape:{
       control:"select",
-      options:['circle',"rounded","thumbnail"]
+      options:['circle',"rounded"]
+    },
+    resizemode: {
+      control: { type: "select" },
+      options: ["fill", "cover", "contain", "none", "scale-down"],
+    },
+    width: { control: "text" },
+    height: { control: "text" },
+    "data-design-token-target": { table: { disable: true } },
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: pictureTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "picture",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+    },
+    layout: 'fullscreen',
+  },
+};
+
+export const Thumbnail: Story = {
+  tags: ['show-panel'],
+  render: DesignTokenTemplate,
+  args: {
+    name: "thumbnailPicture",
+    listener: mockListener,
+    picturesource: "/showcaseImage.png",
+    alttext: "Placeholder image",
+    width: "200px",
+    height: "200px",
+    resizemode: "none",
+    shape: "thumbnail",
+    "data-design-token-target": true
+  },
+  argTypes: {
+    picturesource: { control: "text" },
+    pictureplaceholder: { control: "text" },
+    alttext: { control: "text" },
+    pictureaspect: {
+      control: { type: "select" },
+      options: ["None", "H", "V", "Both"],
+    },
+    shape:{
+      control:"select",
+      options:["thumbnail"]
     },
     resizemode: {
       control: { type: "select" },

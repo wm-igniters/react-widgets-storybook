@@ -146,7 +146,7 @@ export const Standard: Story = {
       options: ["success", "error", "warning", "info", "loading"],
     },
     hideclose: { control: "boolean" },
-    // animation: { control: "select", options: animationNames },
+    animation: { control: "select", options: animationNames },
     "data-design-token-target": { table: { disable: true } },
     name: { table: { disable: true } },
     listener: { table: { disable: true } },
@@ -174,29 +174,29 @@ export const Standard: Story = {
   },
 };
 
-export const Animation: Story = {
-  tags: ['show-panel'],
-  render: Template,
-  args: {
-    name: "animatedMessage",
-    listener: mockListener,
-    caption: "This message has an animation applied",
-    type: "success",
-    hideclose: false,
-    animation: "tada",
-    "data-design-token-target": false,
-  },
-  argTypes: {
-    caption: { control: "text" },
-    type: {
-      control: { type: "select" },
-      options: ["success", "error", "warning", "info", "loading"],
-    },
-    hideclose: { control: "boolean" },
-    animation: { control: "select", options: animationNames },
-    "data-design-token-target": { table: { disable: true } },
-    name: { table: { disable: true } },
-    listener: { table: { disable: true } },
-  },
-};
+// export const Animation: Story = {
+//   tags: ['show-panel'],
+//   render: Template,
+//   args: {
+//     name: "animatedMessage",
+//     listener: mockListener,
+//     caption: "This message has an animation applied",
+//     type: "success",
+//     hideclose: false,
+//     animation: "tada",
+//     "data-design-token-target": false,
+//   },
+//   argTypes: {
+//     caption: { control: "text" },
+//     type: {
+//       control: { type: "select" },
+//       options: ["success", "error", "warning", "info", "loading"],
+//     },
+//     hideclose: { control: "boolean" },
+//     animation: { control: "select", options: animationNames },
+//     "data-design-token-target": { table: { disable: true } },
+//     name: { table: { disable: true } },
+//     listener: { table: { disable: true } },
+//   },
+// };
 

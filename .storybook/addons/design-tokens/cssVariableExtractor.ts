@@ -32,8 +32,10 @@
  * 1. Remove curly braces { }
  * 2. Remove .value suffix
  * 3. Replace @ placeholder with empty string
- * 4. Replace dots (.) with hyphens (-)
- * 5. Add --wm- prefix
+ * 4. Handle cross-component references (form.mapping.* → form.*)
+ * 5. Handle state references (form.states.* → form-states-*)
+ * 6. Replace dots (.) with hyphens (-)
+ * 7. Add --wm- prefix
  *
  * Examples:
  * - "{color.primary.@.value}" → "--wm-color-primary"
@@ -42,6 +44,8 @@
  * - "{space.6.value}" → "--wm-space-6"
  * - "{border.style.base.value}" → "--wm-border-style-base"
  * - "{color.surface.container.highest.@.value}" → "--wm-color-surface-container-highest"
+ * - "{form.mapping.control.border.color.value}" → "--wm-form-control-border-color"
+ * - "{form.mapping.states.hover.control.border.color.value}" → "--wm-form-states-hover-control-border-color"
  *
  * @param tokenReference - Token reference string from JSON (e.g., "{color.primary.@.value}")
  * @returns CSS variable name (e.g., "--wm-color-primary")
@@ -60,6 +64,14 @@ export function tokenReferenceToCSSVariable(tokenReference: string): string {
   // Replace @ placeholder with empty string
   // The @ is used in token references like {color.primary.@.value} to indicate theme variant
   cssVarName = cssVarName.replace('.@', '');
+
+  // Handle cross-component form control references
+  // form.mapping.control.* → form-control-*
+  // form.mapping.states.hover.control.* → form-states-hover-control-*
+  if (cssVarName.startsWith('form.mapping.')) {
+    // Remove the "mapping" segment but keep "form"
+    cssVarName = cssVarName.replace('form.mapping.', 'form.');
+  }
 
   // Replace dots with hyphens
   cssVarName = cssVarName.replace(/\./g, '-');
@@ -168,32 +180,91 @@ export function extractCSSVariables(iframe: HTMLIFrameElement): Map<string, stri
 }
 
 /**
+ * Loads and resolves form control state variables from form-controls.json
+ *
+ * The foundation.css references variables like --wm-form-states-hover-control-border-color
+ * but these are not defined in the CSS. This function reads them from form-controls.json
+ * and resolves their values.
+ *
+ * @param cssVariables - Existing CSS variables map to augment
+ */
+async function augmentWithFormControlStates(cssVariables: Map<string, string>): Promise<void> {
+  try {
+    // Dynamically import the form-controls.json
+    const formControlsData = await import('../../../src/designTokens/components/form-controls/form-controls.json');
+
+    const formData = formControlsData.default?.form || formControlsData.form;
+    if (!formData || !formData.mapping || !formData.mapping.states) {
+      return;
+    }
+
+    // Extract state values (hover, focus, error, active)
+    const states = formData.mapping.states;
+
+    for (const [stateName, stateData] of Object.entries(states as any)) {
+      if (!stateData || typeof stateData !== 'object') continue;
+
+      // Recursively extract all properties from the state
+      const extractValues = (obj: any, path: string[] = []) => {
+        for (const [key, value] of Object.entries(obj)) {
+          if (key === 'value' && typeof value === 'string') {
+            // Found a value! Create the CSS variable name
+            const cssVarName = `--wm-form-states-${stateName}-${path.join('-')}`;
+
+            // Resolve the value if it's a reference
+            let resolvedValue = value;
+            if (value.startsWith('{') && value.endsWith('}')) {
+              // It's a reference, try to resolve it
+              resolvedValue = resolveTokenReference(value, cssVariables);
+            }
+
+            cssVariables.set(cssVarName, resolvedValue);
+          } else if (typeof value === 'object' && value !== null && key !== 'attributes' && key !== 'type') {
+            // Recurse into nested objects
+            extractValues(value, [...path, key]);
+          }
+        }
+      };
+
+      extractValues(stateData);
+    }
+  } catch (error) {
+    // console.warn('[CSS Extractor] Could not load form-controls.json for state variables:', error);
+  }
+}
+
+/**
  * Builds a token reference map for resolving {token.path} references
  *
- * This function now simply returns the CSS variables map directly.
- * Token reference resolution is handled dynamically in resolveTokenReference().
+ * This function augments the CSS variables map with form control state variables
+ * that are missing from foundation.css but referenced by components like chips.
  *
  * @param cssVariables - Map of CSS variables from extractCSSVariables()
- * @returns Map that can be used to resolve token references (same as input for compatibility)
+ * @returns Map that can be used to resolve token references (including form state variables)
  *
  * @example
  * ```typescript
  * const cssVars = extractCSSVariables(iframe);
- * const tokenMap = buildTokenReferenceMap(cssVars);
- * // tokenMap can now be used with resolveTokenReference()
+ * const tokenMap = await buildTokenReferenceMap(cssVars);
+ * // tokenMap now includes --wm-form-states-hover-control-border-color, etc.
  * ```
  */
-export function buildTokenReferenceMap(cssVariables: Map<string, string>): Map<string, string> {
+export async function buildTokenReferenceMap(cssVariables: Map<string, string>): Promise<Map<string, string>> {
   // Return cached values if available
   if (tokenReferenceCache) {
     return tokenReferenceCache;
   }
 
-  // The token reference map is now just the CSS variables map
-  // Resolution happens dynamically in resolveTokenReference()
-  tokenReferenceCache = cssVariables;
+  // Clone the map so we don't modify the original
+  const augmentedMap = new Map(cssVariables);
 
-  // console.log(`[CSS Extractor] Built token reference map with ${cssVariables.size} entries`);
+  // Augment with form control state variables from JSON
+  await augmentWithFormControlStates(augmentedMap);
+
+  // The token reference map now includes both CSS variables and computed state variables
+  tokenReferenceCache = augmentedMap;
+
+  // console.log(`[CSS Extractor] Built token reference map with ${augmentedMap.size} entries (${augmentedMap.size - cssVariables.size} added from form-controls.json)`);
 
   return tokenReferenceCache;
 }
