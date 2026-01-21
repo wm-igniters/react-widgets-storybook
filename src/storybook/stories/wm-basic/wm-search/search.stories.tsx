@@ -9,7 +9,7 @@ import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
 import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
-import styling from "./docs/styling.md?raw";
+// import styling from "./docs/styling.md?raw";
 import token from "./docs/token.md?raw";
 
 import searchTokensData from "../../../../designTokens/components/search/search.json";
@@ -17,40 +17,6 @@ import searchTokensData from "../../../../designTokens/components/search/search.
 const meta: Meta<typeof SearchDefaultExport> = {
   title: "Basic/Search",
   component: SearchDefaultExport,
-  // argTypes: {
-  //   type: {
-  //     control: { type: "select" },
-  //     options: ["search", "autocomplete"],
-  //   },
-  //   searchon: {
-  //     control: { type: "select" },
-  //     options: ["typing", "onsearchiconclick"],
-  //   },
-  //   matchmode: {
-  //     control: { type: "select" },
-  //     options: ["contains", "start", "end", "exact"],
-  //   },
-  //   searchkey:{
-  //    control:{ type:"text" },
-  //    table:{ disable:false, }
-  //   },
-  //   placeholder: { control: "text" },
-  //   showclear: { control: "boolean" },
-  //   showsearchicon: { control: "boolean" },
-  //   showbackbutton: { control: "boolean" },
-  //   // dropup: { control: "boolean" },
-  //   readonly: { control: "boolean" },
-  //   disabled: { control: "boolean" },
-  //   autofocus: { control: "boolean" },
-  //   // debouncetime: { control: "number" },
-  //   // minchars: { control: "number" },
-  //   // limit: { control: "number" },
-  //   // tabindex: { control: "number" },
-  //   datafield: { control: "text" },
-  //   displayfield: { control: "text" },
-  //   // hint: { control: "text" },
-  //   // arialabel: { control: "text" },
-  // },
 };
 
 export default meta;
@@ -107,11 +73,19 @@ export const Docs: Story = {
       methods={methods}
       // styling={styling}
       token={token}
+      externalLink={{
+        href: "https://www.figma.com/design/F6S1sF5vM38mn6aLNnGGon/WaveMaker-UI-Kit--Community-?node-id=55141-14254&p=f&t=rE8HvDMpyMdtByDG-0",
+        label: "",
+      }}
     />
   ),
   args:{
     name:"docsSearch",
     listener:mockListener
+  },
+  argTypes: {
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
   },
   parameters: {
     layout: 'fullscreen',
@@ -188,58 +162,9 @@ export const Showcase: Story = {
     name: "showcaseSearchTypes",
     listener: mockListener,
   },
-};
-
-export const Basic: Story = {
-  tags: ['show-panel'],
-  render: Template,
-  args: {
-    name: "basicSearch",
-    listener: mockListener,
-    type: "autocomplete",
-    placeholder: "Search...",
-    dataset: sampleDataset,
-    datafield: "name",
-    displayfield: "name",
-    searchon: "onsearchiconclick",
-    searchkey: "name",
-    showclear: true,
-    showsearchicon: true,
-    showbackbutton:false,
-    disabled: false,
-    readonly: false,
-    autofocus: false,
-  },
   argTypes: {
-    type: {
-      control: { type: "select" },
-      options: ["search", "autocomplete"],
-    },
-    searchon: {
-      control: { type: "select" },
-      options: ["typing", "onsearchiconclick"],
-    },
-    matchmode: {
-      control: { type: "select" },
-      options: ["contains", "start", "end", "exact"],
-    },
-    searchkey:{
-     control:{ type:"text" },
-     table:{ disable:false, }
-    },
-    placeholder: { control: "text" },
-    showclear: { control: "boolean" },
-    showsearchicon: { control: "boolean" },
-    showbackbutton: { control: "boolean" },
-    // dropup: { control: "boolean" },
-    readonly: { control: "boolean" },
-    disabled: { control: "boolean" },
-    autofocus: { control: "boolean" },
-    // debouncetime: { control: "number" },
-    // minchars: { control: "number" },
-    // limit: { control: "number" },
-    datafield: { control: "text" },
-    displayfield: { control: "text" },
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
   },
 };
 
@@ -249,7 +174,7 @@ export const Standard: Story = {
   args: {
     name: "standardSearch",
     listener: mockListener,
-    type: "autocomplete",
+    type: "search",
     placeholder: "Search...",
     dataset: sampleDataset,
     datafield: "name",
@@ -262,7 +187,7 @@ export const Standard: Story = {
     disabled: false,
     readonly: false,
     autofocus: false,
-    "data-design-token-target":"true",
+    "data-design-token-target":true,
   },
   argTypes: {
     type: {
@@ -294,7 +219,9 @@ export const Standard: Story = {
     // limit: { control: "number" },
     datafield: { control: "text" },
     displayfield: { control: "text" },
-    "data-design-token-target": { control: false }
+    "data-design-token-target": { table: { disable: true } },
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
   },
   parameters: {
     designTokens: {
@@ -304,444 +231,5 @@ export const Standard: Story = {
       extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
     },
     layout: 'fullscreen',
-  }, 
+  },
 };
-
-// export const SearchDefault: Story = {
-//   render: Template,
-//   args: {
-//     name: "search1",
-//     listener: mockListener,
-//     type: "search",
-//     placeholder: "Search...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     searchon: "onsearchiconclick",
-//     showclear: true,
-//     showsearchicon: true,
-//   },
-// };
-
-// export const SearchOnTyping: Story = {
-//   render: Template,
-//   args: {
-//     name: "searchTyping",
-//     listener: mockListener,
-//     type: "search",
-//     placeholder: "Search as you type...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     searchon: "typing",
-//     showclear: true,
-//     showsearchicon: true,
-//     debouncetime: 300,
-//   },
-// };
-
-// export const AutocompleteDefault: Story = {
-//   render: Template,
-//   args: {
-//     name: "autocomplete1",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Type to autocomplete...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     minchars: 1,
-//   },
-// };
-
-// export const AutocompleteCountries: Story = {
-//   render: Template,
-//   args: {
-//     name: "autocompleteCountries",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Search countries...",
-//     dataset: countriesDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     minchars: 2,
-//   },
-// };
-
-// export const WithClearButton: Story = {
-//   render: Template,
-//   args: {
-//     name: "withClear",
-//     listener: mockListener,
-//     type: "search",
-//     placeholder: "Search with clear button...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     showsearchicon: true,
-//   },
-// };
-
-// export const WithoutSearchIcon: Story = {
-//   render: Template,
-//   args: {
-//     name: "noSearchIcon",
-//     listener: mockListener,
-//     type: "search",
-//     placeholder: "Search without icon...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     showsearchicon: false,
-//     searchon: "typing",
-//   },
-// };
-
-// export const WithBackButton: Story = {
-//   render: Template,
-//   args: {
-//     name: "withBackButton",
-//     listener: mockListener,
-//     type: "search",
-//     placeholder: "Search with back button...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     showsearchicon: true,
-//     showbackbutton: true,
-//   },
-// };
-
-// export const MinimumCharacters: Story = {
-//   render: Template,
-//   args: {
-//     name: "minChars",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Type at least 3 characters...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     minchars: 3,
-//   },
-// };
-
-// export const LimitedResults: Story = {
-//   render: Template,
-//   args: {
-//     name: "limitedResults",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Limited to 5 results...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     limit: 5,
-//   },
-// };
-
-// export const MatchModeStartsWith: Story = {
-//   render: Template,
-//   args: {
-//     name: "matchStart",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Search starts with...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     matchmode: "start",
-//   },
-// };
-
-// export const MatchModeEndsWith: Story = {
-//   render: Template,
-//   args: {
-//     name: "matchEnd",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Search ends with...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     matchmode: "end",
-//   },
-// };
-
-// export const MatchModeExact: Story = {
-//   render: Template,
-//   args: {
-//     name: "matchExact",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Exact match only...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     matchmode: "exact",
-//   },
-// };
-
-// export const DropupVariant: Story = {
-//   render: (args: any) => (
-//     <Box style={{ padding: 16, paddingTop: "400px", minHeight: "500px" }}>
-//       <SearchDefaultExport {...args} listener={mockListener} />
-//     </Box>
-//   ),
-//   args: {
-//     name: "dropup",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Dropdown opens upward...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     dropup: true,
-//   },
-// };
-
-// export const ReadonlySearch: Story = {
-//   render: Template,
-//   args: {
-//     name: "readonly",
-//     listener: mockListener,
-//     type: "search",
-//     placeholder: "Readonly search...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     readonly: true,
-//     datavalue: "Apple",
-//   },
-// };
-
-// export const DisabledSearch: Story = {
-//   render: Template,
-//   args: {
-//     name: "disabled",
-//     listener: mockListener,
-//     type: "search",
-//     placeholder: "Disabled search...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     disabled: true,
-//   },
-// };
-
-// export const WithHint: Story = {
-//   render: Template,
-//   args: {
-//     name: "withHint",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Hover for hint...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     hint: "Start typing to see suggestions",
-//     arialabel: "Search for items",
-//   },
-// };
-
-// export const CustomWidth: Story = {
-//   render: Template,
-//   args: {
-//     name: "customWidth",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Custom width search...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     width: "400px",
-//   },
-// };
-
-// export const GroupedSearch: Story = {
-//   render: Template,
-//   args: {
-//     name: "grouped",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Search grouped items...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     groupby: "category",
-//     showclear: true,
-//   },
-// };
-
-// export const MatchModeComparison: Story = {
-//   render: () => {
-//     return (
-//       <Box style={{ padding: 16 }}>
-//         <Stack spacing={4}>
-//           <Box>
-//             <Typography variant="subtitle1" mb={2}>
-//               Contains (Default) - Try "app"
-//             </Typography>
-//             <SearchDefaultExport
-//               name="contains"
-//               type="autocomplete"
-//               placeholder="Search contains..."
-//               dataset={sampleDataset}
-//               datafield="name"
-//               displayfield="name"
-//               matchmode="contains"
-//               showclear={true}
-//               listener={mockListener}
-//             />
-//           </Box>
-//           <Box>
-//             <Typography variant="subtitle1" mb={2}>
-//               Starts With - Try "app"
-//             </Typography>
-//             <SearchDefaultExport
-//               name="starts"
-//               type="autocomplete"
-//               placeholder="Search starts with..."
-//               dataset={sampleDataset}
-//               datafield="name"
-//               displayfield="name"
-//               matchmode="start"
-//               showclear={true}
-//               listener={mockListener}
-//             />
-//           </Box>
-//           <Box>
-//             <Typography variant="subtitle1" mb={2}>
-//               Ends With - Try "ple"
-//             </Typography>
-//             <SearchDefaultExport
-//               name="ends"
-//               type="autocomplete"
-//               placeholder="Search ends with..."
-//               dataset={sampleDataset}
-//               datafield="name"
-//               displayfield="name"
-//               matchmode="end"
-//               showclear={true}
-//               listener={mockListener}
-//             />
-//           </Box>
-//           <Box>
-//             <Typography variant="subtitle1" mb={2}>
-//               Exact Match - Try "Apple"
-//             </Typography>
-//             <SearchDefaultExport
-//               name="exact"
-//               type="autocomplete"
-//               placeholder="Exact match only..."
-//               dataset={sampleDataset}
-//               datafield="name"
-//               displayfield="name"
-//               matchmode="exact"
-//               showclear={true}
-//               listener={mockListener}
-//             />
-//           </Box>
-//         </Stack>
-//       </Box>
-//     );
-//   },
-//   args: {
-//     name: "matchComparison",
-//     listener: mockListener,
-//   },
-// };
-
-// export const InteractiveDemo: Story = {
-//   render: () => {
-//     const [selectedItem, setSelectedItem] = useState<any>(null);
-
-//     const customListener = {
-//       ...mockListener,
-//       onChange: (name: string, data: any) => {
-//         setSelectedItem(data.datavalue);
-//       },
-//     };
-
-//     return (
-//       <Box style={{ padding: 16 }}>
-//         <Stack spacing={3}>
-//           <Typography variant="h6">Interactive Search Demo</Typography>
-//           <SearchDefaultExport
-//             name="interactive"
-//             type="autocomplete"
-//             placeholder="Search and select an item..."
-//             dataset={sampleDataset}
-//             datafield="name"
-//             displayfield="name"
-//             showclear={true}
-//             listener={customListener}
-//           />
-//           {selectedItem && (
-//             <Box p={2} bgcolor="#f5f5f5" borderRadius={1}>
-//               <Typography variant="subtitle2">Selected Item:</Typography>
-//               <Typography variant="body2">
-//                 <strong>Name:</strong> {selectedItem.name}
-//               </Typography>
-//               <Typography variant="body2">
-//                 <strong>Category:</strong> {selectedItem.category}
-//               </Typography>
-//               <Typography variant="body2">
-//                 <strong>Color:</strong> {selectedItem.color}
-//               </Typography>
-//             </Box>
-//           )}
-//         </Stack>
-//       </Box>
-//     );
-//   },
-//   args: {
-//     name: "interactiveDemo",
-//     listener: mockListener,
-//   },
-// };
-
-// export const CustomStyling: Story = {
-//   render: Template,
-//   args: {
-//     name: "customStyles",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Custom styled search...",
-//     dataset: sampleDataset,
-//     datafield: "name",
-//     displayfield: "name",
-//     showclear: true,
-//     styles: {
-//       border: "2px solid #2196f3",
-//       borderRadius: "8px",
-//       padding: "4px",
-//     },
-//   },
-// };
-
-// export const SimpleStringDataset: Story = {
-//   render: Template,
-//   args: {
-//     name: "simpleStrings",
-//     listener: mockListener,
-//     type: "autocomplete",
-//     placeholder: "Search simple strings...",
-//     dataset: ["Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape"],
-//     datafield: "All Fields",
-//     showclear: true,
-//   },
-// };

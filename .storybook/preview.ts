@@ -69,10 +69,10 @@ const preview: Preview = {
     actions: {
       disable: true,
     },
-    // Disable Interactions addon panel
-    interactions: {
-      disable: true,
-    },
+    // Disable Interactions addon panel, hidden -> style -> theme.css
+    // interactions: {
+    //   disable: true,
+    // },
     // Disable Backgrounds addon panel (if you don't need it)
     backgrounds: {
       disable: true,

@@ -424,6 +424,8 @@ const StateDropdown = styled.select`
   color: #1c1b1f;
   cursor: pointer;
   transition: border-color 0.2s;
+  pointer-events: none; /* Disabled */
+  opacity: 0.6; /* Disabled */
 
   &:focus {
     outline: none;
@@ -1891,7 +1893,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
   return (
     <PanelContent>
-      <InfoBox>
+      {/* <InfoBox>
         <InfoText>
           <strong>{tokenConfig.componentName.toUpperCase()} Design Tokens</strong>
           {propInfo ? (
@@ -1908,7 +1910,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
           <br />
           Modify any token below to see real-time changes in the component above.
         </InfoText>
-      </InfoBox>
+      </InfoBox> */}
 
       {/* State Dropdown - Only shown if component has multiple states */}
       {availableStates.length > 1 && (
