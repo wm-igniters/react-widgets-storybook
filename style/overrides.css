@@ -291,3 +291,110 @@ wrote custom styles as per current DOM, once fixed in index.tsx file below to be
     --wm-progress-circle-danger-stroke-inactive: var(--wm-progress-circle-stroke-inactive);
     --wm-progress-circle-danger-label-color: var(--wm-progress-circle-label-color);
 }
+/* ============================================================================
+   DESIGN TOKEN FIX: Checked/Selected States for Input Components
+   ============================================================================
+   Problem: Design token panel applies inline styles that block :has() selectors
+   Solution: Override CSS variables and direct styles for checked/selected states
+   ============================================================================ */
+
+/* CHECKBOX - Checked State */
+[data-design-token-target] .app-checkbox.checkbox > label > input[type="checkbox"]:checked + .caption:before {
+    background: var(--wm-color-primary) !important;
+    border-color: var(--wm-color-primary) !important;
+}
+
+[data-design-token-target] .app-checkbox.checkbox > label > input[type="checkbox"]:checked + .caption:after {
+    border-color: var(--wm-color-on-primary) !important;
+    transform: translate(3px, 4px) rotate(-45deg) scale(1) !important;
+}
+
+[data-design-token-target] .app-checkbox.checkbox > label > input[type="checkbox"]:checked {
+    background: var(--wm-color-primary) !important;
+}
+
+/* CHECKBOXSET - Checked State (inherits from checkbox) */
+[data-design-token-target] .app-checkboxset .app-checkbox.checkbox > label > input[type="checkbox"]:checked + .caption:before {
+    background: var(--wm-color-primary) !important;
+    border-color: var(--wm-color-primary) !important;
+}
+
+[data-design-token-target] .app-checkboxset .app-checkbox.checkbox > label > input[type="checkbox"]:checked + .caption:after {
+    border-color: var(--wm-color-on-primary) !important;
+    transform: translate(3px, 4px) rotate(-45deg) scale(1) !important;
+}
+
+/* TOGGLE/SWITCH - Checked State */
+/* Override CSS variables for checked state */
+[data-design-token-target] .app-checkbox.checkbox.app-toggle:has(input[type='checkbox']:checked) {
+    --wm-toggle-handle-size: 16px !important;
+    --wm-toggle-handle-color: var(--wm-color-on-secondary) !important;
+    --wm-toggle-background: var(--wm-color-secondary) !important;
+    --wm-toggle-border-color: var(--wm-color-secondary) !important;
+    --wm-toggle-state-layer-color: var(--wm-color-secondary) !important;
+}
+
+/* Label background and border when checked */
+[data-design-token-target] .app-checkbox.checkbox.app-toggle:has(input[type='checkbox']:checked) > label {
+    background: var(--wm-color-secondary) !important;
+    border: var(--wm-toggle-border-width) var(--wm-toggle-border-style) var(--wm-color-secondary) !important;
+}
+
+/* State layer (input element) moves right and gets secondary color */
+[data-design-token-target] .app-checkbox.checkbox.app-toggle label > input[type="checkbox"]:checked {
+    background: var(--wm-color-secondary) !important;
+    left: calc(100% - var(--wm-space-2) - 16px - var(--wm-toggle-border-width)) !important;
+}
+
+/* Handle (caption) moves right and changes to on-secondary color */
+[data-design-token-target] .app-checkbox.checkbox.app-toggle label > input[type="checkbox"]:checked + .caption {
+    background: var(--wm-color-on-secondary) !important;
+    left: calc(100% - var(--wm-space-1) - 16px + var(--wm-toggle-border-width)) !important;
+}
+
+/* RADIO/RADIOSET - Checked State */
+[data-design-token-target] .app-radio.radio > label > input[type="radio"]:checked + .caption:before {
+    border-color: var(--wm-color-secondary) !important;
+}
+
+[data-design-token-target] .app-radio.radio > label > input[type="radio"]:checked + .caption:after {
+    background: var(--wm-color-secondary) !important;
+    transform: scale(1) !important;
+}
+
+[data-design-token-target] .app-radio.radio > label > input[type="radio"]:checked {
+    background: var(--wm-color-secondary) !important;
+}
+
+[data-design-token-target] .app-radioset .app-radio.radio > label > input[type="radio"]:checked + .caption:before {
+    border-color: var(--wm-color-secondary) !important;
+}
+
+[data-design-token-target] .app-radioset .app-radio.radio > label > input[type="radio"]:checked + .caption:after {
+    background: var(--wm-color-secondary) !important;
+    transform: scale(1) !important;
+}
+
+/* RATING - Active/Selected State */
+[data-design-token-target] .app-ratings .ratings-wrapper .rating-style label:hover,
+[data-design-token-target] .app-ratings .ratings-wrapper .rating-style label:hover ~ label,
+[data-design-token-target] .app-ratings .ratings-wrapper .rating-style label.active {
+    opacity: 1 !important;
+}
+
+[data-design-token-target] .app-ratings .ratings-wrapper .rating-style label:hover .app-icon,
+[data-design-token-target] .app-ratings .ratings-wrapper .rating-style label:hover ~ label .app-icon,
+[data-design-token-target] .app-ratings .ratings-wrapper .rating-style label.active .app-icon {
+    color: var(--wm-color-warning) !important;
+}
+
+/* SWITCH (Segmented Control) - Selected State */
+[data-design-token-target] .app-switch > .btn-group > .btn.selected {
+    background: var(--wm-color-secondary-container) !important;
+    color: var(--wm-color-on-secondary-container) !important;
+    border-color: var(--wm-color-outline) !important;
+}
+
+[data-design-token-target] .app-switch > .btn-group > .btn.selected:before {
+    --wm-btn-state-layer-color: var(--wm-color-on-secondary-container) !important;
+}

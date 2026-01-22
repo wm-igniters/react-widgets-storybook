@@ -187,11 +187,18 @@ export const Standard: Story = {
   render: DesignTokenTemplate,
   args: {
     name: "standardRadioset",
-    dataset: "Option 1, Option 2, Option 3",
+    dataset: [
+      { id: 1, name: "Economy", price: "$50" },
+      { id: 2, name: "Business", price: "$100" },
+      { id: 3, name: "First Class", price: "$200" },
+      { id: 4, name: "Premium", price: "$300" },
+    ],
+    datafield: "id",
+    displayfield: "name",
     listener: mockListener,
+    datavalue: 2,
     disabled: false,
     readonly: false,
-    datavalue:"Option 1",
     "data-design-token-target":true
   },
   argTypes: {
@@ -220,32 +227,32 @@ export const Standard: Story = {
   },
 };
 
-export const ObjectDataset: Story = {
-  tags: ['show-panel'],
-  render: Template,
-  args: {
-    name: "objectDataset",
-    dataset: [
-      { id: 1, name: "Economy", price: "$50" },
-      { id: 2, name: "Business", price: "$100" },
-      { id: 3, name: "First Class", price: "$200" },
-      { id: 4, name: "Premium", price: "$300" },
-    ],
-    datafield: "id",
-    displayfield: "name",
-    listener: mockListener,
-    datavalue: 2,
-  },
-  argTypes: {
-    datafield: { control: "text" },
-    dataset: { control: "object" },
-    datavalue: { control: "text" },
-    disabled: { control: "boolean" },
-    displayfield: { control: "text" },
-    displayValue: { control: "text" },
-    groupby: { control: "text" },
-    itemsperrow: { control: "select", options: ["xs-1 sm-1 md-1 lg-1","xs-1 sm-2 md-2 lg-2","xs-1 sm-2 md-3 lg-3","xs-1 sm-2 md-3 lg-4","xs-1 sm-2 md-4 lg-6"] },
-    orderby: { control: "text" },
-    readonly: { control: "boolean" },
-  },
-};
+// export const ObjectDataset: Story = {
+//   tags: ['show-panel'],
+//   render: Template,
+//   args: {
+//     name: "objectDataset",
+//     dataset: [
+//       { id: 1, name: "Economy", price: "$50" },
+//       { id: 2, name: "Business", price: "$100" },
+//       { id: 3, name: "First Class", price: "$200" },
+//       { id: 4, name: "Premium", price: "$300" },
+//     ],
+//     datafield: "id",
+//     displayfield: "name",
+//     listener: mockListener,
+//     datavalue: 2,
+//   },
+//   argTypes: {
+//     datafield: { control: "text" },
+//     dataset: { control: "object" },
+//     datavalue: { control: "text" },
+//     disabled: { control: "boolean" },
+//     displayfield: { control: "text" },
+//     displayValue: { control: "text" },
+//     groupby: { control: "text" },
+//     itemsperrow: { control: "select", options: ["xs-1 sm-1 md-1 lg-1","xs-1 sm-2 md-2 lg-2","xs-1 sm-2 md-3 lg-3","xs-1 sm-2 md-3 lg-4","xs-1 sm-2 md-4 lg-6"] },
+//     orderby: { control: "text" },
+//     readonly: { control: "boolean" },
+//   },
+// };

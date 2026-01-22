@@ -155,16 +155,48 @@ export const Standard: Story = {
     "data-design-token-target": { table: { disable: true } },
     name: { table: { disable: true } },
     listener: { table: { disable: true } },
-    // className: { control: "text" },
-    // displayValue: { control: "text" },
   },
   parameters: {
     designTokens: {
       enabled: true,
-      tokenData: checkboxTokensData,  // Pass raw JSON data instead of pre-parsed config
-      componentKey: "checkbox",  // Component identifier for parsing
-      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+      tokenData: checkboxTokensData,
+      componentKey: "checkbox",
+      extractCSSVariablesAtRuntime: true,
     },
     layout: 'fullscreen',
   },
 };
+
+// export const Toggle: Story = {
+//   tags: ['show-panel'],
+//   render: DesignTokenTemplate,
+//   args: {
+//     name: "standardToggle",
+//     caption: "Enable notifications",
+//     listener: mockListener,
+//     datavalue: true,
+//     disabled: false,
+//     readonly: false,
+//     type: "toggle",
+//     "data-design-token-target": true
+//   },
+//   argTypes: {
+//     caption: { control: "text" },
+//     datavalue: { control: "boolean" },
+//     disabled: { control: "boolean" },
+//     readonly: { control: "boolean" },
+//     required: { control: "boolean" },
+//     "data-design-token-target": { table: { disable: true } },
+//     name: { table: { disable: true } },
+//     listener: { table: { disable: true } },
+//   },
+//   parameters: {
+//     designTokens: {
+//       enabled: true,
+//       tokenData: checkboxTokensData,
+//       componentKey: "checkbox",
+//       extractCSSVariablesAtRuntime: true,
+//     },
+//     layout: 'fullscreen',
+//   },
+// };

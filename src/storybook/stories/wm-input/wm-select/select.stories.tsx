@@ -145,7 +145,14 @@ export const Standard: Story = {
   args: {
     name: "standardSelect",
     placeholder: "Select an option",
-    dataset: "Option 1, Option 2, Option 3, Option 4",
+    dataset: [
+      { id: 1, name: "John Doe", role: "Admin" },
+      { id: 2, name: "Jane Smith", role: "User" },
+      { id: 3, name: "Bob Johnson", role: "Manager" },
+      { id: 4, name: "Alice Brown", role: "User" },
+    ],
+    datafield: "id",
+    displayfield: "name",
     listener: mockListener,
     disabled: false,
     readonly: false,
@@ -168,39 +175,39 @@ export const Standard: Story = {
   },
 };
 
-export const ObjectDataset: Story = {
-  tags: ['show-panel'],
-  render: Template,
-  args: {
-    name: "objectDatasetSelect",
-    placeholder: "Select a user",
-    dataset: [
-      { id: 1, name: "John Doe", role: "Admin" },
-      { id: 2, name: "Jane Smith", role: "User" },
-      { id: 3, name: "Bob Johnson", role: "Manager" },
-      { id: 4, name: "Alice Brown", role: "User" },
-    ],
-    datafield: "id",
-    displayfield: "name",
-    listener: mockListener,
-  },
-  argTypes: {
-    autofocus: { control: "boolean" },
-    datafield: { control: "text" },
-    dataset: { control: "object" },
-    datavalue: { control: "text" },
-    displayExpression: { control: "text" },
-    displayfield: { control: "text" },
-    groupby: { control: "text" },
-    multiple: { control: "boolean" },
-    orderby: { control: "text" },
-    placeholder: { control: "text" },
-    readonly: { control: "boolean" },
-    disabled: { control: "boolean" },
-    name: { table: { disable: true } },
-    listener: { table: { disable: true } },
-  },
-};
+// export const ObjectDataset: Story = {
+//   tags: ['show-panel'],
+//   render: Template,
+//   args: {
+//     name: "objectDatasetSelect",
+//     placeholder: "Select a user",
+//     dataset: [
+//       { id: 1, name: "John Doe", role: "Admin" },
+//       { id: 2, name: "Jane Smith", role: "User" },
+//       { id: 3, name: "Bob Johnson", role: "Manager" },
+//       { id: 4, name: "Alice Brown", role: "User" },
+//     ],
+//     datafield: "id",
+//     displayfield: "name",
+//     listener: mockListener,
+//   },
+//   argTypes: {
+//     autofocus: { control: "boolean" },
+//     datafield: { control: "text" },
+//     dataset: { control: "object" },
+//     datavalue: { control: "text" },
+//     displayExpression: { control: "text" },
+//     displayfield: { control: "text" },
+//     groupby: { control: "text" },
+//     multiple: { control: "boolean" },
+//     orderby: { control: "text" },
+//     placeholder: { control: "text" },
+//     readonly: { control: "boolean" },
+//     disabled: { control: "boolean" },
+//     name: { table: { disable: true } },
+//     listener: { table: { disable: true } },
+//   },
+// };
 
 
 // Multiple Selection

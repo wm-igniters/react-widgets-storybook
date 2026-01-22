@@ -171,8 +171,14 @@ export const Standard: Story = {
   render: DesignTokenTemplate,
   args: {
     name: "standardSwitch",
-    dataset: ["yes", "no", "maybe"],
-    datavalue: "yes",
+    dataset: [
+      { id: 1, label: "Day", value: "day" },
+      { id: 2, label: "Week", value: "week" },
+      { id: 3, label: "Month", value: "month" },
+    ],
+    datafield: "id",
+    displayfield: "label",
+    datavalue: 1,
     listener: mockListener,
     disabled: false,
     multiple: false,
@@ -203,35 +209,35 @@ export const Standard: Story = {
   },
 };
 
-export const ObjectDataset: Story = {
-  tags: ['show-panel'],
-  render: Template,
-  args: {
-    name: "objectSwitch",
-    dataset: [
-      { id: 1, label: "Day", value: "day" },
-      { id: 2, label: "Week", value: "week" },
-      { id: 3, label: "Month", value: "month" },
-    ],
-    datafield: "id",
-    displayfield: "label",
-    datavalue: 1,
-    listener: mockListener,
-    disabled: false,
-    multiple: false,
-    displaylabel: "Object Dataset Switch",
-  },
-  argTypes: {
-    dataset: { control: "object" },
-    datafield: { control: "text" },
-    datavalue: { control: "text" },
-    displayExpression: { control: "text" },
-    displayfield: { control: "text" },
-    displaylabel: { control: "text" },
-    multiple: { control: "boolean" },
-    disabled: { control: "boolean" },
-    checkediconclass: { control: "select", options:["fa fa-check", "fa fa-circle-check", "wi wi-check", "wi wi-check-box"] },
-    name  : { table: { disable: true } },
-    listener: { table: { disable: true } }
-  },
-};
+// export const ObjectDataset: Story = {
+//   tags: ['show-panel'],
+//   render: Template,
+//   args: {
+//     name: "objectSwitch",
+//     dataset: [
+//       { id: 1, label: "Day", value: "day" },
+//       { id: 2, label: "Week", value: "week" },
+//       { id: 3, label: "Month", value: "month" },
+//     ],
+//     datafield: "id",
+//     displayfield: "label",
+//     datavalue: 1,
+//     listener: mockListener,
+//     disabled: false,
+//     multiple: false,
+//     displaylabel: "Object Dataset Switch",
+//   },
+//   argTypes: {
+//     dataset: { control: "object" },
+//     datafield: { control: "text" },
+//     datavalue: { control: "text" },
+//     displayExpression: { control: "text" },
+//     displayfield: { control: "text" },
+//     displaylabel: { control: "text" },
+//     multiple: { control: "boolean" },
+//     disabled: { control: "boolean" },
+//     checkediconclass: { control: "select", options:["fa fa-check", "fa fa-circle-check", "wi wi-check", "wi wi-check-box"] },
+//     name  : { table: { disable: true } },
+//     listener: { table: { disable: true } }
+//   },
+// };
