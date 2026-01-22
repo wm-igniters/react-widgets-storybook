@@ -193,6 +193,7 @@ export const Default: Story = {
     },
     name: { table: { disable: true } },
     listener: { table: { disable: true } },
+    children:{table: {disable: true}},
     "data-design-token-target": { table: { disable: true } },
   },
   parameters: {
@@ -234,6 +235,7 @@ export const Filled: Story = {
     },
     name: { table: { disable: true } },
     listener: { table: { disable: true } },
+    children:{table: {disable: true}},
     "data-design-token-target": { table: { disable: true } },
   },
   parameters: {
