@@ -39,6 +39,18 @@ const Template = (args: any) => (
   </Box>
 );
 
+// const DesignTokenTemplate = (args: any) => {
+//   const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+
+//   return (
+//     <Box style={{ padding: 16, width: '100%', maxWidth: 200 }} data-design-token-target={dataAttr}>
+//       <Box style={{ width: '100%' }}>
+//         <ProgressBarDefaultExport {...componentArgs} listener={mockListener} />
+//       </Box>
+//     </Box>
+//   );
+// };
+
 export const Docs: Story = {
   render: () => (
     <ComponentDocumentation
@@ -126,11 +138,11 @@ export const Showcase: Story = {
   }
 };
 
-export const Standard: Story = {
+export const Filled: Story = {
   tags: ['show-panel'],
   render: Template,
   args: {
-    name: "standardProgressBar",
+    name: "filledProgressBar",
     listener: mockListener,
     datavalue: 30,
     type: "default",
@@ -179,7 +191,78 @@ export const Standard: Story = {
           success: "progress-bar-success",
           info: "progress-bar-info",
           warning: "progress-bar-warning",
-          danger: "progress-bar-danger"
+          danger: "progress-bar-danger",
+          // "default-striped": "progress-bar-striped progress-bar-default",
+          // "success-striped": "progress-bar-striped progress-bar-success",
+          // "info-striped": "progress-bar-striped progress-bar-info",
+          // "warning-striped": "progress-bar-striped progress-bar-warning",
+          // "danger-striped": "progress-bar-striped progress-bar-danger",
+        }
+      }
+    },
+    layout: 'fullscreen',
+  },
+};
+
+export const Striped: Story = {
+  tags: ['show-panel'],
+  render: Template,
+  args: {
+    name: "stripedProgressBar",
+    listener: mockListener,
+    datavalue: 50,
+    type: "default-striped",
+    minvalue: 0,
+    maxvalue: 100,
+    captionplacement: "inside",
+    "data-design-token-target": true,
+  },
+  argTypes: {
+    datavalue: { control: "number" },
+    minvalue: { control: "number" },
+    maxvalue: { control: "number" },
+    type: {
+      control: { type: "select" },
+      options: [
+        // "default",
+        "default-striped",
+        // "success",
+        "success-striped",
+        // "info",
+        "info-striped",
+        // "warning",
+        "warning-striped",
+        // "danger",
+        "danger-striped",
+      ],
+    },
+    captionplacement: {
+      control: { type: "radio" },
+      options: ["hidden", "inside"],
+    },
+    "data-design-token-target": { table: { disable: true } },
+    name: { table: { disable: true } },
+    listener: { table: { disable: true } },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: progressBarTokensData,
+      componentKey: "progress-bar",
+      extractCSSVariablesAtRuntime: true,
+      propToVariantMap: {
+        propName: "type",
+        mapping: {
+          // default: "progress-bar-default",
+          // success: "progress-bar-success",
+          // info: "progress-bar-info",
+          // warning: "progress-bar-warning",
+          // danger: "progress-bar-danger",
+          "default-striped": "progress-bar-striped progress-bar-default",
+          "success-striped": "progress-bar-striped progress-bar-success",
+          "info-striped": "progress-bar-striped progress-bar-info",
+          "warning-striped": "progress-bar-striped progress-bar-warning",
+          "danger-striped": "progress-bar-striped progress-bar-danger",
         }
       }
     },

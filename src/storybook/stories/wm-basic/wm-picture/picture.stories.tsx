@@ -168,17 +168,17 @@ export const Showcase: Story = {
   },
 };
 
-export const Default: Story = {
+export const Standard: Story = {
   tags: ['show-panel'],
   render: DesignTokenTemplate,
   args: {
-    name: "defaultPicture",
+    name: "standardPicture",
     listener: mockListener,
     picturesource: "/showcaseImage.png",
     alttext: "Placeholder image",
     width: "200px",
     height: "200px",
-    resizemode: "none",
+    resizemode: "fill",
     shape: "rounded",
     "data-design-token-target": true
   },
@@ -192,7 +192,7 @@ export const Default: Story = {
     },
     shape:{
       control:"select",
-      options:['circle',"rounded"]
+      options:['circle',"rounded", "thumbnail"]
     },
     resizemode: {
       control: { type: "select" },
@@ -215,49 +215,49 @@ export const Default: Story = {
   },
 };
 
-export const Thumbnail: Story = {
-  tags: ['show-panel'],
-  render: DesignTokenTemplate,
-  args: {
-    name: "thumbnailPicture",
-    listener: mockListener,
-    picturesource: "/showcaseImage.png",
-    alttext: "Placeholder image",
-    width: "200px",
-    height: "200px",
-    resizemode: "none",
-    shape: "thumbnail",
-    "data-design-token-target": true
-  },
-  argTypes: {
-    picturesource: { control: "text" },
-    pictureplaceholder: { control: "text" },
-    alttext: { control: "text" },
-    pictureaspect: {
-      control: { type: "select" },
-      options: ["None", "H", "V", "Both"],
-    },
-    shape:{
-      control:"select",
-      options:["thumbnail"]
-    },
-    resizemode: {
-      control: { type: "select" },
-      options: ["fill", "cover", "contain", "none", "scale-down"],
-    },
-    width: { control: "text" },
-    height: { control: "text" },
-    "data-design-token-target": { table: { disable: true } },
-    name: { table: { disable: true } },
-    listener: { table: { disable: true } },
-  },
-  parameters: {
-    designTokens: {
-      enabled: true,
-      tokenData: pictureTokensData,  // Pass raw JSON data instead of pre-parsed config
-      componentKey: "picture",  // Component identifier for parsing
-      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
-    },
-    layout: 'fullscreen',
-  },
-};
+// export const Thumbnail: Story = {
+//   tags: ['show-panel'],
+//   render: DesignTokenTemplate,
+//   args: {
+//     name: "thumbnailPicture",
+//     listener: mockListener,
+//     picturesource: "/showcaseImage.png",
+//     alttext: "Placeholder image",
+//     width: "200px",
+//     height: "200px",
+//     resizemode: "none",
+//     shape: "thumbnail",
+//     "data-design-token-target": true
+//   },
+//   argTypes: {
+//     picturesource: { control: "text" },
+//     pictureplaceholder: { control: "text" },
+//     alttext: { control: "text" },
+//     pictureaspect: {
+//       control: { type: "select" },
+//       options: ["None", "H", "V", "Both"],
+//     },
+//     shape:{
+//       control:"select",
+//       options:["thumbnail"]
+//     },
+//     resizemode: {
+//       control: { type: "select" },
+//       options: ["fill", "cover", "contain", "none", "scale-down"],
+//     },
+//     width: { control: "text" },
+//     height: { control: "text" },
+//     "data-design-token-target": { table: { disable: true } },
+//     name: { table: { disable: true } },
+//     listener: { table: { disable: true } },
+//   },
+//   parameters: {
+//     designTokens: {
+//       enabled: true,
+//       tokenData: pictureTokensData,  // Pass raw JSON data instead of pre-parsed config
+//       componentKey: "picture",  // Component identifier for parsing
+//       extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+//     },
+//     layout: 'fullscreen',
+//   },
+// };
