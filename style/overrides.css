@@ -128,3 +128,166 @@ body.sb-show-main {
 .app-dialog-message.text-success{
   color: var(--wm-color-success) !important;
 }
+
+/* progress-bar index.tsx file class append is done to child instead of parent and it is not working,
+wrote custom styles as per current DOM, once fixed in index.tsx file below to be removed, it is temp
+*/
+
+/* NON-STRIPED VARIANTS - Apply to child elements */
+.progress-bar.progress-bar-default,
+.multi-bar.progress-bar-default {
+    --wm-progress-bar-stroke-active: var(--wm-color-primary);
+    --wm-progress-bar-label-color: var(--wm-color-on-primary);
+    background: var(--wm-progress-bar-stroke-active);
+}
+
+.progress-bar.progress-bar-success,
+.multi-bar.progress-bar-success {
+    --wm-progress-bar-stroke-active: var(--wm-color-success);
+    --wm-progress-bar-label-color: var(--wm-color-on-success);
+    background: var(--wm-progress-bar-stroke-active);
+}
+
+.progress-bar.progress-bar-info,
+.multi-bar.progress-bar-info {
+    --wm-progress-bar-stroke-active: var(--wm-color-info);
+    --wm-progress-bar-label-color: var(--wm-color-on-info);
+    background: var(--wm-progress-bar-stroke-active);
+}
+
+.progress-bar.progress-bar-warning,
+.multi-bar.progress-bar-warning {
+    --wm-progress-bar-stroke-active: var(--wm-color-warning);
+    --wm-progress-bar-label-color: var(--wm-color-on-warning);
+    background: var(--wm-progress-bar-stroke-active);
+}
+
+.progress-bar.progress-bar-danger,
+.multi-bar.progress-bar-danger {
+    --wm-progress-bar-stroke-active: var(--wm-color-error);
+    --wm-progress-bar-label-color: var(--wm-color-on-error);
+    background: var(--wm-progress-bar-stroke-active);
+}
+
+/* Parent .app-progress background for non-striped variants */
+.app-progress:has(.progress-bar-default) {
+    --wm-progress-bar-stroke-inactive: var(--wm-color-primary-container);
+    background: var(--wm-progress-bar-stroke-inactive);
+}
+
+.app-progress:has(.progress-bar-success) {
+    --wm-progress-bar-stroke-inactive: var(--wm-color-success-container);
+    background: var(--wm-progress-bar-stroke-inactive);
+}
+
+.app-progress:has(.progress-bar-info) {
+    --wm-progress-bar-stroke-inactive: var(--wm-color-info-container);
+    background: var(--wm-progress-bar-stroke-inactive);
+}
+
+.app-progress:has(.progress-bar-warning) {
+    --wm-progress-bar-stroke-inactive: var(--wm-color-warning-container);
+    background: var(--wm-progress-bar-stroke-inactive);
+}
+
+.app-progress:has(.progress-bar-danger) {
+    --wm-progress-bar-stroke-inactive: var(--wm-color-error-container);
+    background: var(--wm-progress-bar-stroke-inactive);
+}
+
+/* Mirror parent variables to child for striped variants */
+/* When design tokens are applied to parent .app-progress.progress-bar-striped, cascade to child */
+.app-progress.progress-bar-striped .progress-bar,
+.app-progress.progress-bar-striped .multi-bar {
+    --wm-progress-bar-stripped-size: var(--wm-space-10) var(--wm-space-10);
+    background-image: repeating-linear-gradient(45deg, var(--wm-color-surface-container-lowest) 0 25%, var(--wm-progress-bar-stroke-active) 25% 50%) !important;
+    background-size: var(--wm-progress-bar-stripped-size) !important;
+}
+
+/* Direct child element striped styles (current DOM structure) */
+.progress-bar-striped,
+.multi-bar.progress-bar-striped {
+    --wm-progress-bar-stripped-size: var(--wm-space-10) var(--wm-space-10);
+    background-image: repeating-linear-gradient(45deg, var(--wm-color-surface-container-lowest) 0 25%, var(--wm-progress-bar-stroke-active) 25% 50%) !important;
+    background-size: var(--wm-progress-bar-stripped-size) !important;
+}
+
+/* Striped variants - inherit from parent when design tokens applied there */
+.app-progress.progress-bar-striped.progress-bar-danger .progress-bar,
+.app-progress.progress-bar-striped.progress-bar-danger .multi-bar,
+.progress-bar-striped.progress-bar-danger,
+.multi-bar.progress-bar-striped.progress-bar-danger {
+    --wm-progress-bar-stroke-active: var(--wm-color-error);
+    --wm-progress-bar-stroke-inactive: var(--wm-color-error-container);
+    --wm-progress-bar-label-color: var(--wm-color-on-error);
+}
+
+.app-progress.progress-bar-striped.progress-bar-default .progress-bar,
+.app-progress.progress-bar-striped.progress-bar-default .multi-bar,
+.progress-bar-striped.progress-bar-default,
+.multi-bar.progress-bar-striped.progress-bar-default {
+    --wm-progress-bar-stroke-inactive: var(--wm-color-primary-container);
+    --wm-progress-bar-stroke-active: var(--wm-color-primary);
+    --wm-progress-bar-label-color: var(--wm-color-on-primary);
+}
+
+.app-progress.progress-bar-striped.progress-bar-info .progress-bar,
+.app-progress.progress-bar-striped.progress-bar-info .multi-bar,
+.progress-bar-striped.progress-bar-info,
+.multi-bar.progress-bar-striped.progress-bar-info {
+    --wm-progress-bar-stroke-active: var(--wm-color-info);
+    --wm-progress-bar-stroke-inactive: var(--wm-color-info-container);
+    --wm-progress-bar-label-color: var(--wm-color-on-info);
+}
+
+.app-progress.progress-bar-striped.progress-bar-success .progress-bar,
+.app-progress.progress-bar-striped.progress-bar-success .multi-bar,
+.progress-bar-striped.progress-bar-success,
+.multi-bar.progress-bar-striped.progress-bar-success {
+    --wm-progress-bar-stroke-active: var(--wm-color-success);
+    --wm-progress-bar-stroke-inactive: var(--wm-color-success-container);
+    --wm-progress-bar-label-color: var(--wm-color-on-success);
+}
+
+.app-progress.progress-bar-striped.progress-bar-warning .progress-bar,
+.app-progress.progress-bar-striped.progress-bar-warning .multi-bar,
+.progress-bar-striped.progress-bar-warning,
+.multi-bar.progress-bar-striped.progress-bar-warning {
+    --wm-progress-bar-stroke-active: var(--wm-color-warning);
+    --wm-progress-bar-stroke-inactive: var(--wm-color-warning-container);
+    --wm-progress-bar-label-color: var(--wm-color-on-warning);
+}
+
+/* progress-circle component uses inline styles with type-specific CSS variable names
+   Component expects: var(--wm-progress-circle-{type}-stroke-active)
+   Define these variables to map to the base variable that design tokens update, temp once fixed in index.tsx file and foundation.css remove it
+*/
+
+/* Define type-specific CSS variables that component expects */
+.app-progress.circle.progress-circle-success,
+[data-design-token-target] .app-progress.circle.progress-circle-success {
+    --wm-progress-circle-success-stroke-active: var(--wm-progress-circle-stroke-active);
+    --wm-progress-circle-success-stroke-inactive: var(--wm-progress-circle-stroke-inactive);
+    --wm-progress-circle-success-label-color: var(--wm-progress-circle-label-color);
+}
+
+.app-progress.circle.progress-circle-info,
+[data-design-token-target] .app-progress.circle.progress-circle-info {
+    --wm-progress-circle-info-stroke-active: var(--wm-progress-circle-stroke-active);
+    --wm-progress-circle-info-stroke-inactive: var(--wm-progress-circle-stroke-inactive);
+    --wm-progress-circle-info-label-color: var(--wm-progress-circle-label-color);
+}
+
+.app-progress.circle.progress-circle-warning,
+[data-design-token-target] .app-progress.circle.progress-circle-warning {
+    --wm-progress-circle-warning-stroke-active: var(--wm-progress-circle-stroke-active);
+    --wm-progress-circle-warning-stroke-inactive: var(--wm-progress-circle-stroke-inactive);
+    --wm-progress-circle-warning-label-color: var(--wm-progress-circle-label-color);
+}
+
+.app-progress.circle.progress-circle-danger,
+[data-design-token-target] .app-progress.circle.progress-circle-danger {
+    --wm-progress-circle-danger-stroke-active: var(--wm-progress-circle-stroke-active);
+    --wm-progress-circle-danger-stroke-inactive: var(--wm-progress-circle-stroke-inactive);
+    --wm-progress-circle-danger-label-color: var(--wm-progress-circle-label-color);
+}
