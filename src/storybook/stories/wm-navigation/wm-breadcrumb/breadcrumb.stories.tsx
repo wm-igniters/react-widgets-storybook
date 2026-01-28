@@ -87,6 +87,8 @@ export const Docs: Story = {
   argTypes: {
     name: { table: { disable: true } },
     listener: { table: { disable: true } },
+    onBeforenavigate: {table: {disable: true}},
+    navNodes: {table: {disable: true}}
   },
   parameters: {
     layout: "fullscreen",
@@ -205,6 +207,8 @@ export const Showcase: Story = {
   argTypes: {
     name: { table: { disable: true } },
     listener: { table: { disable: true } },
+    onBeforenavigate: {table: {disable: true}},
+    navNodes: {table: {disable: true}}
   },
 };
 
@@ -223,6 +227,7 @@ export const Classic: Story = {
       control: "select",
       options: ["classic"],
       description: "Classic breadcrumb style with forward slash separator",
+      table: {disable : true}
     },
     navNodes: {
       control: "object",
@@ -231,6 +236,7 @@ export const Classic: Story = {
     "data-design-token-target": { table: { disable: true } },
     name: { table: { disable: true } },
     listener: { table: { disable: true } },
+    onBeforenavigate: {table: {disable: true}},
   },
   parameters: {
     designTokens: {
@@ -258,6 +264,7 @@ export const AttributeBased: Story = {
       control: "select",
       options: ["attribute-based"],
       description: "Attribute-based breadcrumb style with chevron icon separator",
+      table: {disable : true}
     },
     navNodes: {
       control: "object",
@@ -266,6 +273,7 @@ export const AttributeBased: Story = {
     "data-design-token-target": { table: { disable: true } },
     name: { table: { disable: true } },
     listener: { table: { disable: true } },
+    onBeforenavigate: {table: {disable: true}},
   },
   parameters: {
     designTokens: {
@@ -293,6 +301,7 @@ export const PathBased: Story = {
       control: "select",
       options: ["path-based"],
       description: "Path-based breadcrumb style with background highlighting",
+      table: {disable : true}
     },
     navNodes: {
       control: "object",
@@ -301,6 +310,7 @@ export const PathBased: Story = {
     "data-design-token-target": { table: { disable: true } },
     name: { table: { disable: true } },
     listener: { table: { disable: true } },
+    onBeforenavigate: {table: {disable: true}},
   },
   parameters: {
     designTokens: {

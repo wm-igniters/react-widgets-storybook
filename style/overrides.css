@@ -85,6 +85,19 @@ body.sb-show-main {
     margin-left: var(--wm-space-0) !important;
 }
 
+/* Button Group, for vertical layout temp fix */
+.wm-app .app-button-group.css-5h0m38 .btn:first-of-type {
+    border-top-left-radius: var(--wm-button-group-radius);
+    border-top-right-radius: var(--wm-button-group-radius);
+    border-bottom-left-radius: 0;
+}
+
+.wm-app .app-button-group.css-5h0m38 .btn:last-of-type {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: var(--wm-button-group-radius);
+    border-bottom-left-radius: var(--wm-button-group-radius);
+}
+
 /* Search */
 .wm-app .app-search.input-group .form-control-feedback.clear-btn.show-btn{
   top: 0;
