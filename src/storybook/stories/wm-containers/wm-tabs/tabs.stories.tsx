@@ -41,6 +41,10 @@ export const Docs: Story = {
       methods={methods}
     //   styling={styling}
     token={token}
+    externalLink={{
+        href: "https://www.figma.com/design/F6S1sF5vM38mn6aLNnGGon/WaveMaker-UI-Kit--Community-?node-id=55141-14258&p=f",
+        label: "",
+      }}
     />
   ),
   args: {

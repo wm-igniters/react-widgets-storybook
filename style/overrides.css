@@ -400,251 +400,207 @@ wrote custom styles as per current DOM, once fixed in index.tsx file below to be
 }
 
 /* ============================================================================
-   TABS - Active/Selected State and Justified Layout
+   TABS - Design Token Overrides
    ============================================================================
-   Problem:
-   1. Active tab indicator not visible with or without design tokens
-   2. Justified layout not working for tabs component
-   Solution: Force active state styles and add missing justified styles
+   Properties using CSS variables + States for design token panel
    ============================================================================ */
 
-/* TABS - Active State (works with AND without design tokens) */
-/* Force active tab indicator to always show */
-.wm-app .app-tabs > .nav-tabs > .tab-header.active .tab-heading:after,
+/* Controllable Properties */
+[data-design-token-target] .app-tabs > .nav-tabs > .tab-header .tab-heading span {
+    font-size: var(--wm-tabs-item-heading-font-size) !important;
+    font-family: var(--wm-tabs-item-heading-font-family) !important;
+    font-weight: var(--wm-tabs-item-heading-font-weight) !important;
+    color: var(--wm-tabs-item-heading-color) !important;
+}
+
+/* Active State */
 [data-design-token-target] .app-tabs > .nav-tabs > .tab-header.active .tab-heading:after {
     background: var(--wm-color-primary) !important;
     transform: scale(1) !important;
-    transition: all 0.2s ease-in-out !important;
 }
 
-/* Force active tab heading indicator CSS variable */
-.wm-app .app-tabs > .nav-tabs > .tab-header.active,
-.wm-app .app-tabs > .nav-tabs > .tab-header.active .tab-heading,
-[data-design-token-target] .app-tabs > .nav-tabs > .tab-header.active,
-[data-design-token-target] .app-tabs > .nav-tabs > .tab-header.active .tab-heading {
-    --wm-tabs-item-heading-indicator-background: var(--wm-color-primary) !important;
-}
-
-/* Force active tab text color for better visibility */
-.wm-app .app-tabs > .nav-tabs > .tab-header.active .tab-heading span,
 [data-design-token-target] .app-tabs > .nav-tabs > .tab-header.active .tab-heading span {
     color: var(--wm-color-primary) !important;
 }
 
-/* Bottom positioned tabs - active indicator rotation */
-.wm-app .app-tabs[tabsposition="bottom"] > .nav-tabs > .tab-header.active .tab-heading:after,
 [data-design-token-target] .app-tabs[tabsposition="bottom"] > .nav-tabs > .tab-header.active .tab-heading:after {
     transform: scale(1) rotateX(180deg) !important;
 }
 
-/* TABS - Justified Layout */
-/* Foundation CSS missing justified styles for tabs, adding them here */
-
-/* Ensure tabs container takes full width when justified */
-.wm-app .app-tabs.justified,
-[data-design-token-target] .app-tabs.justified {
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
+/* Hover State */
+[data-design-token-target] .app-tabs > .nav-tabs > .tab-header:not(.active):hover .tab-heading span {
+    color: color-mix(in srgb, var(--wm-color-primary), var(--wm-color-black) var(--wm-opacity-hover, 10%)) !important;
 }
 
-/* Tab list should be flex container with full width */
-.wm-app .app-tabs > .nav-tabs.nav-justified,
-[data-design-token-target] .app-tabs > .nav-tabs.nav-justified {
-    display: flex !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
+/* Focus State */
+[data-design-token-target] .app-tabs > .nav-tabs > .tab-header .tab-heading:focus,
+[data-design-token-target] .app-tabs > .nav-tabs > .tab-header .tab-heading:focus-visible {
+    outline: 2px solid var(--wm-color-primary) !important;
+    outline-offset: 2px !important;
 }
 
-/* Each tab header should take equal space */
-.wm-app .app-tabs > .nav-tabs.nav-justified > .tab-header,
-[data-design-token-target] .app-tabs > .nav-tabs.nav-justified > .tab-header {
-    flex: 1 1 0% !important;
-    display: flex !important;
-    justify-content: center !important;
-    text-align: center !important;
-}
-
-/* Tab heading should fill the tab-header */
-.wm-app .app-tabs > .nav-tabs.nav-justified > .tab-header .tab-heading,
-[data-design-token-target] .app-tabs > .nav-tabs.nav-justified > .tab-header .tab-heading {
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-}
-
-/* Ensure tab content shows properly with justified tabs */
-.wm-app .app-tabs.justified > .tab-content,
-[data-design-token-target] .app-tabs.justified > .tab-content {
-    width: 100% !important;
-    flex: 1 !important;
-}
 
 /* ============================================================================
-   WIZARD ACTIVE/SELECTED STATE STYLES
+   WIZARD - Design Token Overrides
    ============================================================================
-   Similar to tabs and checkbox, these styles ensure wizard step states are
-   visible both with and without design tokens.
-
-   IMPORTANT: These rules must cover ALL states (default, active, completed)
-   to ensure design token changes apply to all step elements.
+   Properties using CSS variables + States for design token panel
    ============================================================================ */
 
-/* ===== BASE STYLES (apply to all steps regardless of state) ===== */
-.wm-app .app-wizard .MuiStepIcon-root,
+/* Controllable Properties */
+[data-design-token-target] .app-wizard .MuiStepLabel-label {
+    font-family: var(--wm-wizard-step-title-font-family) !important;
+    font-size: var(--wm-wizard-step-title-font-size) !important;
+    color: var(--wm-wizard-step-title-color) !important;
+}
+
 [data-design-token-target] .app-wizard .MuiStepIcon-root {
-    width: var(--wm-wizard-step-indicator-size, 33px) !important;
-    height: var(--wm-wizard-step-indicator-size, 33px) !important;
+    width: var(--wm-wizard-step-indicator-size) !important;
+    height: var(--wm-wizard-step-indicator-size) !important;
 }
 
-.wm-app .app-wizard .MuiStepConnector-line,
-[data-design-token-target] .app-wizard .MuiStepConnector-line {
-    border-color: var(--wm-wizard-step-connector-color, var(--wm-color-outline-variant)) !important;
-    border-style: var(--wm-wizard-step-connector-style, solid) !important;
-    border-top-width: var(--wm-wizard-step-connector-width, 1px) !important;
-}
-
-/* ===== DEFAULT/PENDING STATE (not active, not completed) ===== */
-.wm-app .app-wizard .MuiStep-root .MuiStepIcon-root,
-[data-design-token-target] .app-wizard .MuiStep-root .MuiStepIcon-root {
-    color: var(--wm-wizard-step-indicator-border-color, var(--wm-color-outline)) !important;
-    border-width: var(--wm-wizard-step-indicator-border-width, 2px) !important;
-    border-style: var(--wm-wizard-step-indicator-border-style, solid) !important;
-    border-color: var(--wm-wizard-step-indicator-border-color, var(--wm-color-outline)) !important;
-    border-radius: var(--wm-wizard-step-indicator-border-radius, 50%) !important;
-}
-
-.wm-app .app-wizard .MuiStep-root .MuiStepIcon-root circle,
-[data-design-token-target] .app-wizard .MuiStep-root .MuiStepIcon-root circle {
-    fill: var(--wm-wizard-step-indicator-background, transparent) !important;
-}
-
-.wm-app .app-wizard .MuiStep-root .MuiStepIcon-text,
-[data-design-token-target] .app-wizard .MuiStep-root .MuiStepIcon-text {
-    fill: var(--wm-wizard-step-count-color, var(--wm-color-on-surface)) !important;
-}
-
-.wm-app .app-wizard .MuiStep-root .MuiStepLabel-label,
-[data-design-token-target] .app-wizard .MuiStep-root .MuiStepLabel-label {
-    color: var(--wm-wizard-step-title-color, var(--wm-color-on-surface)) !important;
-    font-family: var(--wm-wizard-step-title-font-family, inherit) !important;
-    font-size: var(--wm-wizard-step-title-font-size, 14px) !important;
-    font-weight: var(--wm-wizard-step-title-font-weight, 400) !important;
-    line-height: var(--wm-wizard-step-title-line-height, 1.5) !important;
-}
-
-/* ===== ACTIVE STATE ===== */
-.wm-app .app-wizard .MuiStep-root.Mui-active .MuiStepLabel-root .MuiStepIcon-root,
+/* Active State */
 [data-design-token-target] .app-wizard .MuiStep-root.Mui-active .MuiStepLabel-root .MuiStepIcon-root {
     color: var(--wm-wizard-step-indicator-background, var(--wm-color-secondary)) !important;
     border: 2px solid var(--wm-wizard-step-indicator-background, var(--wm-color-secondary)) !important;
 }
 
-.wm-app .app-wizard .MuiStep-root.Mui-active .MuiStepIcon-root circle,
 [data-design-token-target] .app-wizard .MuiStep-root.Mui-active .MuiStepIcon-root circle {
     fill: var(--wm-wizard-step-indicator-background, var(--wm-color-secondary)) !important;
 }
 
-.wm-app .app-wizard .MuiStep-root.Mui-active .MuiStepIcon-text,
 [data-design-token-target] .app-wizard .MuiStep-root.Mui-active .MuiStepIcon-text {
     fill: var(--wm-wizard-step-count-color, var(--wm-color-on-secondary)) !important;
 }
 
-.wm-app .app-wizard .MuiStep-root.Mui-active .MuiStepLabel-label,
 [data-design-token-target] .app-wizard .MuiStep-root.Mui-active .MuiStepLabel-label {
-    color: var(--wm-wizard-step-title-color, var(--wm-color-on-surface)) !important;
     font-weight: var(--wm-wizard-step-title-font-weight, var(--wm-font-weight-600)) !important;
 }
 
-/* ===== COMPLETED STATE ===== */
-.wm-app .app-wizard .MuiStep-root.Mui-completed .MuiStepLabel-root .MuiStepIcon-root,
+/* WIZARD - Completed State */
 [data-design-token-target] .app-wizard .MuiStep-root.Mui-completed .MuiStepLabel-root .MuiStepIcon-root {
     color: var(--wm-color-success, #5AC588) !important;
 }
 
-.wm-app .app-wizard .MuiStep-root.Mui-completed .MuiStepIcon-root circle,
 [data-design-token-target] .app-wizard .MuiStep-root.Mui-completed .MuiStepIcon-root circle {
     fill: var(--wm-color-success, #5AC588) !important;
 }
 
-.wm-app .app-wizard .MuiStep-root.Mui-completed .MuiStepIcon-text,
 [data-design-token-target] .app-wizard .MuiStep-root.Mui-completed .MuiStepIcon-text {
     fill: var(--wm-color-on-secondary, #FFFFFF) !important;
 }
 
-.wm-app .app-wizard .MuiStep-root.Mui-completed .MuiStepLabel-label,
-[data-design-token-target] .app-wizard .MuiStep-root.Mui-completed .MuiStepLabel-label {
-    color: var(--wm-wizard-step-title-color, var(--wm-color-on-surface)) !important;
-}
-
-/* Icon Stepper Style - Icon Colors */
-.wm-app .app-wizard.iconstepper .MuiStep-root.Mui-active .MuiSvgIcon-root,
-[data-design-token-target] .app-wizard.iconstepper .MuiStep-root.Mui-active .MuiSvgIcon-root {
-    color: var(--wm-wizard-step-icon-color, var(--wm-color-on-secondary)) !important;
-}
-
-.wm-app .app-wizard.iconstepper .MuiStep-root.Mui-active .app-icon,
+/* WIZARD - Icon Stepper Active State */
+[data-design-token-target] .app-wizard.iconstepper .MuiStep-root.Mui-active .MuiSvgIcon-root,
 [data-design-token-target] .app-wizard.iconstepper .MuiStep-root.Mui-active .app-icon {
     color: var(--wm-wizard-step-icon-color, var(--wm-color-on-secondary)) !important;
 }
 
-/* Dotted Stepper Style */
-.wm-app .app-wizard.dottedstepper .MuiStep-root.Mui-active .MuiStepIcon-root,
-[data-design-token-target] .app-wizard.dottedstepper .MuiStep-root.Mui-active .MuiStepIcon-root {
-    width: var(--wm-wizard-step-size, 12px) !important;
-    height: var(--wm-wizard-step-size, 12px) !important;
-    border-radius: 50% !important;
-}
-
-/* Classic Style - Different Active State */
-.wm-app .app-wizard.classic .app-wizard-step.current,
+/* WIZARD - Classic Style Active States */
 [data-design-token-target] .app-wizard.classic .app-wizard-step.current {
     background: var(--wm-wizard-step-title-background, var(--wm-color-info)) !important;
     color: var(--wm-wizard-step-title-color, var(--wm-color-on-info)) !important;
 }
 
-.wm-app .app-wizard.classic .app-wizard-step.active,
 [data-design-token-target] .app-wizard.classic .app-wizard-step.active {
     background: var(--wm-wizard-step-title-background, var(--wm-color-white)) !important;
     color: var(--wm-wizard-step-title-color, var(--wm-color-success)) !important;
 }
 
-/* Connector Line Styles for Active Steps */
-.wm-app .app-wizard .MuiStepConnector-root.Mui-active .MuiStepConnector-line,
+/* WIZARD - Connector Active/Completed States */
 [data-design-token-target] .app-wizard .MuiStepConnector-root.Mui-active .MuiStepConnector-line {
     border-color: var(--wm-wizard-step-indicator-background, var(--wm-color-secondary)) !important;
 }
 
-.wm-app .app-wizard .MuiStepConnector-root.Mui-completed .MuiStepConnector-line,
 [data-design-token-target] .app-wizard .MuiStepConnector-root.Mui-completed .MuiStepConnector-line {
     border-color: var(--wm-wizard-step-indicator-background, var(--wm-color-success)) !important;
 }
 
-/* Text Inline Variant - Adjust Label Positioning */
-.wm-app .app-wizard.text-inline .MuiStepLabel-label,
-[data-design-token-target] .app-wizard.text-inline .MuiStepLabel-label {
-    margin-top: 0 !important;
-}
-
-/* Vertical Orientation - Connector Adjustment */
-/* .wm-app .app-wizard[orientation="vertical"] .MuiStepConnector-root,
-[data-design-token-target] .app-wizard[orientation="vertical"] .MuiStepConnector-root {
-    height: var(--wm-wizard-connector-height, 100%) !important;
-} */
-
-/* Ensure Visibility with Design Tokens */
-[data-design-token-target] .app-wizard .MuiStepLabel-root {
-    cursor: pointer !important;
-}
-
+/* WIZARD - Disabled State */
 [data-design-token-target] .app-wizard .MuiStepLabel-root.Mui-disabled {
     cursor: not-allowed !important;
     opacity: 0.5 !important;
+}
+
+/* WIZARD - Hover State (clickable, non-active, non-completed steps) */
+[data-design-token-target] .app-wizard .MuiStep-root:not(.Mui-active):not(.Mui-completed):not(.Mui-disabled):hover .MuiStepIcon-root {
+    color: color-mix(in srgb, var(--wm-wizard-step-indicator-border-color), var(--wm-color-black) var(--wm-opacity-hover, 10%)) !important;
+    border-color: color-mix(in srgb, var(--wm-wizard-step-indicator-border-color), var(--wm-color-black) var(--wm-opacity-hover, 10%)) !important;
+}
+
+[data-design-token-target] .app-wizard .MuiStep-root:not(.Mui-active):not(.Mui-completed):not(.Mui-disabled):hover .MuiStepLabel-label {
+    color: color-mix(in srgb, var(--wm-wizard-step-title-color), var(--wm-color-black) var(--wm-opacity-hover, 10%)) !important;
+}
+
+/* WIZARD - Focus State */
+[data-design-token-target] .app-wizard .MuiStepLabel-root:focus,
+[data-design-token-target] .app-wizard .MuiStepLabel-root:focus-visible {
+    outline: 2px solid var(--wm-color-primary) !important;
+    outline-offset: 2px !important;
 }
 
 /* wizard - classic fix */
 /* .wm-app .app-wizard.classic .app-wizard-heading .app-wizard-steps .app-wizard-step.current a .title-wrapper .step-title{
     color: var(--wm-wizard-step-title-color) !important;
 } */
+
+
+/* ============================================================================
+   BREADCRUMB - Design Token Overrides
+   ============================================================================
+   Properties using CSS variables + States for design token panel
+   ============================================================================ */
+
+/* Controllable Properties */
+[data-design-token-target] .app-breadcrumb > li > a,
+[data-design-token-target] .app-breadcrumb > li > label {
+    font-size: var(--wm-breadcrumb-item-font-size) !important;
+    font-family: var(--wm-breadcrumb-item-font-family) !important;
+    font-weight: var(--wm-breadcrumb-item-font-weight) !important;
+    color: var(--wm-breadcrumb-item-color) !important;
+}
+
+[data-design-token-target] .app-breadcrumb > li > i {
+    font-size: var(--wm-breadcrumb-item-icon-size) !important;
+    color: var(--wm-breadcrumb-item-icon-color) !important;
+}
+
+[data-design-token-target] .app-breadcrumb > li + li i:before {
+    font-size: var(--wm-breadcrumb-item-separator-size) !important;
+    color: var(--wm-breadcrumb-item-separator-color) !important;
+}
+
+/* Active State */
+[data-design-token-target] .app-breadcrumb li.active a,
+[data-design-token-target] .app-breadcrumb li.active a.text-muted {
+    color: color-mix(in srgb, var(--wm-color-primary), var(--wm-color-black) 20%) !important;
+    text-decoration: none !important;
+}
+
+/* Hover State */
+[data-design-token-target] .app-breadcrumb li:not(.active) a:hover {
+    color: color-mix(in srgb, var(--wm-color-primary), var(--wm-color-black) 10%) !important;
+    text-decoration: underline !important;
+}
+
+/* Focus State */
+[data-design-token-target] .app-breadcrumb a:focus {
+    color: color-mix(in srgb, var(--wm-color-primary), var(--wm-color-black) 15%) !important;
+    outline: 2px solid var(--wm-color-primary) !important;
+    outline-offset: 2px !important;
+}
+
+/* Path-based Active State */
+[data-design-token-target] .app-breadcrumb.path-based li.active {
+    background-color: var(--wm-color-info) !important;
+}
+
+[data-design-token-target] .app-breadcrumb.path-based li.active a,
+[data-design-token-target] .app-breadcrumb.path-based li.active a.text-muted {
+    color: var(--wm-color-on-info) !important;
+    font-weight: 500 !important;
+}
+
+[data-design-token-target] .app-breadcrumb.path-based li.active a::after,
+[data-design-token-target] .app-breadcrumb.path-based li.active a::before {
+    border-left-color: var(--wm-color-info) !important;
+}
