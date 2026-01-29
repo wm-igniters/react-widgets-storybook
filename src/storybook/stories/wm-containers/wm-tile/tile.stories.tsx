@@ -16,7 +16,7 @@ import token from "./docs/token.md?raw";
 import tileTokensData from "../../../../designTokens/components/tile/tile.json";
 
 const meta: Meta<typeof TileDefaultExport> = {
-  title: "Basic/Tile",
+  title: "Containers/Tile",
   component: TileDefaultExport,
 };
 
