@@ -91,7 +91,7 @@ export const Showcase: Story = {
                   listener={mockListener}
                   autoplay={false}
                   muted={false}
-                  lopp={false}
+                  loop={false}
                 />
               </Box>
               <Box>

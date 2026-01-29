@@ -55,8 +55,15 @@ export function tokenReferenceToCSSVariable(tokenReference: string): string {
     return tokenReference;
   }
 
+  // Auto-append .value suffix if missing (forgiving parser)
+  // This handles cases like {wizard.mapping.step.title.color} → {wizard.mapping.step.title.color.value}
+  let normalizedReference = tokenReference;
+  if (tokenReference.startsWith('{') && tokenReference.endsWith('}') && !tokenReference.includes('.value}')) {
+    normalizedReference = tokenReference.replace(/\}$/, '.value}');
+  }
+
   // Remove curly braces and .value suffix
-  let cssVarName = tokenReference
+  let cssVarName = normalizedReference
     .replace(/^\{/, '')      // Remove leading {
     .replace(/\}$/, '')      // Remove trailing }
     .replace(/\.value$/, ''); // Remove .value suffix
@@ -65,12 +72,15 @@ export function tokenReferenceToCSSVariable(tokenReference: string): string {
   // The @ is used in token references like {color.primary.@.value} to indicate theme variant
   cssVarName = cssVarName.replace('.@', '');
 
-  // Handle cross-component form control references
-  // form.mapping.control.* → form-control-*
-  // form.mapping.states.hover.control.* → form-states-hover-control-*
-  if (cssVarName.startsWith('form.mapping.')) {
-    // Remove the "mapping" segment but keep "form"
-    cssVarName = cssVarName.replace('form.mapping.', 'form.');
+  // Handle cross-component references with .mapping. segment
+  // This is a GENERIC fix that works for ALL components, not just form
+  // Examples:
+  // - wizard.mapping.step.title.color → wizard.step.title.color
+  // - form.mapping.control.border.color → form.control.border.color
+  // - accordion.mapping.header.background → accordion.header.background
+  // - {component}.mapping.{rest} → {component}.{rest}
+  if (cssVarName.includes('.mapping.')) {
+    cssVarName = cssVarName.replace(/\.mapping\./g, '.');
   }
 
   // Replace dots with hyphens
@@ -136,8 +146,15 @@ export function extractCSSVariables(iframe: HTMLIFrameElement): Map<string, stri
         for (let j = 0; j < cssRules.length; j++) {
           const rule = cssRules[j] as CSSStyleRule;
 
-          // Look for :root rules
-          if (rule.selectorText === ":root") {
+          // Look for :root rules AND component-specific rules
+          // Component-specific rules contain CSS variables for scoped components like wizard, tabs, etc.
+          // Examples: .wm-app .app-wizard, .wm-app .app-tabs, .wm-app .app-wizard .app-wizard-step.current
+          const isRootRule = rule.selectorText === ":root";
+          const isComponentRule = rule.selectorText &&
+                                  rule.selectorText.includes(".wm-app") &&
+                                  rule.selectorText.includes(".app-");
+
+          if (isRootRule || isComponentRule) {
             const style = rule.style;
 
             // Iterate through all properties
@@ -148,14 +165,19 @@ export function extractCSSVariables(iframe: HTMLIFrameElement): Map<string, stri
               if (propertyName.startsWith("--wm-")) {
                 const propertyValue = style.getPropertyValue(propertyName).trim();
 
-                // Get the computed value using getComputedStyle
-                const computedValue = computedStyle.getPropertyValue(propertyName).trim();
-
-                // Use computed value if available, otherwise use declared value
-                const finalValue = computedValue || propertyValue;
+                // For :root rules, get the computed value
+                // For component rules, use the declared value (they're already specific)
+                let finalValue = propertyValue;
+                if (isRootRule) {
+                  const computedValue = computedStyle.getPropertyValue(propertyName).trim();
+                  finalValue = computedValue || propertyValue;
+                }
 
                 if (finalValue) {
-                  cssVariables.set(propertyName, finalValue);
+                  // Don't overwrite if already exists (gives precedence to earlier definitions)
+                  if (!cssVariables.has(propertyName)) {
+                    cssVariables.set(propertyName, finalValue);
+                  }
                 }
               }
             }
@@ -167,7 +189,7 @@ export function extractCSSVariables(iframe: HTMLIFrameElement): Map<string, stri
       }
     }
 
-    // console.log(`[CSS Extractor] Extracted ${cssVariables.size} CSS variables from iframe`);
+    // console.log(`[CSS Extractor] Extracted ${cssVariables.size} CSS variables from iframe (including component-scoped variables)`);
 
     // Cache the results
     cssVariableCache = cssVariables;
