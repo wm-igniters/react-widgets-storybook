@@ -814,3 +814,32 @@ wrote custom styles as per current DOM, once fixed in index.tsx file below to be
     background-color: color-mix(in srgb, var(--wm-color-primary), transparent 92%) !important;
     border: 1px solid var(--wm-color-primary) !important;
 }
+
+/* ============================================================================
+   NAV - Pills Type with Design Tokens
+   ============================================================================ */
+
+/* Pills Active State */
+[data-design-token-target="true"] .nav.app-nav.nav-pills .app-nav-item.active,
+[data-design-token-target="true"] .nav.app-nav.nav-pills .app-nav-item:has(:active) {
+    --wm-nav-states-active-item-background: linear-gradient(105.79deg,
+        color-mix(in srgb, var(--wm-color-secondary), transparent calc(100% - var(--wm-opacity-hover))) 44.21%,
+        color-mix(in srgb, var(--wm-color-white), transparent calc(100% - var(--wm-opacity-hover))) 103.73%);
+    --wm-nav-states-active-item-border-color: var(--wm-color-outline-variant);
+}
+
+/* Pills Hover State */
+[data-design-token-target="true"] .nav.app-nav.nav-pills .app-nav-item:has(:hover) {
+    --wm-nav-states-hover-item-background: linear-gradient(105.79deg,
+        color-mix(in srgb, var(--wm-color-secondary), transparent calc(100% - var(--wm-opacity-hover))) 44.21%,
+        color-mix(in srgb, var(--wm-color-white), transparent calc(100% - var(--wm-opacity-hover))) 103.73%);
+    --wm-nav-states-hover-item-border-color: var(--wm-color-outline-variant);
+}
+
+/* Pills Focus State */
+[data-design-token-target="true"] .nav.app-nav.nav-pills .app-nav-item:has(:focus) {
+    --wm-nav-states-focus-item-background: linear-gradient(105.79deg,
+        color-mix(in srgb, var(--wm-color-secondary), transparent calc(100% - var(--wm-opacity-hover))) 44.21%,
+        color-mix(in srgb, var(--wm-color-white), transparent calc(100% - var(--wm-opacity-hover))) 103.73%);
+    --wm-nav-states-focus-item-border-color: var(--wm-color-outline-variant);
+}
