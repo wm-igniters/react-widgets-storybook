@@ -198,7 +198,7 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
 
         .component-documentation-container th {
           background: var(--primary-blue);
-          color: #ffffff;
+          color: #ffffff !important;
           padding: 14px 16px;
           text-align: left;
           font-weight: 600;
@@ -212,6 +212,11 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           border-bottom: 1px solid var(--border-color);
           color: #475569;
           background: #fff;
+        }
+
+        /* docs table foont size */
+        .component-documentation-container td span{
+          font-size: 14px !important;
         }
 
         .component-documentation-container tr:last-child td {
@@ -236,13 +241,31 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           font-size: 0.9em;
         }
 
+        .component-documentation-container p + p{
+          margin: 12px 0 !important
+        }
+
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
           margin: 24px 0 8px !important;
-          padding: 0 0 12px !important
+          padding: 0 0 12px !important;
+        }
+
+        h3, h4, h5, h6, .h3, .h4, .h5, .h6{
+          padding: 0 0 4px !important;
         }
 
         ul, ol{
-          margin: 16px 0 !important
+          margin: 12px 0 !important;
+        }
+
+        ul li{
+          list-style-type: disc !important;
+          margin-left: 24px !important;
+        }
+
+        ol li {
+          list-style-type: decimal !important;
+          margin-left: 24px !important;
         }
 
         .sbdocs-wrapper{
@@ -256,7 +279,45 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
         }
 
         .docblock-source{
-          margin: 20px 0 40px;
+          margin: 16px 0 40px;
+        }
+
+        /* Copy button of the code */ 
+        .docblock-source button{
+          font-size: 0 !important;
+          border: none !important;
+          position: relative;
+          box-shadow: none !important;
+        }
+
+        /* Keep the pseudo-icon hidden by default and reveal on hover of the block or the button */
+        .docblock-source button::before {
+          content: "\\f1fa";
+          font-size: 18px;
+          display: inline-block;
+          font-family: 'wavicon' !important;
+          color: var(--wm-color-black);
+          opacity: 0;
+          background: transparent;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          text-align: center;
+          vertical-align: middle;
+          transition: opacity 150ms ease, visibility 150ms ease;
+          visibility: hidden;
+        }
+
+        /* Reveal icon when hovering the docblock or the button itself */
+        .docblock-source:hover button::before,
+        .docblock-source button:hover::before {
+          opacity: 0.7;
+          visibility: visible;
+        }
+
+        .docblock-source:hover button:focus::before{
+          color: var(--primary-blue);
+          opacity: 1;
         }
 
         .external-link-container{
