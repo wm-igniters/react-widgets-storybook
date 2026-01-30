@@ -53,7 +53,7 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `horizontalAlign` | string | "left" | Specifies how the elements should be aligned horizontally (left, center or right). |
+        | `horizontalalign` | string | "left" | Specifies how the elements should be aligned horizontally (left, center or right). |
     </div>
 </details>
 

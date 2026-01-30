@@ -7,7 +7,7 @@
         | --- | --- | --- | --- |
         | `name` | string | - | A unique identifier for the anchor component. Special characters and spaces are not allowed. |
         | `caption` | string | - | The caption is the text that the end user sees on your anchor. It can be bound to a variable or another component |
-        | `badgeValue` | string | - | Value to be displayed in the badge span for the anchor. |
+        | `badgevalue` | string | - | Value to be displayed in the badge span for the anchor. |
     </div>
 </details>
 
@@ -17,7 +17,7 @@
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
         | `tabindex` | number | 0 | The tab index attribute specifies the tab order of an element. You can use this property to change the default tabbing order for component access using the tab key. The value can range from 0 to 32767. The default is 0 and -1 makes the element non-focusable. NOTE: In Safari browsers, by default, Tab highlights only text fields. To enable Tab functionality, in Safari Browser from Preferences -> Advanced -> Accessibility set the option "Press Tab to highlight each item on a webpage". |
-        | `shortcutKey` | string | - | The shortcut key property specifies a shortcut key to activate/focus an element. |
+        | `shortcutkey` | string | - | The shortcut key property specifies a shortcut key to activate/focus an element. |
         | `arialabel` | string | - | Accessibility label for screen readers |
         | `hint` | string | - | Any text you enter for this property will be shown as a tooltip if the mouse hovers over this component for 1.5 seconds. |
     </div>
@@ -60,12 +60,12 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `iconClass` | string | - | Defines the class of the icon that is applied to the anchor. |
-        | `iconUrl` | string | - | This optional property allows you to add an icon to the anchor, it can be an URL of the image. |
-        | `iconWidth` | string | - | Optional property; but you will need this if you are using the anchor's iconUrl. Please enter the width of your icon. WARNING: It's best to specify size in pixels, not percent. |
-        | `iconHeight` | string | - | Optional property; but you will need this if you are using the anchor's iconUrl. Please enter the height of your icon. WARNING: It's best to specify size in pixels, not percent. |
-        | `iconMargin` | string | - | Optional property; only has meaning if you specify the button's iconUrl. Values should all have "px" next to them. Use this to adjust the space between the icon and the button text. |
-        | `iconPosition` | string | "left" | Optional property; Property to set the position of icon in the component - can be left, top or right |
+        | `iconclass` | string | - | Defines the class of the icon that is applied to the anchor. |
+        | `iconurl` | string | - | This optional property allows you to add an icon to the anchor, it can be an URL of the image. |
+        | `iconwidth` | string | - | Optional property; but you will need this if you are using the anchor's iconUrl. Please enter the width of your icon. WARNING: It's best to specify size in pixels, not percent. |
+        | `iconheight` | string | - | Optional property; but you will need this if you are using the anchor's iconUrl. Please enter the height of your icon. WARNING: It's best to specify size in pixels, not percent. |
+        | `iconmargin` | string | - | Optional property; only has meaning if you specify the button's iconUrl. Values should all have "px" next to them. Use this to adjust the space between the icon and the button text. |
+        | `iconposition` | string | "left" | Optional property; Property to set the position of icon in the component - can be left, top or right |
     </div>
 </details>
 
@@ -81,12 +81,12 @@ Page.Widgets.anchor1.caption = "WaveMaker";
 - Display a small badge value to indicate counts or alerts.
 
 ```javascript
-Page.Widgets.anchor1.badgeValue = "3";
+Page.Widgets.anchor1.badgevalue = "3";
 ```
 
 - Enhance the anchor with an icon, and position it as needed.
 
 ```javascript
-Page.Widgets.anchor1.iconClass = "wi wi-user";
-Page.Widgets.anchor1.iconPosition = "left";
+Page.Widgets.anchor1.iconclass = "wi wi-user";
+Page.Widgets.anchor1.iconposition = "left";
 ```

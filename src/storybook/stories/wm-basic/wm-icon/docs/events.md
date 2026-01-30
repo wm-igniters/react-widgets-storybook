@@ -1,3 +1,3 @@
 # Callback Events
 
-The Icon component does not have any specific callback events.
+The Icon component does not expose any specific callback events.
