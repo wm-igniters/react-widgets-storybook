@@ -1,40 +1,26 @@
 # Methods
 
-Buttons can be accessed and manipulated through JavaScript using the `Page.Widgets.widgetName` notation in your application scripts.
+<details open>
+  <summary>Methods</summary>
+    <div>
+        | Method | Parameters | Return Type | Description |
+        | --- | --- | --- | --- |
+        | `focus` | None | None | Sets focus to the button component. |
+        | `getAttributes` | None | `Array<string>` | Returns a list of all attributes currently applied to the component. Useful for checking what properties and metadata are set on the component at runtime. |
+        | `setWidgetProperty` | `prop:string`,`value:any` | None | Updates a specific property of the component at runtime. |
+    </div>
+</details>
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
-| getWidgetProperty | propertyName: string | any | Returns the current value of the specified property |
-| setWidgetProperty | propertyName: string, value: any | void | Sets a new value for the specified property |
+### Use Cases
 
-## Common Method Use Cases
+- Change button properties from script to o hide button use the following code snippet:
 
 ```javascript
-// Get the current caption
-var currentCaption = Page.Widgets.myButton.getWidgetProperty('caption');
-
-// Update the button caption
-Page.Widgets.myButton.setWidgetProperty('caption', 'Processing...');
-
-// Disable the button during async operation
-Page.Widgets.myButton.setWidgetProperty('disabled', true);
-
-// Re-enable the button after operation completes
-function enableButton() {
-  Page.Widgets.myButton.setWidgetProperty('disabled', false);
-  Page.Widgets.myButton.setWidgetProperty('caption', 'Submit');
-}
+Page.Widgets.button1.setWidgetProperty('show', false);
 ```
 
-## Visibility Control
+- Programmatically retrieve all properties and metadata applied to the button component.
 
 ```javascript
-// Hide the button
-Page.Widgets.myButton.setWidgetProperty('show', false);
-
-// Show the button
-Page.Widgets.myButton.setWidgetProperty('show', true);
-
-// Get the current visibility state
-var isVisible = Page.Widgets.myButton.getWidgetProperty('show');
+Page.Widgets.button1.getAttributes();
 ```

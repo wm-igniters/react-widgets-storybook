@@ -276,6 +276,10 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        .component-documentation-container details:last-of-type{
+          margin-bottom: 40px;
+        }
+
         .component-documentation-container details[open] {
           border-color: var(--primary-blue);
           box-shadow: 0 10px 15px -3px rgba(41, 109, 246, 0.1), 0 4px 6px -2px rgba(41, 109, 246, 0.05);
@@ -334,6 +338,10 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           margin: 0;
         }
         
+        .component-documentation-container details .sbdocs-wrapper{
+          min-height: auto;
+        }
+
         /* Ensure table inside details takes full width and looks good */
         .component-documentation-container details table {
           width: 100%;

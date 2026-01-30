@@ -1,12 +1,15 @@
 # Overview
 
-The Audio component allows you to play audio files within your application. This widget supports various audio formats with cross-platform compatibility and provides controls for playback management.
+The **Audio** component supports audio playback using the MP3 format only, offering reliable cross-platform playback controls within the application.
 
-## Features
-- Support for MP3 audio format
-- Playback controls (play, pause, volume)
-- Autoplay capability
-- Loop functionality
-- Mute option
-- Customizable preload behavior
-- Accessibility support with ARIA labels and tab index
+### Markup
+
+```javascript
+<wm-audio controls="controls" audiopreload="none" name="audio1" mp3format="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></wm-audio>
+```
+
+### Use Cases
+
+- Play product demos, podcasts, or recorded messages directly within the app.
+- Give voice instructions in an e-learning module or onboarding tutorial.
+- Give users feedback with sounds for actions or alerts.

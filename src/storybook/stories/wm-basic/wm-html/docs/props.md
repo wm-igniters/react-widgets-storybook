@@ -1,37 +1,73 @@
-# Props
+# Properties
 
-The HTML component accepts the following properties to customize its behavior and appearance:
+<details open>
+  <summary>Basic</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `name` | string | - | A unique identifier for the html component. Special characters and spaces are not allowed. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `horizontalalign` | `"left" \| "center" \| "right"` | `"left"` | Controls the horizontal alignment of the HTML content within the component. |
-| `height` | `string` | `"auto"` | Specifies the height of the component. Accepts CSS units (px, %, em, etc.). |
-| `width` | `string` | `"100%"` | Specifies the width of the component. Accepts CSS units (px, %, em, etc.). |
-| `show` | `boolean` | `true` | Controls the visibility of the component. When `false`, the component is hidden. |
-| `styles` | `React.CSSProperties` | `{}` | Allows applying custom CSS properties directly to the component. |
-| `hint` | `string` | `""` | Provides a tooltip or contextual hint that appears on hover, useful for providing additional information. |
+<details>
+  <summary>Accessibility</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `arialabel` | string | - | Accessibility label for screen readers |
+        | `hint` | string | - | Any text you enter for this property will be shown as a tooltip if the mouse hovers over this component for 1.5 seconds. |
+    </div>
+</details>
 
-## Common Use Cases
+<details>
+  <summary>Layout</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `width` | string | - | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+        | `height` | string | - | The height of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+    </div>
+</details>
+
+<details>
+  <summary>Content</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `content` | string | - | Html content will be included in the component. |
+    </div>
+</details>
+
+<details>
+  <summary>Behavior</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `show` | boolean | true | Showing determines whether or not a component is visible. It is a bindable property. |
+        | `loadOnDemand` | boolean | false | When this property is set and show property is bound, the initialization of the component will be deferred till the component becomes visible. This behavior improves the load time. Use this feature with caution, as it has a downside (as we will not be able to interact with the component through script until the component is initialized). When show property is not bound the component will be initialized immediately. |
+    </div>
+</details>
+
+<details>
+  <summary>Format</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `horizontalAlign` | string | "left" | Specifies how the elements should be aligned horizontally (left, center or right). |
+    </div>
+</details>
+
+### Use Cases
+
+- Basic HTML content rendering
 
 ```javascript
-// Basic HTML content rendering
-Page.Widgets.myHtml.content = "<p>This is a <strong>formatted</strong> paragraph.</p>";
+Page.Widgets.html1.content = "<p>This is a <strong>formatted</strong> paragraph.</p>";
+```
 
-// Center-align HTML content
-Page.Widgets.myHtml.horizontalalign = "center";
+- Set custom dimensions
 
-// Set custom dimensions
-Page.Widgets.myHtml.width = "500px";
-Page.Widgets.myHtml.height = "300px";
-
-// Hide HTML component conditionally
-Page.Widgets.myHtml.show = userHasPermission;
-
-// Apply custom styling
-Page.Widgets.myHtml.styles = {
-  backgroundColor: "#f5f5f5",
-  padding: "15px",
-  borderRadius: "8px",
-  boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
-};
+```javascript
+Page.Widgets.html1.width = "500px";
+Page.Widgets.html1.height = "300px";
 ```

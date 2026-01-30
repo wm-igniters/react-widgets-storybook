@@ -1,3 +1,33 @@
 # Callback Events
 
-The HTML component does not expose any specific callback events. If you need to respond to user interactions with the HTML content, you would need to include the appropriate event handlers directly within your HTML markup.
+<details open>
+  <summary>Mouse Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onClick` | This event handler is called whenever the click event is triggered on a component. |
+        | `onDoubleClick` | This event handler is called whenever the double click event is triggered on a component. |
+        | `onMouseEnter` | This event handler is called whenever the mouse enters the component. |
+        | `onMouseLeave` | This event handler is called whenever the mouse leaves the component. |
+    </div>
+</details>
+
+<details>
+  <summary>Touch Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onTap` | This event handler is called whenever the component is tapped. |
+        | `onDoubleTap` | This event handler is called whenever the component is double tapped. |
+    </div>
+</details>
+
+### Use Cases
+
+- Triggered when the mouse enters the HTML component.
+
+```javascript
+    Page.html1Mouseenter = function ($event, widget) {
+    console.log("Mouse entered");
+};
+```

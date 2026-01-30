@@ -1,50 +1,85 @@
-# Props
+# Properties
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| **Basic Configuration** |
-| caption | string | "Button" | Text displayed on the button |
-| type | "button" \| "submit" \| "reset" | "button" | Specifies the button type; use "submit" or "reset" when used within forms |
-| disabled | boolean | false | When true, the button becomes non-interactive |
-| **Icon Properties** |
-| iconurl | string | "" | URL to an image to display as an icon |
-| iconclass | string | "" | CSS class name for an icon (alternative to iconurl) |
-| iconwidth | string | "" | Width of the icon (e.g., "24px") |
-| iconheight | string | "" | Height of the icon (e.g., "24px") |
-| iconmargin | string | "" | Margin around the icon (e.g., "0px 8px 0px 0px") |
-| **Additional Features** |
-| badgevalue | string \| number | "" | Value to display in a badge associated with the button |
-| shortcutkey | string | "" | Keyboard shortcut to trigger the button action |
-| children | ReactNode | null | React children elements to render inside the button |
+<details open>
+  <summary>Basic</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `caption` | string | - | The caption is the text that the end user sees on the button. This property can be bound to any variable or another component. |
+        | `name` | string | - | A unique identifier for the button component. Special characters and spaces are not allowed. |
+        | `type` | string | "button" | Specify the type of button: - Button: for most click events, - Reset or Submit: for customizing the Form reset and submit functionality. |
+        | `badgeValue` | string | - | Value to be displayed in the badge span for the button. |
+    </div>
+</details>
 
-## Common Use Cases
+<details>
+  <summary>Accessibility</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `tabindex` | number | 0 | The tab index attribute specifies the tab order of an element. You can use this property to change the default tabbing order for component access using the tab key. The value can range from 0 to 32767. The default is 0 and -1 makes the element non-focusable. NOTE: In Safari browsers, by default, Tab highlights only text fields. To enable Tab functionality, in Safari Browser from Preferences -> Advanced -> Accessibility set the option "Press Tab to highlight each item on a webpage". |
+        | `shortcutKey` | string | - | The shortcut key property specifies a shortcut key to activate/focus an element. |
+        | `arialabel` | string | - | Accessibility label for screen readers |
+        | `hint` | string | - | Any text you enter for this property will be shown as a tooltip if the mouse hovers over this component for 1.5 seconds. |
+    </div>
+</details>
 
-### Basic Button
+<details>
+  <summary>Layout</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `width` | string | - | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+        | `height` | string | - | The height of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+    </div>
+</details>
+
+<details>
+  <summary>Behavior</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `show` | boolean | true | Showing determines whether or not a component is visible. It is a bindable property. |
+        | `loadOnDemand` | boolean | false | When this property is set and show property is bound, the initialization of the component will be deferred till the component becomes visible. This behavior improves the load time. Use this feature with caution, as it has a downside (as we will not be able to interact with the component through script until the component is initialized). When show property is not bound the component will be initialized immediately. |
+        | `target` | string | "_self" | Defines behavior on click of the link: _blank: Opens the linked document in a new window or tab _self: Opens the linked document in the same frame as it was clicked (this is default) _parent: Opens the linked document in the parent frame _top: Opens the linked document in the full body of the window. |
+        | `disabled` | boolean | false | If the disabled property is true (checked) the component becomes display-only and user input will not be accepted. It can also set programmatically by binding it to a boolean type variable. |
+        | `animation` | string | - | Controls the animation of the component. |
+    </div>
+</details>
+
+<details>
+  <summary>Graphics</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `iconClass` | string | - | Defines the class of the icon that is applied to the anchor. |
+        | `iconUrl` | string | - | This optional property allows you to add an icon to the anchor, it can be an URL of the image. |
+        | `iconWidth` | string | - | Optional property; but you will need this if you are using the anchor's iconUrl. Please enter the width of your icon. WARNING: It's best to specify size in pixels, not percent. |
+        | `iconHeight` | string | - | Optional property; but you will need this if you are using the anchor's iconUrl. Please enter the height of your icon. WARNING: It's best to specify size in pixels, not percent. |
+        | `iconMargin` | string | - | Optional property; only has meaning if you specify the button's iconUrl. Values should all have "px" next to them. Use this to adjust the space between the icon and the button text. |
+        | `iconPosition` | string | "left" | Optional property; Property to set the position of icon in the component - can be left, top or right |
+    </div>
+</details>
+
+### Use Cases
+
+- Configure the button caption.
+
 ```javascript
-// Set button caption
-Page.Widgets.myButton.caption = "Submit Form";
-
-// Disable/enable button based on a condition
-Page.Widgets.myButton.disabled = !formIsValid;
+Page.Widgets.button1.caption = "WaveMaker";
 ```
 
-### Using Icons
-```javascript
-// Set an icon using icon class
-Page.Widgets.actionButton.iconclass = "wm-icon-plus";
+- Disable/enable button based on a condition.
 
-// Set an icon using image URL
-Page.Widgets.downloadButton.iconurl = "resources/images/download.png";
-Page.Widgets.downloadButton.iconwidth = "20px";
-Page.Widgets.downloadButton.iconheight = "20px";
-Page.Widgets.downloadButton.iconmargin = "0px 8px 0px 0px";
+```javascript
+Page.Widgets.button1.disabled = !formIsValid;
 ```
 
-### Using Badge
-```javascript
-// Show notification count as badge
-Page.Widgets.notificationButton.badgevalue = 5;
+- Set an icon using image URL.
 
-// Clear badge
-Page.Widgets.notificationButton.badgevalue = "";
+```javascript
+Page.Widgets.button1.iconurl = "resources/images/download.png";
+Page.Widgets.button1.iconwidth = "20px";
+Page.Widgets.button1.iconheight = "20px";
+Page.Widgets.button1.iconmargin = "0px 8px 0px 0px";
 ```
