@@ -1,33 +1,62 @@
 # Callback Events
 
-| Event | Description |
-|-------|-------------|
-| **Touch Events** |
-| On Tap | Triggered when the button is tapped once |
-| On Double Tap | Triggered when the button is tapped twice in quick succession |
-| On Long Tap | Triggered when the button is pressed and held for a longer duration |
-| **Focus Events** |
-| On focus | Triggered when the button receives focus |
-| On blur | Triggered when the button loses focus |
-| **Keyboard Events** |
-| On key down | Triggered when a key is pressed while the button has focus |
-| On key press | Triggered when a key is pressed and character is generated |
-| On key up | Triggered when a key is released while the button has focus |
+<details open>
+  <summary>Basic Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onFocus` | This event handler is called each time your component is focused. |
+        | `onBlur` | This event handler is called each time your focus leaves your component. |
+    </div>
+</details>
 
-## Example Usage
+<details>
+  <summary>Mouse Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onClick` | This event handler is called whenever the click event is triggered on a component. |
+        | `onDoubleClick` | This event handler is called whenever the double click event is triggered on a component. |
+        | `onMouseEnter` | This event handler is called whenever the mouse enters the component. |
+        | `onMouseLeave` | This event handler is called whenever the mouse leaves the component. |
+    </div>
+</details>
+
+<details>
+  <summary>Touch Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onTap` | This event handler is called whenever the component is tapped. |
+        | `onDoubleTap` | This event handler is called whenever the component is double tapped. |
+    </div>
+</details>
+
+<details>
+  <summary>Keyboard Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onKeyDown` | This event handler is called when the component is in focus and a key is pressed. |
+        | `onKeyPress` | This event handler is called when the component is in focus and a key is pressed. This event will relay the character pressed. |
+        | `onKeyUp` | This event handler is called when the component is in focus and a key is pressed and released. |
+    </div>
+</details>
+
+### Use Cases
+
+- Triggered on button click to submit a form.
 
 ```javascript
-Page.onReady = function() {
-  // Handle tap event
-  Page.Widgets.submitButton.onTap = function(event) {
-    // Form submission logic here
-    submitForm();
-  };
-  
-  // Handle long tap event
-  Page.Widgets.optionsButton.onLongTap = function(event) {
-    // Show additional options menu
-    showOptionsMenu();
-  };
+Page.button1Click = function ($event, widget) {
+  Page.Widgets.formCreate.submit();
+};
+```
+
+- Triggered on button click to invoke a variable for actions such as fetching or submitting data.
+
+```javascript
+Page.button1Click = function ($event, widget) {
+  Page.Variables.svGetUsersData.invoke();
 };
 ```

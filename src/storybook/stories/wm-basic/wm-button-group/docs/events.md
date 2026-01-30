@@ -1,5 +1,5 @@
 # Callback Events
 
-The Button Group component itself does not have any specific events. However, the individual Button components within the group can have their own events like `onClick`, `onMouseOver`, etc.
+The Button Group component does not expose any specific callback events. Any interactions, such as `onClick` or `onMouseOver`, are handled by the individual buttons within the group.
 
-Refer to the Button component documentation for details on individual Button events.
+For more details on these actions, refer to the `Button` component documentation.

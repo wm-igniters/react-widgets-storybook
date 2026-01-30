@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Markdown, DocsContainer } from "@storybook/addon-docs/blocks";
 
 interface DocumentationProps {
@@ -58,8 +58,151 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
   token,
   externalLink,
 }) => {
-  const [activeTab, setActiveTab] = useState("overview");
+  // Get parent window for Storybook iframe, fallback to current window
+  const getParentWindow = () => {
+    try {
+      return window.parent !== window ? window.parent : window;
+    } catch {
+      return window;
+    }
+  };
+
+  // Initialize tab from URL hash (with 'tab-' prefix to avoid ID conflicts)
+  const [activeTab, setActiveTab] = useState(() => {
+    try {
+      const parentWin = getParentWindow();
+      const hash = parentWin.location.hash.replace('#tab-', '');
+      return hash || "overview";
+    } catch {
+      return "overview";
+    }
+  });
+
   const activeColor = "#296df6"; // Blue theme
+
+  // Refs to track scroll prevention
+  const isChangingTab = useRef(false);
+  const savedScrollPosition = useRef({ x: 0, y: 0 });
+
+  // Aggressive scroll prevention during tab changes
+  useEffect(() => {
+    const parentWin = getParentWindow();
+
+    const preventScroll = (e: Event) => {
+      if (isChangingTab.current) {
+        e.preventDefault();
+        e.stopPropagation();
+        parentWin.scrollTo(savedScrollPosition.current.x, savedScrollPosition.current.y);
+      }
+    };
+
+    try {
+      // Listen to ALL scroll-related events
+      parentWin.addEventListener('scroll', preventScroll, { passive: false });
+      parentWin.document.addEventListener('scroll', preventScroll, { passive: false });
+
+      return () => {
+        parentWin.removeEventListener('scroll', preventScroll);
+        parentWin.document.removeEventListener('scroll', preventScroll);
+      };
+    } catch (e) {
+      return () => {};
+    }
+  }, []);
+
+  // Update URL hash when tab changes (prevents scroll with replaceState)
+  const handleTabChange = (tab: string) => {
+    try {
+      const parentWin = getParentWindow();
+
+      // Save scroll position BEFORE any changes
+      savedScrollPosition.current = {
+        x: parentWin.scrollX || 0,
+        y: parentWin.scrollY || 0
+      };
+
+      // Set flag to prevent scroll
+      isChangingTab.current = true;
+
+      // Update state
+      setActiveTab(tab);
+
+      // Update URL with 'tab-' prefix to avoid matching content IDs
+      const url = parentWin.location.href.split('#')[0];
+      parentWin.history.replaceState(null, '', url + '#tab-' + tab);
+
+      // Force scroll back immediately
+      parentWin.scrollTo(savedScrollPosition.current.x, savedScrollPosition.current.y);
+
+      // Keep preventing scroll for a short period while React renders
+      setTimeout(() => {
+        parentWin.scrollTo(savedScrollPosition.current.x, savedScrollPosition.current.y);
+      }, 0);
+
+      setTimeout(() => {
+        parentWin.scrollTo(savedScrollPosition.current.x, savedScrollPosition.current.y);
+        isChangingTab.current = false; // Release scroll lock
+      }, 100);
+    } catch (e) {
+      setActiveTab(tab);
+      isChangingTab.current = false;
+      console.warn('Could not update URL hash:', e);
+    }
+  };
+
+  // Initialize: Set hash to overview if none exists, detect story changes
+  useEffect(() => {
+    const parentWin = getParentWindow();
+    let previousPath = '';
+
+    try {
+      previousPath = parentWin.location.search;
+
+      // Set initial hash if missing (with tab- prefix)
+      if (!parentWin.location.hash) {
+        const url = parentWin.location.href.split('#')[0];
+        parentWin.history.replaceState(null, '', url + '#tab-overview');
+      }
+    } catch (e) {
+      console.warn('Could not access parent window:', e);
+    }
+
+    // Listen for hash changes (back/forward navigation)
+    const handleHashChange = () => {
+      try {
+        const currentPath = parentWin.location.search;
+        const hash = parentWin.location.hash.replace('#tab-', '');
+
+        // Story changed - reset to overview
+        if (previousPath && currentPath !== previousPath) {
+          setActiveTab('overview');
+          const url = parentWin.location.href.split('#')[0];
+          parentWin.history.replaceState(null, '', url + '#tab-overview');
+        } else {
+          // Same story - update tab
+          setActiveTab(hash || 'overview');
+        }
+
+        previousPath = currentPath;
+      } catch (e) {
+        console.warn('Error handling hash change:', e);
+      }
+    };
+
+    // Listen on parent window
+    try {
+      parentWin.addEventListener('hashchange', handleHashChange);
+      parentWin.addEventListener('popstate', handleHashChange);
+
+      return () => {
+        parentWin.removeEventListener('hashchange', handleHashChange);
+        parentWin.removeEventListener('popstate', handleHashChange);
+      };
+    } catch (e) {
+      console.warn('Could not add event listeners:', e);
+      return () => {};
+    }
+  }, []);
 
   const renderTab = (key: string, label: string) => (
     <button
@@ -80,7 +223,11 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
         transition: "all 0.2s ease",
         borderRadius: "0",
       }}
-      onClick={() => setActiveTab(key)}
+      onClick={(e) => {
+        e.preventDefault(); // Prevent any default button behavior
+        handleTabChange(key);
+      }}
+      onMouseDown={(e) => e.preventDefault()} // Prevent focus change
       className="doc-tab"
     >
       {label}
@@ -93,6 +240,17 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
       style={{ fontFamily: "sans-serif" }}
     >
       <style>{`
+        /* Prevent ALL automatic scrolling */
+        html, body {
+          scroll-behavior: auto !important;
+          overflow-anchor: none !important;
+        }
+
+        /* Prevent scroll anchoring in container */
+        * {
+          overflow-anchor: none !important;
+        }
+
         .component-documentation-container {
           --primary-blue: #296df6;
           --bg-soft: #f8fafc;
@@ -116,6 +274,10 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           overflow: hidden;
           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .component-documentation-container details:last-of-type{
+          margin-bottom: 40px;
         }
 
         .component-documentation-container details[open] {
@@ -176,6 +338,10 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           margin: 0;
         }
         
+        .component-documentation-container details .sbdocs-wrapper{
+          min-height: auto;
+        }
+
         /* Ensure table inside details takes full width and looks good */
         .component-documentation-container details table {
           width: 100%;
@@ -198,7 +364,7 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
 
         .component-documentation-container th {
           background: var(--primary-blue);
-          color: #ffffff;
+          color: #ffffff !important;
           padding: 14px 16px;
           text-align: left;
           font-weight: 600;
@@ -212,6 +378,11 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           border-bottom: 1px solid var(--border-color);
           color: #475569;
           background: #fff;
+        }
+
+        /* docs table foont size */
+        .component-documentation-container td span{
+          font-size: 14px !important;
         }
 
         .component-documentation-container tr:last-child td {
@@ -236,13 +407,31 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
           font-size: 0.9em;
         }
 
+        .component-documentation-container p + p{
+          margin: 12px 0 !important
+        }
+
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
           margin: 24px 0 8px !important;
-          padding: 0 0 12px !important
+          padding: 0 0 12px !important;
+        }
+
+        h3, h4, h5, h6, .h3, .h4, .h5, .h6{
+          padding: 0 0 4px !important;
         }
 
         ul, ol{
-          margin: 16px 0 !important
+          margin: 12px 0 !important;
+        }
+
+        ul li{
+          list-style-type: disc !important;
+          margin-left: 24px !important;
+        }
+
+        ol li {
+          list-style-type: decimal !important;
+          margin-left: 24px !important;
         }
 
         .sbdocs-wrapper{
@@ -256,7 +445,45 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
         }
 
         .docblock-source{
-          margin: 20px 0 40px;
+          margin: 16px 0 40px;
+        }
+
+        /* Copy button of the code */ 
+        .docblock-source button{
+          font-size: 0 !important;
+          border: none !important;
+          position: relative;
+          box-shadow: none !important;
+        }
+
+        /* Keep the pseudo-icon hidden by default and reveal on hover of the block or the button */
+        .docblock-source button::before {
+          content: "\\f1fa";
+          font-size: 18px;
+          display: inline-block;
+          font-family: 'wavicon' !important;
+          color: var(--wm-color-black);
+          opacity: 0;
+          background: transparent;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          text-align: center;
+          vertical-align: middle;
+          transition: opacity 150ms ease, visibility 150ms ease;
+          visibility: hidden;
+        }
+
+        /* Reveal icon when hovering the docblock or the button itself */
+        .docblock-source:hover button::before,
+        .docblock-source button:hover::before {
+          opacity: 0.7;
+          visibility: visible;
+        }
+
+        .docblock-source:hover button:focus::before{
+          color: var(--primary-blue);
+          opacity: 1;
         }
 
         .external-link-container{
@@ -319,7 +546,7 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
         {events && renderTab("events", "Events")}
         {methods && renderTab("methods", "Methods")}
         {styling && renderTab("styling", "Styling")}
-        {(style || token) && renderTab("designSystem", "Styling")}
+        {(style || token) && renderTab("styling", "Styling")}
       </div>
 
       <div style={{ padding: "10px 0" }}>
@@ -343,28 +570,28 @@ export const ComponentDocumentation: React.FC<DocumentationProps> = ({
             <MarkdownWrapper>{methods}</MarkdownWrapper>
           </div>
         )}
-        {activeTab === "styling" && styling && (
+        {activeTab === "styling" && (styling || style || token) && (
           <div>
-            <MarkdownWrapper>{styling}</MarkdownWrapper>
-          </div>
-        )}
-        {activeTab === "designSystem" && (style || token) && (
-          <div>
-            {style && (
-              <details>
-                <summary>Variants</summary>
-                <div>
-                  <MarkdownWrapper>{style}</MarkdownWrapper>
-                </div>
-              </details>
-            )}
-            {token && (
-              <details open>
-                <summary>Design Tokens</summary>
-                <div>
-                  <MarkdownWrapper>{token}</MarkdownWrapper>
-                </div>
-              </details>
+            {styling && <MarkdownWrapper>{styling}</MarkdownWrapper>}
+            {(style || token) && (
+              <>
+                {style && (
+                  <details>
+                    <summary>Variants</summary>
+                    <div>
+                      <MarkdownWrapper>{style}</MarkdownWrapper>
+                    </div>
+                  </details>
+                )}
+                {token && (
+                  <details open>
+                    <summary>Design Tokens</summary>
+                    <div>
+                      <MarkdownWrapper>{token}</MarkdownWrapper>
+                    </div>
+                  </details>
+                )}
+              </>
             )}
           </div>
         )}

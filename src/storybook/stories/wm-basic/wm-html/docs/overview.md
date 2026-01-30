@@ -2,10 +2,22 @@
 
 The HTML component is a basic UI element that allows you to render custom HTML content within your application. This versatile component gives you direct access to insert HTML markup, enabling rich text formatting, custom layouts, or any HTML-based content that may not be easily achievable with other predefined components.
 
-## Features
-- Direct HTML rendering capability
-- Configurable horizontal alignment options (left, center, right)
-- Customizable width and height dimensions
-- Visibility control through the show property
-- Custom styling via CSS properties
-- Contextual hint support for improved accessibility
+### Markup
+
+```javascript
+<wm-html name="html1">
+  <pre>
+    <code>{`function greet(name) {
+            return "Hello, " + name;
+            }`
+        }
+    </code>
+  </pre>
+</wm-html>;
+
+```
+
+### Use Cases
+
+- Embed custom HTML content such as formatted text, tables, or code snippets.
+- Create interactive banners or notices with custom layouts, links, and styles.

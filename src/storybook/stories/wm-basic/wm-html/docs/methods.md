@@ -1,17 +1,26 @@
 # Methods
 
-The HTML component can be accessed in scripts through the Page.Widgets namespace (e.g., `Page.Widgets.myHtml`), however, it does not provide any specific methods beyond the standard properties listed in the Props section.
+<details open>
+  <summary>Methods</summary>
+    <div>
+        | Method | Parameters | Return Type | Description |
+        | --- | --- | --- | --- |
+        | `focus` | None | None | Sets focus to the html component. |
+        | `getAttributes` | None | `Array<string>` | Returns a list of all attributes currently applied to the component. Useful for checking what properties and metadata are set on the component at runtime. |
+        | `setWidgetProperty` | `prop:string`,`value:any` | None | Updates a specific property of the component at runtime. |
+    </div>
+</details>
 
-To manipulate the HTML component programmatically, you would typically use property assignments rather than method calls:
+### Use Cases
+
+- Programmatically set focus on the html component.
 
 ```javascript
-// Example: Dynamically updating HTML content based on some condition
-if (userProfile.isAdmin) {
-  Page.Widgets.myHtml.content = "<div class='admin-panel'>Admin controls here...</div>";
-} else {
-  Page.Widgets.myHtml.content = "<div class='user-view'>Limited view...</div>";
-}
+Page.Widgets.html1.focus();
+```
 
-// Example: Toggling visibility
-Page.Widgets.myHtml.show = !Page.Widgets.myHtml.show;
+- Change html properties from script to hide html component use the following code snippet:
+
+```javascript
+Page.Widgets.html1.setWidgetProperty('show', false);
 ```

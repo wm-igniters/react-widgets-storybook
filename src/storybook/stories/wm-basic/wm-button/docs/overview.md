@@ -1,14 +1,17 @@
 # Overview
 
-The Button component provides a styled, touchable UI element that triggers specific actions when pressed. It can display text captions, icons, and badges to create intuitive interactive elements in your mobile application.
+A **Button** indicates a possible user action. The button provides a styled clickable UI functionality with arbitrary content to indicate the different states.
 
-Buttons can trigger various actions including page navigation, database queries, dialog operations, JavaScript function execution, and API calls.
+### Markup
 
-## Features
+```javascript
+<wm-button class="btn-filled btn-default" caption="Notifications" type="button" name="button1" variant="filled:default" iconclass="wi wi-notifications-none" badgevalue="5"></wm-button>
+```
 
-- **Caption and Icons**: Display text, icons, or both with customizable positioning
-- **Badge Support**: Display numeric or text badges
-- **Shortcut Keys**: Assign keyboard shortcuts for quick access
-- **State Management**: Enable/disable buttons based on application state
-- **Custom Styling**: Apply different button styles and sizes
-- **Icon Options**: Use icon classes or image URLs with configurable dimensions
+### Use Cases
+
+- Navigate to another page.
+- Submit forms, such as login, registration, or checkout.
+- Show or hide a modal/dialog.
+- Call a JavaScript function.
+- Call a web service or Java method.

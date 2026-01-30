@@ -1,12 +1,15 @@
 # Overview
 
-The Icon component is a versatile UI element that allows you to display graphical icons within your application. Icons enhance user experience by providing visual cues and making interfaces more intuitive. In WaveMaker react applications, you can use icons standalone or integrate them with other components like Panel, Button, etc.
+The Icon component is a versatile UI element that allows you to display graphical icons within your application. Icons enhance user experience by providing visual cues and making interfaces more intuitive. Many components like Panel, Button etc. have a way to display an icon. You can choose the icons from the list of `wavicon`, `font-awesome` or custom library.
 
-## Features
+### Markup
 
-- Support for various icon libraries including wavicon and font-awesome icons
-- Configurable icon size (1g, 2x, 3x, 4x, 5x)
-- Customizable icon positioning (left or right)
-- Optional text caption alongside the icon
-- Accessibility support with aria-label attribute
-- Bindable properties for dynamic icon display
+```javascript
+<wm-icon name="icon1" iconclass="wi wi-save" class="fa-xs" variant="default:xs"></wm-icon>
+```
+
+### Use Cases
+
+- Use icons like edit, delete, or download to clearly represent actions without relying only on text.
+- Show visual status indicators like success, warning, error, or loading using icons.
+- Display icons in menus or sidebars (home, settings, profile) to help users navigate quickly.

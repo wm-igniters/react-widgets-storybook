@@ -1,24 +1,26 @@
 # Methods
 
-The Anchor component can be accessed in script using `Page.Widgets.widgetName` where `widgetName` is the name you assigned to the widget.
+<details open>
+  <summary>Methods</summary>
+    <div>
+        | Method | Parameters | Return Type | Description |
+        | --- | --- | --- | --- |
+        | `focus` | None | None | Sets focus to the anchor component. |
+        | `getAttributes` | None | `Array<string>` | Returns a list of all attributes currently applied to the component. Useful for checking what properties and metadata are set on the component at runtime. |
+        | `setWidgetProperty` | `prop:string`,`value:any` | None | Updates a specific property of the component at runtime. |
+    </div>
+</details>
 
-| Method | Parameters | Return Type | Description |
-| --- | --- | --- | --- |
-| `focus` | None | None | Sets focus to the anchor component. |
-| `blur` | None | None | Removes focus from the anchor component. |
-| `show` | None | None | Makes the anchor visible. |
-| `hide` | None | None | Hides the anchor. |
+### Use Cases
 
-## Common Method Use Cases
+- Programmatically set focus on the anchor component.
 
 ```javascript
-// Programmatically focus the anchor
-Page.Widgets.myAnchor.focus();
+Page.Widgets.anchor1.focus();
+```
 
-// Dynamically show/hide based on condition
-if (someCondition) {
-  Page.Widgets.myAnchor.show();
-} else {
-  Page.Widgets.myAnchor.hide();
-}
+- Change anchor properties from script to o hide anchor use the following code snippet:
+
+```javascript
+Page.Widgets.anchor1.setWidgetProperty('disabled', true);
 ```
