@@ -37,7 +37,7 @@
 - Triggered on anchor click to navigate to another page within the application.
 
 ```javascript
-    Page.anchor1Click = function ($event, widget) {
+    Page.anchorClick = function ($event, widget) {
     App.Actions.goToPage_Main.invoke();
 };
 ```
@@ -45,7 +45,7 @@
 - Triggered on anchor click to update the caption text dynamically.
 
 ```javascript
-    Page.anchor1Click = function ($event, widget) {
+    Page.anchorClick = function ($event, widget) {
     widget.caption = "Clicked";
 };
 ```
@@ -53,7 +53,7 @@
 - Triggered when the anchor receives keyboard focus (i.e via the Tab key)
 
 ```javascript
-    Page.anchor1Focus = function ($event, widget) {
+    Page.anchorFocus = function ($event, widget) {
         console.log("Anchor is focused");
 };
 ```
