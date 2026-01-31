@@ -10,6 +10,6 @@ The **Message** component helps to display a custom message on the page. Based o
 
 ### Use Cases
 
-- Displaying a success message when a user successfully submits a form: "Your profile has been updated successfully" with a green check icon.
-- Providing info messages for guidance: "Your session will expire in 5 minutes" with a blue info icon.
-- Indicating loading state during asynchronous operations: "Uploading files..." with a spinner icon.
+- Display a confirmation when a user completes an action.
+- Notify users about issues or invalid actions.
+- Provide guidance or status updates to users.
