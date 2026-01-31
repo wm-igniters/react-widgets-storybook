@@ -5,8 +5,8 @@
     <div>
         | Method | Parameters | Return Type | Description |
         |--------|------------|------------|-------------|
-        | showMessage | None | void | Displays the message component |
-        | hideMessage | None | void | Hides the message component |
+        | `showMessage` | None | void | Displays the message component |
+        | `hideMessage` | None | void | Hides the message component |
     </div>
 </details>
 
