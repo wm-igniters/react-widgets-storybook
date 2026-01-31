@@ -1,5 +1,9 @@
 # Methods
 
+The Anchor component does not expose any specific methods.
+
+<!-- # Methods
+
 <details open>
   <summary>Methods</summary>
     <div>
@@ -23,4 +27,4 @@ Page.Widgets.anchor.focus();
 
 ```javascript
 Page.Widgets.anchor.setWidgetProperty('disabled', true);
-```
+``` -->

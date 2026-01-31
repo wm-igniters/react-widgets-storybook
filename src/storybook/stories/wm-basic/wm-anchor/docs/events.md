@@ -34,11 +34,11 @@
 
 ### Use Cases
 
-- Triggered on anchor click to navigate to another page within the application.
+- Triggered on anchor click to navigate to dashboard page within the application.
 
 ```javascript
     Page.anchorClick = function ($event, widget) {
-    App.Actions.goToPage_Main.invoke();
+    App.Actions.goToPage_Dashboard.invoke();
 };
 ```
 

@@ -1,5 +1,9 @@
 # Methods
 
+The Button component does not expose any specific methods.
+
+<!-- # Methods
+
 <details open>
   <summary>Methods</summary>
     <div>
@@ -23,4 +27,4 @@ Page.Widgets.button.setWidgetProperty('show', false);
 
 ```javascript
 Page.Widgets.button.getAttributes();
-```
+``` -->

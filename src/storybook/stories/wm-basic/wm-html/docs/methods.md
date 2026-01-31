@@ -1,6 +1,8 @@
 # Methods
 
-<details open>
+The HTML component does not expose any specific methods.
+
+<!-- <details open>
   <summary>Methods</summary>
     <div>
         | Method | Parameters | Return Type | Description |
@@ -12,14 +14,8 @@
 
 ### Use Cases
 
-- Programmatically set focus on the html component.
-
-```javascript
-Page.Widgets.html.focus();
-```
-
 - Change html properties from script to hide html component use the following code snippet:
 
 ```javascript
 Page.Widgets.html.setWidgetProperty('show', false);
-```
+``` -->

@@ -1,5 +1,10 @@
 # Methods
 
+The Label component does not expose any specific methods.
+
+
+<!-- # Methods
+
 <details open>
   <summary>Methods</summary>
     <div>
@@ -22,5 +27,5 @@ Page.Widgets.label.setWidgetProperty('show', false);
 - Get the current display type of a component to check how it is rendered on the page.
 
 ```javascript
-Page.Widgets.label.getDisplayType();
+Page.Widgets.label.getDisplayType(); -->
 ```
