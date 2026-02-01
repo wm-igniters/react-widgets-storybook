@@ -1,81 +1,127 @@
-# Props
+# Properties
 
-## Chart Configuration
-| Name | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `type` | `"Bar" \| "Column"` | `"Column"` | Determines whether the chart displays horizontal bars or vertical columns |
-| `data` | `any[]` | `[]` | The dataset to be displayed in the chart |
-| `dataKeys` | `string[]` | `[]` | Array of keys to access the data values from the dataset |
-| `xDataKeyArr` | `string[]` | `[]` | Array of keys for the x-axis values |
-| `chartColors` | `string[]` | `[]` | Array of colors to be used for different data series |
-| `viewtype` | `TChartViewType` | - | The viewing type of the chart |
+<details open>
+  <summary>Basic</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `title` | string | - | Set the title of the component. |
+        | `subheading` | string | - | Set the sub heading of the component. |
+        | `name` | string | - | A unique identifier for the bar or column component. Special characters and spaces are not allowed. |
+    </div>
+</details>
 
-## Layout Configuration
-| Name | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `offsettop` | `number` | `0` | Top offset for the chart container |
-| `offsetbottom` | `number` | `0` | Bottom offset for the chart container |
-| `offsetleft` | `number` | `0` | Left offset for the chart container |
-| `offsetright` | `number` | `0` | Right offset for the chart container |
-| `margin` | `{ top: number; right: number; left: number; bottom: number; }` | `{ top: 20, right: 20, left: 50, bottom: 50 }` | Margins for the chart within its container |
-| `barSpacing` | `string` | `"0.1"` | Spacing between bars or columns as a ratio (0-1) |
+<details>
+  <summary>Advanced Settings</summary>
+    <div>
+        <details open>
+          <summary>Chart</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | **Datapoint Color** |  |  |  |
+              | `theme` | string | "Terrestrial" | This property controls the theme of bar/column chart and can be chosen from a list of options. |
+              | `customcolors` | string | - | This property can be used to change the set of colors that comes predefined with the selected theme. The values for this property can be comma separated values, eg. red, green, blue. Can also bound to a static variable containing the color names or the color hash codes. |
+              | **Message** |  |  |  |
+              | `nodatamessage` | string | - | This property will be displayed when there is no data to display. |
+              | `loadingdatamsg` | string | - | This property will be displayed when waiting for data to load. |
+              | **Layout** |  |  |  |
+              | `offsetbottom` | number | 55 | This property controls the bottom offset of the chart. |
+              | `offsetleft` | number | 75 | This property controls the left offset of the chart. |
+              | `offsetright` | number | 25 | This property controls the right offset of the chart. |
+              | `offsettop` | number | 25 | This property controls the top offset of the chart. |
+              | **Legend** |  |  |  |
+              | `showlegend` | string | "top" | This property controls whether to show the legend or it's position. |
+              | `legendtype` | string | "furious" | This property allows to display the type of legend. |
+              | **Behavior** |  |  |  |
+              | `tooltips` | boolean | true | This property controls whether to show the tooltip on hover. |
+              | **Data Rendering** |  |  |  |
+              | `viewtype` | string | "Stacked" | This (Data Arrangement) property controls whether to show bar or column in stacked or grouped. |
+            </div>
+        </details>
+        <details>
+          <summary>X-Axis</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | `showxaxis` | boolean | true | This property controls whether to show x-axis or not. |
+              | `xaxislabel` | string | - | Caption of x-axis on the chart. |
+              | `xunits` | string | - | Specifies the units of x-axis. |
+              | `xaxislabeldistance` | number | - | This (Caption Distance) property controls the distance between the x-axis and it's label. (**Note**: This option is available only for the **Bar** Chart). |
+              | `xdomain` | string | "Default" | This (Origin) property by default axis scale starts from 0. Choosing 'Min' option makes the scale starting value to minimun of all values. (**Note**: This option is available only for the **Column** Chart).|
+              | `showvalues` | boolean | true | This property controls showing of values on the chart. (**Note**: This option is available only for the **Bar** Chart). |
+              | `staggerlabels` | boolean | true | This property controls whether to stagger the labels which distributes labels into multiple lines. |
+              | `reducexticks` | boolean | true | This (Reduce X Datapoints) property controls whether to reduce the xticks or not. (**Note**: This option is available only for the **Column** Chart). |
+              | `barspacing` | string | - | This property controls spacing between the bars or columns and value ranges from 0.1 to 0.9. |
+            </div>
+        </details>
+        <details>
+          <summary>Y-Axis</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | `showyaxis` | boolean | true | This property controls whether to show y-axis or not. |
+              | `yaxislabel` | string | - | Caption of y-axis on the chart. |
+              | `yunits` | string | - | Specifies the units of y-axis. |
+              | `yaxislabeldistance` | number | - | This (Caption Distance) property controls the distance between the y-axis and it's label. (**Note**: This option is available only for the **Column** Chart). |
+              | `ydomain` | string | "Default" | This (Origin) property by default axis scale starts from 0. Choosing 'Min' option makes the scale starting value to minimun of all values. (**Note**: This option is available only for the **Column** Chart).|
+              | **Data Format** |  |  |  |
+              | `ynumberformat` | string | - | This (Display Format )shows the options to format the number type in y-axis. |
+            </div>
+        </details>
+    </div>
+</details>
 
-## Axis Configuration
-| Name | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `xAxisConfig` | `any` | - | Configuration options for the x-axis |
-| `yAxisConfig` | `any` | - | Configuration options for the y-axis |
+<details>
+  <summary>Layout</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `width` | string | - | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+        | `height` | string | "250px" | The height of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+    </div>
+</details>
 
-## Legend Configuration
-| Name | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `showLegend` | `boolean` | `true` | Determines whether the legend should be displayed |
-| `showlegend` | `boolean` | - | Alternative prop for legend display control |
-| `shouldShowLegend` | `boolean` | - | Final computed property for legend visibility |
-| `legendPosition` | `"top" \| "bottom" \| "right"` | `"bottom"` | Position of the legend relative to the chart |
-| `legendtype` | `TChartLegendType` | - | Type of legend to display |
+<details>
+  <summary>Dataset</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `dataset` | array | - | Data can come from various sources like database, web service or another component and can be accessed through binding to Live or Service Variables. |
+        | `xaxisdatakey` | string | - | X‑axis represents the category or label for each bar/column. |
+        | `yaxisdatakey` | string[] | - | Y‑axis represents the numeric value for each bar/column. |
+    </div>
+</details>
 
-## Visual Configuration
-| Name | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `showValues` | `boolean` | `false` | Determines whether to display data values on bars/columns |
-| `tooltips` | `boolean` | `true` | Enables or disables tooltips on hovering over data points |
-| `numberFormat` | `string` | - | Format string for numerical values (e.g., ".0f" for integers, ".2f" for 2 decimal places) |
+<details>
+  <summary>Behavior</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `show` | boolean | true | Showing determines whether or not a component is visible. It is a bindable property. |
+        | `loadOnDemand` | boolean | false | When this property is set and show property is bound, the initialization of the component will be deferred till the component becomes visible. This behavior improves the load time. Use this feature with caution, as it has a downside (as we will not be able to interact with the component through script until the component is initialized). When show property is not bound the component will be initialized immediately. |
+    </div>
+</details>
 
-## Data Selection
-| Name | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `selectedRegions` | `string[]` | `[]` | Array of currently selected data regions or categories |
-| `availableRegions` | `string[]` | `[]` | Array of all available regions or categories |
+<details>
+  <summary>Graphics</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `iconclass` | string | - | Defines the class of the icon that is applied to the bar/column component. |
+    </div>
+</details>
 
-## Common Use Cases
+### Use Cases
 
-#### Basic Column Chart Configuration
+- Sets the visual theme for the bars in the chart
+
 ```javascript
-// Create a basic column chart
-Page.Widgets.barColumnChart1.type = "Column";
-Page.Widgets.barColumnChart1.data = myDataService.dataSet;
-Page.Widgets.barColumnChart1.dataKeys = ["sales", "revenue"];
-Page.Widgets.barColumnChart1.xDataKeyArr = ["month"];
+Page.Widgets.barChart.theme = "Retro";
 ```
 
-#### Horizontal Bar Chart with Custom Colors
-```javascript
-// Create a horizontal bar chart with custom colors
-Page.Widgets.barColumnChart1.type = "Bar";
-Page.Widgets.barColumnChart1.chartColors = ["#FF6384", "#36A2EB", "#FFCE56"];
-Page.Widgets.barColumnChart1.barSpacing = "0.2"; // More space between bars
-```
+- Sets the visual colors for the column in the chart
 
-#### Configure Chart Margins and Legend
 ```javascript
-// Adjust chart margins and legend position
-Page.Widgets.barColumnChart1.margin = {
-  top: 30,
-  right: 30,
-  bottom: 70,
-  left: 60
-};
-Page.Widgets.barColumnChart1.legendPosition = "right";
-Page.Widgets.barColumnChart1.showValues = true; // Show values on bars/columns
+Page.Widgets.columnChart.customcolors = "#4CAF50, #2196F3, #FFC107";
 ```

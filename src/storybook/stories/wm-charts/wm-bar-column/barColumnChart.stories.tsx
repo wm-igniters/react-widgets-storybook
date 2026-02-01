@@ -161,7 +161,7 @@ export const Showcase: Story = {
               dataKeys={["Sales", "Revenue", "Profit"]}
               chartColors={["#8884d8", "#82ca9d", "#ffc658"]}
               margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              barSpacing="medium"
+              barSpacing="0.5"
               showValues={false}
               legendPosition="top"
               xDataKeyArr={mockDataMonthly.map(d => d.x)}
@@ -185,7 +185,7 @@ export const Showcase: Story = {
               dataKeys={["Sales", "Revenue", "Profit"]}
               chartColors={["#8884d8", "#82ca9d", "#ffc658"]}
               margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              barSpacing="medium"
+              barSpacing="0.5"
               showValues={false}
               legendPosition="top"
               xDataKeyArr={mockDataMonthly.map(d => d.x)}
@@ -208,7 +208,7 @@ export const Showcase: Story = {
               dataKeys={["Sales"]}
               chartColors={["#8884d8"]}
               margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              barSpacing="large"
+              barSpacing="0.5"
               showValues
               legendPosition="top"
               xDataKeyArr={mockDataMonthly.map(d => d.x)}
@@ -231,7 +231,7 @@ export const Showcase: Story = {
               dataKeys={["Q1", "Q2", "Q3", "Q4"]}
               chartColors={["#8884d8", "#82ca9d", "#ffc658", "#ff7c7c"]}
               margin={{ top: 20, right: 30, left: 80, bottom: 5 }}
-              barSpacing="small"
+              barSpacing="0.5"
               showValues={false}
               legendPosition="top"
               xDataKeyArr={mockDataProducts.map(d => d.x)}
@@ -254,7 +254,7 @@ export const Showcase: Story = {
               dataKeys={["Direct", "Online", "Partner"]}
               chartColors={["#2ecc71", "#3498db", "#e67e22"]}
               margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              barSpacing="medium"
+              barSpacing="0.5"
               showValues
               legendPosition="bottom"
               xDataKeyArr={mockDataRegions.map(d => d.x)}
@@ -342,6 +342,7 @@ export const Standard: Story = {
     // onChartClick: (data: any, event: any) => console.log("Chart clicked:", data),
     tooltips: true,
     showlegend: true,
+    showLegend: true, //some duplicate fix later
     viewtype: "Grouped",
     legendtype: "classic",
   },
@@ -356,7 +357,8 @@ export const Standard: Story = {
     },
     showValues: { control: "boolean" },
     tooltips: { control: "boolean" },
-    showlegend: { control: "boolean" },
+    showlegend: { table: {disable: true} },
+    showLegend: {control : "boolean"},
     barSpacing: {
       control: { type: "select" },
       options: ["0.3", "0.5"],
