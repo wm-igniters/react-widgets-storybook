@@ -1,6 +1,6 @@
 # Overview
 
-The **Pie** or **Donut** Chart component allows you to display data as a pie or donut chart, making it easy to visualize proportions and part-to-whole relationships. It supports customization of colors, legends, labels, and tooltips. Data can be bound from tables, variables, web services, live filters, or other sources, enabling dynamic visualization of distributions and comparisons for analysis and reporting.
+The **Pie** or **Donut** Chart component allows you to display data as a pie or donut, making it easy to visualize proportions and part-to-whole relationships. It supports customization of colors, legends, labels, and tooltips. Data can be bound from tables, variables, web services, live filters, or other sources, enabling dynamic visualization of distributions and comparisons for analysis and reporting.
 
 ### Markup
 

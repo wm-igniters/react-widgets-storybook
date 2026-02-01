@@ -1,6 +1,6 @@
 # Overview
 
-The **Line Chart** or **Area Chart** component allows you to display data as a line chart or an area chart, making it easy to visualize trends and changes over time. It supports customization of colors, legends, tooltips, and axis settings. Data can be bound from tables, variables, web services, live filters, or other sources, enabling dynamic visualization of trends, comparisons, and key metrics for analysis and reporting.
+The **Line Chart** or **Area Chart** component allows you to display data as a line or an area, making it easy to visualize trends and changes over time. It supports customization of colors, legends, tooltips, and axis settings. Data can be bound from tables, variables, web services, live filters, or other sources, enabling dynamic visualization of trends, comparisons, and key metrics for analysis and reporting.
 
 ### Markup
 
