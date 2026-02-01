@@ -10,6 +10,6 @@ The **Bubble Chart** component is a powerful visualization tool that displays da
 
 ### Use Cases
 
-- Compare multiple products by revenue (Y-axis), units sold (X-axis), and profit margin (bubble size).
-- Track stock performance by price (X), volume (Y), and market capitalization (bubble size).
-- Visualize patients by age (X), blood pressure (Y), and BMI or risk factor (bubble size).
+- Compare multiple products based on sales volume, revenue, and profitability in a single view.
+- Analyze stock performance by showing price trends, trading activity, and overall company size together.
+- Assess patient health patterns by comparing age, vital indicators, and overall risk levels at once.
