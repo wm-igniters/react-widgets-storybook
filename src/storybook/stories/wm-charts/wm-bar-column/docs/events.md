@@ -18,7 +18,7 @@
 
 ```javascript
     Page.barChartSelect = function ($event, widget, selectedItem, selectedChartItem) {
-    //Example Scenario: Click a sales bar to view detailed sales data for that month
+    //Example: Click a sales bar to view detailed sales data for that month
 };
 ```
 
@@ -26,7 +26,7 @@
 
 ```javascript
     Page.barChartBeforerender = function (widget, chartInstance) {
-    //Example Scenario: Apply conditional styling or themes before rendering
+    //Example: Apply conditional styling or themes before rendering
 };
 ```
 
@@ -34,6 +34,6 @@
 
 ```javascript
     Page.barChartTransform = function ($event, widget) {
-    //Example Scenario: Modify incoming data before display (format values, apply calculations)
+    //Example: Modify incoming data before display (format values, apply calculations)
 };
 ```

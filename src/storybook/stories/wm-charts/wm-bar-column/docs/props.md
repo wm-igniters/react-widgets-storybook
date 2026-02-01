@@ -88,7 +88,27 @@
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
         | `dataset` | array | - | Data can come from various sources like database, web service or another component and can be accessed through binding to Live or Service Variables. |
+        | `groupby` | string | - | This property allows for grouping the list of rows in the variable bound to a dataset by selecting one of the field names from the drop-down list. |
+        | `aggregation` | string | "none" | Shows the options to aggregate the data in the chart. |
+        | `aggregationcolumns` | string | "" | Shows the options to aggregate the data in the chart. |
+        | `orderby` | string[] | "" | This allows for multiple selection for ordering the display of rows based on fields in asc or desc order - up arrow for asc and down arrow for desc. |
+    </div>
+</details>
+
+<details>
+  <summary>X-Axis</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
         | `xaxisdatakey` | string | - | X‑axis represents the category or label for each bar/column. |
+    </div>
+</details>
+
+<details>
+  <summary>Y-Axis</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
         | `yaxisdatakey` | string[] | - | Y‑axis represents the numeric value for each bar/column. |
     </div>
 </details>

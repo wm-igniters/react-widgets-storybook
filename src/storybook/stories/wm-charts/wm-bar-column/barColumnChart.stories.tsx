@@ -351,6 +351,7 @@ export const Standard: Story = {
       control: { type: "select" },
       options: ["Bar", "Column"],
     },
+    legendPosition: { control: "select", options: ["top", "bottom"]},
     viewtype: {
       control: { type: "select" },
       options: ["Grouped", "Stacked"],
