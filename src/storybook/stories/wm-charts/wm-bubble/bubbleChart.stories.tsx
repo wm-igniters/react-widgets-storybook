@@ -300,7 +300,7 @@ export const Standard: Story = {
   argTypes: {
     shape: {
       control: { type: "select" },
-      options: ["circle", "diamond", "square", "triangle", "random"],
+      options: ["circle", "diamond", "square", "triangle"],
     },
     legendPosition: { control: "select", options: ["top", "bottom"]},
     tooltips: { control: "boolean" },

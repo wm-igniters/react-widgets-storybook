@@ -357,13 +357,14 @@ export const Standard: Story = {
       control: { type: "select" },
       options: ["Line", "Area"],
     },
+    legendPosition: {control: "select", options: ["top", "bottom"]},
     interpolation: {
       control: { type: "select" },
       options: ["linear", "cardinal", "step"],
     },
     areaViewType: {
       control: { type: "select" },
-      options: ["none", "expand", "silhouette", "wiggle"],
+      options: ["stack", "stream", "expand"],
     },
     tooltips: { control: "boolean" },
     showLegend: { control: "boolean" },
