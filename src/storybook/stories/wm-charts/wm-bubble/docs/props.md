@@ -5,7 +5,7 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `title` | string | - | Set the title of the component. |
+        | `title` | string | "Bubble Chart" | Set the title of the component. |
         | `subheading` | string | - | Set the sub heading of the component. |
         | `name` | string | - | A unique identifier for the bubble chart component. Special characters and spaces are not allowed. |
     </div>
@@ -20,7 +20,7 @@
               | Property | Type | Default | Description |
               | --- | --- | --- | --- |
               | **Datapoint Color** |  |  |  |
-              | `theme` | string | "Terrestrial" | This property controls the theme of bar/column chart and can be chosen from a list of options. |
+              | `theme` | string | "Terrestrial" | This property controls the theme of bubble chart and can be chosen from a list of options. |
               | `customcolors` | string | - | This property can be used to change the set of colors that comes predefined with the selected theme. The values for this property can be comma separated values, eg. red, green, blue. Can also bound to a static variable containing the color names or the color hash codes. |
               | **Message** |  |  |  |
               | `nodatamessage` | string | - | This property will be displayed when there is no data to display. |
@@ -140,7 +140,7 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `iconclass` | string | - | Defines the class of the icon that is applied to the bar/column component. |
+        | `iconclass` | string | - | Defines the class of the icon that is applied to the bubble component. |
     </div>
 </details>
 

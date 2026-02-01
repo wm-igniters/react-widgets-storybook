@@ -7,13 +7,13 @@ The **Bar Chart** or **Column Chart** component allows you to display data as ho
 - Bar Chart
 
 ```javascript
-<wm-chart type="Bar" name="barChart" title="Bar Chart" height="250px" iconclass="wi wi-bar-chart" dataset="bind:Variables.stvMonthlySales.dataSet" xaxisdatakey="x" yaxisdatakey="Profit,Revenue,Sales"></wm-chart>
+<wm-chart type="Bar" title="Bar Chart" height="250px" iconclass="wi wi-bar-chart" name="barChart"></wm-chart>
 ```
 
 - Column Chart
 
 ```javascript
-<wm-chart type="Column" name="columnChart" title="Column Chart" height="250px" iconclass="wi wi-bar-chart" dataset="bind:Variables.stvMonthlySales.dataSet" xaxisdatakey="x" yaxisdatakey="Profit,Revenue,Sales"></wm-chart>
+<wm-chart type="Column" title="Column Chart" height="250px" iconclass="wi wi-bar-chart" name="columnChart"></wm-chart>
 ```
 
 

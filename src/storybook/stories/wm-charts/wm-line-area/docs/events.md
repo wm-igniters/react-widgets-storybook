@@ -1,47 +1,39 @@
 # Callback Events
 
-| Event | Description |
-|-------|-------------|
-| `onChartClick(data: any, event: any)` | Triggered when the user clicks on any part of the chart. Provides the data point clicked and the original event object. |
-| `onLegendClick(region: string, e: React.MouseEvent)` | Triggered when the user clicks on a legend item. Provides the region identifier and the original mouse event. |
-| `onAreaSelect(dotProp: DotProps, series: any)` | Triggered when the user selects a specific area or data point. Provides the dot properties and the associated data series. |
+<details open>
+  <summary>Callback Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onSelect` | This event handler is called each time a user selects a line or area in the chart. |
+        | `onBeforeRender` | This event handler is called just before the line or area chart is rendered on the page. |
+        | `onTransform` | This event handler is called when the data or configuration of the line or area chart is transformed prior to rendering. |
+    </div>
+</details>
 
-## Example Usage
+
+### Use Cases
+
+- Triggered when the user clicks on a point of the Line Chart (same applies to Area Chart, only the component name differs).
 
 ```javascript
-// Set up chart click handler
-Page.Widgets.lineAreaChart1.onChartClick = function(data, event) {
-  console.log("Chart clicked!", data);
-  // You can navigate to details page based on selected data
-  Page.Variables.selectedDataItem.setValue(data);
+    Page.lineChartSelect = function ($event, widget, selectedItem, selectedChartItem) {
+    //Example: Clicking the data point for “March” displays detailed sales breakdown for that month in a panel.
 };
+```
 
-// Handle legend clicks for toggling visibility
-Page.Widgets.lineAreaChart1.onLegendClick = function(region, event) {
-  console.log("Legend item clicked:", region);
-  // Toggle region selection
-  let currentSelections = [...Page.Widgets.lineAreaChart1.selectedRegions];
-  const index = currentSelections.indexOf(region);
-  
-  if (index > -1) {
-    currentSelections.splice(index, 1);
-  } else {
-    currentSelections.push(region);
-  }
-  
-  Page.Widgets.lineAreaChart1.selectedRegions = currentSelections;
+- Triggered during the initialization phase of the Line Chart, just before it is rendered on the page (same applies to Area Chart, only the component name differs).
+
+```javascript
+    Page.lineChartBeforerender = function (widget, chartInstance) {
+    //Example: Customize chart options before rendering
 };
+```
 
-// Handle specific data point selection
-Page.Widgets.lineAreaChart1.onAreaSelect = function(dotProp, series) {
-  console.log("Selected data point:", dotProp, "from series:", series);
-  // Show detailed information in a dialog
-  Page.Variables.detailedPointInfo.setValue({
-    x: dotProp.cx,
-    y: dotProp.cy,
-    value: dotProp.value,
-    series: series.name
-  });
-  Page.Widgets.detailsDialog.open();
+- Triggered when the Line Chart is re-rendered due to data updates, filtering, or configuration changes (same applies to Area Chart, only the component name differs).
+
+```javascript
+    Page.lineChartTransform = function ($event, widget) {
+    ////Example: Modify incoming data before display (format values, apply calculations)
 };
 ```

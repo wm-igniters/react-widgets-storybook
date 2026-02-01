@@ -1,77 +1,128 @@
-# Props
+# Properties
 
-## Chart Type and Data
+<details open>
+  <summary>Basic</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `title` | string | "Pie Chart / Donut Chart" | Set the title of the component. |
+        | `subheading` | string | - | Set the sub heading of the component. |
+        | `name` | string | - | A unique identifier for the pie or donut chart component. Special characters and spaces are not allowed. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `type` | `"Pie" \| "Donut"` | `"Pie"` | Determines whether to render a Pie or Donut chart. |
-| `data` | `any[]` | `[]` | Array of data objects to be visualized in the chart. |
-| `dataKeys` | `string[]` | `[]` | Array of keys to extract data values from each data object. |
-| `xDataKeyArr` | `string[]` | `[]` | Array of keys for x-axis data points. |
+<details>
+  <summary>Advanced Settings</summary>
+    <div>
+        <details open>
+          <summary>Chart</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | `centerlabel` | string | - | Center label is the text to include within the middle of donut chart (**Note**: This option is available only for the **Donut** Chart). |
+              | **Datapoint Color** |  |  |  |
+              | `theme` | string | "Azure" | This property controls the theme of pie/donut chart and can be chosen from a list of options. |
+              | `customcolors` | string | - | This property can be used to change the set of colors that comes predefined with the selected theme. The values for this property can be comma separated values, eg. red, green, blue. Can also bound to a static variable containing the color names or the color hash codes. |
+              | **Message** |  |  |  |
+              | `nodatamessage` | string | - | This property will be displayed when there is no data to display. |
+              | `loadingdatamsg` | string | - | This property will be displayed when waiting for data to load. |
+              | **Layout** |  |  |  |
+              | `offsetbottom` | number | 0 | This property controls the bottom offset of the chart. |
+              | `offsetleft` | number | 0 | This property controls the left offset of the chart. |
+              | `offsetright` | number | 0 | This property controls the right offset of the chart. |
+              | `offsettop` | number | 20 | This property controls the top offset of the chart. |
+              | **Legend** |  |  |  |
+              | `showlegend` | string | "top" | This property controls whether to show the legend or it's position. |
+              | `legendtype` | string | "furious" | This property allows to display the type of legend. |
+              | **Behavior** |  |  |  |
+              | `tooltips` | boolean | true | This property controls whether to show the tooltip on hover. |
+              | `radius` | string | - | This property controls the radius and value ranges from 0.1 to 1 (**Note**: This option is available only for the **Donut** Chart). |
+            </div>
+        </details>
+        <details>
+          <summary>Value</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | `showlabels` | string | - | This (Show Values) property controls the showing of labels. |
+              | `labeltype` | string | - | This (Values Display) property controls the type of the label to be shown in the chart. Key is the value of the key data, value is the data of value, and percent represents the percentage that the slice of data represents. |
+              | **Value Format** |  |  |  |
+              | `ynumberformat` | string | - | This (Display Format )shows the options to format the number type in y-axis. |
+            </div>
+        </details>
+    </div>
+</details>
 
-## Layout and Positioning
+<details>
+  <summary>Layout</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `width` | string | - | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+        | `height` | string | "250px" | The height of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `offsettop` | `number` | `0` | Top offset for the chart in pixels. |
-| `offsetbottom` | `number` | `0` | Bottom offset for the chart in pixels. |
-| `offsetleft` | `number` | `0` | Left offset for the chart in pixels. |
-| `offsetright` | `number` | `0` | Right offset for the chart in pixels. |
-| `margin` | `{ top: number; right: number; left: number; bottom: number; }` | `{ top: 10, right: 10, bottom: 10, left: 10 }` | Object specifying the margin around the chart. |
-| `donutratio` | `string` | `"0.6"` | For Donut charts, specifies the ratio of the inner radius to the outer radius (0-1). |
+<details>
+  <summary>Dataset</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `dataset` | array | - | Data can come from various sources like database, web service or another component and can be accessed through binding to Live or Service Variables. |
+        | `groupby` | string | - | This property allows for grouping the list of rows in the variable bound to a dataset by selecting one of the field names from the drop-down list. |
+        | `aggregation` | string | "none" | Shows the options to aggregate the data in the chart. |
+        | `aggregationcolumns` | string | "" | Shows the options to aggregate the data in the chart. |
+        | `orderby` | string[] | "" | This allows for multiple selection for ordering the display of rows based on fields in asc or desc order - up arrow for asc and down arrow for desc. |
+    </div>
+</details>
 
-## Visual Customization
+<details>
+  <summary>Label Data</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `xaxisdatakey` | string | - | (Label Field) X‑axis represents the category or label for pie/donut. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `chartColors` | `string[]` | | Array of color codes to be used for chart segments. |
-| `showlabels` | `TChartShowValues` | `"none"` | Controls the visibility of data labels ('none', 'inside', 'outside'). |
-| `labeltype` | `TChartValuesDisplay` | `"value"` | Determines what information to display in labels ('value', 'percentage', 'both'). |
-| `tooltips` | `boolean` | `true` | Enables or disables tooltips when hovering over chart segments. |
-| `centerlabel` | `string` | `""` | Text to display in the center of a Donut chart. |
-| `numberFormat` | `string` | | Format pattern for displayed numbers. |
-| `ynumberformat` | `string` | | Format pattern for y-axis values. |
+<details>
+  <summary>Value Data</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `yaxisdatakey` | string | - | (Value Field )Y‑axis represents the numeric value for pie/donut. |
+    </div>
+</details>
 
-## Legend Configuration
+<details>
+  <summary>Behavior</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `show` | boolean | true | Showing determines whether or not a component is visible. It is a bindable property. |
+        | `loadOnDemand` | boolean | false | When this property is set and show property is bound, the initialization of the component will be deferred till the component becomes visible. This behavior improves the load time. Use this feature with caution, as it has a downside (as we will not be able to interact with the component through script until the component is initialized). When show property is not bound the component will be initialized immediately. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `showLegend` | `boolean` | `true` | Controls whether the legend is displayed. |
-| `shouldShowLegend` | `boolean` | `true` | Alternative prop to control legend visibility. |
-| `legendPosition` | `TChartLegendPosition` | `"bottom"` | Position of the legend ('top', 'right', 'bottom', 'left'). |
-| `legendtype` | `TChartLegendType` | `"list"` | Display style of the legend ('list', 'table'). |
+<details>
+  <summary>Graphics</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `iconclass` | string | - | Defines the class of the icon that is applied to the pie/donut chart component. |
+    </div>
+</details>
 
-## Region Selection
+### Use Cases
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `selectedRegions` | `string[]` | `[]` | Array of currently selected region IDs. |
-| `availableRegions` | `string[]` | `[]` | Array of all available region IDs that can be selected. |
-
-## Common Use Cases
+- Sets the visual theme for the pie in the chart
 
 ```javascript
-// Basic Pie chart configuration
-Page.Widgets.pieDonutChart1.type = "Pie";
-Page.Widgets.pieDonutChart1.data = [
-  { category: "Category A", value: 30 },
-  { category: "Category B", value: 45 },
-  { category: "Category C", value: 25 }
-];
-Page.Widgets.pieDonutChart1.dataKeys = ["value"];
-Page.Widgets.pieDonutChart1.xDataKeyArr = ["category"];
+Page.Widgets.pieChart.theme = "Retro";
+```
 
-// Customize Donut chart with center label
-Page.Widgets.pieDonutChart2.type = "Donut";
-Page.Widgets.pieDonutChart2.donutratio = "0.7";
-Page.Widgets.pieDonutChart2.centerlabel = "Total: 100";
+- Sets the visual colors for the donut in the chart
 
-// Configure legend and labels
-Page.Widgets.pieDonutChart1.showLegend = true;
-Page.Widgets.pieDonutChart1.legendPosition = "right";
-Page.Widgets.pieDonutChart1.showlabels = "outside";
-Page.Widgets.pieDonutChart1.labeltype = "percentage";
-
-// Apply custom colors
-Page.Widgets.pieDonutChart1.chartColors = ["#4285f4", "#ea4335", "#fbbc05", "#34a853"];
+```javascript
+Page.Widgets.donutChart.customcolors = "#4CAF50, #2196F3, #FFC107";
 ```

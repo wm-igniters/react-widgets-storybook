@@ -1,5 +1,23 @@
 # Styling
 
+Although the component handles most of the styling internally, you can apply additional styles by targeting the chart container directly.
+
+```css
+.wm-app .app-chart {
+    /* custom styles */
+}
+
+.wm-app .app-chart.panel .panel-heading {
+    /* custom styles */   
+}
+
+.wm-app .app-chart.panel .app-chart-inner {
+    /* custom styles */
+}
+```
+
+<!-- # Styling
+
 The PieDonutChart component uses SVG for rendering and can be styled using custom CSS classes. While the component itself handles most of the visual presentation through its props, you can further customize its appearance using CSS.
 
 The chart is rendered within a container div that can be styled for positioning and sizing:
@@ -41,4 +59,4 @@ Since this is an SVG-based chart, many styles are applied directly to SVG elemen
 - Labels are rendered as SVG `text` elements
 - The legend uses a combination of SVG elements and/or HTML depending on configuration
 
-Note that some styling capabilities might be limited by the underlying chart implementation, and changing certain visual aspects may require using the component's props rather than CSS.
+Note that some styling capabilities might be limited by the underlying chart implementation, and changing certain visual aspects may require using the component's props rather than CSS. -->

@@ -1,5 +1,24 @@
 # Styling
 
+Although the component handles most of the styling internally, you can apply additional styles by targeting the chart container directly.
+
+```css
+.wm-app .app-chart {
+    /* custom styles */
+}
+
+.wm-app .app-chart.panel .panel-heading {
+    /* custom styles */   
+}
+
+.wm-app .app-chart.panel .app-chart-inner {
+    /* custom styles */
+}
+```
+
+
+<!-- # Styling
+
 The BubbleChart component uses SVG for rendering, and many visual aspects can be controlled through component properties rather than CSS. However, you can still apply custom styling for fine-grained control.
 
 ## Container Styling
@@ -48,4 +67,4 @@ You can target specific SVG elements within the chart for custom styling:
 }
 ```
 
-Note that the exact class names may vary depending on the implementation of the chart component. Inspect the rendered DOM elements to identify the correct selectors for your specific instance.
+Note that the exact class names may vary depending on the implementation of the chart component. Inspect the rendered DOM elements to identify the correct selectors for your specific instance. -->

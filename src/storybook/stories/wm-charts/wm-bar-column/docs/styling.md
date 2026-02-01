@@ -1,5 +1,24 @@
 # Styling
 
+Although the component handles most of the styling internally, you can apply additional styles by targeting the chart container directly.
+
+```css
+.wm-app .app-chart {
+    /* custom styles */
+}
+
+.wm-app .app-chart.panel .panel-heading {
+    /* custom styles */   
+}
+
+.wm-app .app-chart.panel .app-chart-inner {
+    /* custom styles */
+}
+```
+
+
+<!-- # Styling
+
 The barColumnChart component uses a combination of default styling and accepts customization through its props. Since the component is based on a charting library, most styling is controlled through the component's properties rather than direct CSS.
 
 ## Key Styling Properties
@@ -48,4 +67,4 @@ The chart attempts to be responsive within its container. For best results:
 
 1. Ensure the container has a defined width and height or fills its parent appropriately
 2. Consider adjusting margins, font sizes, and other dimensions based on viewport size
-3. For mobile views, you may want to switch to a simpler visualization or adjust the `legendPosition`
+3. For mobile views, you may want to switch to a simpler visualization or adjust the `legendPosition` -->

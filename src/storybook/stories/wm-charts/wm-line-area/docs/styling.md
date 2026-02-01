@@ -1,5 +1,23 @@
 # Styling
 
+Although the component handles most of the styling internally, you can apply additional styles by targeting the chart container directly.
+
+```css
+.wm-app .app-chart {
+    /* custom styles */
+}
+
+.wm-app .app-chart.panel .panel-heading {
+    /* custom styles */   
+}
+
+.wm-app .app-chart.panel .app-chart-inner {
+    /* custom styles */
+}
+```
+
+<!-- # Styling
+
 The `lineAreaChart` component can be styled using custom CSS classes and by configuring its visual properties.
 
 ## CSS Classes
@@ -66,4 +84,4 @@ The most effective way to style the `lineAreaChart` is through its props:
 }
 ```
 
-Note that these CSS examples assume the chart has a class like `app-lineAreaChart` which should be replaced with your actual widget class name.
+Note that these CSS examples assume the chart has a class like `app-lineAreaChart` which should be replaced with your actual widget class name. -->

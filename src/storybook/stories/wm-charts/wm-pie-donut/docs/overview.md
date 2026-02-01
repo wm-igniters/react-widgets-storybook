@@ -1,16 +1,24 @@
 # Overview
 
-The PieDonutChart component is a versatile data visualization tool that can render both Pie and Donut charts based on the provided configuration. It allows for interactive data representation with customizable features like tooltips, legends, labels, and color schemes. This component is ideal for displaying proportional data relationships and part-to-whole comparisons in a visually appealing format.
+The **Pie** or **Donut** Chart component allows you to display data as a pie or donut chart, making it easy to visualize proportions and part-to-whole relationships. It supports customization of colors, legends, labels, and tooltips. Data can be bound from tables, variables, web services, live filters, or other sources, enabling dynamic visualization of distributions and comparisons for analysis and reporting.
 
-## Features
+### Markup
 
-- Supports both Pie and Donut chart types
-- Customizable margins and offsets
-- Interactive tooltips on hover
-- Configurable legend with multiple position and display options
-- Customizable data labels with various display formats
-- Region selection capabilities
-- Custom color schemes
-- Center label option for Donut charts
-- Click event handlers for both chart segments and legend items
-- Number formatting options for data values
+- Pie Chart
+
+```javascript
+<wm-chart type="Pie" title="Pie Chart" height="250px" iconclass="wi wi-pie-chart" name="pieChart"></wm-chart>
+```
+
+- Donut Chart
+
+```javascript
+<wm-chart type="Donut" title="Donut Chart" height="250px" iconclass="wi wi-donut-large" name="donutChart"></wm-chart>
+```
+
+
+### Use Cases
+
+- Show how a total budget is distributed across departments or projects.
+- Display responses or preferences as percentages of the total.
+- Visualize the percentage contribution of each company in a market.

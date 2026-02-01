@@ -1,15 +1,24 @@
 # Overview
 
-The `lineAreaChart` component is a flexible data visualization tool that enables developers to represent numerical data as either a line chart or an area chart. It's built with interactive capabilities to enhance data analysis, supporting features like tooltips, legends, and custom styling options. This component is ideal for visualizing time-series data, trends, comparisons, and distributions.
+The **Line Chart** or **Area Chart** component allows you to display data as a line chart or an area chart, making it easy to visualize trends and changes over time. It supports customization of colors, legends, tooltips, and axis settings. Data can be bound from tables, variables, web services, live filters, or other sources, enabling dynamic visualization of trends, comparisons, and key metrics for analysis and reporting.
 
-## Features
+### Markup
 
-- Supports both Line and Area chart types in a single component
-- Customizable data visualization with configurable axes, margins, and offsets
-- Interactive tooltips to display detailed information on hover
-- Configurable chart legend with multiple positioning options
-- Region selection capabilities for filtering data
-- Multiple interpolation types for different visual effects
-- Support for stacked area charts with various view types
-- Customizable colors, stroke widths, and point sizes
-- Event handling for chart interactions
+- Line Chart
+
+```javascript
+<wm-chart type="Line" title="Line Chart" height="250px" iconclass="wi wi-line-chart" name="lineChart"></wm-chart>
+```
+
+- Area Chart
+
+```javascript
+<wm-chart type="Area" title="Area Chart" height="250px" iconclass="fa fa-area-chart" name="areaChart"></wm-chart>
+```
+
+
+### Use Cases
+
+- Track stock prices or indices over time to visualize growth, dips, and trends.
+- Plot temperature, rainfall, or humidity trends over time.
+- Visualize revenue or expense predictions alongside historical data.

@@ -5,9 +5,9 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `title` | string | - | Set the title of the component. |
+        | `title` | string | "Bar Chart / Column Chart" | Set the title of the component. |
         | `subheading` | string | - | Set the sub heading of the component. |
-        | `name` | string | - | A unique identifier for the bar or column component. Special characters and spaces are not allowed. |
+        | `name` | string | - | A unique identifier for the bar or column chart component. Special characters and spaces are not allowed. |
     </div>
 </details>
 
@@ -128,7 +128,7 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `iconclass` | string | - | Defines the class of the icon that is applied to the bar/column component. |
+        | `iconclass` | string | - | Defines the class of the icon that is applied to the bar/column chart component. |
     </div>
 </details>
 

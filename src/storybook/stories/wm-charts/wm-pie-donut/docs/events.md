@@ -1,38 +1,39 @@
 # Callback Events
 
-| Event | Description |
-|-------|-------------|
-| `onChartClick(data, index, event)` | Triggered when a chart segment is clicked. Provides the data object, segment index, and the original mouse event. |
-| `onLegendClick(region, e)` | Triggered when a legend item is clicked. Provides the region name/ID and the original mouse event. |
+<details open>
+  <summary>Callback Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onSelect` | This event handler is called each time a user selects a pie or donut in the chart. |
+        | `onBeforeRender` | This event handler is called just before the pie or donut chart is rendered on the page. |
+        | `onTransform` | This event handler is called when the data or configuration of the pie or donut chart is transformed prior to rendering. |
+    </div>
+</details>
 
-## Examples
+
+### Use Cases
+
+- Triggered when the user clicks on Pie Chart (same applies to Donut Chart, only the component name differs).
 
 ```javascript
-// Handle chart segment click
-Page.Widgets.pieDonutChart1.onChartClick = function(data, index, event) {
-  console.log("Clicked segment data:", data);
-  console.log("Segment index:", index);
-  
-  // Perform actions based on clicked segment
-  if (data.category === "Category A") {
-    // Navigate to details page
-    Page.Actions.goToDetailPage.invoke({"categoryId": data.id});
-  }
+    Page.pieChartSelect = function ($event, widget, selectedItem, selectedChartItem) {
+    //Example: Clicking the “Electronics” slice shows detailed sales, revenue, and profit for that category in a panel.
 };
+```
 
-// Handle legend item click
-Page.Widgets.pieDonutChart1.onLegendClick = function(region, event) {
-  console.log("Legend region clicked:", region);
-  
-  // Toggle selection of the region
-  let currentSelected = Page.Widgets.pieDonutChart1.selectedRegions || [];
-  
-  if (currentSelected.includes(region)) {
-    // Deselect the region
-    Page.Widgets.pieDonutChart1.selectedRegions = currentSelected.filter(r => r !== region);
-  } else {
-    // Select the region
-    Page.Widgets.pieDonutChart1.selectedRegions = [...currentSelected, region];
-  }
+- Triggered during the initialization phase of the Pie Chart, just before it is rendered on the page (same applies to Donut Chart, only the component name differs).
+
+```javascript
+    Page.pieChartBeforerender = function (widget, chartInstance) {
+    //Example: Apply custom colors or highlight specific slices before the chart appears.
+};
+```
+
+- Triggered when the Pie Chart is re-rendered due to data updates, filtering, or configuration changes (same applies to Donut Chart, only the component name differs).
+
+```javascript
+    Page.pieChartTransform = function ($event, widget) {
+    //Example: Filter the chart to show only top 5 product categories or calculate percentages dynamically.
 };
 ```
