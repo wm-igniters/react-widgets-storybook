@@ -102,12 +102,12 @@ export const Docs: Story = {
     availableRegions: [],
   },
   argTypes: {
-    legendPosition: { control: "select", options: ["top", "bottom"] },
-    interpolation: { control: "select", options: ["linear", "cardinal", "step"] },
-    tooltips: { control: "boolean" },
-    showLegend: { control: "boolean" },
-    strokeWidth: { control: { type: "number", min: 1, max: 5 } },
-    pointSize: { control: { type: "number", min: 0, max: 10 } },
+    legendPosition: { table: { disable: true } },
+    interpolation: { table: { disable: true } },
+    tooltips: { table: { disable: true } },
+    // showLegend: { control: "boolean" },
+    strokeWidth: { table: { disable: true } },
+    pointSize: { table: { disable: true } },
     // internal props to hide from controls
     selectedRegions: { table: { disable: true } },
     onChartClick: { table: { disable: true } },
@@ -125,6 +125,9 @@ export const Docs: Story = {
     offsetleft: { table: { disable: true } },
     offsetbottom: { table: { disable: true } },
     offsetright: { table: { disable: true } },
+    data: { table: { disable: true } },
+    showLegend: { table: { disable: true } },
+    // tooltips: { table: { disable: true } },
   },
 };
 
@@ -237,6 +240,34 @@ export const Showcase: Story = {
     tooltips: false,
     legendtype: "classic",
   },
+  argTypes:{
+    legendPosition: { table: { disable: true } },
+    interpolation: { table: { disable: true } },
+    tooltips: { table: { disable: true } },
+    // showLegend: { control: "boolean" },
+    strokeWidth: { table: { disable: true } },
+    pointSize: { table: { disable: true } },
+    // internal props to hide from controls
+    selectedRegions: { table: { disable: true } },
+    onChartClick: { table: { disable: true } },
+    onLegendClick: { table: { disable: true } },
+    availableRegions: { table: { disable: true } },
+    dataKeys: { table: { disable: true } },
+    chartColors: { table: { disable: true } },
+    xAxisConfig: { table: { disable: true } },
+    yAxisConfig: { table: { disable: true } },
+    margin: { table: { disable: true } },
+    xDataKeyArr: { table: { disable: true } },
+    numberFormat: { table: { disable: true } },
+    legendtype: { table: { disable: true } },
+    offsettop: { table: { disable: true } },
+    offsetleft: { table: { disable: true } },
+    offsetbottom: { table: { disable: true } },
+    offsetright: { table: { disable: true } },
+    data: { table: { disable: true } },
+    showLegend: { table: { disable: true } },
+    // tooltips: { table: { disable: true } },
+  }
 };
 
 /* ------------------------------------------------------------------ */
