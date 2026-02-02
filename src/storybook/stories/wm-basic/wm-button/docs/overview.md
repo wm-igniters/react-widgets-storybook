@@ -40,6 +40,7 @@ Page.Widgets.button.iconmargin = "0px 8px 0px 0px";
 
 ```javascript
 Page.buttonClick = function ($event, widget) {
+  // Submit a form, e.g., registration or feedback form
   Page.Widgets.formCreate.submit();
 };
 ```
@@ -48,6 +49,7 @@ Page.buttonClick = function ($event, widget) {
 
 ```javascript
 Page.buttonClick = function ($event, widget) {
+  // Call a service or variable to fetch or submit data
   Page.Variables.svGetUsersData.invoke();
 };
 ```
@@ -56,6 +58,7 @@ Page.buttonClick = function ($event, widget) {
 
 ```javascript
 Page.buttonClick = function ($event, widget) {
+  // Open a dialog or modal window
   Page.Widgets.dialog.open();
 };
 ```

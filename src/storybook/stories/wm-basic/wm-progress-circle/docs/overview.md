@@ -31,12 +31,26 @@ Page.Widgets.progress_circle.minvalue = 0;
 Page.Widgets.progress_circle.maxvalue = 100;
 ```
 
-<!-- #### Events
+#### Events
 
-- Triggered before the progress circle is rendered to track or log the current progress value.
+- Triggered when the mouse pointer hovers over the progress circle.
 
 ```javascript
-Page.progress_circleBeforerender = function ($event, widget) {
-  Page.Widgets.progressCircle.datavalue);
+Page.progress_circleMouseenter = function ($event, widget) {
+    // Show detailed progress inside the circle
+    widget.title = "Step 3";           // Current step or completed value
+    widget.subtitle = "/10";      // Total steps or max value
+    widget.captionplacement = "inside"; // Display the caption inside the circle
 };
-``` -->
+```
+
+- Triggered when the mouse pointer leaves the progress circle.
+
+```javascript
+Page.progress_circle1Mouseleave = function ($event, widget) {
+    // Hide detailed progress when not hovering
+    widget.title = "";
+    widget.subtitle = "";
+    widget.captionplacement = "hidden"; // Hide the caption
+};
+```

@@ -25,23 +25,23 @@ Page.Widgets.tree.levels = 3;
   {
     "id": 1,
     "label": "Item 1",
-    "icon": "fa fa-align-left",
-    "children": []
-  },
-  {
-    "id": 2,
-    "label": "Item 2",
     "icon": "glyphicon glyphicon-music",
     "children": [
       {
-        "id": 2.1,
-        "label": "Item 2.1",
+        "id": 1.1,
+        "label": "Item 1.1",
         "icon": "glyphicon glyphicon-bookmark",
         "children": []
       }
     ]
+  },
+  {
+    "id": 2,
+    "label": "Item 2",
+    "icon": "fa fa-align-left",
+    "children": []
   }
-];
+]
 ```
 
 #### Events 
@@ -50,15 +50,20 @@ Page.Widgets.tree.levels = 3;
 
 ```javascript
     Page.treeSelect = function ($event, widget, $item, $path) {
-    console.log("Selected node", $item);
+    // When a node is selected, update another component (table, list, or grid)
+    // Example: Load department details in a grid based on the selected tree node
+    Page.Variables.getDepartmentDetails.setInput("deptId", $item.id);
+    Page.Variables.getDepartmentDetails.invoke();
 };
 ```
 
-- Triggered when a tree node is expanded.
+<!-- - Triggered when a tree node is expanded.
 
 ```javascript
     Page.treeExpand = function ($event, widget, $item, $path) {
-    console.log("Expanded node", $item);
+    // Example: Lazy-load subcategories in an e-commerce category tree
+    Page.Variables.getSubCategories.setInput("categoryId", $item.id);
+    Page.Variables.getSubCategories.invoke();
 };
 ```
 
@@ -66,9 +71,10 @@ Page.Widgets.tree.levels = 3;
 
 ```javascript
     Page.treeCollapse = function ($event, widget, $item, $path) {
-    console.log("Collapsed node", $item);
+    // Example: Clear selected subcategory products when parent category is collapsed
+    Page.Widgets.productGrid.datavalue = [];
 };
-```
+``` -->
 
 
 #### Methods 
