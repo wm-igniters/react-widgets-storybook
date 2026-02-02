@@ -1,11 +1,41 @@
 # Overview
 
-The Currency widget is a specialized input component designed specifically for handling currency values in applications. It provides a user-friendly interface for entering monetary amounts with appropriate formatting based on the selected currency type.
+**Currency** component is a special text component to input the currency type data. This component will change the display format based on the currency type.
 
-## Features
-- Automatic currency symbol display based on selected currency
-- Customizable input validation for minimum and maximum values
-- Step increment/decrement functionality
-- Support for different currency formats
-- Optional trailing zeros display after decimal point
-- Accessibility features including tab indexing and shortcut keys
+### Markup
+
+```javascript
+<wm-currency textalign="right" name="currency"></wm-currency>
+```
+
+### Examples
+
+#### Properties
+
+- Configures the currency component to use Indian Rupees (INR), including the currency code and symbol.
+
+```javascript
+Page.Widgets.currency.currency = "INR";
+Page.Widgets.currency.currencyCode = "INR";
+Page.Widgets.currency.currencySymbol = "₹";
+```
+
+- Sets the default value of the currency component and enables financial input mode. This formats the value with thousands separators and decimal precision.
+
+```javascript
+// Output displayed: 8,976.25
+Page.Widgets.currency.datavalue = 8976.25;
+Page.Widgets.currency.inputmode = "financial"
+```
+
+#### Events
+
+- Triggered whenever the currency component’s value changes.
+
+```javascript
+Page.currencyChange = function ($event, widget, newVal, oldVal) {
+  // Example: Recalculate tax (18%) and update total amount
+  const tax = newVal * 0.18;
+  Page.Variables.totalAmount.dataSet.dataValue = newVal + tax;
+};
+```

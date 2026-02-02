@@ -1,14 +1,45 @@
 # Overview
 
-The FileUpload component allows users to upload files to your applications. It provides a simple user interface to select files from the device storage and upload them to a specified location on the server.
+The **FileUpload** component lets users select and upload files from their device to a server. It provides a simple, intuitive interface for file selection and transfer.
 
-## Features
+### Markup
 
-- Support for single or multiple file uploads
-- File type restriction with allowed extensions
-- Maximum file size limitation (default 1MB, configurable up to 50MB)
-- Upload or Select-only modes
-- Clear uploaded files functionality
-- Progress indication during upload
-- Customizable appearance and behavior
-- Custom event handling for upload lifecycle
+```javascript
+  <wm-fileupload
+  cleariconclass="wi wi-clear"
+  cleariconhint="Clear"
+  name="fileupload"
+  on-select="Variables.FileServiceUploadFile.invoke()"
+  on-delete="Variables.FileServiceDeleteFile.invoke()"
+></wm-fileupload>;
+```
+
+### Examples
+
+#### Properties
+
+- Specifies the allowed file types for upload.
+
+```javascript
+//Allow only image files to be uploaded
+Page.Widgets.fileupload.contenttype = ".jpe .jpeg .gif .jpg .png image/*";
+```
+
+- Sets the maximum allowed file size (in MB) for uploads in the FileUpload component.
+
+```javascript
+// Limit file uploads to 10 MB
+Page.Widgets.fileupload.maxfilesize = 10;
+```
+
+#### Events
+
+- Triggered when the user selects one or more files in the FileUpload component.
+
+```javascript
+Page.fileuploadSelect = function ($event, widget, selectedFiles) {
+    //Example: Bind the selected files as input to the variable/service
+    Page.Variables.FileServiceUploadFile.setInput("files", selectedFiles);
+    Page.Variables.FileServiceUploadFile.invoke();
+};
+```

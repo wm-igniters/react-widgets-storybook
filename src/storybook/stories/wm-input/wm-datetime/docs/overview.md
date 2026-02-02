@@ -1,16 +1,36 @@
 # Overview
 
-The Datetime component is a sophisticated input control for capturing and displaying date and time values in applications. It combines date picker and time picker functionality, allowing users to select both date and time information in a single interface.
+The **Datetime** component allows users to select both date and time in a single input. It combines the functionality of a date picker and a time picker
 
-This component is part of a family of date/time components that includes Date and Time, with Datetime offering the combined functionality of both.
+### Markup
 
-## Features
+```javascript
+  <wm-datetime name="datetime" mindate="CURRENT_DATE"></wm-datetime>
+```
 
-- Combined date and time selection in a single component
-- Configurable date and time display patterns
-- Customizable output formats for date/time data
-- Supports setting minimum and maximum date ranges
-- Ability to exclude specific days or dates from selection
-- Configurable time increments with hour and minute steps
-- Optional week number display
-- Comprehensive validation options
+### Examples
+
+#### Properties
+
+- Sets the maximum selectable date in the datetime component.
+
+```javascript
+Page.Widgets.datetime.maxdate = new Date();
+```
+
+- Show AM/PM selection buttons in the datetime component.
+
+```javascript
+Page.Widgets.datetime.showampmbuttons = true;
+```
+
+#### Events
+
+- Configures the Datetime component before it is rendered by setting constraints such as disabling past dates and excluding specific weekdays.
+
+```javascript
+Page.datetimeBeforeload = function ($event, widget) {
+    widget.mindate = new Date();
+    widget.excludedays = "0, 6";
+};
+```

@@ -1,10 +1,33 @@
 # Overview
 
-The composite input component is a foundational user interface element designed to collect user data in a structured format. It extends the standard input functionality by adding support for captions and validation requirements. This component inherits from BaseProps to ensure consistent behavior across the application interface.
+The **Composite** component is used to manage the caption position and alignment for form input components such as text, select fields etc.
 
-## Features
-- Configurable caption positioning (top, left, right, bottom)
-- Optional field requirement indicator
-- Integration with form validation systems
-- Inheritance from BaseProps for consistent behavior
-- Flexible implementation in forms and data collection interfaces
+### Markup
+
+```javascript
+<wm-composite name="composite" captionposition="left" horizontalalign="left">
+  <wm-label
+    class="col-md-3 control-label p"
+    notag="true"
+    name="label"
+    variant="default:p"
+  ></wm-label>
+  <wm-container
+    class="col-md-9 app-container-default"
+    name="container"
+    variant="default"
+  >
+    <wm-text name="text"></wm-text>
+  </wm-container>
+</wm-composite>;
+```
+
+### Examples
+
+#### Properties
+
+- Sets the caption position for a text input within a Composite component.
+
+```javascript
+Page.Widgets.composite.captionposition = "top";
+```

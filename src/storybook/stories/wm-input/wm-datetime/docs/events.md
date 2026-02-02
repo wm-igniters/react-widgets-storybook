@@ -1,31 +1,41 @@
 # Callback Events
 
-| Event | Description |
-|-------|-------------|
-| Change | Triggered when the component's value changes. |
-| Focus | Triggered when the component receives focus. |
-| Blur | Triggered when focus leaves the component. |
+<details open>
+  <summary>Basic Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `change` | This event handler is called each time your component's value changes. |
+        | `onFocus` | This event handler is called each time your component is focused. |
+        | `onBlur` | This event handler is called each time your focus leaves your component. |
+    </div>
+</details>
 
-## Gesture Events
+<details>
+  <summary>Mouse Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onClick` | This event handler is called whenever the click event is triggered on a component. |
+        | `onMouseEnter` | This event handler is called whenever the mouse enters the component. |
+        | `onMouseLeave` | This event handler is called whenever the mouse leaves the component. |
+    </div>
+</details>
 
-| Event | Description |
-|-------|-------------|
-| Click | Triggered when the component is clicked. |
-| MouseEnter | Triggered when the mouse cursor enters the component area. |
-| MouseLeave | Triggered when the mouse cursor leaves the component area. |
-| Tap | Triggered when the component is tapped (touch screens). |
+<details>
+  <summary>Touch Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onTap` | This event handler is called whenever the component is tapped. |
+    </div>
+</details>
 
-## Example Event Handlers
-
-```javascript
-Page.myDatetimeChange = function($event, widget) {
-  // Convert the datetime value to a format suitable for your application
-  let selectedDateTime = widget.value;
-  console.log('Selected date and time:', selectedDateTime);
-  
-  // Additional logic based on the selected date/time
-  if (selectedDateTime) {
-    // Do something with the selected datetime
-  }
-};
-```
+<details>
+  <summary>Callback Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onBeforeLoad` | This event handler is called just before the component is rendered on the page. |
+    </div>
+</details>

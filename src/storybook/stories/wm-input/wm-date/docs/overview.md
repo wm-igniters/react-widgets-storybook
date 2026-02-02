@@ -1,13 +1,54 @@
 # Overview
 
-The Date component in WaveMaker allows users to select dates through an intuitive date picker interface. This input component is essential for any form that requires date selection, such as registration forms, appointment scheduling, or event planning.
+The **Date** component allows users to select a date using an interactive date picker.
 
-## Features
+### Markup
 
-- **Flexible Date Formatting**: Configure how dates appear with customizable date patterns
-- **Output Format Control**: Define the format of the returned date value
-- **Date Range Restrictions**: Set minimum and maximum selectable dates
-- **Date Exclusions**: Prevent selection of specific days or dates
-- **Week Number Display**: Option to show week numbers in the date picker
-- **Accessibility Support**: Includes tab indexing, hint text, and shortcut keys
-- **Customizable Behavior**: Control how and when the date picker appears
+```javascript
+  <wm-date name="date" mindate="CURRENT_DATE"></wm-date>
+```
+
+### Examples
+
+#### Properties
+
+- Sets the maximum selectable date in the date component.
+
+```javascript
+Page.Widgets.date.maxdate = new Date();
+```
+
+#### Events
+
+- Configures the date picker before it is rendered by disabling past dates and weekends.
+
+```javascript
+Page.dateBeforeload = function ($event, widget) {
+    widget.mindate = new Date();
+    widget.excludedays = "0, 6";
+};
+```
+
+- Triggered when the date input loses focus.
+
+```javascript
+Page.dateBlur = function ($event, widget) {
+    //Example: Can validate the entered date, display error messages
+    const dobValue = widget.datavalue;
+    const currentDate = new Date();
+
+    if (dobValue) {
+        const dob = new Date(dobValue); // convert to Date object
+
+        if (dob.getTime() > currentDate.getTime()) {
+            Page.Widgets.labelErrorMsg.caption = "Date of birth cannot be in the future";
+            Page.Widgets.labelErrorMsg.show = true;
+
+            // reset invalid value
+            widget.datavalue = null;
+        } else {
+            Page.Widgets.labelErrorMsg.show = false;
+        }
+    }
+};
+```
