@@ -31,12 +31,12 @@ Page.Widgets.progress_circle.minvalue = 0;
 Page.Widgets.progress_circle.maxvalue = 100;
 ```
 
-#### Events
+<!-- #### Events
 
 - Triggered before the progress circle is rendered to track or log the current progress value.
 
 ```javascript
 Page.progress_circleBeforerender = function ($event, widget) {
-  console.log("Progress updating to: " + Page.Widgets.progressCircle.datavalue);
+  Page.Widgets.progressCircle.datavalue);
 };
-```
+``` -->

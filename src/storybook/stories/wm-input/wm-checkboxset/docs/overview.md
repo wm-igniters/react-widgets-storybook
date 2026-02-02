@@ -38,9 +38,6 @@ Page.Widgets.checkboxset.disabled =
 
 ```javascript
 Page.checkboxsetChange = function ($event, widget, newVal, oldVal) {
-    console.log("Current selection:", newVal);
-    console.log("Previous selection:", oldVal);
-
     // Enable the Save button only if at least one option is selected
     Page.Widgets.saveBtn.disabled = !newVal || newVal.length === 0;
 };

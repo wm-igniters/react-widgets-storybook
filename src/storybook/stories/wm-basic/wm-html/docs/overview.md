@@ -36,7 +36,7 @@ Page.Widgets.html.width = "500px";
 Page.Widgets.html.height = "300px";
 ```
 
-#### Events
+<!-- #### Events
 
 - Triggered when the mouse enters the HTML component.
 
@@ -44,4 +44,4 @@ Page.Widgets.html.height = "300px";
 Page.htmlMouseenter = function ($event, widget) {
   console.log("Mouse entered");
 };
-```
+``` -->

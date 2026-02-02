@@ -51,3 +51,11 @@ Page.buttonClick = function ($event, widget) {
   Page.Variables.svGetUsersData.invoke();
 };
 ```
+
+- Triggered on button click to open dialog.
+
+```javascript
+Page.buttonClick = function ($event, widget) {
+  Page.Widgets.dialog.open();
+};
+```

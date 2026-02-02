@@ -50,10 +50,10 @@ Page.Widgets.anchor.iconposition = "left";
 };
 ```
 
-- Triggered when the anchor receives keyboard focus (i.e via the Tab key)
+<!-- - Triggered when the anchor receives keyboard focus (i.e via the Tab key)
 
 ```javascript
     Page.anchorFocus = function ($event, widget) {
         console.log("Anchor is focused");
 };
-```
+``` -->
