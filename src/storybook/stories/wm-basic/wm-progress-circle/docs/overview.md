@@ -5,11 +5,38 @@ The **Progress Circle** component visually represents the completion status of a
 ### Markup
 
 ```javascript
-<wm-progress-circle name="progress_circle" width="150px" height="150px" class="app-progress circle progress-circle-default" variant="filled:default"></wm-progress-circle>
+<wm-progress-circle
+  name="progress_circle"
+  width="150px"
+  height="150px"
+  class="app-progress circle progress-circle-default"
+  variant="filled:default"
+></wm-progress-circle>
 ```
 
-### Use Cases
+### Examples
 
-- Show progress toward goals or targets in analytics dashboards.
-- Waiting for a response from a remote server or loading external data.
-- File Upload or Download Status.
+#### Properties
+
+- Set the progress circle’s current value dynamically.
+
+```javascript
+Page.Widgets.progress_circle.datavalue = "50";
+```
+
+- Update minimum and maximum values for progress circle.
+
+```javascript
+Page.Widgets.progress_circle.minvalue = 0;
+Page.Widgets.progress_circle.maxvalue = 100;
+```
+
+#### Events
+
+- Triggered before the progress circle is rendered to track or log the current progress value.
+
+```javascript
+Page.progress_circleBeforerender = function ($event, widget) {
+  console.log("Progress updating to: " + Page.Widgets.progressCircle.datavalue);
+};
+```

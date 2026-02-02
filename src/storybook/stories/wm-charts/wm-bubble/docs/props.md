@@ -1,67 +1,159 @@
-# Props
+# Properties
 
-## Data Configuration
+<details open>
+  <summary>Basic</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `title` | string | "Bubble Chart" | Set the title of the component. |
+        | `subheading` | string | - | Set the sub heading of the component. |
+        | `name` | string | - | A unique identifier for the bubble chart component. Special characters and spaces are not allowed. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `data` | `any[]` | `[]` | Array of data objects to be visualized in the bubble chart |
-| `dataKeys` | `string[]` | `[]` | Array of keys to extract data values from the data objects |
-| `xDataKeyArr` | `string[]` | `[]` | Array of keys to determine x-axis values |
-| `selectedRegions` | `string[]` | `[]` | Array of region names to filter and display in the chart |
-| `chartColors` | `string[]` | `[]` | Array of color strings used for different data series |
+<details>
+  <summary>Advanced Settings</summary>
+    <div>
+        <details open>
+          <summary>Chart</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | **Datapoint Color** |  |  |  |
+              | `theme` | string | "Terrestrial" | This property controls the theme of bubble chart and can be chosen from a list of options. |
+              | `customcolors` | string | - | This property can be used to change the set of colors that comes predefined with the selected theme. The values for this property can be comma separated values, eg. red, green, blue. Can also bound to a static variable containing the color names or the color hash codes. |
+              | **Message** |  |  |  |
+              | `nodatamessage` | string | - | This property will be displayed when there is no data to display. |
+              | `loadingdatamsg` | string | - | This property will be displayed when waiting for data to load. |
+              | **Layout** |  |  |  |
+              | `offsetbottom` | number | 55 | This property controls the bottom offset of the chart. |
+              | `offsetleft` | number | 75 | This property controls the left offset of the chart. |
+              | `offsetright` | number | 25 | This property controls the right offset of the chart. |
+              | `offsettop` | number | 25 | This property controls the top offset of the chart. |
+              | **Legend** |  |  |  |
+              | `showlegend` | string | "top" | This property controls whether to show the legend or it's position. |
+              | `legendtype` | string | "furious" | This property allows to display the type of legend. |
+              | **Behavior** |  |  |  |
+              | `tooltips` | boolean | true | This property controls whether to show the tooltip on hover. |
+            </div>
+        </details>
+        <details>
+          <summary>X-Axis</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | `showxaxis` | boolean | true | This property controls whether to show x-axis or not. |
+              | `xaxislabel` | string | - | Caption of x-axis on the chart. |
+              | `xunits` | string | - | Specifies the units of x-axis. |
+              | `staggerlabels` | boolean | false | This property controls whether to stagger the labels which distributes labels into multiple lines. |
+              | `showxdistance` | boolean | false | This property enables showing the distance from the x-axis. |
+            </div>
+        </details>
+        <details>
+          <summary>Y-Axis</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | `showyaxis` | boolean | true | This property controls whether to show y-axis or not. |
+              | `yaxislabel` | string | - | Caption of y-axis on the chart. |
+              | `yunits` | string | - | Specifies the units of y-axis. |
+              | `yaxislabeldistance` | number | - | This (Caption Distance) property controls the distance between the y-axis and it's label. |
+              | `showydistance` | boolean | false | This property enables showing the distance from the y-axis. |
+              | **Data Format** |  |  |  |
+              | `ynumberformat` | string | - | This (Display Format )shows the options to format the number type in y-axis. |
+            </div>
+        </details>
+    </div>
+</details>
 
-## Layout & Positioning
+<details>
+  <summary>Picture</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `shape` | string | "circle" | This property controls the shape of the data point. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `offsettop` | `number` | `0` | Top offset of the chart in pixels |
-| `offsetbottom` | `number` | `0` | Bottom offset of the chart in pixels |
-| `offsetleft` | `number` | `0` | Left offset of the chart in pixels |
-| `offsetright` | `number` | `0` | Right offset of the chart in pixels |
-| `margin` | `{ top: number; right: number; left: number; bottom: number; }` | `{ top: 20, right: 20, left: 50, bottom: 50 }` | Object specifying chart margins |
+<details>
+  <summary>Layout</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `width` | string | - | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+        | `height` | string | "250px" | The height of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+    </div>
+</details>
 
-## Appearance & Formatting
+<details>
+  <summary>Dataset</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `dataset` | array | - | Data can come from various sources like database, web service or another component and can be accessed through binding to Live or Service Variables. |
+        | `groupby` | string | - | This property allows for grouping the list of rows in the variable bound to a dataset by selecting one of the field names from the drop-down list. |
+        | `aggregation` | string | "none" | Shows the options to aggregate the data in the chart. |
+        | `aggregationcolumns` | string | "" | Shows the options to aggregate the data in the chart. |
+        | `orderby` | string[] | "" | This allows for multiple selection for ordering the display of rows based on fields in asc or desc order - up arrow for asc and down arrow for desc. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `shape` | `TBubbleChartShape \| ScatterCustomizedShape` | `'circle'` | Shape to use for bubbles (can be a predefined shape or custom component) |
-| `numberFormat` | `string` | `''` | Format string for numerical values displayed in the chart |
-| `tooltips` | `boolean` | `true` | Whether to show tooltips on hover |
-| `showLegend` | `boolean` | `true` | Whether to display the chart legend |
-| `legendPosition` | `"top" \| "bottom" \| "right"` | `'bottom'` | Position of the legend relative to the chart |
+<details>
+  <summary>X-Axis</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `xaxisdatakey` | string | - | X‑axis represents the category or label for the bubble chart. |
+    </div>
+</details>
 
-## Axis Configuration
+<details>
+  <summary>Y-Axis</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `yaxisdatakey` | string[] | - | Y‑axis represents the numeric value for the bubble chart. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `xAxisConfig` | `any` | `{}` | Configuration object for the X-axis |
-| `yAxisConfig` | `any` | `{}` | Configuration object for the Y-axis |
+<details>
+  <summary>Z-Axis</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `bubblesize` | string | - | This property controls the size of the bubble. |
+    </div>
+</details>
 
-## Common Use Cases
+<details>
+  <summary>Behavior</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `show` | boolean | true | Showing determines whether or not a component is visible. It is a bindable property. |
+        | `loadOnDemand` | boolean | false | When this property is set and show property is bound, the initialization of the component will be deferred till the component becomes visible. This behavior improves the load time. Use this feature with caution, as it has a downside (as we will not be able to interact with the component through script until the component is initialized). When show property is not bound the component will be initialized immediately. |
+    </div>
+</details>
+
+<details>
+  <summary>Graphics</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `iconclass` | string | - | Defines the class of the icon that is applied to the bubble component. |
+    </div>
+</details>
+
+### Use Cases
+
+- Sets the visual theme for the bubbles in the chart
 
 ```javascript
-// Basic bubble chart configuration
-Page.Widgets.bubbleChart1.data = [
-  { name: "Group A", value: 400, count: 20, radius: 30 },
-  { name: "Group B", value: 300, count: 15, radius: 25 },
-  { name: "Group C", value: 500, count: 30, radius: 35 }
-];
-Page.Widgets.bubbleChart1.dataKeys = ["value", "count", "radius"];
-Page.Widgets.bubbleChart1.xDataKeyArr = ["name"];
+Page.Widgets.bubbleChart.theme = "Retro";
+```
 
-// Customizing chart appearance
-Page.Widgets.bubbleChart1.chartColors = ["#8884d8", "#82ca9d", "#ffc658"];
-Page.Widgets.bubbleChart1.shape = "circle";
+- Sets the visual colors for the bubbles in the chart
 
-// Configuring axes
-Page.Widgets.bubbleChart1.xAxisConfig = { 
-  label: "Categories", 
-  tickCount: 5,
-  padding: { left: 10, right: 10 }
-};
-Page.Widgets.bubbleChart1.yAxisConfig = { 
-  label: "Values", 
-  domain: [0, 600],
-  tickFormatter: (value) => `${value}k`
-};
+```javascript
+Page.Widgets.bubbleChart.customcolors = "#4CAF50, #2196F3, #FFC107";
 ```

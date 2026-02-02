@@ -1,21 +1,32 @@
 # Callback Events
 
-| Event | Description |
-|-------|-------------|
-| onChange | Triggered when the widget's value changes. Can be configured to trigger only on user input using the skipOnChangeEventFromScript property. |
-| onFocus | Triggered when the widget receives focus. |
-| onBlur | Triggered when focus leaves the widget. |
+<details open>
+  <summary>Basic Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `change` | This event handler is called each time your component's value changes. |
+        | `onFocus` | This event handler is called each time your component is focused. |
+        | `onBlur` | This event handler is called each time your focus leaves your component. |
+    </div>
+</details>
 
-## Mouse Events
+<details>
+  <summary>Mouse Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onClick` | This event handler is called whenever the click event is triggered on a component. |
+        | `onMouseEnter` | This event handler is called whenever the mouse enters the component. |
+        | `onMouseLeave` | This event handler is called whenever the mouse leaves the component. |
+    </div>
+</details>
 
-| Event | Description |
-|-------|-------------|
-| onClick | Triggered when the widget is clicked. |
-| onMouseenter | Triggered when the mouse pointer enters the widget area. |
-| onMouseleave | Triggered when the mouse pointer leaves the widget area. |
-
-## Touch Events
-
-| Event | Description |
-|-------|-------------|
-| onTap | Triggered when the widget is tapped on touchscreen devices. |
+<details>
+  <summary>Touch Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onTap` | This event handler is called whenever the component is tapped. |
+    </div>
+</details>

@@ -1,18 +1,30 @@
 # Callback Events
 
-| Event | Description |
-|-------|-------------|
-| onChange | Triggered when the selected value(s) of the checkboxset changes. Provides the new selected values. |
-| onReady | Fired when the component is loaded and initialized. |
+<details open>
+  <summary>Basic Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `change` | This event handler is called each time your component's value changes. |
+    </div>
+</details>
 
-## Touch Events
-| Event | Description |
-|-------|-------------|
-| onTap | Fired when the component is tapped. |
+<details>
+  <summary>Mouse Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onClick` | This event handler is called whenever the click event is triggered on a component. |
+        | `onMouseEnter` | This event handler is called whenever the mouse enters the component. |
+        | `onMouseLeave` | This event handler is called whenever the mouse leaves the component. |
+    </div>
+</details>
 
-## Mouse Events
-| Event | Description |
-|-------|-------------|
-| onClick | Triggered when the component is clicked. |
-| onMouseEnter | Fired when the mouse pointer enters the component area. |
-| onMouseLeave | Fired when the mouse pointer leaves the component area. |
+<details>
+  <summary>Touch Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onTap` | This event handler is called whenever the component is tapped. |
+    </div>
+</details>

@@ -8,8 +8,15 @@ The **Spinner** component controls the user interaction while the browser is per
 <wm-spinner show="true" name="spinner"></wm-spinner>
 ```
 
-### Use Cases
+### Examples
 
-- Data Fetching / API Calls.
-- Form Submission.
-- Page or Component Loading.
+#### Properties 
+
+- Set image as spinner icon.
+
+```javascript
+    Page.Widgets.spinner.type = "image";
+Page.Widgets.spinner.image = "resources/images/imagelists/loader.gif";
+Page.Widgets.spinner.imagewidth = "16px";
+Page.Widgets.spinner.imageheight = "16px";
+```

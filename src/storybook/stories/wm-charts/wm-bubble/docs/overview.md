@@ -1,14 +1,15 @@
 # Overview
 
-The BubbleChart component is a versatile data visualization tool that renders data as bubbles in a two-dimensional plot, where the size of each bubble represents a third data dimension. This makes it ideal for visualizing multi-dimensional data where relationships between three variables need to be shown simultaneously.
+The **Bubble Chart** component is a powerful visualization tool that displays data as bubbles. Each bubble’s position represents two variables (X and Y), while its size represents a third variable, allowing you to visualize relationships between three dimensions of data at once. Data can be bound from tables, variables, web services, live filters etc. This makes it ideal for spotting patterns, correlations, and trends in complex datasets.
 
-## Features
+### Markup
 
-* Display multi-dimensional data with customizable bubble sizes and positions
-* Support for multiple data series with customizable colors
-* Configurable axes with custom formatting options
-* Interactive tooltips to display detailed information
-* Customizable legends with multiple positioning options
-* Region-based data filtering
-* Custom bubble shapes support
-* Event handling for user interactions (clicks on bubbles or legend items)
+```javascript
+<wm-chart type="Bubble" title="Bubble Chart" height="250px" iconclass="wi wi-bubble-chart" name="bubbleChart"></wm-chart>
+```
+
+### Use Cases
+
+- Compare multiple products based on sales volume, revenue, and profitability in a single view.
+- Analyze stock performance by showing price trends, trading activity, and overall company size together.
+- Assess patient health patterns by comparing age, vital indicators, and overall risk levels at once.

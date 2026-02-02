@@ -1,64 +1,75 @@
-# Props
+# Properties
 
-## Basic Configuration
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| name | string | - | A unique identifier for the component. Special characters and spaces are not allowed. |
-| show | boolean | true | Determines whether the component is visible. This is a bindable property. |
-| disabled | boolean | false | When true, the component becomes display-only and user input is not accepted. |
-| readOnly | boolean | false | When enabled, prevents users from changing the data value of the component. |
+<details open>
+  <summary>Basic</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `name` | string | - | A unique identifier for the checkboxset component. Special characters and spaces are not allowed. |
+    </div>
+</details>
 
-## Accessibility
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| tabIndex | number | 0 | Specifies the tab order for component access using the tab key. Values range from 0 to 32767. Set to -1 to make the element non-focusable. |
+<details>
+  <summary>Accessibility</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `tabindex` | number | 0 | The tab index attribute specifies the tab order of an element. You can use this property to change the default tabbing order for component access using the tab key. The value can range from 0 to 32767. The default is 0 and -1 makes the element non-focusable. NOTE: In Safari browsers, by default, Tab highlights only text fields. To enable Tab functionality, in Safari Browser from Preferences -> Advanced -> Accessibility set the option "Press Tab to highlight each item on a webpage". |
+    </div>
+</details>
 
-## Layout
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| width | string | - | Width of the component. Can be specified in em, pt, px or % (e.g., 50px, 75%). |
-| height | string | - | Height of the component. Can be specified in em, pt, px or % (e.g., 50px, 75%). |
-| layout | string | - | Controls how contained widgets are displayed within this container. |
-| itemsPerRow | number | 1 | Determines the number of items displayed in each row, affecting horizontal/vertical layout. |
+<details>
+  <summary>Layout</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `width` | string | - | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+        | `height` | string | "auto" | The height of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+    </div>
+</details>
 
-## Dataset
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| dataset | array | - | Array of objects to populate the checkbox options. |
-| useKeys | boolean | false | When true, uses the keys of the dataset object as checkbox options. |
-| dataField | string | - | Specifies the property in dataset items to use as the checkbox value. |
-| displayField | string | - | Specifies the property in dataset items to display as checkbox label. |
-| displayExpression | string | - | JavaScript expression to format what is shown for each checkbox option. |
-| groupBy | string | - | Field name used to group items in the dataset. |
-| groupAs | string | - | How groups should be categorized and displayed. |
-| orderBy | string | - | Fields to order the display of items (format: "field1 asc, field2 desc"). |
+<details>
+  <summary>Dataset</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `dataset` | array | - | Set this property to a variable to populate the list of values to display. |
+        | `usekeys` | boolean | false | Use the keys of the live variable object as checkbox set options. |
+        | `datafield` | string | "All Fields" | This property sets the datavalue to be returned by a select editor when the list is populated using the dataSet property. |
+        | `displayfield` | string | - | This property sets the displayvalue to show in the select editor when the list is populated using the dataSet property. |
+        | `displayexpression` | string | - | This is an advanced property that gives more control over what is displayed in the drop-down select list. A Display Expression uses a Javascript expression to format exactly what is shown. |
+        | `groupby` | string | - | This property allows for grouping the list of rows in the variable bound to a dataset by selecting one of the field names from the drop-down list. |
+        | `orderby` | string | - | This allows for multiple selection for ordering the display of rows based on fields in asc or desc order - up arrow for asc and down arrow for desc. |
+    </div>
+</details>
 
-## Behavior
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| defaultValue | any | - | Default selected value(s) for the checkboxes. |
-| collapsible | boolean | false | Enables control for expanding and collapsing groups. |
-| showCount | boolean | false | When true, displays the number of items within each group. |
-| loadOnDemand | boolean | false | When true and the show property is bound, defers initialization until the component becomes visible. |
-| skipChangeEventFromScript | boolean | false | When enabled, Change events only trigger when the user updates the value from the UI, not from scripts. |
+<details>
+  <summary>Default Value</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `datavalue` | array | - | This is the default value to display value for an editor component. Note that the display value is just what the user sees initially, and is not always the datavalue returned by the component. |
+    </div>
+</details>
 
-## Configure Checkbox Layout
-```javascript
-// Set to display 2 checkboxes per row
-Page.Widgets.myCheckboxSet.itemsPerRow = 2;
+<details>
+  <summary>Validation</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `required` | boolean | false | A required editor in wm.LiveForm may refuse to save without a required field. |
+    </div>
+</details>
 
-// Configure to use vertical layout with one item per row
-Page.Widgets.myCheckboxSet.itemsPerRow = 1;
-```
 
-## Configure Grouping
-```javascript
-// Group checkboxes by the "category" field
-Page.Widgets.myCheckboxSet.groupBy = "category";
-
-// Show count of items in each group
-Page.Widgets.myCheckboxSet.showCount = true;
-
-// Make groups collapsible
-Page.Widgets.myCheckboxSet.collapsible = true;
-```
+<details>
+  <summary>Behavior</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `readonly` | boolean | false | This property prevents the user from being able to change the data value of a component. It is a bindable property. |
+        | `show` | boolean | true | Showing determines whether or not a component is visible. It is a bindable property. |
+        | `loadOnDemand` | boolean | false | When this property is set and show property is bound, the initialization of the component will be deferred till the component becomes visible. This behavior improves the load time. Use this feature with caution, as it has a downside (as we will not be able to interact with the component through script until the component is initialized). When show property is not bound the component will be initialized immediately. |
+        | `disabled` | boolean | false | If the disabled property is true (checked) the component becomes display-only and user input will not be accepted. It can also set programmatically by binding it to a boolean type variable. |
+    </div>
+</details>

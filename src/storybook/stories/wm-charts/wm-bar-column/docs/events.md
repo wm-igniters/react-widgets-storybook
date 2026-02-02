@@ -1,44 +1,39 @@
 # Callback Events
 
-| Event | Description |
-| ----- | ----------- |
-| `onChartClick(data: any, event: any)` | Triggered when a user clicks on any part of the chart. Returns the data associated with the clicked element and the original mouse event. |
-| `onLegendClick(region: string, e: React.MouseEvent)` | Triggered when a user clicks on a legend item. Returns the region/category name that was clicked and the original mouse event. |
+<details open>
+  <summary>Callback Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onSelect` | This event handler is called each time a user selects a bar or column in the chart. |
+        | `onBeforeRender` | This event handler is called just before the bar or column chart is rendered on the page. |
+        | `onTransform` | This event handler is called when the data or configuration of the bar or column chart is transformed prior to rendering. |
+    </div>
+</details>
 
-## Example Usage
 
-### Handling Chart Click Events
+### Use Cases
+
+- Triggered when the user clicks on a specific bar of the Bar Chart (same applies to Column Chart, only the component name differs).
 
 ```javascript
-Page.onChartClick = function(data, event) {
-  // data contains the information about the clicked bar/column
-  console.log("Clicked on data point:", data);
-  
-  // You can extract specific properties from the data
-  if (data && data.value) {
-    App.Variables.selectedValue.setValue(data.value);
-  }
+    Page.barChartSelect = function ($event, widget, selectedItem, selectedChartItem) {
+    //Example: Click a sales bar to view detailed sales data for that month
 };
 ```
 
-### Handling Legend Click Events
+- Triggered during the initialization phase of the Bar Chart, just before it is rendered on the page (same applies to Column Chart, only the component name differs).
 
 ```javascript
-Page.onLegendClick = function(region, event) {
-  // region contains the name of the clicked legend item
-  console.log("Legend clicked:", region);
-  
-  // You might use this to toggle visibility or highlight specific regions
-  var currentSelection = Page.Widgets.barColumnChart1.selectedRegions || [];
-  
-  // Toggle selection logic
-  var index = currentSelection.indexOf(region);
-  if (index === -1) {
-    currentSelection.push(region);
-  } else {
-    currentSelection.splice(index, 1);
-  }
-  
-  Page.Widgets.barColumnChart1.selectedRegions = currentSelection;
+    Page.barChartBeforerender = function (widget, chartInstance) {
+    //Example: Apply conditional styling or themes before rendering
+};
+```
+
+- Triggered when the Bar Chart is re-rendered due to data updates, filtering, or configuration changes (same applies to Column Chart, only the component name differs).
+
+```javascript
+    Page.barChartTransform = function ($event, widget) {
+    //Example: Modify incoming data before display (format values, apply calculations)
 };
 ```

@@ -1,5 +1,15 @@
 # Styling
 
+By default, the Composite component requires no extra styling.
+
+<!-- ```css
+.wm-app .app-composite-widget {
+    /* custom styles */
+}
+``` -->
+
+<!-- # Styling
+
 The composite input component can be styled using CSS classes. The component typically uses a structured hierarchy of elements that can be targeted for styling.
 
 ## Common CSS Classes
@@ -32,4 +42,4 @@ The composite input component can be styled using CSS classes. The component typ
 }
 ```
 
-Note that the actual CSS class names may vary based on the specific implementation of this component. Inspect the rendered DOM to identify the exact class names used in your implementation.
+Note that the actual CSS class names may vary based on the specific implementation of this component. Inspect the rendered DOM to identify the exact class names used in your implementation. -->

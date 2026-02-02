@@ -1,15 +1,25 @@
 # Overview
 
-The BarColumnChart component is a versatile data visualization tool that allows you to represent data as either vertical columns or horizontal bars. It supports extensive customization including colors, legends, tooltips, and axis configurations, making it suitable for a wide range of analytical and reporting applications.
+The **Bar Chart** or **Column Chart** component allows you to display data as horizontal bars or vertical columns, making it easy to compare values across categories. It supports customization of colors, legends, tooltips, and axis settings, and data can be bound from tables, variables, web services, live filters etc. This enables dynamic visualization of trends, comparisons, and key metrics for analysis and reporting.
 
-## Features
-- Support for both bar and column chart types
-- Configurable chart margins and spacing
-- Interactive legends with customizable positioning
-- Tooltip support for enhanced data exploration
-- Value labels display option
-- Customizable axis configurations
-- Click event handling for both chart and legend elements
-- Number formatting capabilities
-- Multiple data series visualization
-- Region selection functionality
+### Markup
+
+- Bar Chart
+
+```javascript
+<wm-chart type="Bar" title="Bar Chart" height="250px" iconclass="wi wi-bar-chart" name="barChart"></wm-chart>
+```
+
+- Column Chart
+
+```javascript
+<wm-chart type="Column" title="Column Chart" height="250px" iconclass="wi wi-bar-chart" name="columnChart"></wm-chart>
+```
+
+
+### Use Cases
+
+- Compare monthly sales, revenue, and profit across different product categories.
+- Monitor inventory levels across warehouses or product lines.
+- Display survey results or poll responses by category.
+- Track employee performance metrics or team KPIs over time.

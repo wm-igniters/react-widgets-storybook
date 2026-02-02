@@ -354,7 +354,7 @@ export const Standard: Story = {
       control: { type: "select" },
       options: ["key", "value", "percent", "key-value"],
     },
-    donutratio: { control: "select", options:["small", "medium", "large"] },
+    donutratio: { control: "select", options:["0.3", "0.5"] },
     tooltips: { control: "boolean" },
     showLegend: { control: "boolean" },
     onChartClick: {table: {disable : true}},

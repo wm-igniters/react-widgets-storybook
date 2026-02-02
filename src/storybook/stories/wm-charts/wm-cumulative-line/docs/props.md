@@ -5,9 +5,9 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `title` | string | "Bar Chart / Column Chart" | Set the title of the component. |
+        | `title` | string | "Cumulative Line Chart" | Set the title of the component. |
         | `subheading` | string | - | Set the sub heading of the component. |
-        | `name` | string | - | A unique identifier for the bar or column chart component. Special characters and spaces are not allowed. |
+        | `name` | string | - | A unique identifier for the cumulative line chart component. Special characters and spaces are not allowed. |
     </div>
 </details>
 
@@ -35,8 +35,10 @@
               | `legendtype` | string | "furious" | This property allows to display the type of legend. |
               | **Behavior** |  |  |  |
               | `tooltips` | boolean | true | This property controls whether to show the tooltip on hover. |
+              | `highlightpoints` | boolean | false | This property controls whether to highlight data points in the chart or not. |
+              | `linethickness` | string | - | This property controls the thickness of the line in chart. It accepts value likes "5px", "0.85em" |
               | **Data Rendering** |  |  |  |
-              | `viewtype` | string | "Stacked" | This (Data Arrangement) property controls whether to show bar or column in stacked or grouped. |
+              | `interpolation` | string | "linear" | This (Data Interpolation) property determines how datapoints are joined and rendered in the chart. |
             </div>
         </details>
         <details>
@@ -47,12 +49,7 @@
               | `showxaxis` | boolean | true | This property controls whether to show x-axis or not. |
               | `xaxislabel` | string | - | Caption of x-axis on the chart. |
               | `xunits` | string | - | Specifies the units of x-axis. |
-              | `xaxislabeldistance` | number | - | This (Caption Distance) property controls the distance between the x-axis and it's label. (**Note**: This option is available only for the **Bar** Chart). |
-              | `xdomain` | string | "Default" | This (Origin) property by default axis scale starts from 0. Choosing 'Min' option makes the scale starting value to minimun of all values. (**Note**: This option is available only for the **Column** Chart).|
-              | `showvalues` | boolean | true | This property controls showing of values on the chart. (**Note**: This option is available only for the **Bar** Chart). |
-              | `staggerlabels` | boolean | true | This property controls whether to stagger the labels which distributes labels into multiple lines. |
-              | `reducexticks` | boolean | true | This (Reduce X Datapoints) property controls whether to reduce the xticks or not. (**Note**: This option is available only for the **Column** Chart). |
-              | `barspacing` | string | - | This property controls spacing between the bars or columns and value ranges from 0.1 to 0.9. |
+              | `staggerlabels` | boolean | false | This property controls whether to stagger the labels which distributes labels into multiple lines. |
             </div>
         </details>
         <details>
@@ -63,8 +60,7 @@
               | `showyaxis` | boolean | true | This property controls whether to show y-axis or not. |
               | `yaxislabel` | string | - | Caption of y-axis on the chart. |
               | `yunits` | string | - | Specifies the units of y-axis. |
-              | `yaxislabeldistance` | number | - | This (Caption Distance) property controls the distance between the y-axis and it's label. (**Note**: This option is available only for the **Column** Chart). |
-              | `ydomain` | string | "Default" | This (Origin) property by default axis scale starts from 0. Choosing 'Min' option makes the scale starting value to minimun of all values. (**Note**: This option is available only for the **Column** Chart).|
+              | `yaxislabeldistance` | number | - | This (Caption Distance) property controls the distance between the y-axis and it's label. |
               | **Data Format** |  |  |  |
               | `ynumberformat` | string | - | This (Display Format )shows the options to format the number type in y-axis. |
             </div>
@@ -100,7 +96,7 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `xaxisdatakey` | string | - | X‑axis represents the category or label for each bar/column. |
+        | `xaxisdatakey` | string | - | X‑axis represents the category or label for chart. |
     </div>
 </details>
 
@@ -109,7 +105,7 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `yaxisdatakey` | string[] | - | Y‑axis represents the numeric value for each bar/column. |
+        | `yaxisdatakey` | string[] | - | Y‑axis represents the numeric value for chart. |
     </div>
 </details>
 
@@ -128,20 +124,20 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `iconclass` | string | - | Defines the class of the icon that is applied to the bar/column chart component. |
+        | `iconclass` | string | - | Defines the class of the icon that is applied to the chart component. |
     </div>
 </details>
 
 ### Use Cases
 
-- Sets the visual theme for the bars in the chart
+- Sets the visual theme for the chart
 
 ```javascript
-Page.Widgets.barChart.theme = "Retro";
+Page.Widgets.cumulativeLineChart.theme = "Retro";
 ```
 
-- Sets the visual colors for the column in the chart
+- Sets the visual colors for the  the chart
 
 ```javascript
-Page.Widgets.columnChart.customcolors = "#4CAF50, #2196F3, #FFC107";
+Page.Widgets.cumulativeLineChart.customcolors = "#4CAF50, #2196F3, #FFC107";
 ```

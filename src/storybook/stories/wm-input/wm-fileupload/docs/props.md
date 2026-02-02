@@ -1,53 +1,65 @@
-# Props
+# Properties
 
-## Basic Properties
+<details open>
+  <summary>Basic</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `caption` | string | - | The caption is the text that the end user sees on your fileupload. It can be bound to a variable or another component. |
+        | `name` | string | - | A unique identifier for the fileupload component. Special characters and spaces are not allowed. |
+    </div>
+</details>
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| name | string | "" | Unique identifier for the FileUpload component |
-| caption | string | "" | The text displayed as the component label |
-| show | boolean | true | Controls component visibility |
-| disabled | boolean | false | When true, makes the component display-only |
+<details>
+  <summary>Accessibility</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `tabindex` | number | 0 | The tab index attribute specifies the tab order of an element. You can use this property to change the default tabbing order for component access using the tab key. The value can range from 0 to 32767. The default is 0 and -1 makes the element non-focusable. NOTE: In Safari browsers, by default, Tab highlights only text fields. To enable Tab functionality, in Safari Browser from Preferences -> Advanced -> Accessibility set the option "Press Tab to highlight each item on a webpage". |
+        | `arialabel` | string | - | Accessibility label for screen readers |
+        | `hint` | string | - | Any text you enter for this property will be shown as a tooltip if the mouse hovers over this component for 1.5 seconds. |
+    </div>
+</details>
 
-## Upload Configuration
+<details>
+  <summary>Layout</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `width` | string | - | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+        | `height` | string | - | The height of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+    </div>
+</details>
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| multiple | boolean | false | Enables selection of multiple files when set to true |
-| message | string | "" | Message text displayed for file upload in multi-select mode |
-| allowedFileExtensions | string | "" | Comma-separated list of permitted file extensions (e.g., '.pdf, .doc, .gif') |
-| maxFileSize | number | 1 | Maximum allowed file size in MB (up to 50MB) |
+<details>
+  <summary>Behavior</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `multiple` | boolean | false | Enable/Disable to switch between Multiple/Single File Upload Component. |
+        | `fileUploadMessage` | string | - | Message text for file upload while in multi-select mode. |
+        | `show` | boolean | true | Showing determines whether or not a component is visible. It is a bindable property. |
+        | `loadOnDemand` | boolean | false | When this property is set and show property is bound, the initialization of the component will be deferred till the component becomes visible. This behavior improves the load time. Use this feature with caution, as it has a downside (as we will not be able to interact with the component through script until the component is initialized). When show property is not bound the component will be initialized immediately. |
+        | `disabled` | boolean | false | If the disabled property is true (checked) the component becomes display-only and user input will not be accepted. It can also set programmatically by binding it to a boolean type variable. |
+        | `contenttype` | string | - | (Allowed File Extensions) Select the default filter file type in file choose option. It can be bindable to a string having comma separated extensions. Example: '.pdf, .doc, .gif'. |
+        | `maxfilesize` | number | 1 | If the max file size is set, file upload will restrict the files more than max file size. Default Max file size is 1MB, it can be set up to 50MB. |
+    </div>
+</details>
 
-## Appearance
+<details>
+  <summary>Graphics</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `iconclass` | string | - | This property defines the class of the icon that is applied to the button. By default, it is set to wi wi-file-upload |
+    </div>
+</details>
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| height | string | "" | Height of the component (in px or %) |
-| width | string | "" | Width of the component (in px or %) |
-| horizontalAlign | string | "left" | Horizontal alignment of the component contents |
-| iconClass | string | "wi wi-file-upload" | CSS class for the upload icon |
-| clearIconClass | string | "wi wi-clear" | CSS class for the clear icon |
-| clearIconHint | string | "Clear" | Tooltip text shown when hovering over the clear icon |
-
-## Accessibility
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| hint | string | "" | Tooltip text shown on hover after 1.5 seconds |
-| tabindex | number | 0 | Order in which the component gets focus when tabbing |
-
-## Common Use Cases
-
-```javascript
-// Configure file extensions and size
-Page.Widgets.fileUpload1.allowedFileExtensions = ".jpg, .png, .pdf";
-Page.Widgets.fileUpload1.maxFileSize = 5; // 5MB
-
-// Enable multiple file selection
-Page.Widgets.fileUpload1.multiple = true;
-Page.Widgets.fileUpload1.message = "Drop files here or click to upload";
-
-// Customize clear icon
-Page.Widgets.fileUpload1.setClearIconClass("wi wi-delete");
-Page.Widgets.fileUpload1.setClearIconHint("Remove all files");
-```
+<details>
+  <summary>Format</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `horizontalalign` | string | - | This property specifies how the elements should be aligned horizontally. |
+    </div>
+</details>

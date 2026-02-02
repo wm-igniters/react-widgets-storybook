@@ -1,12 +1,40 @@
 # Overview
 
-The Checkbox component allows users to select an option by toggling between checked and unchecked states. It provides a simple way to capture boolean input or mark an item as selected. Checkboxes are commonly used in forms, settings pages, and anywhere users need to make binary choices.
+A **Checkbox** component is a specific type of two-states button that can be either checked or unchecked. Checkboxes let a user select an option. Examples: "I agree to terms and conditions" etc. checked and unchecked options.
 
-## Features
+### Markup
 
-- Two-state selection (checked or unchecked)
-- Customizable caption text
-- Support for defining custom checked and unchecked values
-- Accessibility support with tab navigation and screen readers
-- Form validation integration with required field capability
-- Support for keyboard shortcut keys
+```javascript
+  <wm-checkbox
+    caption="Label"
+    class="col-md-push-3 col-md-9"
+    name="checkbox"
+></wm-checkbox>
+```
+
+### Examples
+
+#### Properties
+
+- Sets the checkbox’s data value to true.
+
+```javascript
+Page.Widgets.checkbox.datavalue = true;
+```
+
+#### Events
+
+- Triggered when the checkbox value changes.
+
+```javascript
+Page.checkboxChange = function ($event, widget, newVal, oldVal) {
+     // Perform actions based on the checkbox state
+    if (newVal === true) {
+        // Execute logic when the checkbox is checked
+        console.log("Checkbox is checked");
+    } else {
+        // Execute logic when the checkbox is unchecked
+        console.log("Checkbox is unchecked");
+    }
+};
+```

@@ -1,90 +1,146 @@
-# Props
+# Properties
 
-## Basic Configuration
+<details open>
+  <summary>Basic</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `title` | string | "Line Chart / Area Chart" | Set the title of the component. |
+        | `subheading` | string | - | Set the sub heading of the component. |
+        | `name` | string | - | A unique identifier for the line or area chart component. Special characters and spaces are not allowed. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `type` | `"Line" \| "Area"` | `"Line"` | Determines whether to render a line chart or an area chart |
-| `data` | `any[]` | `[]` | Array of data objects to be visualized in the chart |
-| `dataKeys` | `string[]` | `[]` | Array of object keys to extract values for rendering in the chart |
-| `xDataKeyArr` | `string[]` | `[]` | Array of keys to be used for the x-axis values |
+<details>
+  <summary>Advanced Settings</summary>
+    <div>
+        <details open>
+          <summary>Chart</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | **Datapoint Color** |  |  |  |
+              | `theme` | string | "Terrestrial" | This property controls the theme of bar/column chart and can be chosen from a list of options. |
+              | `customcolors` | string | - | This property can be used to change the set of colors that comes predefined with the selected theme. The values for this property can be comma separated values, eg. red, green, blue. Can also bound to a static variable containing the color names or the color hash codes. |
+              | **Message** |  |  |  |
+              | `nodatamessage` | string | - | This property will be displayed when there is no data to display. |
+              | `loadingdatamsg` | string | - | This property will be displayed when waiting for data to load. |
+              | **Layout** |  |  |  |
+              | `offsetbottom` | number | 55 | This property controls the bottom offset of the chart. |
+              | `offsetleft` | number | 75 | This property controls the left offset of the chart. |
+              | `offsetright` | number | 25 | This property controls the right offset of the chart. |
+              | `offsettop` | number | 25 | This property controls the top offset of the chart. |
+              | **Legend** |  |  |  |
+              | `showlegend` | string | "top" | This property controls whether to show the legend or it's position. |
+              | `legendtype` | string | "furious" | This property allows to display the type of legend. |
+              | **Behavior** |  |  |  |
+              | `tooltips` | boolean | true | This property controls whether to show the tooltip on hover. |
+              | `highlightpoints` | boolean | false | This property controls whether to highlight data points in the chart or not. |
+              | `linethickness` | string | - | This property controls the thickness of the line in chart. It accepts value likes "5px", "0.85em" (**Note**: This option is available only for the **Line** Chart).|
+              | **Data Rendering** |  |  |  |
+              | `interpolation` | string | "linear" | This (Data Interpolation) property determines how datapoints are joined and rendered in the chart. |
+              | `areaviewtype` | string | "stack" | This (Data Arrangement) property controls whether to show in stack, stream, expand (**Note**: This option is available only for the **Area** Chart).|
+            </div>
+        </details>
+        <details>
+          <summary>X-Axis</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | `showxaxis` | boolean | true | This property controls whether to show x-axis or not. |
+              | `xaxislabel` | string | - | Caption of x-axis on the chart. |
+              | `xunits` | string | - | Specifies the units of x-axis. |
+              | `xdomain` | string | "Default" | This (Origin) property by default axis scale starts from 0. Choosing 'Min' option makes the scale starting value to minimun of all values. (**Note**: This option is available only for the **Area** Chart).|
+              | `staggerlabels` | boolean | false | This property controls whether to stagger the labels which distributes labels into multiple lines. |
+            </div>
+        </details>
+        <details>
+          <summary>Y-Axis</summary>
+            <div>
+              | Property | Type | Default | Description |
+              | --- | --- | --- | --- |
+              | `showyaxis` | boolean | true | This property controls whether to show y-axis or not. |
+              | `yaxislabel` | string | - | Caption of y-axis on the chart. |
+              | `yunits` | string | - | Specifies the units of y-axis. |
+              | `yaxislabeldistance` | number | - | This (Caption Distance) property controls the distance between the y-axis and it's label. |
+              | `ydomain` | string | "Default" | This (Origin) property by default axis scale starts from 0. Choosing 'Min' option makes the scale starting value to minimun of all values. (**Note**: This option is available only for the **Area** Chart).|
+              | **Data Format** |  |  |  |
+              | `ynumberformat` | string | - | This (Display Format )shows the options to format the number type in y-axis. |
+            </div>
+        </details>
+    </div>
+</details>
 
-## Layout & Positioning
+<details>
+  <summary>Layout</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `width` | string | - | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+        | `height` | string | "250px" | The height of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `offsettop` | `number` | `0` | Additional space in pixels above the chart area |
-| `offsetbottom` | `number` | `0` | Additional space in pixels below the chart area |
-| `offsetleft` | `number` | `0` | Additional space in pixels to the left of the chart area |
-| `offsetright` | `number` | `0` | Additional space in pixels to the right of the chart area |
-| `margin` | `{ top: number; right: number; left: number; bottom: number; }` | `{ top: 5, right: 5, left: 5, bottom: 5 }` | Margin object specifying space around the chart content |
+<details>
+  <summary>Dataset</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `dataset` | array | - | Data can come from various sources like database, web service or another component and can be accessed through binding to Live or Service Variables. |
+        | `groupby` | string | - | This property allows for grouping the list of rows in the variable bound to a dataset by selecting one of the field names from the drop-down list. |
+        | `aggregation` | string | "none" | Shows the options to aggregate the data in the chart. |
+        | `aggregationcolumns` | string | "" | Shows the options to aggregate the data in the chart. |
+        | `orderby` | string[] | "" | This allows for multiple selection for ordering the display of rows based on fields in asc or desc order - up arrow for asc and down arrow for desc. |
+    </div>
+</details>
 
-## Styling & Appearance
+<details>
+  <summary>X-Axis</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `xaxisdatakey` | string | - | X‑axis represents the category or label for each line/area. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `chartColors` | `string[]` | `[]` | Array of color codes for the different data series |
-| `interpolation` | `TChartInterpolation` | `"linear"` | Type of interpolation for the line/area curve (e.g., "linear", "basis", "cardinal") |
-| `strokeWidth` | `number` | `2` | Width of the line strokes in pixels |
-| `pointSize` | `number` | `4` | Size of data points in pixels |
-| `areaViewType` | `StackOffsetType` | `"none"` | Defines how areas stack on top of each other ("none", "wiggle", "silhouette", "expand") |
+<details>
+  <summary>Y-Axis</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `yaxisdatakey` | string[] | - | Y‑axis represents the numeric value for each line/area. |
+    </div>
+</details>
 
-## Axis Configuration
+<details>
+  <summary>Behavior</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `show` | boolean | true | Showing determines whether or not a component is visible. It is a bindable property. |
+        | `loadOnDemand` | boolean | false | When this property is set and show property is bound, the initialization of the component will be deferred till the component becomes visible. This behavior improves the load time. Use this feature with caution, as it has a downside (as we will not be able to interact with the component through script until the component is initialized). When show property is not bound the component will be initialized immediately. |
+    </div>
+</details>
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `xAxisConfig` | `any` | `{}` | Configuration object for the x-axis appearance and behavior |
-| `yAxisConfig` | `any` | `{}` | Configuration object for the y-axis appearance and behavior |
-| `numberFormat` | `string` | `""` | Format string to control how numbers appear on the axes |
+<details>
+  <summary>Graphics</summary>
+    <div>
+        | Property | Type | Default | Description |
+        | --- | --- | --- | --- |
+        | `iconclass` | string | - | Defines the class of the icon that is applied to the line/area chart component. |
+    </div>
+</details>
 
-## Legend & Tooltips
+### Use Cases
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `showLegend` | `boolean` | `true` | Controls whether the legend is displayed |
-| `legendPosition` | `TChartLegendPosition` | `"bottom"` | Position of the legend ("top", "bottom", "left", "right") |
-| `legendtype` | `TChartLegendType` | `"default"` | Visual style of the legend |
-| `tooltips` | `boolean` | `true` | Controls whether tooltips appear on hover |
+- Sets the visual theme for the line in the chart
 
-## Data Selection
-
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `selectedRegions` | `string[]` | `[]` | Array of currently selected region identifiers |
-| `availableRegions` | `string[]` | `[]` | Array of all available region identifiers |
-
-## Common Use Cases
-
-#### Basic Line Chart Configuration
 ```javascript
-Page.Widgets.lineAreaChart1.type = "Line";
-Page.Widgets.lineAreaChart1.data = myDataService.dataSet;
-Page.Widgets.lineAreaChart1.dataKeys = ["sales", "revenue", "profit"];
-Page.Widgets.lineAreaChart1.xDataKeyArr = ["month"];
+Page.Widgets.lineChart.theme = "Retro";
 ```
 
-#### Styling a Stacked Area Chart
+- Sets the visual colors for the area in the chart
+
 ```javascript
-Page.Widgets.lineAreaChart1.type = "Area";
-Page.Widgets.lineAreaChart1.areaViewType = "silhouette";
-Page.Widgets.lineAreaChart1.chartColors = ["#4285F4", "#EA4335", "#FBBC04", "#34A853"];
-Page.Widgets.lineAreaChart1.interpolation = "cardinal";
-Page.Widgets.lineAreaChart1.strokeWidth = 1.5;
-```
-
-#### Customizing Axes
-```javascript
-Page.Widgets.lineAreaChart1.xAxisConfig = {
-  tickCount: 5,
-  label: "Time Period",
-  angle: -45
-};
-
-Page.Widgets.lineAreaChart1.yAxisConfig = {
-  tickCount: 8,
-  label: "Value ($)",
-  domain: [0, 1000]
-};
-
-Page.Widgets.lineAreaChart1.numberFormat = "$,.2f";
+Page.Widgets.areaChart.customcolors = "#4CAF50, #2196F3, #FFC107";
 ```

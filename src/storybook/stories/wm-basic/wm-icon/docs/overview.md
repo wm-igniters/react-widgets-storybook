@@ -5,11 +5,26 @@ The Icon component is a versatile UI element that allows you to display graphica
 ### Markup
 
 ```javascript
-<wm-icon name="icon" iconclass="wi wi-save" class="fa-xs" variant="default:xs"></wm-icon>
+<wm-icon
+  name="icon"
+  iconclass="wi wi-save"
+  class="fa-xs"
+  variant="default:xs"
+></wm-icon>
 ```
 
-### Use Cases
+### Examples
 
-- Use icons like edit, delete, or download to clearly represent actions without relying only on text.
-- Show visual status indicators like success, warning, error, or loading using icons.
-- Display icons in menus or sidebars (home, settings, profile) to help users navigate quickly.
+#### Properties
+
+- Setting a Font Awesome icon.
+
+```javascript
+Page.Widgets.icon.iconclass = "fa fa-star";
+```
+
+- Positioning icon to the right of text.
+
+```javascript
+Page.Widgets.icon.iconposition = "right";
+```
