@@ -1,31 +1,32 @@
 # Callback Events
 
-| Event | Description |
-|---|---|
-| **Value Events** | |
-| change | Triggered when the checkbox state changes between checked and unchecked. Provides the new value. |
-| **Focus Events** | |
-| focus | Triggered when the checkbox receives focus. |
-| blur | Triggered when focus leaves the checkbox. |
-| **Interaction Events** | |
-| click | Triggered when the user clicks or taps the checkbox. |
-| mouseenter | Triggered when the mouse cursor enters the checkbox area. |
-| mouseleave | Triggered when the mouse cursor leaves the checkbox area. |
-| tap | Triggered when the user taps the checkbox on a touch device. |
+<details open>
+  <summary>Basic Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `change` | This event handler is called each time your component's value changes. |
+        | `onFocus` | This event handler is called each time your component is focused. |
+        | `onBlur` | This event handler is called each time your focus leaves your component. |
+    </div>
+</details>
 
-## Example Event Usage
+<details>
+  <summary>Mouse Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onClick` | This event handler is called whenever the click event is triggered on a component. |
+        | `onMouseEnter` | This event handler is called whenever the mouse enters the component. |
+        | `onMouseLeave` | This event handler is called whenever the mouse leaves the component. |
+    </div>
+</details>
 
-```javascript
-Page.myCheckboxChange = function($event, widget) {
-  // $event contains event information
-  // widget.value contains the current state
-  
-  if (widget.value === true) {
-    // Handle checked state
-    App.Variables.termsAccepted.setValue(true);
-  } else {
-    // Handle unchecked state
-    App.Variables.termsAccepted.setValue(false);
-  }
-};
-```
+<details>
+  <summary>Touch Events</summary>
+    <div>
+        | Event | Description |
+        | --- | --- |
+        | `onTap` | This event handler is called whenever the component is tapped. |
+    </div>
+</details>

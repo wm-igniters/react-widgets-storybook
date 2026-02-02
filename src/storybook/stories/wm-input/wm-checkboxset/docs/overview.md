@@ -1,12 +1,46 @@
 # Overview
 
-The CheckboxSet component enables users to group a set of checkboxes under a common heading, allowing for the selection of multiple options from a provided dataset. Each item in the dataset is rendered as an individual checkbox, making it ideal for multi-selection scenarios where users need to choose several options simultaneously.
+**CheckboxSet** allows you to group a set of checkboxes under a common heading. You need to bind to a dataset to display a checkbox for each value.
 
-## Features
-- Groups multiple checkbox options under a common heading
-- Supports data binding to populate checkbox options dynamically
-- Offers vertical or horizontal layout options
-- Provides grouping capabilities with optional count display
-- Supports collapsible groups for better organization
-- Configurable display fields and expressions for customized option presentation
-- Read-only and disabled states for controlled interaction
+### Markup
+
+```javascript
+<wm-checkboxset
+  height="auto"
+  name="checkboxset"
+  dataset="bind:Variables.stvCountryList.dataSet"
+  datafield="code"
+  displayfield="name"
+  orderby="name:asc"
+></wm-checkboxset>;
+```
+
+### Examples
+
+#### Properties
+
+- Sets the checkboxset’s selected values using the bound datafield.
+
+```javascript
+Page.Widgets.checkboxset.datavalue = ['US', 'AU'];
+```
+
+- Disable when no options are available.
+
+```javascript
+Page.Widgets.checkboxset.disabled =
+  Page.Variables.stvCountryList.dataSet.length === 0;
+```
+
+#### Events
+
+- Triggered whenever the checkboxset selection is updated.
+
+```javascript
+Page.checkboxsetChange = function ($event, widget, newVal, oldVal) {
+    console.log("Current selection:", newVal);
+    console.log("Previous selection:", oldVal);
+
+    // Enable the Save button only if at least one option is selected
+    Page.Widgets.saveBtn.disabled = !newVal || newVal.length === 0;
+};
