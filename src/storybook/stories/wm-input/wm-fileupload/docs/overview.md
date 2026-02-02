@@ -43,3 +43,11 @@ Page.fileuploadSelect = function ($event, widget, selectedFiles) {
     Page.Variables.FileServiceUploadFile.invoke();
 };
 ```
+
+#### Methods
+
+- Clears all files currently selected or uploaded in the FileUpload component.
+
+```javascript
+Page.Widgets.fileupload.clear();
+```
