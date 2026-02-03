@@ -12,7 +12,7 @@
   datafield="code"
   displayfield="name"
   orderby="name:asc"
-></wm-checkboxset>;
+></wm-checkboxset>
 ```
 
 ### Examples
