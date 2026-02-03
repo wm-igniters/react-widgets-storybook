@@ -65,5 +65,6 @@
         | `disabled` | boolean | false | If the disabled property is true (checked) the component becomes display-only and user input will not be accepted. It can also set programmatically by binding it to a boolean type variable. |
         | `inputmode` | string | "natural" | This property determines how to handle numbers as the user types them. FINANCIAL - Numbers start at the highest precision decimal. Numbers will be shifted to the left on the type. Most cash registers work this way. |
         | `trailingzero` | boolean | false | This property specifies whether to keep trailing zeros after decimal point or not. |
+        | `updateon` | string | "blur" | If the selected value is **blur**: datavalue will be updated on blur event, **keypress**: datavalue will be updated on keypress. |
     </div>
 </details>

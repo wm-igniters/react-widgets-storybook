@@ -67,5 +67,6 @@
         | `inputmode` | string | "natural" | This property determines how to handle numbers as the user types them. FINANCIAL - Numbers start at the highest precision decimal. Numbers will be shifted to the left on the type. Most cash registers work this way. |
         | `decimalplaces` | number | - | Specifies the number of decimal places to display for the value. |
         | `trailingzero` | boolean | false | This property specifies whether to keep trailing zeros after decimal point or not. |
+        | `updateon` | string | "blur" | If the selected value is **blur**: datavalue will be updated on blur event, **keypress**: datavalue will be updated on keypress. |
     </div>
 </details>
