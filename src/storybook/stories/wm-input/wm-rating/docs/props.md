@@ -24,7 +24,7 @@
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
         | `dataset` | array | - | This (Value) property is used to map a caption value against the value of the widget. It can accept: 1. Comma separated string containing the caption values (mappped to rating value in ascending order). 2. Array of strings (mapped as above). 3. Array of objects, needs selection of DataField(to map to rating value) and DisplayField(to map to caption against the rating value). |
-        | `datafield` | string | "All Fields" | This property indicates the field (in dataset) to represent selected value for the rating component. It should be mapped to an integer field in dataset. |
+        | `datafield` | string | - | This property indicates the field (in dataset) to represent selected value for the rating component. It should be mapped to an integer field in dataset. |
         | `displayfield` | string | - | This property indicates the field (in dataset) that represents caption against the selected value(mapped as datafield) of the rating component. |
         | `displayexpression` | string | - | This is an advanced property that gives more control over what is displayed in the drop-down select list. A Display Expression uses a Javascript expression to format exactly what is shown. |
     </div>

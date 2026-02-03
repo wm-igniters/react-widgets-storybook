@@ -37,7 +37,7 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `datavalue` | - | - | This (Value) property is the default value to display value for an editor component. Note that the display value is just what the user sees initially, and is not always the datavalue returned by the component. |
+        | `datavalue` | number | - | This (Value) property is the default value to display value for an editor component. Note that the display value is just what the user sees initially, and is not always the datavalue returned by the component. |
     </div>
 </details>
 
