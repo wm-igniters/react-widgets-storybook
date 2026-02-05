@@ -1,11 +1,42 @@
 # Overview
 
-The Breadcrumb component is a navigation widget that displays a hierarchical path of links, helping users understand their current location within the application and navigate back to previous levels. It follows the familiar breadcrumb trail pattern, showing the navigational history as a series of links separated by dividers.
+The **Breadcrumb** component is a secondary navigation component that displays a hierarchical path of links, helping users understand their current location within the application. It typically starts from the home page and follows a trail pattern, showing navigational levels in order, allowing users to easily navigate back to previous sections.
 
-## Features
-- Displays hierarchical navigation path
-- Supports custom navigation nodes
-- Provides event hooks for navigation control
-- Integrates with application dataset awareness
-- Allows for intercepting and controlling navigation actions
-- Responsive design that adapts to different screen sizes
+### Markup
+
+```javascript
+<wm-breadcrumb dataset="Home, Page" class="path-based" name="breadcrumb"></wm-breadcrumb>
+```
+
+### Examples
+
+#### Properties 
+
+- To change the visual style of the Breadcrumb component.
+
+```javascript
+// Apply the attribute-based style to the breadcrumb
+Page.Widgets.breadcrumb.class = "attribute-based";
+
+// Apply the classic style to the breadcrumb
+Page.Widgets.breadcrumb.class = "classic";
+
+// Apply the path-based style to the breadcrumb
+Page.Widgets.breadcrumb.class = "path-based";
+```
+
+#### Events 
+
+- Triggered before navigating via a breadcrumb.
+
+```javascript
+Page.breadcrumbBeforenavigate = function (widget, $item) {
+    //Allows you to validate, confirm, or take actions based on the target breadcrumb item before the navigation occurs.
+    const form = Page.Widgets.employeeForm.valid;
+    if (!form) {
+        alert("Employee profile is incomplete. Complete all required fields before navigating.");
+        return false; // Block navigation
+    }
+    return true;
+};
+```
