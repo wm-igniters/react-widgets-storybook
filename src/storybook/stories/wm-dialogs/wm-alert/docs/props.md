@@ -8,7 +8,7 @@
         | `title` | string | "Alert" | Set the title of an alert dialog. |
         | `name` | string | - | A unique identifier for the alert dialog component. Special characters and spaces are not allowed. |
         | `message` | string | "I am an alert box!" | Set the message of the component. |
-        | `oktext` | string | "Ok" | This component gives a pop-up window. It can be used to give a warning message to the user. For example, you are about to leave this page. |
+        | `oktext` | string | "Ok" | This property sets the text displayed on the OK button of the dialog. |
         | `alerttype` | string | "error" | This property will help in identifying the type of alert in the alert box. Can be set to error (default), information, success, and warning. |
     </div>
 </details>
@@ -38,7 +38,7 @@
     <div>
         | Property | Type | Default | Description |
         | --- | --- | --- | --- |
-        | `closable` | boolean | false | This property allows the user to access close action from header through an "x" icon; and also enables close through ESC key. |
+        | `closable` | boolean | true | This property allows the user to access close action from header through an "x" icon; and also enables close through ESC key. |
         | `animation` | string | - | This property controls the animation of an element. The animation is based on the CSS classes and works only in the run mode. |
     </div>
 </details>
