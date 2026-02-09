@@ -13,10 +13,10 @@
     <div>
         | Event | Description |
         | --- | --- |
-        | `onMouseover` | This event fires when the mouse hovers over this component.. |
-        | `onMouseout` | This event fires when the mouse moves away from this component. |
-        | `onMouseenter` | This event handler is called whenever the mouse enters the component. |
-        | `onMouseleave` | This event handler is called whenever the mouse leaves the component. |
+        | `onMouseOver` | This event fires when the mouse hovers over this component.. |
+        | `onMouseOut` | This event fires when the mouse moves away from this component. |
+        | `onMouseEnter` | This event handler is called whenever the mouse enters the component. |
+        | `onMouseLeave` | This event handler is called whenever the mouse leaves the component. |
     </div>
 </details>
 <details>
@@ -24,11 +24,11 @@
     <div>
         | Event | Description |
         | --- | --- |
-        | `onSwipedown` | This event handler is called whenever swipedown event is triggered. |
-        | `onSwipeleft` | This event handler is called whenever swipeleft event is triggered. |
-        | `onSwiperight` | This event handler is called whenever swiperight event is triggered. |
-        | `onPinchin` | This event handler is called whenever pinchin event is triggered. |
-        | `onPinchout` | This event handler is called whenever pinchout event is triggered. |
+        | `onSwipeDown` | This event handler is called whenever swipedown event is triggered. |
+        | `onSwipeLeft` | This event handler is called whenever swipeleft event is triggered. |
+        | `onSwipeRight` | This event handler is called whenever swiperight event is triggered. |
+        | `onPinchIn` | This event handler is called whenever pinchin event is triggered. |
+        | `onPinchOut` | This event handler is called whenever pinchout event is triggered. |
     </div>
 </details>
 <details>
@@ -44,6 +44,11 @@
         | `onExitfullScreen` | This event is called when the full screen state is exited. |
     </div>
 </details>
+
+
+
+
+
 
 
 

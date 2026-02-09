@@ -13,11 +13,11 @@
     <div>
         | Event | Description |
         | --- | --- |
-        | `onSwipeup` | This event handler is called whenever swipeup event is triggered. |
-        | `onSwipedown` | This event handler is called whenever swipedown event is triggered. |
-        | `onSwipeleft` | This event handler is called whenever swipeleft event is triggered. |
-        | `onSwiperight` | This event handler is called whenever swiperight event is triggered. |
-        | `onPinchin` | This event handler is called whenever pinchin event is triggered. |
-        | `onPinchout` | This event handler is called whenever pinchout event is triggered. |
+        | `onSwipeUp` | This event handler is called whenever swipeup event is triggered. |
+        | `onSwipeDown` | This event handler is called whenever swipedown event is triggered. |
+        | `onSwipeLeft` | This event handler is called whenever swipeleft event is triggered. |
+        | `onSwipeRight` | This event handler is called whenever swiperight event is triggered. |
+        | `onPinchIn` | This event handler is called whenever pinchin event is triggered. |
+        | `onPinchOut` | This event handler is called whenever pinchout event is triggered. |
     </div>
 </details>

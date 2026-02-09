@@ -6,8 +6,7 @@ The **RightNav** component is a specialized layout container designed for creati
 # Markup
 
 ```javascript
-  <wm-right-panel columnwidth="2" content="rightnav" navtype="rail" navheight="full" name="rightnav">
-    </wm-right-panel>
+  <wm-right-panel columnwidth="2" content="rightnav" navtype="rail" navheight="full" name="rightnav"></wm-right-panel>
 ```
 
 ### Examples
@@ -22,10 +21,10 @@ Page.Widgets.rightnav.class="expand"
 
 #### Events
 
-- Hide skelton loader container on load of left nav
+- Hide skeleton loader container on load of left nav
 
 ```javascript
 Page.rightnavLoad = function ($event, widget) {
-  Page.Widgets.skeltonLoaderContainer.show = false;
+  Page.Widgets.skeletonLoaderContainer.show = false;
 };
 ```

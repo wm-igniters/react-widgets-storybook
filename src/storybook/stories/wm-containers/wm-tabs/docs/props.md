@@ -41,7 +41,7 @@
 | `loadOnDemand` | boolean | false | When this property is set and show property is bound, the initialization of the component will be deferred till the component becomes visible. This behavior improves the load time. Use this feature with caution, as it has a downside (as we will not be able to interact with the component through script until the component is initialized). When show property is not bound the component will be initialized immediately. |
 | `transition` | string | null | Defines animation while switching tabs (none, slide, fade). |
 | `vertical` | boolean | true | This property enables scrolling of headers. |
-| `autotabactivation | boolean | true | This property controls tab activation behavior during keyboard navigation. |
+| `autotabactivation` | boolean | true | This property controls tab activation behavior during keyboard navigation. |
 </div>
 </details>
 <details>
@@ -66,7 +66,7 @@
   <div>
 | Property | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-| `no data message` | string | "No data found" | This message will be displayed when there is no data to display. |
+| `nodatamessage` | string | "No data found" | This message will be displayed when there is no data to display. |
   </div>
 </details>
 </div>

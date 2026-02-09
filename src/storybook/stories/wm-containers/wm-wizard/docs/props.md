@@ -35,7 +35,7 @@
 | `width` | string | - | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
 | `height` | string | - | The height of the component can be specified in em, pt, px or % (i.e 50px, 75%). |
 | `stepstyle` | string | "justified" | This property sets style on to the step title whether auto or justified(Ie..step titles will be occupying full space). |
-| `action alignment` | string | "right" | This property sets placement of actions, if placement is left the next, done, prev buttons will be placed left and skip will be placed right and vice versa. |
+| `actionsalignment` | string | "right" | This property sets placement of actions, if placement is left the next, done, prev buttons will be placed left and skip will be placed right and vice versa. |
 | `defaultstep` | string | "none" | This property allows users to set default step on load of wizard. |
     </div>
 </details>
@@ -64,7 +64,7 @@
   <div>
 | Property | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-| `horizontal align` | string | - | This property specifies how the elements should be aligned horizontally. |
+| `horizontalalign` | string | - | This property specifies how the elements should be aligned horizontally. |
 </div>
 </details>
 
@@ -73,7 +73,7 @@
   <div>
 | Property | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-| `no data message` | string | "No data found" | This message will be displayed when there is no data to display. |
+| `nodatamessage` | string | "No data found" | This message will be displayed when there is no data to display. |
 </div>
 </details>
 </div>
@@ -83,7 +83,7 @@
 <details>
 <summary>Wizard step</summary>
 <div>
-<details>
+<details open>
 <summary>Basic</summary>
 <div>
 | Property | Type | Default | Description |

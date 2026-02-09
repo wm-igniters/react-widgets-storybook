@@ -50,10 +50,10 @@
 | `itemlabel` | string | - | Label for anchor or menu tags generated dynamically. Available only when Menu Actions is bound to a variable. |
 | `itemicon` | string | - | Class for the action. Example: fa fa-ban or glyphicon glyphicon-cloud. Available only when Menu Actions is bound to a variable. |
 | `itemlink` | string | - | Link for the action item. Available only when Menu Actions is bound to a variable. |
-| `action task` | string | - | Task triggered when user clicks the menu item.|
+| `itemaction` | string | - | Task triggered when user clicks the menu item.|
 | `userrole` | string | - | Role for anchor or menu items generated dynamically. |
 | `itemchildren` | array | - | When a menu component is required the sub action or item can be mentioned in the children. |
-| `isActive` | boolean | - | Boolean field to determine if the item should be shown as selected. |
+| `isactive` | boolean | - | Boolean field to determine if the item should be shown as selected. |
   </div>
 </details>
 

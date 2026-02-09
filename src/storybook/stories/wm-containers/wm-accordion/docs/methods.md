@@ -7,7 +7,7 @@
     </div>
 </details>
 
-<details open>
+<details>
   <summary>Accordionpane</summary>
     <div>
     | Method     | Parameters | Return Type | Description                   |

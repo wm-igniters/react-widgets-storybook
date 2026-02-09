@@ -1,6 +1,6 @@
 # Overview
 
-The Footer component serves as a layout element typically positioned at the bottom of a web page or application interface. It provides a dedicated space for important secondary content such as copyright information, navigation links, contact details, and legal disclaimers. The Footer component maintains consistent positioning across different views of your application.
+The **Footer** component serves as a layout element typically positioned at the bottom of a web page or application interface. It provides a dedicated space for important secondary content such as copyright information, navigation links, contact details, and legal disclaimers. The Footer component maintains consistent positioning across different views of your application.
 
 # Markup
 

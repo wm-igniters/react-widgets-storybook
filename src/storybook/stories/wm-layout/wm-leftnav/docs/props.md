@@ -22,8 +22,8 @@
   <div>
     | Property   | Type | Default | Description |
     | ---------- | ------------------------ | -------- | --------------------------------------------- |
-    | Navigation Type | string | "drawer" | Defines the navigation display style. "drawer" shows a collapsible side menu, while "rail" shows a compact navigation bar with icons. |
-    | Navigation Height | string | "full" | Controls how the navigation panel is displayed vertically. "full" spans the entire page height, while "clipped" appears below the header area. |
+    | `navtype` | string | "drawer" | Defines the navigation display style. "drawer" shows a collapsible side menu, while "rail" shows a compact navigation bar with icons. |
+    | `navheight`| string | "full" | Controls how the navigation panel is displayed vertically. "full" spans the entire page height, while "clipped" appears below the header area. |
   </div>
 </details>
 <details>
