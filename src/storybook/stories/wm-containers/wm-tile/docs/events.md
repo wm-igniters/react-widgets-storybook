@@ -1,6 +1,6 @@
 # Callback Events
 
-<details>
+<details open>
   <summary>Mouse Events</summary>
     <div>
         | Event | Description |

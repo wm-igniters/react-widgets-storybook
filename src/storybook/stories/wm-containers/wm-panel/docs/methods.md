@@ -10,6 +10,6 @@
       | `collapse` | none | void | Collapses the panel if it's collapsible |
       | `toggle` | none | void | Toggles the panel between expanded and collapsed states |
       | `toggleFullScreen` | none | void | Toggles the panel between normal and full-screen states |
-      | `oggleHelp` | none | void | Shows or hides the help text popup |
+      | `toggleHelp` | none | void | Shows or hides the help text popup |
     </div>
 </details>

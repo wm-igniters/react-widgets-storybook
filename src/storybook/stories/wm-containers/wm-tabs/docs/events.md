@@ -5,7 +5,7 @@
     <div>
 | Event | Description |
 |-------|-------------|
-| `Change` | This event handler is called each time your element's value changes. |
+| `onChange` | This event handler is called each time your element's value changes. |
     </div>
 </details>
 
