@@ -20,7 +20,10 @@ body.sb-show-main {
 }
 
 .wm-app .app-spinner{
-  background: none !important;
+  position: relative !important;
+  padding: 2.5rem !important;
+  border-radius: 8px !important;
+  opacity: var(--wm-spinner-background-opacity) !important;
 }
 
 /* tree */
