@@ -22,10 +22,10 @@ Page.Widgets.leftnav.class="expand"
 
 #### Events
 
-- Hide skelton loader container on load of left nav
+- Hide skeleton loader container on load of left nav
 
 ```javascript
 Page.leftnavLoad = function ($event, widget) {
-  Page.Widgets.skeltonLoaderContainer.show = false;
+  Page.Widgets.skeletonLoaderContainer.show = false;
 };
 ```

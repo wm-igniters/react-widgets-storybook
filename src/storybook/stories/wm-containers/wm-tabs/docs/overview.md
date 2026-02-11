@@ -5,11 +5,11 @@ The **Tabs** can be used when you need multiple containers within a single windo
 ### Markup
 
 ```javascript
- <wm-tabs type="static" statehandler="URL" name="tabs" variant="standard">
+<wm-tabs type="static" statehandler="URL" name="tabs" variant="standard">
   <wm-tabpane title="Tab title" name="tabpane1"></wm-tabpane>
   <wm-tabpane title="Tab title" name="tabpane2"></wm-tabpane>
   <wm-tabpane title="Tab title" name="tabpane3"></wm-tabpane>
- </wm-tabs>
+</wm-tabs>
 ```
 
 ### Examples
@@ -19,8 +19,8 @@ The **Tabs** can be used when you need multiple containers within a single windo
 - Set tab type and dataset through script
 
 ```javascript
-  Page.Widgets.tabs.type = "dynamic";
-  Page.Widgets.tabs.dataset = Page.Variables.svDynamicPanel.dataSet;
+Page.Widgets.tabs.type = "dynamic";
+Page.Widgets.tabs.dataset = Page.Variables.svDynamicPanel.dataSet;
 ```
 
 #### Events

@@ -21,10 +21,10 @@ Page.Widgets.footer.class="secondary-header"
 
 #### Events
 
-- Hide skelton loader container on load of header
+- Hide skeleton loader container on load of header
 
 ```javascript
 Page.headerLoad = function ($event, widget) {
-  Page.Widgets.skeltonLoaderContainer.show = false;
+  Page.Widgets.skeletonLoaderContainer.show = false;
 };
 ```

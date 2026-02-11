@@ -22,7 +22,7 @@
   <div>
     | Property   | Type | Default | Description |
     | ---------- | ------------------------ | -------- | --------------------------------------------- |
-    | Navigation Type | string | "drawer" | Defines the navigation display style. "drawer" shows a collapsible side menu, while "rail" shows a compact navigation bar with icons. |
+    | `navtype` | string | "drawer" | Defines the navigation display style. "drawer" shows a collapsible side menu, while "rail" shows a compact navigation bar with icons. |
   </div>
 </details>
 <details>

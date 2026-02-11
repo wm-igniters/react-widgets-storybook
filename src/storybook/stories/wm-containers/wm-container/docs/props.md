@@ -24,7 +24,7 @@
 | ---------- | ------------------------ | -------- | --------------------------------------------- |
 | `direction` | string | - | Defines the direction in which child elements are arranged (row,column).|
 | `wrap` | boolean | - | Allows child elements to wrap to next line if space is insufficient |
-| `width` | string | fill | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%), hug (refers fit-content), fill (refers width 100%). |
+| `width` | string | "fill" | The width of the component can be specified in em, pt, px or % (i.e 50px, 75%), hug (refers fit-content), fill (refers width 100%). |
 | `height` | string | - | The height of the component can be specified in em, pt, px or % (i.e 50px, 75%), hug (refers fit-content), fill (refers width 100%). |
 | `clipcontent` | "string" | "false" | Clips or hides content that overflows container boundaries |
 | `alignment` | string | "top-left" | This property specifies how the elements should be aligned. |
