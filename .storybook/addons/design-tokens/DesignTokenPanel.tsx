@@ -1260,24 +1260,54 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
       ].join(',');
 
       const applyPortalsInDoc = (rootDoc: Document) => {
+        // Debug: where we're checking for portals (preview iframe vs manager)
+        try {
+          const locationLabel = rootDoc === document ? 'manager' : 'preview-iframe';
+          console.debug('[Design Tokens] Checking portals in', locationLabel, 'using selectors:', portalSelectors);
+        } catch (e) {
+          // ignore any cross-origin inspection errors in logging
+        }
+
         const portalNodes = rootDoc.querySelectorAll(portalSelectors);
+        try {
+          const locationLabel = rootDoc === document ? 'manager' : 'preview-iframe';
+          console.debug(`[Design Tokens] Found ${portalNodes.length} portal node(s) in ${locationLabel}`);
+        } catch (e) {
+          // ignore
+        }
+
         if (portalNodes.length > 0) {
+          console.debug('[Design Tokens] Applying tokens to portal nodes...');
           applyToElementAndChildren(portalNodes);
         }
       };
 
       // Apply immediately to portals in the preview iframe (if already mounted)
+      try {
+        console.debug('[Design Tokens] Attempting immediate portal application in preview iframe');
+      } catch (e) {
+        // ignore
+      }
       applyPortalsInDoc(iframe.contentDocument);
       // Retry on next frame to catch just-mounted portals after a click
       requestAnimationFrame(() => {
         if (iframe.contentDocument) {
+          console.debug('[Design Tokens] requestAnimationFrame: re-checking preview iframe portals');
           applyPortalsInDoc(iframe.contentDocument);
         }
       });
 
       // Fallback: some implementations may mount portals in the manager (top) document
+      try {
+        console.debug('[Design Tokens] Attempting portal application in manager document');
+      } catch (e) {
+        // ignore
+      }
       applyPortalsInDoc(document);
-  requestAnimationFrame(() => applyPortalsInDoc(document));
+      requestAnimationFrame(() => {
+        console.debug('[Design Tokens] requestAnimationFrame: re-checking manager document portals');
+        applyPortalsInDoc(document);
+      });
 
       // Install observers once to catch late-mounted portals dynamically
       const installObservers = () => {
