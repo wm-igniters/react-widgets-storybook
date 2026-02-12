@@ -1,6 +1,6 @@
 # React Widgets Storybook
 
-This project showcases React components for WaveMaker with interactive documentation and design token management.
+This project showcases the React component library of WaveMaker with interactive and detailed documentation for props, events, methods and design token management.
 
 ## Table of Contents
 

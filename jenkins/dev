@@ -13,7 +13,21 @@ pipeline {
         DEPLOYMENT_KEY = 'deployment-ssh-details'
   } // end of environment 
   stages {
+     stage('Install Dependencies (for Chromatic)') {
+      steps {
+        sh "npm ci"
+      }
+    }
     
+      stage('Run Chromatic') {
+      environment {
+        CHROMATIC_PROJECT_TOKEN = credentials('chromatic-project-token')
+      }
+      steps {
+        /* 👇 Runs the Chromatic CLI */
+        sh "npx chromatic"
+      }
+    }
 
   stage('Build Docker Image') {
     steps {
@@ -29,6 +43,8 @@ pipeline {
             }
         }
     }
+
+  
 }
 
 
