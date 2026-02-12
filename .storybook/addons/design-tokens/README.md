@@ -10,6 +10,55 @@ A **fully generic, dynamic Design Token system** for Storybook that works with A
 
 ---
 
+## Implementation details & cleanup (important)
+
+This addon applies design tokens at runtime by setting CSS custom properties and by injecting small helper CSS rules for pseudo-class state styling. There have been a few targeted fixes to make token lifecycle safer across Storybook story changes — these are important to know when using or debugging the panel.
+
+How tokens are applied
+- Primary mechanism: inline CSS custom properties (e.g. `--wm-btn-background`) are set on elements marked with `data-design-token-target="true"` and their descendants inside the preview iframe.
+- Portals (dialogs/modals/popovers) are also handled — the addon searches for common portal selectors in both the preview iframe and the manager (top) document and applies the same variables there.
+- For pseudo-class state tokens (hover/focus/active) the addon generates a small injected `<style id="design-token-component-states">` containing per-component state rules that reference the computed variables. Inline styles cannot cover pseudo-class selectors, so a style tag is used for these cases.
+
+What was fixed (recent low-risk changes)
+- Observers: MutationObservers that reapply tokens for late-mounted portal nodes are now safely disconnected on story changes to prevent re-applying stale tokens from the previous story.
+- Observer token source: observers now re-read the latest token snapshot (`latestTokensRef`) instead of closing over an old `tokenValues` closure, so re-applications always use current values.
+- Style cleanup: the injected state CSS tag with id `design-token-component-states` is removed from both the preview iframe and the manager document when the story changes.
+- Tooltip cleanup: any open help tooltip and its computed position are cleared on story change so stale tooltips don't persist across stories.
+- Latest snapshot cleared: the `latestTokensRef` is reset on story change to avoid accidental re-use.
+
+Why this matters
+- Prevents cross-story style leakage where a previously-applied token or injected rule would affect the next story.
+- Makes behavior deterministic when users rapidly switch stories, toggle the Design Tokens panel, or open portals after navigation.
+
+Troubleshooting & tips
+- If a story still shows old token styles after switching:
+  - Check the preview iframe's `<head>` for an orphaned `#design-token-component-states` style tag and remove it (shouldn't be necessary after the fix, but useful while debugging).
+  - Verify that the component you expect to target has `data-design-token-target="true"` in the preview DOM (this is how targets are located).
+- If portals (modals/menus) do not pick up current tokens:
+  - Ensure the portal is mounted under the preview iframe or the manager document (the addon scans both).
+  - The addon installs MutationObservers to catch late mounts — if you see stale values, verify observers are present (they are disconnected on story change and reinstalled when tokens are applied).
+- Debugging hints:
+  - Open the browser console and search for `design-token-component-states` to inspect injected CSS rules.
+  - Look at the inline style of an element inside the preview iframe to confirm `--wm-...` properties are set.
+
+Developer notes
+- Story parameter shapes supported (in `parameters.designTokens`):
+  - `enabled: boolean` — enable the panel for this story
+  - `tokenData: object` and `componentKey: string` — preferred, raw JSON data + key to parse tokens at runtime
+  - `tokenConfig: object` — legacy pre-parsed token config (still supported)
+  - `extractCSSVariablesAtRuntime: boolean` — when true, the addon extracts `:root` variables from the preview iframe (foundation.css) and resolves token references at runtime
+  - `propToVariantMap: { propName: string, mapping: Record<string,string> }` — optional mapping for stories that use a prop (e.g., `type`) to select a variant/className
+
+Quick verification checklist
+1. Open Storybook and the Design Tokens panel for a token-enabled story.
+2. Change a token and confirm preview updates immediately.
+3. Switch to another story and confirm no visual carry-over from previous story.
+4. Open a portal (modal/dialog) and confirm it uses the current story's token values.
+
+If you find any remaining edge-cases, file a short issue with: steps to reproduce, story param JSON, and whether the affected element is a portal or inside the main preview DOM.
+
+---
+
 ## Quick Start
 
 ### 1. Create JSON (`/src/designTokens/wm-button.json`)

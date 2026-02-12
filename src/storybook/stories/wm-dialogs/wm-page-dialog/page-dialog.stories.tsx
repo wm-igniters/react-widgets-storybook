@@ -6,6 +6,8 @@ import { WmButton } from "@wavemaker/react-runtime/components/form/button";
 
 import { iconClassNames } from "../../constants/iconClassConstants";
 
+import modalDialogTokensData from "../../../../designTokens/components/modal-dialog/modal-dialog.json";
+
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
@@ -61,6 +63,44 @@ const Template = (args: any) => {
   );
 };
 
+const DesignTokenTemplate = (args:any) => {
+      //component can't spread data-design-token-target, so we apply it to a wrapper
+      const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+      const [isOpen, setIsOpen] = useState(false);
+  
+      return (
+        <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+          <Box style={{ padding: 16 }}>
+      <WmButton
+        name="openPageDialogBtn"
+        caption="Open Page Dialog"
+        onClick={() => setIsOpen(true)}
+        listener={mockListener}
+        styles={{
+          backgroundColor: "#007bff",
+          color: "white",
+          padding: "8px 16px",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          fontSize: "14px",
+          fontWeight: "500",
+        }}
+      />
+      <PageDialogDefaultExport
+        {...componentArgs}
+        isopen={isOpen}
+        onClose={() => setIsOpen(false)}
+        close={() => setIsOpen(false)}
+        onOk={() => setIsOpen(false)}
+        listener={mockListener}
+      />
+    </Box>
+        </Box>
+      );
+};
+
+
 export const Docs: Story = {
   render: () => (
     <ComponentDocumentation
@@ -88,7 +128,7 @@ export const Docs: Story = {
 
 export const Standard: Story = {
   tags: ['show-panel'],
-  render: Template,
+  render: DesignTokenTemplate,
   args: {
     name: "standardPageDialog",
     title: "Page Content",
@@ -96,8 +136,10 @@ export const Standard: Story = {
     oktext: "OK",
     showactions: true,
     closable: true,
-    content: "Main",
+    // content: "Main",
     listener: mockListener,
+    "data-design-token-target":"true",
+    className: "modal-sm",
     // sheetposition:undefined,
   },
   argTypes: {
@@ -109,6 +151,45 @@ export const Standard: Story = {
     content: { control: "text" },
     name: {table: {disable: true}},
     listener:{table: {disable: true}},
+    "data-design-token-target": { table: {disable : true} },
+    className: {control: "select", options: ["modal-xs", "modal-sm", "modal-md", "modal-lg", "modal-xl", "modal-full-screen"]},
     // sheetposition:{control:{ type:"select"}, options: ['top', 'bottom', 'left', 'right']},
-  }
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: modalDialogTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "modal",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+      enablePortals: true,          // Enable portal token application  
+    },
+    layout: 'fullscreen',
+  }, 
 };
+
+// export const Standard: Story = {
+//   tags: ['show-panel'],
+//   render: Template,
+//   args: {
+//     name: "standardPageDialog",
+//     title: "Page Content",
+//     iconclass: "fa fa-file",
+//     oktext: "OK",
+//     showactions: true,
+//     closable: true,
+//     content: "Main",
+//     listener: mockListener,
+//     // sheetposition:undefined,
+//   },
+//   argTypes: {
+//     title: { control: "text" },
+//     iconclass:{ control:{ type:"select"}, options: iconClassNames },
+//     oktext: { control: "text" },
+//     showactions: { control: "boolean" },
+//     closable: { control: "boolean" },
+//     content: { control: "text" },
+//     name: {table: {disable: true}},
+//     listener:{table: {disable: true}},
+//     // sheetposition:{control:{ type:"select"}, options: ['top', 'bottom', 'left', 'right']},
+//   }
+// };

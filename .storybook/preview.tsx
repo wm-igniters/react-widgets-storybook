@@ -5,8 +5,6 @@ import { WidgetProvider } from "../src/context/WidgetProvider";
 import { store } from "../src/store";
 import "@mui/material/styles";
 import "@wavemaker/app-runtime-wm-build/wmapp/styles/foundation/foundation.css";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 // Mock page context for Storybook
 const createMockPageContext = () => ({
   Widgets: {},
@@ -32,13 +30,11 @@ const withProviders = (Story: any) => {
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterMoment}>
       <Provider store={store}>
         <WidgetProvider value={mockContext}>
           <Story />
         </WidgetProvider>
       </Provider>
-    </LocalizationProvider>
   );
 };
 

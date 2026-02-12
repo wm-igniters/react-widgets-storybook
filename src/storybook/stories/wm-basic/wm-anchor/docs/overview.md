@@ -15,7 +15,7 @@ The **Anchor** component serves as a clickable text link to navigate between scr
 - Configure the anchor’s hyperlink and caption.
 
 ```javascript
-Page.Widgets.anchor.hyperlink = "/https://www.wavemaker.com";
+Page.Widgets.anchor.hyperlink = "https://www.wavemaker.com";
 Page.Widgets.anchor.caption = "WaveMaker";
 ```
 

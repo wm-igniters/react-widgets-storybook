@@ -15,6 +15,8 @@ import token from "./docs/token.md?raw";
 
 import { iconClassNames } from "../../constants/iconClassConstants";
 
+import modalDialogTokensData from "../../../../designTokens/components/modal-dialog/modal-dialog.json";
+
 const mockListener = {
   appLocale: {},
   Widgets: {},
@@ -61,6 +63,45 @@ const [isOpen, setIsOpen] = useState(false);
       />
     </Box>
   );
+};
+
+const DesignTokenTemplate = (args:any) => {
+      //component can't spread data-design-token-target, so we apply it to a wrapper
+      const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+      const [isOpen, setIsOpen] = useState(false);
+  
+      return (
+        <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+          <Box style={{ padding: 16 }}>
+      <WmButton
+        name="openConfirmBtn"
+        caption="Open Confirm Dialog"
+        onClick={() => setIsOpen(true)}
+        listener={mockListener}
+        styles={{
+          backgroundColor: "#007bff",
+          color: "white",
+          padding: "8px 16px",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          fontSize: "14px",
+          fontWeight: "500",
+        }}
+      />
+      <ConfirmDialogDefaultExport
+        {...args}
+        isopen={isOpen}
+        onClose={() => setIsOpen(false)}
+        close={() => setIsOpen(false)}
+        onOkClick={() => setIsOpen(false)}
+        onOk={() => setIsOpen(false)}
+        onCancel={() => setIsOpen(false)}
+        listener={mockListener}
+      />
+    </Box>
+        </Box>
+      );
 };
 
 export const Docs: Story = {
@@ -218,7 +259,7 @@ export const Showcase: Story = {
 
 export const Standard: Story = {
   tags: ['show-panel'],
-  render: Template,
+  render: DesignTokenTemplate,
   args: {
     name: "standardConfirm",
     title: "Confirm",
@@ -227,6 +268,9 @@ export const Standard: Story = {
     canceltext: "CANCEL",
     iconclass: "fa fa-circle-check",
     listener: mockListener,
+    className: "modal-sm",
+    sheetposition: 'default',
+    "data-design-token-target":"true"
     // sheetposition: undefined,
   },
   argTypes: {
@@ -235,8 +279,45 @@ export const Standard: Story = {
     oktext: { control: "text" },
     canceltext: { control: "text" },
     iconclass:{ control:{ type:"select"}, options: iconClassNames },
-    sheetposition:{control:{ type:"select"}, options: ['top', 'bottom', 'left', 'right']},
     name: {table: {disable: true}},
     listener: {table: {disable: true}},
+    className: {control: "select", options: ["modal-xs", "modal-sm", "modal-md", "modal-lg", "modal-xl", "modal-full-screen"]},
+    sheetposition:{control:{ type:"select"}, options: ['default', 'top', 'bottom']},
+    "data-design-token-target": { table: {disable : true} },
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: modalDialogTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "modal",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+      enablePortals: true,          // Enable portal token application  
+    },
+    layout: 'fullscreen',
   },
 };
+
+// export const Standard: Story = {
+//   tags: ['show-panel'],
+//   render: Template,
+//   args: {
+//     name: "standardConfirm",
+//     title: "Confirm",
+//     message: "I am confirm box!",
+//     oktext: "OK",
+//     canceltext: "CANCEL",
+//     iconclass: "fa fa-circle-check",
+//     listener: mockListener,
+//     // sheetposition: undefined,
+//   },
+//   argTypes: {
+//     title: { control: "text" },
+//     message: { control: "text" },
+//     oktext: { control: "text" },
+//     canceltext: { control: "text" },
+//     iconclass:{ control:{ type:"select"}, options: iconClassNames },
+//     sheetposition:{control:{ type:"select"}, options: ['top', 'bottom', 'left', 'right']},
+//     name: {table: {disable: true}},
+//     listener: {table: {disable: true}},
+//   },
+// };
