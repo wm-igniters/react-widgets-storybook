@@ -15,7 +15,7 @@ pipeline {
   stages {
      stage('Install Dependencies (for Chromatic)') {
       steps {
-        sh "npm ci"
+        sh "npm i"
       }
     }
     
