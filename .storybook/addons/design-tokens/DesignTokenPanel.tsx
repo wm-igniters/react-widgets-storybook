@@ -542,6 +542,8 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
   const needsRefreshRef = useRef<boolean>(false);
   // Track latest tokens for async portal handling
   const latestTokensRef = useRef<Record<string, string>>({});
+  // Track which CSS variables we've applied to portal nodes (for cleanup on story change)
+  const appliedPortalVarNamesRef = useRef<Set<string>>(new Set());
   // Observers for dynamically mounted portals
   const iframeObserverRef = useRef<MutationObserver | null>(null);
   const managerObserverRef = useRef<MutationObserver | null>(null);
@@ -657,6 +659,58 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
           });
         });
       }
+
+      // Also clear any CSS variables we applied to portal nodes (dialogs/popovers/etc.).
+      // This is intentionally portal-only cleanup and does not touch regular story DOM unless
+      // it matches a portal selector.
+      try {
+        const portalSelectors = [
+          '.MuiModal-root',
+          '.MuiDialog-root',
+          '.MuiDialog-container',
+          '.MuiDialog-paper',
+          '.MuiPopover-root',
+          '.MuiMenu-root',
+          '.MuiTooltip-popper',
+          '.MuiAutocomplete-popper',
+          '.MuiPopper-root',
+          '.MuiPickersPopper-root',
+          '.MuiPickersLayout-root',
+          '.app-dialog',
+          '.app-popover',
+          '.modal',
+          '.dropdown-menu',
+          '[role=presentation]',
+          '[role=dialog]',
+          '[role=tooltip]',
+          '[role=listbox]',
+        ].join(',');
+
+        const removeFromDoc = (rootDoc: Document | null | undefined) => {
+          if (!rootDoc) return;
+          const nodes = rootDoc.querySelectorAll(portalSelectors);
+          if (nodes.length === 0) return;
+          const names = Array.from(appliedPortalVarNamesRef.current);
+          if (names.length === 0) return;
+          nodes.forEach((n) => {
+            const el = n as HTMLElement;
+            names.forEach((name) => {
+              try {
+                el.style.removeProperty(name);
+              } catch (e) {
+                // ignore
+              }
+            });
+          });
+        };
+
+        removeFromDoc(iframe?.contentDocument);
+        removeFromDoc(document);
+      } catch (e) {
+        // ignore
+      }
+
+      appliedPortalVarNamesRef.current.clear();
 
       // Clear cache
       clearCache();
@@ -1225,10 +1279,8 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
       // Find target element(s) with data-design-token-target="true"
       const targetElements = iframe.contentDocument.querySelectorAll('[data-design-token-target="true"]');
 
-      if (targetElements.length === 0) {
-        // console.warn('[Design Tokens] No elements found with data-design-token-target="true"');
-        return;
-      }
+      // NOTE: Some environments/stories may not provide the wrapper attribute.
+      // We should still apply tokens to portals (dialogs/popovers/etc.) in that case.
 
       // console.log('%c[Design Tokens] Applying tokens...', 'color: #4CAF50; font-weight: bold; font-size: 14px');
       // console.log('[Design Tokens] Total tokens received:', Object.keys(tokenValues).length);
@@ -1236,7 +1288,9 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
       // console.log('[Design Tokens] Sample token names:', Object.keys(tokenValues).slice(0, 5));
 
       // Apply tokens with retry logic for child elements
-      applyToElementAndChildren(targetElements);
+      if (targetElements.length > 0) {
+        applyToElementAndChildren(targetElements);
+      }
 
       // ===== Portal handling for dialogs/popovers/menus (may render outside target wrapper) =====
       const portalSelectors = [
@@ -1244,27 +1298,44 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         '.MuiDialog-root',
         '.MuiDialog-container',
         '.MuiDialog-paper',
-        // '.MuiPopover-root',
-        // '.MuiMenu-root',
-        // '.MuiTooltip-popper',
-        // '.MuiAutocomplete-popper',
-        // '.MuiPopper-root',
+        // Popover / menu / popper based portals (date pickers, autocomplete, menus, tooltips)
+        '.MuiPopover-root',
+        '.MuiMenu-root',
+        '.MuiTooltip-popper',
+        '.MuiAutocomplete-popper',
+        '.MuiPopper-root',
+        '.MuiPickersPopper-root',
+        '.MuiPickersLayout-root',
         // WM / app-specific
         '.app-dialog',
-        // '.app-popover',
+        '.app-popover',
         // Bootstrap/generic
         '.modal',
+        '.dropdown-menu',
         '[role=presentation]',
         // ARIA generics
         '[role=dialog]',
+        '[role=tooltip]',
+        '[role=listbox]',
       ].join(',');
 
       const applyPortalsInDoc = (rootDoc: Document) => {
         const portalNodes = rootDoc.querySelectorAll(portalSelectors);
         if (portalNodes.length > 0) {
           applyToElementAndChildren(portalNodes);
+          // Track applied var names for story-change cleanup.
+          Object.keys(getLatestTokenValues() || {}).forEach((name) => {
+            if (name.startsWith('--wm-')) {
+              appliedPortalVarNamesRef.current.add(name);
+            }
+          });
         }
       };
+
+      // If there are no wrapper targets, we are operating in "portal-only" mode.
+      // In this mode we avoid touching non-portal component DOM, but still ensure
+      // portals receive the active story's token overrides.
+      const portalOnlyMode = targetElements.length === 0;
 
       // Apply immediately to portals in the preview iframe (if already mounted)
       applyPortalsInDoc(iframe.contentDocument);
@@ -1323,7 +1394,9 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         varName.includes('-states-active-')
       );
 
-      if (stateTokens.length > 0) {
+      // In portal-only mode, skip injecting state CSS rules, since this is primarily
+      // meant to enhance non-portal component pseudo-classes within the story canvas.
+      if (!portalOnlyMode && stateTokens.length > 0) {
         // Remove existing state style tag if it exists
         const existingStyleTag = iframe.contentDocument.querySelector('#design-token-component-states');
         if (existingStyleTag) {
