@@ -172,3 +172,20 @@ div[data-key="storybook/interactions/panel"]{
 div[data-key="storybook/actions/panel"]{
     display:none !important;
 }
+
+/* Storybook manager tool i.e top header which has view, addon panel etc to allow popover visible for applauncher */
+section.sb-bar{
+  overflow: visible !important;
+}
+
+/* App Launcher - WM Ecosystem */
+section.sb-bar .app-launcher-wrapper{
+  position: relative;
+  z-index: 1001;
+  /* position: absolute;  */
+  /* right: calc(100% - 12px); */
+}
+
+section.sb-bar .app-launcher-wrapper button div div{
+  background-color: rgb(92, 101, 112) !important;
+}

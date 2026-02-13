@@ -1248,7 +1248,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         // '.MuiMenu-root',
         // '.MuiTooltip-popper',
         // '.MuiAutocomplete-popper',
-        // '.MuiPopper-root',
+        '.MuiPopper-root',
         // WM / app-specific
         '.app-dialog',
         // '.app-popover',

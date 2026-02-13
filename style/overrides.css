@@ -879,7 +879,7 @@ wrote custom styles as per current DOM, once fixed in index.tsx file below to be
 }
 
 
-/* Dialog fixes for design token to work */
+/* Dialog fixes for design token to work without data-design-token-target */
 .modal-backdrop.fade.in, .modal.fade.in{
     z-index: var(--wm-modal-backdrop-z-index) !important;
     background: color-mix(in srgb, var(--wm-modal-backdrop-background), transparent calc(100% - var(--wm-modal-backdrop-opacity))) !important;
@@ -930,4 +930,53 @@ wrote custom styles as per current DOM, once fixed in index.tsx file below to be
 
 .modal-dialog .modal-content .modal-footer .btn {
     margin: 0 !important;
+}
+
+/* Search fixes for design token to workwithout data-design-token-target */
+.wm-app .app-search.input-group .form-control-feedback.clear-btn.show-btn {
+    right: var(--wm-search-btn-position-left);
+    padding: 0;
+}
+
+.search-dropdown-container{
+    z-index: var(--wm-search-dropdown-menu-z-index) !important;
+    background: var(--wm-search-dropdown-menu-background) !important;
+}
+
+.dropdown-menu.app-search {
+    border-radius: var(--wm-search-dropdown-menu-border-radius) !important;
+    box-shadow: var(--wm-search-dropdown-menu-box-shadow) !important;
+    max-height: var(--wm-search-dropdown-menu-height) !important;
+    padding: var(--wm-dropdown-menu-padding) !important;
+    /* background: var(--wm-dropdown-menu-background) !important; */
+    border-color: var(--wm-dropdown-menu-border-color) !important;
+    border-width: var(--wm-dropdown-menu-border-width) !important;
+    border-style: var(--wm-dropdown-menu-border-style) !important;
+}
+
+.dropdown-menu.app-search li > a {
+    gap: var(--wm-search-dropdown-menu-item-gap) !important;
+    color: var(--wm-search-dropdown-menu-item-color) !important;
+    min-height: var(--wm-search-dropdown-menu-item-height) !important;
+    padding: var(--wm-search-dropdown-menu-item-padding) !important;
+    font-family: var(--wm-search-dropdown-menu-item-font-family) !important;
+    font-weight: var(--wm-search-dropdown-menu-item-font-weight) !important;
+    font-size: var(--wm-search-dropdown-menu-item-font-size) !important;
+    line-height: var(--wm-search-dropdown-menu-item-line-height) !important;
+    letter-spacing: var(--wm-dropdown-menu-item-letter-spacing) !important;
+}
+
+.dropdown-menu.app-search li.list-group-header {
+    display: flex;
+    gap: var(--wm-search-dropdown-menu-group-item-gap) !important;
+}
+
+.dropdown-menu.app-search li.list-group-header .group-title {
+    color: var(--wm-search-dropdown-menu-group-item-color) !important;
+    background: var(--wm-search-dropdown-menu-group-item-background) !important;
+    padding: var(--wm-search-dropdown-menu-group-item-padding) !important;
+    font-family: var(--wm-search-dropdown-menu-group-item-header-font-family) !important;
+    font-weight: var(--wm-search-dropdown-menu-group-item-header-font-weight) !important;
+    font-size: var(--wm-search-dropdown-menu-group-item-header-font-size) !important;
+    line-height: var(--wm-search-dropdown-menu-group-item-header-line-height) !important;
 }
