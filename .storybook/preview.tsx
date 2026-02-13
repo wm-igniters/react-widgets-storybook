@@ -3,8 +3,8 @@ import React from "react";
 import { Provider } from "react-redux";
 import { WidgetProvider } from "../src/context/WidgetProvider";
 import { store } from "../src/store";
+import "@mui/material/styles";
 import "@wavemaker/app-runtime-wm-build/wmapp/styles/foundation/foundation.css";
-
 // Mock page context for Storybook
 const createMockPageContext = () => ({
   Widgets: {},
@@ -29,33 +29,30 @@ const withProviders = (Story: any) => {
     proxy: createMockProxy(),
   };
 
-  return React.createElement(
-    Provider,
-    { store, children: React.createElement(
-      WidgetProvider,
-      {
-        value: mockContext,
-        children: React.createElement(Story)
-      }
-    )}
+  return (
+      <Provider store={store}>
+        <WidgetProvider value={mockContext}>
+          <Story />
+        </WidgetProvider>
+      </Provider>
   );
 };
 
 const preview: Preview = {
   parameters: {
     options: {
-      selectedPanel: 'storybook/controls/panel',
+      selectedPanel: "storybook/controls/panel",
       storySort: {
         order: [
-          'Basic',
-          'Input',
-          'Charts',
-          'Containers',
-          'Data',
-          'Layout',
-          'Navigation',
-          'Dialogs',
-          'Advanced'
+          "Basic",
+          "Input",
+          "Charts",
+          "Containers",
+          "Data",
+          "Layout",
+          "Navigation",
+          "Dialogs",
+          "Advanced",
         ],
       },
     },

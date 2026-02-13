@@ -15,7 +15,7 @@ import token from "./docs/token.md?raw";
 
 import { iconClassNames } from "../../constants/iconClassConstants";
 
-// import modalDialogTokensData from "../../../../designTokens/components/modal-dialog/modal-dialog.json";
+import modalDialogTokensData from "../../../../designTokens/components/modal-dialog/modal-dialog.json";
 
 const mockListener = {
   appLocale: {},
@@ -61,6 +61,43 @@ const Template = (args: any) => {
       />
     </Box>
   );
+};
+
+const DesignTokenTemplate = (args:any) => {
+      //component can't spread data-design-token-target, so we apply it to a wrapper
+      const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
+      const [isOpen, setIsOpen] = useState(false);
+  
+      return (
+        <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
+          <Box style={{ padding: 16 }}>
+      <WmButton
+        name="openAlertBtn"
+        caption="Open Alert Dialog"
+        onClick={() => setIsOpen(true)}
+        listener={mockListener}
+        styles={{
+          backgroundColor: "#007bff",
+          color: "white",
+          padding: "8px 16px",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          fontSize: "14px",
+          fontWeight: "500",
+        }}
+      />
+      <AlertDialogDefaultExport
+        {...args}
+        isopen={isOpen}
+        onClose={() => setIsOpen(false)}
+        close={() => setIsOpen(false)}
+        onOkClick={() => setIsOpen(false)}
+        listener={mockListener}
+      />
+    </Box>
+        </Box>
+      );
 };
 
 export const Docs: Story = {
@@ -216,7 +253,7 @@ export const Showcase: Story = {
 
 export const Standard: Story = {
   tags: ['show-panel'],
-  render: Template,
+  render: DesignTokenTemplate,
   args: {
     name: "standardAlert",
     title: "Alert",
@@ -225,7 +262,9 @@ export const Standard: Story = {
     alerttype: "warning",
     iconclass: "fa fa-warning",
     listener: mockListener,
-    // sheetposition: undefined,
+    className: "modal-sm",
+    sheetposition: 'default',
+    "data-design-token-target":"true"
   },
   argTypes: {
     title: { control: "text" },
@@ -235,51 +274,27 @@ export const Standard: Story = {
       control: { type: "select" },
       options: ["error", "warning", "info", "success"],
     },
-    iconclass:{ control:{ type:"select"}, options: iconClassNames },
-    sheetposition:{control:{ type:"select"}, options: ['top', 'bottom', 'left', 'right']},
-    name: {table: {disable: true}},
+    iconclass: { control: "select", options: ["fa fa-warning", "fa fa-check-circle"] },
     listener: {table: {disable: true}},
+    "data-design-token-target": { table: {disable : true} },
+    className: {control: "select", options: ["modal-xs", "modal-sm", "modal-md", "modal-lg", "modal-xl", "modal-full-screen"]},
+    sheetposition:{control:{ type:"select"}, options: ['default', 'top', 'bottom']},
   },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: modalDialogTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "modal",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+      enablePortals: true,          // Enable portal token application  
+    },
+    layout: 'fullscreen',
+  }, 
 };
 
 // export const Standard: Story = {
 //   tags: ['show-panel'],
-//   render: (args) => {
-//       //component can't spread data-design-token-target, so we apply it to a wrapper
-//       const { "data-design-token-target": dataAttr, ...componentArgs } = args as any;
-//       const [isOpen, setIsOpen] = useState(false);
-  
-//       return (
-//         <Box style={{ padding: 16 }} data-design-token-target={dataAttr}>
-//           <Box style={{ padding: 16 }}>
-//       <WmButton
-//         name="openAlertBtn"
-//         caption="Open Alert Dialog"
-//         onClick={() => setIsOpen(true)}
-//         listener={mockListener}
-//         styles={{
-//           backgroundColor: "#007bff",
-//           color: "white",
-//           padding: "8px 16px",
-//           border: "none",
-//           borderRadius: "4px",
-//           cursor: "pointer",
-//           fontSize: "14px",
-//           fontWeight: "500",
-//         }}
-//       />
-//       <AlertDialogDefaultExport
-//         {...args}
-//         isopen={isOpen}
-//         onClose={() => setIsOpen(false)}
-//         close={() => setIsOpen(false)}
-//         onOkClick={() => setIsOpen(false)}
-//         listener={mockListener}
-//       />
-//     </Box>
-//         </Box>
-//       );
-//     },
+//   render: Template,
 //   args: {
 //     name: "standardAlert",
 //     title: "Alert",
@@ -288,7 +303,7 @@ export const Standard: Story = {
 //     alerttype: "warning",
 //     iconclass: "fa fa-warning",
 //     listener: mockListener,
-//     "data-design-token-target":"true"
+//     // sheetposition: undefined,
 //   },
 //   argTypes: {
 //     title: { control: "text" },
@@ -298,16 +313,9 @@ export const Standard: Story = {
 //       control: { type: "select" },
 //       options: ["error", "warning", "info", "success"],
 //     },
-//     iconclass: { control: "select", options: ["fa fa-warning", "fa fa-check-circle"] },
-//     "data-design-token-target": { control: false }
+//     iconclass:{ control:{ type:"select"}, options: iconClassNames },
+//     sheetposition:{control:{ type:"select"}, options: ['top', 'bottom', 'left', 'right']},
+//     name: {table: {disable: true}},
+//     listener: {table: {disable: true}},
 //   },
-//   parameters: {
-//     designTokens: {
-//       enabled: true,
-//       tokenData: modalDialogTokensData,  // Pass raw JSON data instead of pre-parsed config
-//       componentKey: "modal",  // Component identifier for parsing
-//       extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
-//     },
-//     layout: 'fullscreen',
-//   }, 
 // };

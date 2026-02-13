@@ -540,6 +540,11 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
   const classNameWhenActiveRef = useRef<string>("");
   // Track if tokens need refresh (used to trigger re-parse when className changes while active)
   const needsRefreshRef = useRef<boolean>(false);
+  // Track latest tokens for async portal handling
+  const latestTokensRef = useRef<Record<string, string>>({});
+  // Observers for dynamically mounted portals
+  const iframeObserverRef = useRef<MutationObserver | null>(null);
+  const managerObserverRef = useRef<MutationObserver | null>(null);
 
   /**
    * Effect: Monitor story changes and args updates
@@ -655,6 +660,39 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
 
       // Clear cache
       clearCache();
+
+        // Disconnect any existing observers to avoid them re-applying stale tokens
+        try {
+          if (iframeObserverRef.current) {
+            iframeObserverRef.current.disconnect();
+            iframeObserverRef.current = null;
+          }
+          if (managerObserverRef.current) {
+            managerObserverRef.current.disconnect();
+            managerObserverRef.current = null;
+          }
+        } catch (e) {
+          // ignore
+        }
+
+        // Remove injected state CSS rules from previous story (iframe + manager document)
+        try {
+          if (iframe?.contentDocument) {
+            const prevStyle = iframe.contentDocument.querySelector('#design-token-component-states');
+            if (prevStyle) prevStyle.remove();
+          }
+          const prevManagerStyle = document.querySelector('#design-token-component-states');
+          if (prevManagerStyle) prevManagerStyle.remove();
+        } catch (e) {
+          // ignore
+        }
+
+        // Clear latest tokens snapshot used by observers
+        latestTokensRef.current = {};
+
+        // Close any open tooltip to avoid stale UI persisting across stories
+        setActiveTooltip(null);
+        setTooltipPosition(null);
 
       // Update data after a brief delay to ensure iframe is ready
       setTimeout(updateStoryData, 100);
@@ -943,7 +981,12 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
    * iframe.contentDocument.documentElement.style.setProperty('--wm-var', 'value')
    */
   const applyTokens = (tokenValues: Record<string, string>) => {
+    // Keep a snapshot for observers
+    latestTokensRef.current = tokenValues;
     const iframe = document.querySelector("#storybook-preview-iframe") as HTMLIFrameElement;
+
+    // Helper to get the latest token values (observers will read from this)
+    const getLatestTokenValues = () => latestTokensRef.current || {};
 
     // Helper function to apply tokens once iframe is ready
     const applyTokensToIframe = (attempt = 1, maxAttempts = 4) => {
@@ -1085,6 +1128,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         let childElementsCount = 0;
         let componentElementsCount = 0;
         const componentClasses: string[] = [];
+        const currentTokenValues = getLatestTokenValues();
 
         targetElements.forEach((element: Element) => {
           const htmlElement = element as HTMLElement;
@@ -1099,7 +1143,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
           // 1. Set CSS variables on the target element itself
           // - For direct prop components (Button, Anchor, Label): target IS the component
           // - For wrapper patterns (Message, Progress-bar): target is the wrapper Box
-          Object.entries(tokenValues).forEach(([varName, value]) => {
+          Object.entries(currentTokenValues).forEach(([varName, value]) => {
             if (varName.startsWith('--wm-')) {
               htmlElement.style.setProperty(varName, value);
               appliedCount++;
@@ -1135,7 +1179,7 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
               componentClasses.push(Array.from(child.classList).join(' '));
             }
 
-            Object.entries(tokenValues).forEach(([varName, value]) => {
+            Object.entries(currentTokenValues).forEach(([varName, value]) => {
               if (varName.startsWith('--wm-')) {
                 childHtmlElement.style.setProperty(varName, value);
                 appliedCount++;
@@ -1194,13 +1238,86 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
       // Apply tokens with retry logic for child elements
       applyToElementAndChildren(targetElements);
 
+      // ===== Portal handling for dialogs/popovers/menus (may render outside target wrapper) =====
+      const portalSelectors = [
+        '.MuiModal-root',
+        '.MuiDialog-root',
+        '.MuiDialog-container',
+        '.MuiDialog-paper',
+        // '.MuiPopover-root',
+        // '.MuiMenu-root',
+        // '.MuiTooltip-popper',
+        // '.MuiAutocomplete-popper',
+        '.MuiPopper-root',
+        // WM / app-specific
+        '.app-dialog',
+        // '.app-popover',
+        // Bootstrap/generic
+        '.modal',
+        '[role=presentation]',
+        // ARIA generics
+        '[role=dialog]',
+      ].join(',');
+
+      const applyPortalsInDoc = (rootDoc: Document) => {
+        const portalNodes = rootDoc.querySelectorAll(portalSelectors);
+        if (portalNodes.length > 0) {
+          applyToElementAndChildren(portalNodes);
+        }
+      };
+
+      // Apply immediately to portals in the preview iframe (if already mounted)
+      applyPortalsInDoc(iframe.contentDocument);
+      // Retry on next frame to catch just-mounted portals after a click
+      requestAnimationFrame(() => {
+        if (iframe.contentDocument) {
+          applyPortalsInDoc(iframe.contentDocument);
+        }
+      });
+
+      // Fallback: some implementations may mount portals in the manager (top) document
+      applyPortalsInDoc(document);
+      requestAnimationFrame(() => {
+        applyPortalsInDoc(document);
+      });
+
+      // Install observers once to catch late-mounted portals dynamically
+      const installObservers = () => {
+        if (!iframeObserverRef.current && iframe.contentDocument?.body) {
+          const obs = new MutationObserver(() => {
+            // Re-apply tokens to any portal nodes that just appeared using the latest tokens
+            try {
+              applyPortalsInDoc(iframe.contentDocument!);
+            } catch (e) {
+              // ignore
+            }
+          });
+          obs.observe(iframe.contentDocument.body, { childList: true, subtree: true });
+          iframeObserverRef.current = obs;
+        }
+        if (!managerObserverRef.current && document?.body) {
+          const obs = new MutationObserver(() => {
+            try {
+              applyPortalsInDoc(document);
+            } catch (e) {
+              // ignore
+            }
+          });
+          obs.observe(document.body, { childList: true, subtree: true });
+          managerObserverRef.current = obs;
+        }
+      };
+
+      installObservers();
+
       // DYNAMIC STATE TOKEN HANDLING: Inject CSS rules for pseudo-class states
       // Many components use the same CSS variables in different pseudo-class selectors
       // We need to inject CSS rules because inline styles can't handle pseudo-classes
       // Examples:
       // - --wm-anchor-states-hover-color → --wm-anchor-color in .app-anchor:hover
       // - --wm-btn-states-hover-background → --wm-btn-background in .app-button:hover
-      const stateTokens = Object.entries(tokenValues).filter(([varName]) =>
+      const currentTokenValuesForStates = getLatestTokenValues();
+      const stateTokens = Object.entries(currentTokenValuesForStates).filter(([varName]) =>
         varName.includes('-states-hover-') ||
         varName.includes('-states-focus-') ||
         varName.includes('-states-active-')
@@ -1353,6 +1470,20 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
     applyTokens(defaultTokens);
   };
 
+  // Cleanup observers on unmount to avoid leaks
+  useEffect(() => {
+    return () => {
+      if (iframeObserverRef.current) {
+        iframeObserverRef.current.disconnect();
+        iframeObserverRef.current = null;
+      }
+      if (managerObserverRef.current) {
+        managerObserverRef.current.disconnect();
+        managerObserverRef.current = null;
+      }
+    };
+  }, []);
+
   // ========== RENDER LOGIC ==========
 
   // Show loading state while story data is being fetched
@@ -1374,9 +1505,9 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         <EmptyState>
           <h3>Design Tokens Not Available</h3>
           <p>This story does not have design tokens configured.</p>
-          <p style={{ fontSize: "12px", marginTop: "12px", color: "#999" }}>
+          {/* <p style={{ fontSize: "12px", marginTop: "12px", color: "#999" }}>
             Add the <code>designTokens</code> parameter to enable this feature.
-          </p>
+          </p> */}
         </EmptyState>
       </PanelContent>
     );
@@ -1981,6 +2112,10 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         </InfoText>
       </InfoBox> */}
 
+      <ButtonGroup style={{ marginTop: 0, paddingTop: 0, borderTop: 'none', marginBottom: 12 }}>
+        <ResetButton onClick={handleReset}>Reset to Defaults</ResetButton>
+      </ButtonGroup>
+
       {/* State Dropdown - Only shown if component has multiple states */}
       {availableStates.length > 1 && (
         <StateDropdownContainer>
@@ -2033,10 +2168,6 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
           })}
         </TokenSection>
       ))}
-
-      <ButtonGroup>
-        <ResetButton onClick={handleReset}>Reset to Defaults</ResetButton>
-      </ButtonGroup>
 
       {/* Render tooltip using portal to escape panel overflow constraints */}
       {activeTooltip && tooltipPosition && createPortal(

@@ -8,6 +8,8 @@ import WmText from "../../../../components/input/text";
 
 import { iconClassNames } from "../../constants/iconClassConstants";
 
+import modalDialogTokensData from "../../../../designTokens/components/modal-dialog/modal-dialog.json";
+
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
@@ -29,6 +31,63 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const DesignTokenTemplate = (args: any) => {
+  const { "data-design-token-target": dataAttr, ...componentArgs } = args;
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Box sx={{ p: 2 }} data-design-token-target={dataAttr}>
+      <WmButton
+        name="openDialogBtn"
+        caption="Open Dialog"
+        onClick={() => setIsOpen(true)}
+        listener={mockListener}
+        styles={{
+          backgroundColor: "#007bff",
+          color: "white",
+          padding: "8px 16px",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          fontSize: "14px",
+          fontWeight: "500",
+        }}
+      />
+
+      <DialogDefaultExport
+        {...componentArgs}
+        isopen={isOpen}
+        onClose={() => setIsOpen(false)}
+        close={() => setIsOpen(false)}
+      >
+        <Box sx={{ p: 3 }}>
+          <Typography>
+            This dialog includes a header, body and footer with action buttons.
+          </Typography>
+        </Box>
+
+        <WmDialogFooter name="basicDialogFooter" listener={mockListener}>
+          <WmButton
+            name="cancelBtn"
+            caption="Cancel"
+            onClick={() => setIsOpen(false)}
+            listener={mockListener}
+            className="btn-default"
+          />
+          <WmButton
+            name="saveBtn"
+            caption="Save"
+            onClick={() => setIsOpen(false)}
+            listener={mockListener}
+            className="btn-primary"
+          />
+        </WmDialogFooter>
+      </DialogDefaultExport>
+    </Box>
+  );
+};
+
 
 export const Docs: Story = {
   render: () => (
@@ -253,71 +312,21 @@ export const Showcase: Story = {
   }
 };
 
-
 export const Standard: Story = {
   tags: ['show-panel'],
-  render: (args: any) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <Box style={{ padding: 16 }}>
-        <WmButton
-          name="openDialogBtn"
-          caption="Open Dialog"
-          onClick={() => setIsOpen(true)}
-          listener={mockListener}
-          styles={{
-            backgroundColor: "#007bff",
-            color: "white",
-            padding: "8px 16px",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontSize: "14px",
-            fontWeight: "500",
-          }}
-        />
-        <DialogDefaultExport
-          {...args}
-          isopen={isOpen}
-          onClose={() => setIsOpen(false)}
-          close={() => setIsOpen(false)}
-          listener={mockListener}
-        >
-          <Box sx={{ padding: 3 }}>
-            <Typography variant="body1">
-              This dialog includes a header, body and footer with action buttons.
-            </Typography>
-          </Box>
-          <WmDialogFooter name="basicDialogFooter" listener={mockListener}>
-            <WmButton
-              name="cancelBtn"
-              caption="Cancel"
-              onClick={() => setIsOpen(false)}
-              listener={mockListener}
-              className="btn-default"
-            />
-            <WmButton
-              name="saveBtn"
-              caption="Save"
-              onClick={() => setIsOpen(false)}
-              listener={mockListener}
-              className="btn-primary"
-            />
-          </WmDialogFooter>
-        </DialogDefaultExport>
-      </Box>
-    );
-  },
+  render: DesignTokenTemplate,
   args: {
     name: "standardDialog",
     title: "Standard Dialog",
-    // dialogtype: "design-dialog",
+    dialogtype: "design-dialog",
     showheader: true,
     closable: true,
     modal: true,
     iconclass: "fa fa-file",
     listener: mockListener,
+    className: "modal-sm",
+    "data-design-token-target":"true",
+    sheetposition: 'default',
     // sheet: false,
     // sheetposition: undefined,
   },
@@ -328,13 +337,112 @@ export const Standard: Story = {
     //   control: { type: "select" },
     //   options: ["design-dialog", "custom"],
     // },
+    dialogtype: { table: { disable: true } }, // Hiding dialogtype from controls as it's not meant to be changed in this story
     showheader: { control: "boolean" },
     closable: { control: "boolean" },
     modal: { control: "boolean" },
     // className: { control: "text" },
     // sheet:{ control: "boolean" },
-    sheetposition:{control:{ type:"select"}, options: ['top', 'bottom', 'left', 'right']},
     name: {table: {disable: true}},
     listener: {table: {disable: true}},
+     "data-design-token-target": { table: {disable : true} },
+    className: {control: "select", options: ["modal-xs", "modal-sm", "modal-md", "modal-lg", "modal-xl", "modal-full-screen"]},
+    sheetposition:{control:{ type:"select"}, options: ['default', 'top', 'bottom']},
+  },
+  parameters: {
+    designTokens: {
+      enabled: true,
+      tokenData: modalDialogTokensData,  // Pass raw JSON data instead of pre-parsed config
+      componentKey: "modal",  // Component identifier for parsing
+      extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
+      enablePortals: true,          // Enable portal token application  
+    },
+    layout: 'fullscreen',
   },
 };
+
+
+// export const Standard: Story = {
+//   tags: ['show-panel'],
+//   render: (args: any) => {
+//     const [isOpen, setIsOpen] = useState(false);
+
+//     return (
+//       <Box style={{ padding: 16 }}>
+//         <WmButton
+//           name="openDialogBtn"
+//           caption="Open Dialog"
+//           onClick={() => setIsOpen(true)}
+//           listener={mockListener}
+//           styles={{
+//             backgroundColor: "#007bff",
+//             color: "white",
+//             padding: "8px 16px",
+//             border: "none",
+//             borderRadius: "4px",
+//             cursor: "pointer",
+//             fontSize: "14px",
+//             fontWeight: "500",
+//           }}
+//         />
+//         <DialogDefaultExport
+//           {...args}
+//           isopen={isOpen}
+//           onClose={() => setIsOpen(false)}
+//           close={() => setIsOpen(false)}
+//           listener={mockListener}
+//         >
+//           <Box sx={{ padding: 3 }}>
+//             <Typography variant="body1">
+//               This dialog includes a header, body and footer with action buttons.
+//             </Typography>
+//           </Box>
+//           <WmDialogFooter name="basicDialogFooter" listener={mockListener}>
+//             <WmButton
+//               name="cancelBtn"
+//               caption="Cancel"
+//               onClick={() => setIsOpen(false)}
+//               listener={mockListener}
+//               className="btn-default"
+//             />
+//             <WmButton
+//               name="saveBtn"
+//               caption="Save"
+//               onClick={() => setIsOpen(false)}
+//               listener={mockListener}
+//               className="btn-primary"
+//             />
+//           </WmDialogFooter>
+//         </DialogDefaultExport>
+//       </Box>
+//     );
+//   },
+//   args: {
+//     name: "standardDialog",
+//     title: "Standard Dialog",
+//     // dialogtype: "design-dialog",
+//     showheader: true,
+//     closable: true,
+//     modal: true,
+//     iconclass: "fa fa-file",
+//     listener: mockListener,
+//     // sheet: false,
+//     // sheetposition: undefined,
+//   },
+//   argTypes: {
+//     title: { control: "text" },
+//     iconclass:{ control:{ type:"select"}, options: iconClassNames },
+//     // dialogtype: {
+//     //   control: { type: "select" },
+//     //   options: ["design-dialog", "custom"],
+//     // },
+//     showheader: { control: "boolean" },
+//     closable: { control: "boolean" },
+//     modal: { control: "boolean" },
+//     // className: { control: "text" },
+//     // sheet:{ control: "boolean" },
+//     sheetposition:{control:{ type:"select"}, options: ['top', 'bottom', 'left', 'right']},
+//     name: {table: {disable: true}},
+//     listener: {table: {disable: true}},
+//   },
+// };

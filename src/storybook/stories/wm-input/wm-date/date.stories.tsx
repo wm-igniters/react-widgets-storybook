@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box, Stack, Typography } from "@mui/material";
-
 import DateDefaultExport from "../../../../components/input/epoch/date/index";
 import WmComposite from "../../../../components/input/composite";
 import WmLabel from "../../../../components/basic/label";
-
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import overview from "./docs/overview.md?raw";
 import props from "./docs/props.md?raw";
@@ -13,9 +13,7 @@ import events from "./docs/events.md?raw";
 import methods from "./docs/methods.md?raw";
 // import styling from "./docs/styling.md?raw";
 import token from "./docs/token.md?raw";
-
 import dateTokensData from "../../../../designTokens/components/date/date.json";
-
 const meta: Meta<typeof DateDefaultExport> = {
   title: "Input/Date",
   component: DateDefaultExport,
@@ -44,12 +42,14 @@ const DesignTokenTemplate = (args: any) => {
   const { "data-design-token-target": dataAttr, ...componentArgs } = args;
 
   return (
+    <LocalizationProvider dateAdapter={AdapterMoment}>
     <Box className="wm-app" style={{ padding: 16 }} data-design-token-target={dataAttr}>
        <WmComposite captionposition="left" listener={mockListener} name="dateComposite">
         <WmLabel caption="Date" listener={mockListener} name="dateLabel" className="control-label"/>
         <DateDefaultExport {...componentArgs} listener={mockListener} />
       </WmComposite>
     </Box>
+    </LocalizationProvider>
   );
 };
 
@@ -86,6 +86,7 @@ export const Showcase: Story = {
     const today = new Date().toISOString().split("T")[0];
 
     return (
+      <LocalizationProvider dateAdapter={AdapterMoment}>
       <Box sx={{ p: 3 }}>
         {/* Heading with anchor */}
         <Box mb={3} id="date-showcase">
@@ -182,6 +183,7 @@ export const Showcase: Story = {
           </Box>
         </Stack>
       </Box>
+      </LocalizationProvider>
     );
   },
   args: {
@@ -259,7 +261,7 @@ export const Standard: Story = {
   },
   parameters: {
     designTokens: {
-      enabled: true,
+      enabled: false,
       tokenData: dateTokensData,  // Pass raw JSON data instead of pre-parsed config
       componentKey: "datepicker",  // Component identifier for parsing
       extractCSSVariablesAtRuntime: true,  // Enable runtime CSS variable extraction
