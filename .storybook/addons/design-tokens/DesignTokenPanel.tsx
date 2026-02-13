@@ -1244,14 +1244,15 @@ export const DesignTokenPanel: React.FC<DesignTokenPanelProps> = ({ active }) =>
         '.MuiDialog-root',
         '.MuiDialog-container',
         '.MuiDialog-paper',
-        // '.MuiPopover-root',
+        '.MuiPopover-root',
         // '.MuiMenu-root',
         // '.MuiTooltip-popper',
         // '.MuiAutocomplete-popper',
         '.MuiPopper-root',
         // WM / app-specific
         '.app-dialog',
-        // '.app-popover',
+        '.app-popover',
+        '.app-popover-wrapper',
         // Bootstrap/generic
         '.modal',
         '[role=presentation]',
