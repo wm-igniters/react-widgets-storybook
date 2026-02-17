@@ -85,7 +85,6 @@ Page.selectMouseenter = function ($event, widget) {
 
 ```javascript
 // Sample dataset for the Select component, containing a list of countries
-
 let countryList = [
   {
     "name": "United States",

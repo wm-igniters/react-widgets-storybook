@@ -75,7 +75,6 @@ Page.ratingChange = function ($event, widget, newVal, oldVal) {
 
 ```javascript
 // Sample dataset for the Rating component, containing id, value, and label
-
 let ratingOptions = [
   {
     "id": "r1",

@@ -71,7 +71,6 @@ Page.radiosetChange = function ($event, widget, newVal, oldVal) {
 
 ```javascript
 // Sample dataset for the RadioSet component, containing travel class options
-
 let travalClassOptions = [
   {
     "name": "economy",

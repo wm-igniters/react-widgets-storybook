@@ -92,7 +92,6 @@ Page.Widgets.calendar.gotoMonth(2);
 
 ```javascript
 // Sample dataset for the Calendar component, where each object represents an event with a title, start and end dates, all-day flag, and CSS class for styling. 
-
 let calendarEvents = [
   {
     "title": "Company Retreat",

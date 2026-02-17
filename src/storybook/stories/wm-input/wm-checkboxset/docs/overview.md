@@ -67,7 +67,6 @@ Page.checkboxsetChange = function ($event, widget, newVal, oldVal) {
 
 ```javascript
 // Sample dataset for the CheckboxSet component, containing a list of countries
-
 let countryList = [
   {
     "name": "United States",

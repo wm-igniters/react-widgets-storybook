@@ -55,7 +55,7 @@ Page.switchChange = function ($event, widget, newVal, oldVal) {
 };
 ```
 
-#### Sample Select Dataset
+#### Sample Switch Dataset
 
 - This is the markup for a Switch component bound to a sample dataset of view options, using displayfield to show the value, datafield for the id, and checkediconclass to indicate the selected state. The default selection is set via datavalue.
 

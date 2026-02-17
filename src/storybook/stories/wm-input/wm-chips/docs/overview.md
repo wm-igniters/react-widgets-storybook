@@ -64,7 +64,7 @@ Page.chipsRemove = function ($event, widget, $item) {
 };
 ```
 
-#### Sample CheckboxSet Dataset
+#### Sample Chips Dataset
 
 - This is the markup for a Chips component bound to a sample dataset of countries, using displayfield to show the label, datafield for the value, and searchkey to enable searching and selecting options dynamically.
 
@@ -83,7 +83,6 @@ Page.chipsRemove = function ($event, widget, $item) {
 
 ```javascript
 // Sample dataset for the chips component, containing a list of countries
-
 let countryList = [
   {
     "name": "United States",
