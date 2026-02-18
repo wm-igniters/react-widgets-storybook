@@ -10,7 +10,7 @@
 </details>
 
 <details >
-  <summary>Pane Events</summary>
+  <summary>Tabpane Events</summary>
   <div>
 | Event | Description |
 |-------|-------------|
