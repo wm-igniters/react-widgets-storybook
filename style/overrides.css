@@ -982,3 +982,59 @@ wrote custom styles as per current DOM, once fixed in index.tsx file below to be
     font-size: var(--wm-search-dropdown-menu-group-item-header-font-size) !important;
     line-height: var(--wm-search-dropdown-menu-group-item-header-line-height) !important;
 }
+
+
+/* Popover fixes for design token to work with data-design-token-target */
+.app-popover {
+    z-index: var(--wm-popover-z-index) !important;
+    margin: var(--wm-popover-margin) !important;
+    padding: var(--wm-popover-padding) !important;
+    background: var(--wm-popover-background) !important;
+    color: var(--wm-popover-color) !important;
+    box-shadow: var(--wm-popover-shadow) !important;
+    border-radius: var(--wm-popover-radius) !important;
+    border-width: var(--wm-popover-border-width) !important;
+    border-color: var(--wm-popover-border-color) !important;
+    border-style: var(--wm-popover-border-style) !important;
+    min-width: var(--wm-popover-min-width) !important;
+    min-height: var(--wm-popover-min-height) !important;
+}
+
+.app-popover > .arrow, .app-popover > .arrow:after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border: var(--wm-popover-arrow-size) solid transparent;
+    border-left-width: 0;
+    top: 50%;
+    left: calc(var(--wm-popover-arrow-size) * -1) !important;
+    margin-top: calc(var(--wm-popover-arrow-size) * -1) !important;
+}
+
+.app-popover .popover-header {
+    color: var(--wm-popover-header-color) !important;
+    padding: var(--wm-popover-header-padding) !important;
+    font-family: var(--wm-popover-header-font-family) !important;
+    font-size: var(--wm-popover-header-font-size) !important;
+    font-weight: var(--wm-popover-header-font-weight) !important;
+    line-height: var(--wm-popover-header-line-height) !important;
+    letter-spacing: var(--wm-popover-header-letter-spacing) !important;
+}
+
+.app-popover .popover-body {
+    padding: var(--wm-popover-body-padding) !important;
+    font-family: var(--wm-popover-body-font-family) !important;
+    font-weight: var(--wm-popover-body-font-weight) !important;
+    font-size: var(--wm-popover-body-font-size) !important;
+    line-height: var(--wm-popover-body-line-height) !important;
+    letter-spacing: var(--wm-popover-body-letter-spacing) !important;
+}
+
+.app-popover .popover-body > div {
+    padding: 0 !important;
+}
+
+.app-popover .popover-body > div p{
+    margin: 0 !important;
+}

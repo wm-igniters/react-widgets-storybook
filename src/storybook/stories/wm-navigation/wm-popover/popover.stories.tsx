@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box, Typography, Stack } from "@mui/material";
 import WmPopover from "../../../../components/navigation/popover";
+import LabelDefaultExport, { WmLabel as RawWmLabel } from "../../../../components/basic/label/index";
 
 import { ComponentDocumentation } from "../../../../../.storybook/components/DocumentRenderer";
 import { animationNames } from "../../constants/animationsConstants";
@@ -39,11 +40,18 @@ const Template = (args: any) => (
   <WmPopover
       {...args}
     >
-      <Box sx={{ p: 2.5 }}>
-        <Typography variant="body2" sx={{ lineHeight: 1.6 }}>
+      {/* <Box sx={{ p: 2.5 }}> */}
+        {/* <Typography variant="body2" sx={{ lineHeight: 1.6 }}>
           This is popover content with inline source. You can add any content here.
-        </Typography>
-      </Box>
+        </Typography> */}
+        <LabelDefaultExport
+          name="popoverContentLabel"
+          caption="This is popover content with inline source. You can add any content here."
+          type="p"
+          className="p"
+          listener={mockListener}
+        />
+      {/* </Box> */}
     </WmPopover>
 );
 
@@ -51,18 +59,129 @@ const DesignTokenTemplate = (args: any) => {
     const { "data-design-token-target": dataAttr, ...componentArgs } = args;
     const renderkey = `${componentArgs.popoverplacement}`;
 
+    // Story-level helper: ensure portal nodes (MUI Popover / Paper / app-popover)
+    // get the `data-design-token-target` attribute because WmPopover may render
+    // the visible popover content in a portal and not forward arbitrary data-*
+    // attributes to the portal DOM. This MutationObserver marks existing and
+    // future portal nodes so the Design Tokens addon can find and apply tokens.
+    const PortalAttributeSync: React.FC = () => {
+      useEffect(() => {
+        const selectors = [
+          '.MuiPopover-root',
+          '.MuiPaper-root.MuiPopover-paper',
+          '.MuiPopper-root',
+          '.app-popover',
+          '.popover',
+        ];
+
+        // Combined selector to minimize DOM queries
+        const combinedSelector = selectors.join(',');
+
+        // Track nodes we've already marked so we avoid redundant work
+        const marked = new Set<Element>();
+
+        const markNode = (node: Element) => {
+          try {
+            if (!marked.has(node)) {
+              node.setAttribute('data-design-token-target', String(true));
+              marked.add(node);
+            }
+          } catch (e) {
+            // ignore
+          }
+        };
+
+        // Mark all existing portal nodes matching combined selector
+        const markExisting = () => {
+          try {
+            document.querySelectorAll(combinedSelector).forEach(markNode);
+          } catch (e) {
+            // ignore malformed selector or other errors
+          }
+        };
+
+        markExisting();
+
+        // Batch processing for mutation observer (debounce)
+        let pending = new Set<Element>();
+        let debounceTimer: any = null;
+
+        const processPending = () => {
+          if (pending.size === 0) return;
+          // For each pending node, attempt to mark it or its matching descendants
+          pending.forEach((n) => {
+            try {
+              if (n.matches && (n as Element).matches(combinedSelector)) {
+                markNode(n);
+              } else {
+                (n as Element).querySelectorAll && (n as Element).querySelectorAll(combinedSelector).forEach(markNode);
+              }
+            } catch (e) {
+              // ignore
+            }
+          });
+          pending.clear();
+        };
+
+        const scheduleProcess = () => {
+          if (debounceTimer) clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => {
+            processPending();
+            debounceTimer = null;
+          }, 50);
+        };
+
+        const obs = new MutationObserver((mutations) => {
+          for (const m of mutations) {
+            for (const n of Array.from(m.addedNodes)) {
+              if (!(n instanceof Element)) continue;
+              pending.add(n);
+            }
+          }
+          scheduleProcess();
+        });
+
+        obs.observe(document.body, { childList: true, subtree: true });
+
+        return () => {
+          obs.disconnect();
+          if (debounceTimer) clearTimeout(debounceTimer);
+
+          // Clean up attributes we added when the story unmounts or changes
+          marked.forEach((el) => {
+            try {
+              el.removeAttribute('data-design-token-target');
+            } catch (e) {
+              // ignore
+            }
+          });
+          marked.clear();
+          pending.clear();
+        };
+      }, []);
+
+      return null;
+    };
+
     return (
-      <WmPopover
-      {...componentArgs}
-      data-design-token-target={dataAttr}
-      key={renderkey}
-    >
-      <Box sx={{ p: 2.5 }}>
-        <Typography variant="body2" sx={{ lineHeight: 1.6 }}>
-          This is popover content with inline source. You can add any content here.
-        </Typography>
-      </Box>
-      </WmPopover>
+      <>
+        <PortalAttributeSync />
+        <WmPopover
+          {...componentArgs}
+          data-design-token-target={dataAttr}
+          key={renderkey}
+        >
+          <Box sx={{ p: 2.5 }}>
+            <LabelDefaultExport
+              name="popoverContentLabel"
+              caption="This is popover content with inline source. You can add any content here."
+              // type="p"
+              // className="p"
+              listener={mockListener}
+            />
+          </Box>
+        </WmPopover>
+      </>
     );
   };
 
@@ -470,6 +589,7 @@ export const Standard: Story = {
     contentsource: "inline",
     autoclose: "outsideClick",
     listener: mockListener,
+    title: "Title",
     "data-design-token-target": true,
   },
   argTypes: {
