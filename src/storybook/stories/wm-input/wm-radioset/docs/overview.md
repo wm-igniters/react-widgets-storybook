@@ -71,21 +71,9 @@ Page.radiosetChange = function ($event, widget, newVal, oldVal) {
 
 ```javascript
 // Sample dataset for the RadioSet component, containing travel class options
-let travalClassOptions = [
-  {
-    "name": "economy",
-    "value": "Economy",
-    "price": "$50"
-  },
-  {
-    "name": "business",
-    "value": "Business",
-    "price": "$100"
-  },
-  {
-    "name": "firstClass",
-    "value": "First Class",
-    "price": "$200"
-  }
+let travelClassOptions = [
+  { "name": "economy", "value": "Economy", "price": "$50" },
+  { "name": "business", "value": "Business", "price": "$100" },
+  { "name": "firstClass", "value": "First Class", "price": "$200" }
 ]
 ```

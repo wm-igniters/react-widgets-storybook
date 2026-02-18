@@ -84,21 +84,9 @@ Page.chipsRemove = function ($event, widget, $item) {
 ```javascript
 // Sample dataset for the chips component, containing a list of countries
 let countryList = [
-  {
-    "name": "United States",
-    "code": "US"
-  },
-  {
-    "name": "United Kingdom",
-    "code": "UK"
-  },
-  {
-    "name": "Canada",
-    "code": "CA"
-  },
-  {
-    "name": "Australia",
-    "code": "AU"
-  },
+  { "name": "United States", "code": "US" },
+  { "name": "United Kingdom", "code": "UK" },
+  { "name": "Canada", "code": "CA" },
+  { "name": "Australia", "code": "AU" }
 ]
 ```

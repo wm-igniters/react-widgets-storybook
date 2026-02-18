@@ -20,61 +20,122 @@ The **Bar Chart** or **Column Chart** component allows you to display data as ho
 
 #### Properties 
 
-- Sets the visual theme for the bars in the chart
+- This bar chart displays data using horizontal bars and supports configurable visual themes, which can be defined in the markup or updated dynamically via script.
 
 ```javascript
+<wm-chart type="Bar" theme="Retro" name="barChart"></wm-chart>
+```
+
+```javascript
+// Set the bar chart's visual theme dynamically
 Page.Widgets.barChart.theme = "Retro";
 ```
 
-- Sets the visual colors for the column in the chart
+- This column chart represents data using vertical columns and supports configurable color schemes, which can be defined in the markup or updated dynamically via script.
 
 ```javascript
+<wm-chart type="Column" customcolors="#4CAF50, #2196F3, #FFC107" name="columnChart"></wm-chart>
+```
+
+```javascript
+// Set the column chart's custom colors dynamically
 Page.Widgets.columnChart.customcolors = "#4CAF50, #2196F3, #FFC107";
 ```
 
 #### Events 
 
-- Triggered when the user clicks on a specific bar of the Bar Chart (same applies to Column Chart, only the component name differs).
+- This is the markup for the bar chart on-select event, executed when a user selects a specific bar in the chart. The same event behavior applies to a column chart, with differences only in the component name and chart type (i.e., type="Bar" with barChartSelect vs type="Column" with columnChartSelect).
 
 ```javascript
-    Page.barChartSelect = function ($event, widget, selectedItem, selectedChartItem) {
-    // Example dataset reference
-    // selectedItem:
-    // { x: 'Feb', Sales: 3000, Revenue: 1398, Profit: 2210 }
+<wm-chart type="Bar" on-select="barChartSelect($event, widget, selectedItem, selectedChartItem)" name="barChart"></wm-chart>
+```
 
-    // selectedChartItem:
-    // { x: 'Feb', y: 2210, series: 0, key: "Sales" , seriesIndex: 0, _dataObj: {...} }
+```javascript
+Page.barChartSelect = function ($event, widget, selectedItem, selectedChartItem) {
+  // selectedItem represents the full data object for the selected category
+  // Example:
+  // { x: 'Feb', Sales: 3000, Revenue: 1398, Profit: 2210 }
 
-    // Identify which month was clicked
-    const month = selectedItem.x;
+  // selectedChartItem represents chart-specific information for the selected bar
+  // Example:
+  // { x: 'Feb', y: 2210, key: 'Sales', series: 0, seriesIndex: 0, _dataObj: {...} }
 
-    // Identify which metric was clicked (Sales / Revenue / Profit)
-    const metric = selectedChartItem.key;
+  // Identify the selected category (for example, the month)
+  const month = selectedItem.x;
 
-    // Value of the clicked bar
-    const value = selectedChartItem.y;
+  // Identify the selected metric (Sales / Revenue / Profit)
+  const metric = selectedChartItem.key;
 
-    // Example business action: Show details panel
-    Page.Widgets.detailsLabel.caption =
-        `${metric} for ${month}: ${value}`;
+  // Retrieve the value of the selected bar
+  const value = selectedChartItem.y;
 
-    Page.Widgets.detailsPanel.show = true;
+  // Update the UI to display details based on the selected bar
+  Page.Widgets.detailsLabel.caption = `${metric} for ${month}: ${value}`;
+
+  // Display the details panel
+  Page.Widgets.detailsPanel.show = true;
 };
 ```
 
-- Triggered during the initialization phase of the Bar Chart, just before it is rendered on the page (same applies to Column Chart, only the component name differs and some properties).
+- This is the markup for the bar chart on-beforerender event, executed during the chart initialization phase just before it is rendered on the page. The same event behavior applies to a Column Chart, with differences only in the component name and chart type (i.e., type="Bar" with barChartBeforerender vs type="Column" with columnChartBeforerender).
 
 ```javascript
-    Page.barChartBeforerender = function (widget, chartInstance) {
-    //Example: Apply conditional styling or themes before rendering
-    const chartMode = App.Variables.reportConfig.dataSet.chartMode;
+<wm-chart type="Bar" on-beforerender="barChartBeforerender(widget, chartInstance)" name="barChart"></wm-chart>
+```
 
-    if (chartMode === "finance") {
-        widget.theme = "Retro";
-    } else if (chartMode === "sales") {
-        widget.theme = "Azure";
-    } else if (chartMode === "operations") {
-        widget.theme = "Orient";
-    }
+```javascript
+Page.barChartBeforerender = function (widget, chartInstance) {
+  // Apply conditional themes before the chart is rendered
+  const chartMode = App.Variables.reportConfig.dataSet.chartMode;
+
+  if (chartMode === "finance") {
+    widget.theme = "Retro";
+  } else if (chartMode === "sales") {
+    widget.theme = "Azure";
+  } else if (chartMode === "operations") {
+    widget.theme = "Orient";
+  }
 };
+```
+
+#### Sample Bar or Column Chart Dataset
+
+- This is the markup for Bar and Column Chart components bound to a sample dataset, where each data object represents a category on the x-axis (for example, a month) and multiple numeric fields (Sales, Revenue, and Profit) are plotted as individual bars or columns on the y-axis.
+
+```javascript
+<wm-chart
+  type="Bar"
+  title="Bar Chart"
+  name="barChart"
+  dataset="bind:Variables.stvBarColumnChartsData.dataSet"
+  yaxisdatakey="Profit,Revenue,Sales"
+  xaxisdatakey="x"
+  height="250px"
+  iconclass="wi wi-bar-chart"
+></wm-chart>
+```
+
+```javascript
+<wm-chart
+  type="Column"
+  title="Column Chart"
+  name="columnChart"
+  dataset="bind:Variables.stvBarColumnChartsData.dataSet"
+  xaxisdatakey="x"
+  yaxisdatakey="Profit,Revenue,Sales"
+  height="250px"
+  iconclass="wi wi-bar-chart"
+></wm-chart>
+```
+
+```javascript
+// Sample dataset for the Bar or Column charts component
+let barColumnChartData = [
+  { "x": "Jan", "Sales": 4000, "Revenue": 2400, "Profit": 2400 },
+  { "x": "Feb", "Sales": 3000, "Revenue": 1398, "Profit": 2210 },
+  { "x": "Mar", "Sales": 2000, "Revenue": 9800, "Profit": 2290 },
+  { "x": "Apr", "Sales": 2780, "Revenue": 3908, "Profit": 2000 },
+  { "x": "May", "Sales": 1890, "Revenue": 4800, "Profit": 2181 },
+  { "x": "Jun", "Sales": 2390, "Revenue": 3800, "Profit": 2500 }
+];
 ```

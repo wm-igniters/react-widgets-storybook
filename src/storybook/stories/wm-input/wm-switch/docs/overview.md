@@ -72,19 +72,9 @@ Page.switchChange = function ($event, widget, newVal, oldVal) {
 
 ```javascript
 // Sample dataset for the switch component, containing a list of view options
-
 let viewOptions = [
-  {
-    "id": "daily",
-    "value": "Daily"
-  },
-  {
-    "id": "weekly",
-    "value": "Weekly"
-  },
-  {
-    "id": "monthly",
-    "value": "Monthly"
-  }
-];
+  { "id": "daily", "value": "Daily" },
+  { "id": "weekly", "value": "Weekly" },
+  { "id": "monthly", "value": "Monthly" }
+]
 ```

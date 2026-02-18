@@ -148,7 +148,7 @@ export const Showcase: Story = {
       },
     ];
 
-    const shapes = ["diamond", "square", "triangle"] as const;
+    const shapes = ["diamond", "square", "cross", "triangle"] as const;
 
     return (
       <Box sx={{ width: "100%" }}>
@@ -300,7 +300,7 @@ export const Standard: Story = {
   argTypes: {
     shape: {
       control: { type: "select" },
-      options: ["circle", "diamond", "square", "triangle"],
+      options: ["circle", "diamond", "square", "cross", "triangle"],
     },
     legendPosition: { control: "select", options: ["top", "bottom"]},
     tooltips: { control: "boolean" },
