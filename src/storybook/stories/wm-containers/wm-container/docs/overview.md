@@ -5,34 +5,47 @@ The  **Container** component is a layout box used to group and organize content.
 ### Markup
 
 ```javascript
-<wm-container direction="row" alignment="top-left" gap="4" width="fill" name="container" 
-  class="app-container-default"
-  variant="default"
-></wm-container>
+<wm-container name="container" direction="row" alignment="top-left" gap="4" width="fill" class="app-container-default"
+variant="default"></wm-container>
 ```
 
 ### Examples
 
 #### Properties
 
-- Show or hide the component
+- The container has a configurable show property which determines whether the component is visible to the user. It can be set in the markup or dynamically via script.
 
 ```javascript
-Page.Widgets.container.show = "true";
+<wm-container show="true" name="container"></wm-container>
 ```
-- Adding class name 
 
 ```javascript
-Page.Widgets.container.class = "bg-primary";
+// Setting show = true makes the container visible to the user.
+Page.Widgets.container.show = true;
+```
+
+- The container has a configurable content property which determines the partial page loaded inside it. It can be set in the markup or dynamically via script.
+
+```javascript
+<wm-container content="partialUserDetails" name="container"></wm-container>
+```
+
+```javascript
+// Setting content loads the specified partial page inside the container.
+Page.Widgets.container.content = "partialUserDetails";
 ```
 
 #### Events
 
-- On load of container 
+- This is the markup for a container with an on-load event, executed when the container finishes loading its content.
 
 ```javascript
-// Only works when content is mapped to partial
+<wm-container on-load="containerLoad(widget)" name="container"></wm-container>
+```
+
+```javascript
 Page.containerLoad = function (widget) {
-    Page.Widgets.label.caption = "Partial Container Loaded Successfully";
+  // Only works when container content is mapped to partial
+  Page.Widgets.label.caption = "Partial Container Loaded Successfully";
 };
 ```

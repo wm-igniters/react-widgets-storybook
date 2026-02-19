@@ -76,30 +76,10 @@ Page.ratingChange = function ($event, widget, newVal, oldVal) {
 ```javascript
 // Sample dataset for the Rating component, containing id, value, and label
 let ratingOptions = [
-  {
-    "id": "r1",
-    "value": "1",
-    "label": "Poor"
-  },
-  {
-    "id": "r2",
-    "value": "2",
-    "label": "Fair"
-  },
-  {
-    "id": "r3",
-    "value": "3",
-    "label": "Good"
-  },
-  {
-    "id": "r4",
-    "value": "4",
-    "label": "Very Good"
-  },
-  {
-    "id": "r5",
-    "value": "5",
-    "label": "Excellent"
-  }
+  { "id": "r1", "value": "1", "label": "Poor" },
+  { "id": "r2", "value": "2", "label": "Fair" },
+  { "id": "r3", "value": "3", "label": "Good" },
+  { "id": "r4", "value": "4", "label": "Very Good" },
+  { "id": "r5", "value": "5", "label": "Excellent" }
 ]
 ```

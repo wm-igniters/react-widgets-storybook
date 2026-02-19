@@ -36,7 +36,7 @@
               | `legendtype` | string | "furious" | This property allows to display the type of legend. |
               | **Behavior** |  |  |  |
               | `tooltips` | boolean | true | This property controls whether to show the tooltip on hover. |
-              | `radius` | string | - | This property controls the radius and value ranges from 0.1 to 1 (**Note**: This option is available only for the **Donut** Chart). |
+              | `donutratio` | string | - | This (Radius) property controls the radius and value ranges from 0.1 to 1 (**Note**: This option is available only for the **Donut** Chart). |
             </div>
         </details>
         <details>
