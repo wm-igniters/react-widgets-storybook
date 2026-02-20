@@ -525,6 +525,12 @@ Page.Widgets.table.formfields.netAmount.widget.getProperty('value');
 
 #### Sample Data Table Dataset
 
+- This is the markup for a table bound to a sample dataset of sales products. It displays product items with details such as ID, name, description, quantity, unit price, discount, and net amount, and supports basic navigation
+
+```javascript
+<wm-table dataset="bind:Variables.stvSalesData.dataSet" navigation="Basic" name="table"></wm-table>
+```
+
 ```javascript
 // Sample dataset for the Table component, containing a list of sales items
 let salesData = [
