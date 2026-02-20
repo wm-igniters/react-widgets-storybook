@@ -69,7 +69,9 @@ Page.Widgets.table.columns.netAmount.caption = "Net Amount";
 // This must be configured from: Table Properties → Advanced Settings → Columns → Style tab
 // The line below is shown for reference only.
 Page.Widgets.table.columns.netAmount["col-class"] = "column-net-amount";
+```
 
+```javascript
 // Configure how the column value is displayed in view mode
 // NOTE: View-mode formatting properties cannot be modified via script.
 // These must be configured from: Table Properties → Advanced Settings → Columns → Basic tab → View Mode
@@ -78,7 +80,9 @@ Page.Widgets.table.columns.netAmount["col-class"] = "column-net-amount";
 Page.Widgets.table.columns.netAmount.formatpattern = "toCurrency";
 Page.Widgets.table.columns.netAmount.currencypattern = "USD";
 Page.Widgets.table.columns.netAmount.fractionsize = "3";
+```
 
+```javascript
 // Define the input component used when editing a table row
 // NOTE: The edit component type cannot be set via script.
 // It must be configured from: Table Properties → Advanced Settings → Columns → Basic tab → Edit Mode
@@ -87,12 +91,13 @@ Page.Widgets.table.columns.netAmount["edit-widget-type"]; // Read-only reference
 // Validation settings for edit mode
 // These properties can be configured either: From Table Properties → Advanced Settings → Columns → Edit Mode OR dynamically via script
 Page.Widgets.table.columns.netAmount.validationmessage = "Please enter a valid amount";
-Page.Widgets.table.columns.netAmount.required = true;
+Page.Widgets.table.columns.netAmount.required = true; 
+```
 
+```javascript
 // These properties define whether the Table column is visible on specific device types
 // NOTE: Device visibility properties are not intended to be modified via script.
-// They should be configured from:
-// Table Properties → Advanced Settings → Columns → Display
+// They should be configured from: Table Properties → Advanced Settings → Columns → Display
 Page.Widgets.table.columns.netAmount.pcdisplay = true;
 Page.Widgets.table.columns.netAmount.mobiledisplay = true;
 Page.Widgets.table.columns.netAmount.tabletdisplay = true;
@@ -267,67 +272,139 @@ Page.tableFormrender = function ($event, widget, formWidgets, $operation) {
 };
 ```
 
-- This is the markup for a table with an on-sort event, executed whenever a Data Table header is clicked to sort by a particular column.
+
+
+
+##### Data Table - Row Summary Function
+
+When creating a Data Table, you can use the Summary Row Function to display calculated values at the bottom of the table. Summaries can be computed on either the client side or server side.
+Using this feature, you can summarize one or more columns, and a table can contain multiple summary rows. The summary values can be calculated using built-in JavaScript functions such as sum, average, count, minimum, maximum, percent or by providing a custom JavaScript function.
+Summary rows are configured by calling the **setSummaryRowData** method on a column within the **on-beforedatarender** event callback.
+
+- This is the markup for a table with an on-beforedatarender event, executed before the table is rendered onto the page.
 
 ```javascript
-<wm-table on-sort="tableSort($event, widget, $data)" name="table"></wm-table>
+<wm-table on-beforedatarender="tableBeforedatarender(widget, data, columns)" name="table"></wm-table>
 ```
 
 ```javascript
-Page.tableSort = function ($event, widget, $data) {
-  // $data: Contains the newly sorted data, the column definition (colDef), and the sort direction (asc/desc)
+Page.tableBeforedatarender = function (widget, data, columns) {
+  // Access column aggregate helpers like sum(), average(), min(), max()
+  // Example:
+  // const columnAggregate = columns.<columnName>.aggregate;
+  // columns.<columnName>.setSummaryRowData(columnAggregate.sum());
 
-  // $event: The header element that was clicked to perform sorting
-  // Example: Log the sorted data for debugging or further processing
-  console.log("Sorted column data:", $data);
+  // ---------------------------------------------------
+  // Single Summary Row
+  // ---------------------------------------------------
+  // setSummaryRowData() can accept a single value
+  // Example:
+  // columns.item.setSummaryRowData('Net Total');
+  // columns.netAmount.setSummaryRowData('670');
+
+  // ---------------------------------------------------
+  // Multiple Summary Rows
+  // ---------------------------------------------------
+  // Pass an array to setSummaryRowData(), Each array index represents one summary row
+
+  // Read discount value from a page variable
+  const DISCOUNT = Page.Variables.Discount.dataSet.dataValue;
+
+  // Access aggregate functions for the netAmount column
+  const netAmountAggregate = columns.netAmount.aggregate;
+
+  // Labels for summary rows (left column)
+  columns.item.setSummaryRowData([
+    'Net Total',
+    'Discount',
+    {
+      value: 'Total Budget',
+      class: 'bold-class' // Apply custom style
+    }
+  ]);
+
+  // Values for summary rows (right column)
+  // Order must match the labels above
+  columns.netAmount.setSummaryRowData([
+    netAmountAggregate.sum(), // Sum of netAmount column
+    DISCOUNT + '%',           // Discount value
+    {
+      value: calculateTotal(), // Total after discount
+      class: 'bold-class'      // Apply custom style
+    }
+  ]);
+
+  // Calculate final total after applying discount
+  function calculateTotal() {
+    let total = netAmountAggregate.sum();
+    return total - ((total / 100) * DISCOUNT);
+  }
 };
 ```
 
-- This is the markup for a table with an on-rowclick event, executed whenever a row in the Data Table is clicked. This includes both selecting and deselecting a row.
-
 ```javascript
-<wm-table on-rowclick="tableRowclick($event, widget, row)" name="table"></wm-table>
-```
+Page.tableBeforedatarender = function (widget, data, columns) {
+  // ---------------------------------------------------
+  // Custom Asynchronous Summary Row Example
+  // ---------------------------------------------------
+  // setSummaryRowData() can also accept a Promise.
+  // This allows summary values to be calculated using an API call or any asynchronous logic.
 
-```javascript
-Page.tableRowclick = function ($event, widget, row) {
-  // row: Contains the data of the clicked row along with its index in the table
-  // $event: The table cell element that was clicked to trigger the row selection
+  // Read discount value from a page variable
+  const DISCOUNT = Page.Variables.Discount.dataSet.dataValue;
 
-  // Example: Log the clicked row data and its index for debugging or further actions
-  console.log("Clicked row index and data:", row.$index, row);
+  // Access aggregate helper functions for the netAmount column
+  const netAmountAggregate = columns.netAmount.aggregate;
+
+  // Summary row labels (left column)
+  columns.item.setSummaryRowData([
+    'Net Total',
+    'Discount',
+    'Total'
+  ]);
+
+  // Summary row values (right column)
+  // The third value is resolved asynchronously
+  columns.netAmount.setSummaryRowData([
+    netAmountAggregate.sum(), // Sum of netAmount column
+    DISCOUNT + '%',           // Discount percentage
+    calculateTotal()          // Promise-based total value
+  ]);
+
+  // Asynchronous calculation using an API call
+  // The resolved value will be displayed in the summary row
+  function calculateTotal() {
+    return new Promise(function (resolve, reject) {
+      Page.Variables.Total.invoke().then((data) => {
+        // Extract the budget value from API response
+        resolve(JSON.parse(data.body).budget);
+      });
+    });
+  }
 };
 ```
 
-- This is the markup for a table with an on-rowselect event, executed whenever a row is selected in the Data Table.
-
 ```javascript
-<wm-table on-rowselect="tableRowselect($event, widget, row)" name="table"></wm-table>
-```
+Page.tableBeforedatarender = function (widget, data, columns) {
+  // ---------------------------------------------------
+  // Handling Summary Row with Column Visibility
+  // ---------------------------------------------------
+  // Summary row values are aligned with the visible table columns.
+  // If a column is hidden (due to device visibility, role-based access, or authorization rules), the summary should be shown under an alternative visible column.
 
-```javascript
-Page.tableRowselect = function ($event, widget, row) {
-  // row: Contains the data of the selected row, including its index ($index)
-  // $event: The table cell element that was clicked to select the row
+  // Access aggregate helper functions for the "budget" column
+  const budgetAggregate = columns.budget.aggregate;
 
-  // Example: Log the selected row data and its index
-  console.log("Selected row data with index:", row.$index, row);
-};
-```
+  // Set summary value for the budget column
+  columns.budget.setSummaryRowData(budgetAggregate.sum());
 
-- This is the markup for a table with an on-headerclick event, executed whenever a Data Table header is clicked.
-
-```javascript
-<wm-table on-headerclick="tableHeaderclick($event, widget, column)" name="table"></wm-table>
-```
-
-```javascript
-Page.tableHeaderclick = function ($event, widget, column) {
-  // column: Contains the definition data of the clicked header column
-  // $event: The header element that was clicked
-
-  // Example: Log the clicked column field and its definition for debugging or further actions
-  console.log("Clicked column field and definition:", column.field, column);
+  // Display the summary label under the appropriate visible column
+  // If "deptId" column exists and is visible, use it Otherwise, fall back to the "name" column
+  if (columns.deptId) {
+    columns.deptId.setSummaryRowData("Total Budget");
+  } else {
+    columns.name.setSummaryRowData("Total Budget");
+  }
 };
 ```
 
@@ -480,3 +557,92 @@ let salesData = [
   }
 ]
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+- This is the markup for a table with an on-sort event, executed whenever a Data Table header is clicked to sort by a particular column.
+
+```javascript
+<wm-table on-sort="tableSort($event, widget, $data)" name="table"></wm-table>
+```
+
+```javascript
+Page.tableSort = function ($event, widget, $data) {
+  // $data: Contains the newly sorted data, the column definition (colDef), and the sort direction (asc/desc)
+
+  // $event: The header element that was clicked to perform sorting
+  // Example: Log the sorted data for debugging or further processing
+  console.log("Sorted column data:", $data);
+};
+```
+
+- This is the markup for a table with an on-rowclick event, executed whenever a row in the Data Table is clicked. This includes both selecting and deselecting a row.
+
+```javascript
+<wm-table on-rowclick="tableRowclick($event, widget, row)" name="table"></wm-table>
+```
+
+```javascript
+Page.tableRowclick = function ($event, widget, row) {
+  // row: Contains the data of the clicked row along with its index in the table
+  // $event: The table cell element that was clicked to trigger the row selection
+
+  // Example: Log the clicked row data and its index for debugging or further actions
+  console.log("Clicked row index and data:", row.$index, row);
+};
+```
+
+- This is the markup for a table with an on-rowselect event, executed whenever a row is selected in the Data Table.
+
+```javascript
+<wm-table on-rowselect="tableRowselect($event, widget, row)" name="table"></wm-table>
+```
+
+```javascript
+Page.tableRowselect = function ($event, widget, row) {
+  // row: Contains the data of the selected row, including its index ($index)
+  // $event: The table cell element that was clicked to select the row
+
+  // Example: Log the selected row data and its index
+  console.log("Selected row data with index:", row.$index, row);
+};
+```
+
+- This is the markup for a table with an on-headerclick event, executed whenever a Data Table header is clicked.
+
+```javascript
+<wm-table on-headerclick="tableHeaderclick($event, widget, column)" name="table"></wm-table>
+```
+
+```javascript
+Page.tableHeaderclick = function ($event, widget, column) {
+  // column: Contains the definition data of the clicked header column
+  // $event: The header element that was clicked
+
+  // Example: Log the clicked column field and its definition for debugging or further actions
+  console.log("Clicked column field and definition:", column.field, column);
+};
+``` -->
